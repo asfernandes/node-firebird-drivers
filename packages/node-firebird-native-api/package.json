@@ -1,0 +1,56 @@
+{
+  "name": "node-firebird-native-api",
+  "version": "0.0.1-alpha.1",
+  "description": "Firebird native API for Node.js",
+  "gypfile": true,
+  "main": "dist/lib/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "build:w": "npm run clean && tsc -w",
+    "generate": "node dist/generate-files",
+    "gyp:clean": "rimraf build",
+    "gyp:build": "node-gyp build",
+    "gyp:configure": "node-gyp configure",
+    "test": "mocha --require source-map-support/register dist/test",
+    "prepublish": "npm run build && npm run gyp:clean && npm run gyp:configure && npm run gyp:build && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asfernandes/node-firebird-native-api.git"
+  },
+  "keywords": [
+    "firebird"
+  ],
+  "author": {
+    "name": "Adriano dos Santos Fernandes",
+    "email": "adrianosf@gmail.com",
+    "url": "https://asfernandes.github.io"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asfernandes/node-firebird-native-api/issues"
+  },
+  "homepage": "https://github.com/asfernandes/node-firebird-native-api#readme",
+  "typings": "./dist/lib/index.d.ts",
+  "dependencies": {
+    "@types/node": "^7.0.5",
+    "bindings": "^1.2.1",
+    "nan": "^2.5.1",
+    "node-gyp": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra-promise": "0.0.31",
+    "@types/mocha": "^2.2.39",
+    "@types/power-assert": "^1.4.29",
+    "@types/temp-fs": "^0.9.27",
+    "fs-extra-promise": "^0.4.1",
+    "mocha": "^3.2.0",
+    "node-cloop-gen": "0.0.1-alpha.1",
+    "power-assert": "^1.4.2",
+    "rimraf": "^2.6.1",
+    "source-map-support": "^0.4.11",
+    "temp-fs": "^0.9.9",
+    "typescript": "^2.2.1"
+  }
+}
