@@ -1,0 +1,27 @@
+language: node_js
+
+node_js:
+  - '7'
+
+sudo: false
+
+matrix:
+  fast_finish: true
+
+branches:
+  only:
+  - master
+
+install:
+  - npm install
+  - npm update
+
+script:
+  - npm run build
+
+cache:
+  directories:
+    - node_modules
+
+git:
+  depth: 1
