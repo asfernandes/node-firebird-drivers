@@ -1,0 +1,42 @@
+language: node_js
+
+node_js:
+  - '7'
+
+dist: trusty
+sudo: required
+
+env:
+  - CXX=g++-5
+
+matrix:
+  fast_finish: true
+
+branches:
+  only:
+  - master
+
+install:
+  - wget -O Firebird-3.0.2.32703-0.amd64.tar.gz "https://downloads.sourceforge.net/project/firebird/firebird-linux-amd64/3.0.2-Release/Firebird-3.0.2.32703-0.amd64.tar.gz?r=http%3A%2F%2Fwww.firebirdsql.org%2Fen%2Ffirebird-3-0-2%2F&ts=1490819755&use_mirror=ufpr"
+  - tar xzvf Firebird-3.0.2.32703-0.amd64.tar.gz
+  - (cd Firebird-3.0.2.32703-0.amd64; sudo ./install.sh -silent)
+  - sudo usermod -a -G firebird travis
+
+script:
+  - sg firebird -c "npm install"
+
+cache:
+  directories:
+    - node_modules
+
+git:
+  depth: 1
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-5
+      - g++-5
+      - libtommath0

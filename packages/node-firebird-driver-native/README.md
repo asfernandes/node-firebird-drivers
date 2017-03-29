@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/asfernandes/node-firebird-driver-native.svg?branch=master)](https://travis-ci.org/asfernandes/node-firebird-driver-native)
+[![npm version](https://badge.fury.io/js/node-firebird-driver-native.svg)](https://www.npmjs.com/package/node-firebird-driver-native)
+
 # Firebird high-level native client for Node.js / TypeScript
 
 node-firebird-driver-native is a modern (Firebird 3+ client, Node.js 7+, TypeScript 2+) native client for Firebird based in the
