@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/asfernandes/node-firebird-native-api.svg?branch=master)](https://travis-ci.org/asfernandes/node-firebird-native-api)
+[![npm version](https://badge.fury.io/js/node-firebird-native-api.svg)](https://www.npmjs.com/package/node-firebird-native-api)
+
 # Firebird low-level API for Node.js / TypeScript
 
 This project currently is a working in progress to have full Firebird API definitions for Node.js. It's currently not recommended to be used
