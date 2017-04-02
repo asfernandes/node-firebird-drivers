@@ -14,13 +14,9 @@ import {
 
 import * as fb from 'node-firebird-native-api';
 
-import * as os from 'os';
-
 
 /** Gets the default platform Firebird client library filename. */
-export function getDefaultLibraryFilename(): string {
-	return os.platform() == 'win32' ? 'fbclient.dll' : 'libfbclient.so';
-}
+export { getDefaultLibraryFilename } from 'node-firebird-native-api';
 
 /** Creates a client for a given library filename. */
 export function createNativeClient(library: string): Client {
