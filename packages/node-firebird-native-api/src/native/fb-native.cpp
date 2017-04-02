@@ -85,7 +85,7 @@ static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 	if (i != masterHandles.end())
 	{
-		dlclose(i->first);
+		dlclose(i->second);
 		masterHandles.erase(i);
 		info.GetReturnValue().Set(true);
 	}
