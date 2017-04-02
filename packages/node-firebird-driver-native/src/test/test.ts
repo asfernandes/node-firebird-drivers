@@ -1,6 +1,3 @@
-const segfaultHandler = require('segfault-handler');
-segfaultHandler.registerHandler("crash.log");
-
 import { createNativeClient, getDefaultLibraryFilename } from '../lib';
 
 import { Client } from 'node-firebird-driver';
