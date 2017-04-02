@@ -1,9 +1,14 @@
 #ifndef NODE_FB_CLASSES_H
 #define NODE_FB_CLASSES_H
 
+#include <functional>
 #include <string>
 #include <nan.h>
-#include <firebird/Interface.h>
+#include "./include/firebird/Interface.h"
+
+#ifdef _WIN32
+#undef interface
+#endif
 
 namespace fb = Firebird;
 
@@ -261,7 +266,7 @@ protected:
 
 class Pointer : public BaseClass<Pointer, void>
 {
-friend class BaseClass;
+friend class BaseClass<Pointer, void>;
 
 public:
 	static v8::Local<v8::Object> NewInstance(const void* ptr)

@@ -2,7 +2,7 @@ import * as assert from 'power-assert';
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
-import { disposeMaster, getMaster, Master, Provider, Util } from '../lib';
+import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util } from '../lib';
 
 
 describe('node-firebird-native-api', function() {
@@ -17,7 +17,7 @@ describe('node-firebird-native-api', function() {
 	this.timeout(5000);
 
 	before(() => {
-		master = getMaster('libfbclient.so');
+		master = getMaster(getDefaultLibraryFilename());
 		dispatcher = master.getDispatcherSync();
 		tmpDir = tmp.mkdirSync().path.toString();
 	});

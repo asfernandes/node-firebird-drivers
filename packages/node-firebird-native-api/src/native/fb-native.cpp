@@ -1,13 +1,24 @@
 #include <map>
 #include <string>
 #include <nan.h>
-#include <dlfcn.h>
 #include "./classes.h"
 #include "./cloop-gen.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#undef interface
+#else
+#include <dlfcn.h>
+#endif
 
 using std::map;
 using std::string;
 
+#ifdef _WIN32
+typedef HMODULE Handle;
+#else
+typedef void* Handle;
+#endif
 
 //----------------------------------------------------------------------------
 
@@ -20,7 +31,7 @@ static void initAll(v8::Local<v8::Object> exports, v8::Local<v8::Object> module)
 //----------------------------------------------------------------------------
 
 
-static map<Master*, void*> masterHandles;
+static map<Master*, Handle> masterHandles;
 
 
 //----------------------------------------------------------------------------
@@ -49,6 +60,27 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
 	Nan::Utf8String str(info[0]->ToString());
 
+#ifdef _WIN32
+	HMODULE handle = LoadLibrary(*str);
+	if (!handle)
+		return;
+
+	typedef fb::IMaster* (*Func)();
+	Func func = (Func) GetProcAddress(handle, "fb_get_master_interface");
+
+	if (!func)
+	{
+		FreeLibrary(handle);
+		return;
+	}
+
+	fb::IMaster* master = func();
+	if (!master)
+	{
+		FreeLibrary(handle);
+		return;
+	}
+#else
 	void* handle = dlopen(*str, RTLD_NOW);
 	if (!handle)
 		return;
@@ -68,6 +100,7 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 		dlclose(handle);
 		return;
 	}
+#endif
 
 	v8::Local<v8::Object> instance = Master::NewInstance(master);
 
@@ -85,7 +118,12 @@ static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 	if (i != masterHandles.end())
 	{
+#ifdef _WIN32
+		FreeLibrary(i->second);
+#else
 		dlclose(i->second);
+#endif
+
 		masterHandles.erase(i);
 		info.GetReturnValue().Set(true);
 	}

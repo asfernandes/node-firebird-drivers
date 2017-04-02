@@ -10,7 +10,7 @@ public:
 
 class Versioned : public BaseClass<Versioned, fb::IVersioned>
 {
-friend class BaseClass;
+friend class BaseClass<Versioned, fb::IVersioned>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -29,7 +29,7 @@ public:
 
 class ReferenceCounted : public BaseClass<ReferenceCounted, fb::IReferenceCounted>
 {
-friend class BaseClass;
+friend class BaseClass<ReferenceCounted, fb::IReferenceCounted>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -52,7 +52,7 @@ public:
 
 class Disposable : public BaseClass<Disposable, fb::IDisposable>
 {
-friend class BaseClass;
+friend class BaseClass<Disposable, fb::IDisposable>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -73,7 +73,7 @@ public:
 
 class Status : public BaseClass<Status, fb::IStatus>
 {
-friend class BaseClass;
+friend class BaseClass<Status, fb::IStatus>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -100,7 +100,7 @@ public:
 
 class Master : public BaseClass<Master, fb::IMaster>
 {
-friend class BaseClass;
+friend class BaseClass<Master, fb::IMaster>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -143,7 +143,7 @@ public:
 
 class PluginBase : public BaseClass<PluginBase, fb::IPluginBase>
 {
-friend class BaseClass;
+friend class BaseClass<PluginBase, fb::IPluginBase>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -170,7 +170,7 @@ public:
 
 class PluginSet : public BaseClass<PluginSet, fb::IPluginSet>
 {
-friend class BaseClass;
+friend class BaseClass<PluginSet, fb::IPluginSet>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -203,7 +203,7 @@ public:
 
 class ConfigEntry : public BaseClass<ConfigEntry, fb::IConfigEntry>
 {
-friend class BaseClass;
+friend class BaseClass<ConfigEntry, fb::IConfigEntry>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -236,7 +236,7 @@ public:
 
 class Config : public BaseClass<Config, fb::IConfig>
 {
-friend class BaseClass;
+friend class BaseClass<Config, fb::IConfig>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -265,7 +265,7 @@ public:
 
 class FirebirdConf : public BaseClass<FirebirdConf, fb::IFirebirdConf>
 {
-friend class BaseClass;
+friend class BaseClass<FirebirdConf, fb::IFirebirdConf>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -296,7 +296,7 @@ public:
 
 class PluginConfig : public BaseClass<PluginConfig, fb::IPluginConfig>
 {
-friend class BaseClass;
+friend class BaseClass<PluginConfig, fb::IPluginConfig>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -327,7 +327,7 @@ public:
 
 class PluginFactory : public BaseClass<PluginFactory, fb::IPluginFactory>
 {
-friend class BaseClass;
+friend class BaseClass<PluginFactory, fb::IPluginFactory>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -348,7 +348,7 @@ public:
 
 class PluginModule : public BaseClass<PluginModule, fb::IPluginModule>
 {
-friend class BaseClass;
+friend class BaseClass<PluginModule, fb::IPluginModule>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -369,7 +369,7 @@ public:
 
 class PluginManager : public BaseClass<PluginManager, fb::IPluginManager>
 {
-friend class BaseClass;
+friend class BaseClass<PluginManager, fb::IPluginManager>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -400,7 +400,7 @@ public:
 
 class CryptKey : public BaseClass<CryptKey, fb::ICryptKey>
 {
-friend class BaseClass;
+friend class BaseClass<CryptKey, fb::ICryptKey>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -419,7 +419,7 @@ public:
 
 class ConfigManager : public BaseClass<ConfigManager, fb::IConfigManager>
 {
-friend class BaseClass;
+friend class BaseClass<ConfigManager, fb::IConfigManager>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -450,7 +450,7 @@ public:
 
 class EventCallback : public BaseClass<EventCallback, fb::IEventCallback>
 {
-friend class BaseClass;
+friend class BaseClass<EventCallback, fb::IEventCallback>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -475,7 +475,7 @@ public:
 
 class Blob : public BaseClass<Blob, fb::IBlob>
 {
-friend class BaseClass;
+friend class BaseClass<Blob, fb::IBlob>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -510,7 +510,7 @@ public:
 
 class Transaction : public BaseClass<Transaction, fb::ITransaction>
 {
-friend class BaseClass;
+friend class BaseClass<Transaction, fb::ITransaction>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -553,7 +553,7 @@ public:
 
 class MessageMetadata : public BaseClass<MessageMetadata, fb::IMessageMetadata>
 {
-friend class BaseClass;
+friend class BaseClass<MessageMetadata, fb::IMessageMetadata>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -606,7 +606,7 @@ public:
 
 class MetadataBuilder : public BaseClass<MetadataBuilder, fb::IMetadataBuilder>
 {
-friend class BaseClass;
+friend class BaseClass<MetadataBuilder, fb::IMetadataBuilder>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -649,7 +649,7 @@ public:
 
 class ResultSet : public BaseClass<ResultSet, fb::IResultSet>
 {
-friend class BaseClass;
+friend class BaseClass<ResultSet, fb::IResultSet>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -694,7 +694,7 @@ public:
 
 class Statement : public BaseClass<Statement, fb::IStatement>
 {
-friend class BaseClass;
+friend class BaseClass<Statement, fb::IStatement>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -739,7 +739,7 @@ public:
 
 class Request : public BaseClass<Request, fb::IRequest>
 {
-friend class BaseClass;
+friend class BaseClass<Request, fb::IRequest>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -776,7 +776,7 @@ public:
 
 class Events : public BaseClass<Events, fb::IEvents>
 {
-friend class BaseClass;
+friend class BaseClass<Events, fb::IEvents>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -801,7 +801,7 @@ public:
 
 class Attachment : public BaseClass<Attachment, fb::IAttachment>
 {
-friend class BaseClass;
+friend class BaseClass<Attachment, fb::IAttachment>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -852,7 +852,7 @@ public:
 
 class Service : public BaseClass<Service, fb::IService>
 {
-friend class BaseClass;
+friend class BaseClass<Service, fb::IService>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -881,7 +881,7 @@ public:
 
 class Provider : public BaseClass<Provider, fb::IProvider>
 {
-friend class BaseClass;
+friend class BaseClass<Provider, fb::IProvider>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -918,7 +918,7 @@ public:
 
 class DtcStart : public BaseClass<DtcStart, fb::IDtcStart>
 {
-friend class BaseClass;
+friend class BaseClass<DtcStart, fb::IDtcStart>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -945,7 +945,7 @@ public:
 
 class Dtc : public BaseClass<Dtc, fb::IDtc>
 {
-friend class BaseClass;
+friend class BaseClass<Dtc, fb::IDtc>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -968,7 +968,7 @@ public:
 
 class Auth : public BaseClass<Auth, fb::IAuth>
 {
-friend class BaseClass;
+friend class BaseClass<Auth, fb::IAuth>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -995,7 +995,7 @@ public:
 
 class Writer : public BaseClass<Writer, fb::IWriter>
 {
-friend class BaseClass;
+friend class BaseClass<Writer, fb::IWriter>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1022,7 +1022,7 @@ public:
 
 class ServerBlock : public BaseClass<ServerBlock, fb::IServerBlock>
 {
-friend class BaseClass;
+friend class BaseClass<ServerBlock, fb::IServerBlock>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1049,7 +1049,7 @@ public:
 
 class ClientBlock : public BaseClass<ClientBlock, fb::IClientBlock>
 {
-friend class BaseClass;
+friend class BaseClass<ClientBlock, fb::IClientBlock>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1082,7 +1082,7 @@ public:
 
 class Server : public BaseClass<Server, fb::IServer>
 {
-friend class BaseClass;
+friend class BaseClass<Server, fb::IServer>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1111,7 +1111,7 @@ public:
 
 class Client : public BaseClass<Client, fb::IClient>
 {
-friend class BaseClass;
+friend class BaseClass<Client, fb::IClient>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1140,7 +1140,7 @@ public:
 
 class UserField : public BaseClass<UserField, fb::IUserField>
 {
-friend class BaseClass;
+friend class BaseClass<UserField, fb::IUserField>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1165,7 +1165,7 @@ public:
 
 class CharUserField : public BaseClass<CharUserField, fb::ICharUserField>
 {
-friend class BaseClass;
+friend class BaseClass<CharUserField, fb::ICharUserField>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1194,7 +1194,7 @@ public:
 
 class IntUserField : public BaseClass<IntUserField, fb::IIntUserField>
 {
-friend class BaseClass;
+friend class BaseClass<IntUserField, fb::IIntUserField>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1223,7 +1223,7 @@ public:
 
 class User : public BaseClass<User, fb::IUser>
 {
-friend class BaseClass;
+friend class BaseClass<User, fb::IUser>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1264,7 +1264,7 @@ public:
 
 class ListUsers : public BaseClass<ListUsers, fb::IListUsers>
 {
-friend class BaseClass;
+friend class BaseClass<ListUsers, fb::IListUsers>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1285,7 +1285,7 @@ public:
 
 class LogonInfo : public BaseClass<LogonInfo, fb::ILogonInfo>
 {
-friend class BaseClass;
+friend class BaseClass<LogonInfo, fb::ILogonInfo>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1314,7 +1314,7 @@ public:
 
 class Management : public BaseClass<Management, fb::IManagement>
 {
-friend class BaseClass;
+friend class BaseClass<Management, fb::IManagement>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1349,7 +1349,7 @@ public:
 
 class WireCryptPlugin : public BaseClass<WireCryptPlugin, fb::IWireCryptPlugin>
 {
-friend class BaseClass;
+friend class BaseClass<WireCryptPlugin, fb::IWireCryptPlugin>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1384,7 +1384,7 @@ public:
 
 class CryptKeyCallback : public BaseClass<CryptKeyCallback, fb::ICryptKeyCallback>
 {
-friend class BaseClass;
+friend class BaseClass<CryptKeyCallback, fb::ICryptKeyCallback>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1405,7 +1405,7 @@ public:
 
 class KeyHolderPlugin : public BaseClass<KeyHolderPlugin, fb::IKeyHolderPlugin>
 {
-friend class BaseClass;
+friend class BaseClass<KeyHolderPlugin, fb::IKeyHolderPlugin>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1436,7 +1436,7 @@ public:
 
 class DbCryptPlugin : public BaseClass<DbCryptPlugin, fb::IDbCryptPlugin>
 {
-friend class BaseClass;
+friend class BaseClass<DbCryptPlugin, fb::IDbCryptPlugin>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1463,7 +1463,7 @@ public:
 
 class ExternalContext : public BaseClass<ExternalContext, fb::IExternalContext>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalContext, fb::IExternalContext>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1482,7 +1482,7 @@ public:
 
 class ExternalResultSet : public BaseClass<ExternalResultSet, fb::IExternalResultSet>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalResultSet, fb::IExternalResultSet>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1505,7 +1505,7 @@ public:
 
 class ExternalFunction : public BaseClass<ExternalFunction, fb::IExternalFunction>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalFunction, fb::IExternalFunction>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1526,7 +1526,7 @@ public:
 
 class ExternalProcedure : public BaseClass<ExternalProcedure, fb::IExternalProcedure>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalProcedure, fb::IExternalProcedure>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1547,7 +1547,7 @@ public:
 
 class ExternalTrigger : public BaseClass<ExternalTrigger, fb::IExternalTrigger>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalTrigger, fb::IExternalTrigger>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1568,7 +1568,7 @@ public:
 
 class RoutineMetadata : public BaseClass<RoutineMetadata, fb::IRoutineMetadata>
 {
-friend class BaseClass;
+friend class BaseClass<RoutineMetadata, fb::IRoutineMetadata>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1605,7 +1605,7 @@ public:
 
 class ExternalEngine : public BaseClass<ExternalEngine, fb::IExternalEngine>
 {
-friend class BaseClass;
+friend class BaseClass<ExternalEngine, fb::IExternalEngine>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1632,7 +1632,7 @@ public:
 
 class Timer : public BaseClass<Timer, fb::ITimer>
 {
-friend class BaseClass;
+friend class BaseClass<Timer, fb::ITimer>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1657,7 +1657,7 @@ public:
 
 class TimerControl : public BaseClass<TimerControl, fb::ITimerControl>
 {
-friend class BaseClass;
+friend class BaseClass<TimerControl, fb::ITimerControl>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1680,7 +1680,7 @@ public:
 
 class VersionCallback : public BaseClass<VersionCallback, fb::IVersionCallback>
 {
-friend class BaseClass;
+friend class BaseClass<VersionCallback, fb::IVersionCallback>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1701,7 +1701,7 @@ public:
 
 class Util : public BaseClass<Util, fb::IUtil>
 {
-friend class BaseClass;
+friend class BaseClass<Util, fb::IUtil>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1738,7 +1738,7 @@ public:
 
 class OffsetsCallback : public BaseClass<OffsetsCallback, fb::IOffsetsCallback>
 {
-friend class BaseClass;
+friend class BaseClass<OffsetsCallback, fb::IOffsetsCallback>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1759,7 +1759,7 @@ public:
 
 class XpbBuilder : public BaseClass<XpbBuilder, fb::IXpbBuilder>
 {
-friend class BaseClass;
+friend class BaseClass<XpbBuilder, fb::IXpbBuilder>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1820,7 +1820,7 @@ public:
 
 class TraceConnection : public BaseClass<TraceConnection, fb::ITraceConnection>
 {
-friend class BaseClass;
+friend class BaseClass<TraceConnection, fb::ITraceConnection>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1857,7 +1857,7 @@ public:
 
 class TraceDatabaseConnection : public BaseClass<TraceDatabaseConnection, fb::ITraceDatabaseConnection>
 {
-friend class BaseClass;
+friend class BaseClass<TraceDatabaseConnection, fb::ITraceDatabaseConnection>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1898,7 +1898,7 @@ public:
 
 class TraceTransaction : public BaseClass<TraceTransaction, fb::ITraceTransaction>
 {
-friend class BaseClass;
+friend class BaseClass<TraceTransaction, fb::ITraceTransaction>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1917,7 +1917,7 @@ public:
 
 class TraceParams : public BaseClass<TraceParams, fb::ITraceParams>
 {
-friend class BaseClass;
+friend class BaseClass<TraceParams, fb::ITraceParams>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1936,7 +1936,7 @@ public:
 
 class TraceStatement : public BaseClass<TraceStatement, fb::ITraceStatement>
 {
-friend class BaseClass;
+friend class BaseClass<TraceStatement, fb::ITraceStatement>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1955,7 +1955,7 @@ public:
 
 class TraceSQLStatement : public BaseClass<TraceSQLStatement, fb::ITraceSQLStatement>
 {
-friend class BaseClass;
+friend class BaseClass<TraceSQLStatement, fb::ITraceSQLStatement>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1974,7 +1974,7 @@ public:
 
 class TraceBLRStatement : public BaseClass<TraceBLRStatement, fb::ITraceBLRStatement>
 {
-friend class BaseClass;
+friend class BaseClass<TraceBLRStatement, fb::ITraceBLRStatement>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -1993,7 +1993,7 @@ public:
 
 class TraceDYNRequest : public BaseClass<TraceDYNRequest, fb::ITraceDYNRequest>
 {
-friend class BaseClass;
+friend class BaseClass<TraceDYNRequest, fb::ITraceDYNRequest>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2012,7 +2012,7 @@ public:
 
 class TraceContextVariable : public BaseClass<TraceContextVariable, fb::ITraceContextVariable>
 {
-friend class BaseClass;
+friend class BaseClass<TraceContextVariable, fb::ITraceContextVariable>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2031,7 +2031,7 @@ public:
 
 class TraceProcedure : public BaseClass<TraceProcedure, fb::ITraceProcedure>
 {
-friend class BaseClass;
+friend class BaseClass<TraceProcedure, fb::ITraceProcedure>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2050,7 +2050,7 @@ public:
 
 class TraceFunction : public BaseClass<TraceFunction, fb::ITraceFunction>
 {
-friend class BaseClass;
+friend class BaseClass<TraceFunction, fb::ITraceFunction>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2069,7 +2069,7 @@ public:
 
 class TraceTrigger : public BaseClass<TraceTrigger, fb::ITraceTrigger>
 {
-friend class BaseClass;
+friend class BaseClass<TraceTrigger, fb::ITraceTrigger>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2088,7 +2088,7 @@ public:
 
 class TraceServiceConnection : public BaseClass<TraceServiceConnection, fb::ITraceServiceConnection>
 {
-friend class BaseClass;
+friend class BaseClass<TraceServiceConnection, fb::ITraceServiceConnection>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2125,7 +2125,7 @@ public:
 
 class TraceStatusVector : public BaseClass<TraceStatusVector, fb::ITraceStatusVector>
 {
-friend class BaseClass;
+friend class BaseClass<TraceStatusVector, fb::ITraceStatusVector>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2144,7 +2144,7 @@ public:
 
 class TraceSweepInfo : public BaseClass<TraceSweepInfo, fb::ITraceSweepInfo>
 {
-friend class BaseClass;
+friend class BaseClass<TraceSweepInfo, fb::ITraceSweepInfo>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2163,7 +2163,7 @@ public:
 
 class TraceLogWriter : public BaseClass<TraceLogWriter, fb::ITraceLogWriter>
 {
-friend class BaseClass;
+friend class BaseClass<TraceLogWriter, fb::ITraceLogWriter>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2186,7 +2186,7 @@ public:
 
 class TraceInitInfo : public BaseClass<TraceInitInfo, fb::ITraceInitInfo>
 {
-friend class BaseClass;
+friend class BaseClass<TraceInitInfo, fb::ITraceInitInfo>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2205,7 +2205,7 @@ public:
 
 class TracePlugin : public BaseClass<TracePlugin, fb::ITracePlugin>
 {
-friend class BaseClass;
+friend class BaseClass<TracePlugin, fb::ITracePlugin>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2228,7 +2228,7 @@ public:
 
 class TraceFactory : public BaseClass<TraceFactory, fb::ITraceFactory>
 {
-friend class BaseClass;
+friend class BaseClass<TraceFactory, fb::ITraceFactory>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2255,7 +2255,7 @@ public:
 
 class UdrFunctionFactory : public BaseClass<UdrFunctionFactory, fb::IUdrFunctionFactory>
 {
-friend class BaseClass;
+friend class BaseClass<UdrFunctionFactory, fb::IUdrFunctionFactory>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2280,7 +2280,7 @@ public:
 
 class UdrProcedureFactory : public BaseClass<UdrProcedureFactory, fb::IUdrProcedureFactory>
 {
-friend class BaseClass;
+friend class BaseClass<UdrProcedureFactory, fb::IUdrProcedureFactory>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2305,7 +2305,7 @@ public:
 
 class UdrTriggerFactory : public BaseClass<UdrTriggerFactory, fb::IUdrTriggerFactory>
 {
-friend class BaseClass;
+friend class BaseClass<UdrTriggerFactory, fb::IUdrTriggerFactory>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
@@ -2330,7 +2330,7 @@ public:
 
 class UdrPlugin : public BaseClass<UdrPlugin, fb::IUdrPlugin>
 {
-friend class BaseClass;
+friend class BaseClass<UdrPlugin, fb::IUdrPlugin>;
 
 private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
