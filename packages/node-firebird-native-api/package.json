@@ -51,6 +51,6 @@
     "rimraf": "^2.6.1",
     "source-map-support": "^0.4.11",
     "temp-fs": "^0.9.9",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.2"
   }
 }
