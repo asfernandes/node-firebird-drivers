@@ -20,7 +20,7 @@ function dateTimeToString(d: Date) {
 }
 
 
-describe('node-firebird-native-api', function() {
+describe('node-firebird-driver-native', function() {
 	let tmpDir: string;
 	let client: Client;
 
