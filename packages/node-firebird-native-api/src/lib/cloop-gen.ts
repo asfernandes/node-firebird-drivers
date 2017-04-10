@@ -469,6 +469,10 @@ export interface Attachment extends ReferenceCounted {
 	compileRequestAsync(status: Status, blrLength: number, blr: Uint8Array | Pointer): Promise<Request>;
 	transactRequestSync(status: Status, transaction: Transaction, blrLength: number, blr: Uint8Array | Pointer, inMsgLength: number, inMsg: Uint8Array | Pointer, outMsgLength: number, outMsg: Uint8Array | Pointer): void;
 	transactRequestAsync(status: Status, transaction: Transaction, blrLength: number, blr: Uint8Array | Pointer, inMsgLength: number, inMsg: Uint8Array | Pointer, outMsgLength: number, outMsg: Uint8Array | Pointer): Promise<void>;
+	createBlobSync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Blob;
+	createBlobAsync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Promise<Blob>;
+	openBlobSync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Blob;
+	openBlobAsync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Promise<Blob>;
 	executeDynSync(status: Status, transaction: Transaction, length: number, dyn: Uint8Array | Pointer): void;
 	executeDynAsync(status: Status, transaction: Transaction, length: number, dyn: Uint8Array | Pointer): Promise<void>;
 	prepareSync(status: Status, tra: Transaction, stmtLength: number, sqlStmt: string, dialect: number, flags: number): Statement;

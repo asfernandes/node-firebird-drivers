@@ -71,8 +71,6 @@ const interfaceConfig: InterfaceConfig = {
 		],
 
 		deleteMethods: [
-			'createBlob',
-			'openBlob',
 			'getSlice',
 			'putSlice'
 		]

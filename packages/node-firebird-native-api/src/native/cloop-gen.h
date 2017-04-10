@@ -821,6 +821,10 @@ private:
 	static v8::Local<v8::Value> compileRequestFinish(fb::IRequest* ret);
 	static MethodStart<void*> transactRequestStart(Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> transactRequestFinish(void* ret);
+	static MethodStart<fb::IBlob*> createBlobStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static v8::Local<v8::Value> createBlobFinish(fb::IBlob* ret);
+	static MethodStart<fb::IBlob*> openBlobStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static v8::Local<v8::Value> openBlobFinish(fb::IBlob* ret);
 	static MethodStart<void*> executeDynStart(Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeDynFinish(void* ret);
 	static MethodStart<fb::IStatement*> prepareStart(Nan::NAN_METHOD_ARGS_TYPE info);
@@ -5182,6 +5186,8 @@ void Attachment::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ITransaction*, reconnectTransactionStart, reconnectTransactionFinish>(tpl, "reconnectTransaction");
 	DefineAsyncMethod<fb::IRequest*, compileRequestStart, compileRequestFinish>(tpl, "compileRequest");
 	DefineAsyncMethod<void*, transactRequestStart, transactRequestFinish>(tpl, "transactRequest");
+	DefineAsyncMethod<fb::IBlob*, createBlobStart, createBlobFinish>(tpl, "createBlob");
+	DefineAsyncMethod<fb::IBlob*, openBlobStart, openBlobFinish>(tpl, "openBlob");
 	DefineAsyncMethod<void*, executeDynStart, executeDynFinish>(tpl, "executeDyn");
 	DefineAsyncMethod<fb::IStatement*, prepareStart, prepareFinish>(tpl, "prepare");
 	DefineAsyncMethod<fb::ITransaction*, executeStart, executeFinish>(tpl, "execute");
@@ -5319,6 +5325,46 @@ MethodStart<void*> Attachment::transactRequestStart(Nan::NAN_METHOD_ARGS_TYPE in
 v8::Local<v8::Value> Attachment::transactRequestFinish(void* ret)
 {
 	return v8::Local<v8::Value>(Nan::Undefined());
+}
+
+MethodStart<fb::IBlob*> Attachment::createBlobStart(Nan::NAN_METHOD_ARGS_TYPE info)
+{
+	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
+	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
+	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
+	unsigned bpbLength = info[3]->NumberValue();
+	auto* bpb = getAddress<unsigned char>(info[4]);
+
+	return [obj, status, transaction, id, bpbLength, bpb]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->createBlob(&statusWrapper, (transaction ? transaction->interface : nullptr), id, bpbLength, bpb);
+	};
+}
+
+v8::Local<v8::Value> Attachment::createBlobFinish(fb::IBlob* ret)
+{
+	return Blob::NewInstance(ret);
+}
+
+MethodStart<fb::IBlob*> Attachment::openBlobStart(Nan::NAN_METHOD_ARGS_TYPE info)
+{
+	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
+	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
+	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
+	unsigned bpbLength = info[3]->NumberValue();
+	auto* bpb = getAddress<unsigned char>(info[4]);
+
+	return [obj, status, transaction, id, bpbLength, bpb]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->openBlob(&statusWrapper, (transaction ? transaction->interface : nullptr), id, bpbLength, bpb);
+	};
+}
+
+v8::Local<v8::Value> Attachment::openBlobFinish(fb::IBlob* ret)
+{
+	return Blob::NewInstance(ret);
 }
 
 MethodStart<void*> Attachment::executeDynStart(Nan::NAN_METHOD_ARGS_TYPE info)
