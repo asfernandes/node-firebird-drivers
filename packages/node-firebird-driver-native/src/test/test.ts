@@ -36,9 +36,7 @@ describe('node-firebird-native-api', function() {
 	});
 
 	after(async () => {
-		//// FIXME: with await (correct) it's crashing...
-		///await client.dispose();
-		client.dispose();
+		await client.dispose();
 		fs.rmdirSync(tmpDir);
 	});
 
