@@ -1,4 +1,5 @@
 import { ClientImpl } from './client';
+import { TransactionImpl } from './transaction';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -18,7 +19,7 @@ export namespace sqlTypes {
 	export const SQL_DOUBLE = 480;
 	//export const SQL_D_FLOAT = 530;
 	export const SQL_TIMESTAMP = 510;
-	//// TODO: export const SQL_BLOB = 520;
+	export const SQL_BLOB = 520;
 	//export const SQL_ARRAY = 540;
 	//export const SQL_QUAD = 550;
 	export const SQL_TYPE_TIME = 560;
@@ -33,6 +34,11 @@ export namespace dpb {
 	export const lc_ctype = 48;
 	export const user_name = 28;
 	export const password = 29;
+}
+
+/** Blob info. */
+export namespace blobInfo {
+	export const totalLength = 6;
 }
 
 /** Changes a number from a scale to another. */
@@ -50,6 +56,20 @@ export function changeScale(value: number, inputScale: number, outputScale: numb
 		return value * Math.pow(10, -outputScale);
 }
 ***/
+
+/** Emulate Firebird isc_portable_integer. */
+export function getPortableInteger(buffer: Uint8Array, length: number) {
+	if (!buffer || length <= 0 || length > 8)
+		return 0;
+
+	let value = 0;
+	let pos = 0;
+
+	for (let shift = 0; --length >= 0; shift += 8)
+		value += buffer[pos++] << shift;
+
+	return value;
+}
 
 /** Fix metadata descriptors to types we want to read. */
 export function fixMetadata(status: fb.Status, metadata: fb.MessageMetadata): fb.MessageMetadata {
@@ -87,10 +107,13 @@ export function fixMetadata(status: fb.Status, metadata: fb.MessageMetadata): fb
 	return ret;
 }
 
+export type DataReader = (buffer: Uint8Array) => Promise<any[]>;
+
 /** Creates a data reader. */
-export function createDataReader(status: fb.Status, client: ClientImpl, metadata: fb.MessageMetadata): (buffer: Uint8Array) => any[] {
+export function createDataReader(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
+		DataReader {
 	const count = metadata.getCountSync(status);
-	const mappers = new Array<(buffer: Uint8Array) => any>(count);
+	const mappers = new Array<(buffer: Uint8Array) => Promise<any>>(count);
 
 	for (let i = 0; i < count; ++i) {
 		const nullOffset = metadata.getNullOffsetSync(status, i);
@@ -99,7 +122,7 @@ export function createDataReader(status: fb.Status, client: ClientImpl, metadata
 		///const length = metadata.getLengthSync(status, i);
 		///const scale = metadata.getScaleSync(status, i);
 
-		mappers[i] = (buffer: Uint8Array): any => {
+		mappers[i] = async (buffer: Uint8Array): Promise<any> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (dataView.getInt16(nullOffset, littleEndian) == -1)
@@ -165,6 +188,46 @@ export function createDataReader(status: fb.Status, client: ClientImpl, metadata
 				case sqlTypes.SQL_BOOLEAN:
 					return dataView.getInt8(offset) != 0;
 
+				case sqlTypes.SQL_BLOB:
+				{
+					//// TODO: transliterate sub_type text.
+					let retBuffer: Buffer;
+					let segLength: Uint32Array;
+					let pos = 0;
+
+					const blob = await transaction.attachment.attachment.openBlobAsync(
+						status, transaction.transaction, buffer.slice(offset, offset + 8), 0, null);
+
+					try {
+						const infoReq = new Uint8Array([blobInfo.totalLength]);
+						const infoRet = new Uint8Array(20);
+						await blob.getInfoAsync(status, infoReq.byteLength, infoReq, infoRet.byteLength, infoRet);
+
+						if (infoRet[0] != blobInfo.totalLength || infoRet[1] != 4 || infoRet[2] != 0)
+							throw new Error('Unrecognized response from Blob::getInfo.');
+
+						const length = getPortableInteger(infoRet.subarray(3), 4);
+
+						retBuffer = Buffer.alloc(length);
+						segLength = new Uint32Array(1);
+
+						let segRet: number;
+
+						do {
+							segRet = await blob.getSegmentAsync(status, retBuffer.length - pos, retBuffer.subarray(pos), segLength);
+							pos += segLength[0];
+						} while (segRet === fb.Status.RESULT_SEGMENT);
+
+						if (pos !== length)
+							throw new Error('Cannot retrieve full blob.');
+					}
+					finally {
+						await blob.closeAsync(status);
+					}
+
+					return retBuffer;
+				}
+
 				case sqlTypes.SQL_NULL:
 					return null;
 
@@ -174,21 +237,23 @@ export function createDataReader(status: fb.Status, client: ClientImpl, metadata
 		}
 	}
 
-	return (buffer: Uint8Array): any[] => {
+	return async (buffer: Uint8Array): Promise<any[]> => {
 		const ret = new Array(count);
 
 		for (let i = 0; i < count; ++i)
-			ret[i] = mappers[i](buffer);
+			ret[i] = await mappers[i](buffer);
 
 		return ret;
 	}
 }
 
+export type DataWriter = (buffer: Uint8Array, values: Array<any>) => Promise<void>;
+
 /** Creates a data writer. */
-export function createDataWriter(status: fb.Status, client: ClientImpl, metadata: fb.MessageMetadata):
-		(buffer: Uint8Array, values: Array<any>) => void {
+export function createDataWriter(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
+		DataWriter {
 	const count = metadata.getCountSync(status);
-	const mappers = new Array<(buffer: Uint8Array, value: any) => void>(count);
+	const mappers = new Array<(buffer: Uint8Array, value: any) => Promise<void>>(count);
 
 	for (let i = 0; i < count; ++i) {
 		const nullOffset = metadata.getNullOffsetSync(status, i);
@@ -197,7 +262,7 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, metadata
 		const length = metadata.getLengthSync(status, i);
 		///const scale = metadata.getScaleSync(status, i);
 
-		mappers[i] = (buffer: Uint8Array, value: any): void => {
+		mappers[i] = async (buffer: Uint8Array, value: any): Promise<void> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (value == null) {
@@ -278,6 +343,23 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, metadata
 					dataView.setInt8(offset, value ? 1 : 0);
 					break;
 
+				case sqlTypes.SQL_BLOB:
+				{
+					//// TODO: transliterate sub_type text.
+					const valueBuffer = value as Buffer;
+					const blobId = buffer.subarray(offset, offset + 8);
+					const blob = await transaction.attachment.attachment.createBlobAsync(status, transaction.transaction, blobId, 0, null);
+
+					try {
+						await blob.putSegmentAsync(status, valueBuffer.length, valueBuffer);
+					}
+					finally {
+						await blob.closeAsync(status);
+					}
+
+					break;
+				}
+
 				case sqlTypes.SQL_NULL:
 					break;
 
@@ -287,11 +369,11 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, metadata
 		}
 	}
 
-	return (buffer: Uint8Array, values: Array<any>): void => {
+	return async (buffer: Uint8Array, values: Array<any>): Promise<void> => {
 		if ((values || []).length !== count)
 			throw new Error(`Incorrect number of parameters: expected ${count}, received ${(values || []).length}.`);
 
 		for (let i = 0; i < count; ++i)
-			mappers[i](buffer, values[i]);
+			await mappers[i](buffer, values[i]);
 	}
 }

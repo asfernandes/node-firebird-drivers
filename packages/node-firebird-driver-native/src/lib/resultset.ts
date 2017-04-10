@@ -1,6 +1,6 @@
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
-import { createDataReader } from './fb-util';
+import { createDataReader, DataReader } from './fb-util';
 
 import { ExecuteQueryOptions, FetchOptions, ResultSet } from 'node-firebird-driver';
 
@@ -13,7 +13,7 @@ export class ResultSetImpl implements ResultSet {
 	outBuffer: Uint8Array;
 	finished = false;
 	diposeStatementOnClose = false;
-	dataReader: (buffer: Uint8Array) => any[];
+	dataReader: DataReader;
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions: FetchOptions;
@@ -24,7 +24,7 @@ export class ResultSetImpl implements ResultSet {
 
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
-			resultSet.dataReader = createDataReader(status, statement.attachment.client, statement.outMetadata);
+			resultSet.dataReader = createDataReader(status, statement.attachment.client, transaction, statement.outMetadata);
 
 			statement.dataWriter(statement.inBuffer, parameters);
 

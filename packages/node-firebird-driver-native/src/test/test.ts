@@ -206,7 +206,8 @@ describe('node-firebird-driver-native', function() {
 				{ name: 'x_timestamp', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
 				{ name: 'x_boolean', type: 'boolean', valToStr: (v: any) => v },
 				{ name: 'x_varchar', type: 'varchar(10) character set utf8', valToStr: (v: any) => `'${v}'` },
-				{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` }
+				{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` },
+				{ name: 'x_blob', type: 'blob', valToStr: (v: Buffer) => `'${v.toString()}'` }
 			];
 
 			const statement1 = await attachment.prepare(transaction,
@@ -229,7 +230,8 @@ describe('node-firebird-driver-native', function() {
 				new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
 				true,
 				'123áé4567',
-				'123áé4567'
+				'123áé4567',
+				Buffer.alloc(11, '12345678á9')
 			];
 
 			{	// scope
@@ -271,7 +273,8 @@ describe('node-firebird-driver-native', function() {
 						char_length(x_char),
 						octet_length(x_char),
 						null,
-						x_char || null
+						x_char || null,
+						x_blob
 				   from t1`);
 			const resultSet3 = await statement3.executeQuery(transaction);
 
@@ -298,6 +301,7 @@ describe('node-firebird-driver-native', function() {
 				assert.equal(columns[n++], 12);
 				assert.equal(columns[n++], null);
 				assert.equal(columns[n++], null);
+				assert.equal((columns[n++] as Buffer).toString(), '12345678á9');
 
 				assert.equal(columns.length, n);
 			}

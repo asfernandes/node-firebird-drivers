@@ -4,7 +4,7 @@ import { TransactionImpl } from './transaction';
 
 import { ExecuteOptions, ExecuteQueryOptions, FetchOptions, PrepareOptions, ResultSet, Statement, Transaction } from 'node-firebird-driver';
 
-import { createDataWriter, fixMetadata } from './fb-util';
+import { createDataWriter, DataWriter, fixMetadata } from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -16,7 +16,7 @@ export class StatementImpl implements Statement {
 	inMetadata: fb.MessageMetadata;
 	outMetadata: fb.MessageMetadata;
 	inBuffer: Uint8Array;
-	dataWriter: (buffer: Uint8Array, values: Array<any>) => void;
+	dataWriter: DataWriter;
 
 	/** Default query's execute options. */
 	defaultExecuteOptions: ExecuteOptions;
@@ -40,7 +40,7 @@ export class StatementImpl implements Statement {
 			statement.outMetadata = fixMetadata(status, await statement.statement.getOutputMetadataAsync(status));
 
 			statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
-			statement.dataWriter = createDataWriter(status, attachment.client, statement.inMetadata);
+			statement.dataWriter = createDataWriter(status, attachment.client, transaction, statement.inMetadata);
 
 			attachment.statements.add(statement);
 
@@ -88,7 +88,7 @@ export class StatementImpl implements Statement {
 		return await this.attachment.client.statusAction(async status => {
 			const transactionImpl = transaction as TransactionImpl;
 
-			this.dataWriter(this.inBuffer, parameters);
+			await this.dataWriter(this.inBuffer, parameters);
 
 			const newTransaction = await this.statement.executeAsync(status, transactionImpl.transaction,
 				this.inMetadata, this.inBuffer, this.outMetadata, null);
