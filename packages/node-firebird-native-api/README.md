@@ -14,7 +14,7 @@ https://github.com/asfernandes/node-firebird-driver-native.git / https://www.npm
 
 ## Installation
 
-npm install --save node-firebird-native-api
+yarn add node-firebird-native-api
 
 ## Warning
 

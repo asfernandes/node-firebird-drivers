@@ -6,14 +6,14 @@
   "main": "dist/lib/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
-    "build:w": "npm run clean && tsc -w",
+    "build": "yarn run clean && tsc",
+    "build:w": "yarn run clean && tsc -w",
     "generate": "node dist/generate-files",
     "gyp:clean": "rimraf build",
     "gyp:build": "node-gyp build",
     "gyp:configure": "node-gyp configure",
     "test": "mocha --require source-map-support/register dist/test",
-    "prepublish": "npm run build && npm run gyp:clean && npm run gyp:configure && npm run gyp:build && npm test"
+    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test"
   },
   "repository": {
     "type": "git",
@@ -34,23 +34,23 @@
   "homepage": "https://github.com/asfernandes/node-firebird-native-api#readme",
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
-    "@types/node": "^7.0.5",
+    "@types/node": "^8.0.7",
     "bindings": "^1.2.1",
-    "nan": "^2.5.1",
-    "node-gyp": "^3.6.0"
+    "nan": "^2.6.2",
+    "node-gyp": "^3.6.2"
   },
   "devDependencies": {
-    "@types/fs-extra-promise": "0.0.31",
-    "@types/mocha": "^2.2.39",
+    "@types/fs-extra-promise": "^1.0.2",
+    "@types/mocha": "^2.2.41",
     "@types/power-assert": "^1.4.29",
     "@types/temp-fs": "^0.9.27",
-    "fs-extra-promise": "^0.4.1",
-    "mocha": "^3.2.0",
+    "fs-extra-promise": "^1.0.1",
+    "mocha": "^3.4.2",
     "node-cloop-gen": "0.0.1-alpha.2",
-    "power-assert": "^1.4.2",
+    "power-assert": "^1.4.4",
     "rimraf": "^2.6.1",
-    "source-map-support": "^0.4.11",
+    "source-map-support": "^0.4.15",
     "temp-fs": "^0.9.9",
-    "typescript": "^2.2.2"
+    "typescript": "^2.4.1"
   }
 }
