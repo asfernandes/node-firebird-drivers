@@ -1,3 +1,6 @@
+import { ConnectOptions, CreateDatabaseOptions } from '..';
+
+
 /** SQL_* type constants */
 export namespace sqlTypes {
 	export const SQL_TEXT = 452;
@@ -20,6 +23,7 @@ export namespace sqlTypes {
 
 /** DPB constants. */
 export namespace dpb {
+	export const isc_dpb_version1 = 1;
 	export const lc_ctype = 48;
 	export const user_name = 28;
 	export const password = 29;
@@ -28,6 +32,22 @@ export namespace dpb {
 /** Blob info. */
 export namespace blobInfo {
 	export const totalLength = 6;
+}
+
+export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {
+	const code = (c: number) => String.fromCharCode(c);
+	const charSet = 'utf8';
+	let ret = `${code(dpb.isc_dpb_version1)}${code(dpb.lc_ctype)}${code(charSet.length)}${charSet}`;
+
+	if (options) {
+		if (options.username)
+			ret += `${code(dpb.user_name)}${code(options.username.length)}${options.username}`;
+
+		if (options.password)
+			ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
+	}
+
+	return Buffer.from(ret);
 }
 
 /** Changes a number from a scale to another. */
