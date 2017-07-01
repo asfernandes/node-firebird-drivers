@@ -1,53 +1,33 @@
 import { ClientImpl } from './client';
-import { ResultSetImpl } from './resultset';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
 import { createDpb } from './fb-util';
 
 import {
-	Attachment,
 	ConnectOptions,
 	CreateDatabaseOptions,
-	ExecuteOptions,
-	ExecuteQueryOptions,
-	FetchOptions,
 	PrepareOptions,
-	ResultSet,
-	Statement,
-	Transaction,
 	TransactionOptions
 } from 'node-firebird-driver';
+
+import { AbstractAttachment } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 
 
 /** Attachment implementation. */
-export class AttachmentImpl implements Attachment {
-	attachment: fb.Attachment;
-	statements = new Set<StatementImpl>();
+export class AttachmentImpl extends AbstractAttachment {
+	// Override declarations.
+	client: ClientImpl;
 
-	/** Default transaction options. */
-	defaultTransactionOptions: TransactionOptions;
-
-	/** Default query's prepare options. */
-	defaultPrepareOptions: PrepareOptions;
-
-	/** Default query's execute options. */
-	defaultExecuteOptions: ExecuteOptions;
-
-	/** Default query's executeQuery options. */
-	defaultExecuteQueryOptions: ExecuteQueryOptions;
-
-	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	attachmentHandle: fb.Attachment;
 
 	static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
 		const attachment = new AttachmentImpl(client);
 
 		return await client.statusAction(async status => {
-			const dpb = createDpb(options || client.defaultConnectOptions);
-			attachment.attachment = await client.dispatcher.attachDatabaseAsync(status, uri, dpb.length, dpb);
-			client.attachments.add(attachment);
+			const dpb = createDpb(options);
+			attachment.attachmentHandle = await client.dispatcher.attachDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}
@@ -56,88 +36,31 @@ export class AttachmentImpl implements Attachment {
 		const attachment = new AttachmentImpl(client);
 
 		return await client.statusAction(async status => {
-			const dpb = createDpb(options || client.defaultCreateDatabaseOptions);
-			attachment.attachment = await client.dispatcher.createDatabaseAsync(status, uri, dpb.length, dpb);
-			client.attachments.add(attachment);
+			const dpb = createDpb(options);
+			attachment.attachmentHandle = await client.dispatcher.createDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}
 
-	private constructor(public client: ClientImpl) {
-	}
-
 	/** Disconnects this attachment. */
-	async disconnect(): Promise<void> {
-		await this.client.statusAction(status => this.attachment.detachAsync(status));
-		await this.finishDispose();
+	protected async internalDisconnect(): Promise<void> {
+		await this.client.statusAction(status => this.attachmentHandle.detachAsync(status));
+		this.attachmentHandle = null;
 	}
 
 	/** Drops the database and release this attachment. */
-	async dropDatabase(): Promise<void> {
-		await this.client.statusAction(status => this.attachment.dropDatabaseAsync(status));
-		await this.finishDispose();
+	protected async internalDropDatabase(): Promise<void> {
+		await this.client.statusAction(status => this.attachmentHandle.dropDatabaseAsync(status));
+		this.attachmentHandle = null;
 	}
 
 	/** Starts a new transaction. */
-	async startTransaction(options?: TransactionOptions): Promise<Transaction> {
+	protected async internalStartTransaction(options?: TransactionOptions): Promise<TransactionImpl> {
 		return await TransactionImpl.start(this, options);
 	}
 
 	/** Prepares a query. */
-	async prepare(transaction: Transaction, sqlStmt: string, options?: PrepareOptions): Promise<Statement> {
-		return await StatementImpl.prepare(this, transaction as TransactionImpl, sqlStmt, options);
-	}
-
-	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
-	async executeTransaction(transaction: Transaction, sqlStmt: string, prepareOptions?: PrepareOptions): Promise<Transaction> {
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
-		try {
-			return await statement.executeTransaction(transaction);
-		}
-		finally {
-			await statement.dispose();
-		}
-	}
-
-	/** Executes a statement that has no result set. */
-	async execute(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-			prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<void> {
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
-		try {
-			return await statement.execute(transaction, parameters, executeOptions);
-		}
-		finally {
-			await statement.dispose();
-		}
-	}
-
-	/** Executes a statement that has result set. */
-	async executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-			prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<ResultSet> {
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
-		try {
-			const resultSet = await statement.executeQuery(transaction, parameters, executeOptions) as ResultSetImpl;
-			resultSet.diposeStatementOnClose = true;
-			return resultSet;
-		}
-		catch (e) {
-			await statement.dispose();
-			throw e;
-		}
-	}
-
-	private async finishDispose() {
-		this.client.attachments.delete(this);
-
-		try {
-			for (const statement of this.statements)
-				await statement.dispose();
-		}
-		finally {
-			this.statements.clear();
-		}
-
-		this.attachment = null;
-		this.client = null;
+	protected async internalPrepare(transaction: TransactionImpl, sqlStmt: string, options?: PrepareOptions): Promise<StatementImpl> {
+		return await StatementImpl.prepare(this, transaction, sqlStmt, options);
 	}
 }

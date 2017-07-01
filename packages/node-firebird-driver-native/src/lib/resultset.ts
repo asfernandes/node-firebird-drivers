@@ -2,21 +2,20 @@ import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
 import { createDataReader, DataReader } from './fb-util';
 
-import { ExecuteQueryOptions, FetchOptions, ResultSet } from 'node-firebird-driver';
+import { ExecuteQueryOptions, FetchOptions } from 'node-firebird-driver';
+import { AbstractResultSet } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 
 
-/** Transaction implementation. */
-export class ResultSetImpl implements ResultSet {
-	resultSet: fb.ResultSet;
-	outBuffer: Uint8Array;
-	finished = false;
-	diposeStatementOnClose = false;
-	dataReader: DataReader;
+/** ResultSet implementation. */
+export class ResultSetImpl extends AbstractResultSet {
+	// Override declarations.
+	statement: StatementImpl;
 
-	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	resultSetHandle: fb.ResultSet;
+	outBuffer: Uint8Array;
+	dataReader: DataReader;
 
 	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
 			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
@@ -28,48 +27,33 @@ export class ResultSetImpl implements ResultSet {
 
 			statement.dataWriter(statement.inBuffer, parameters);
 
-			resultSet.resultSet = await statement.statement.openCursorAsync(status, transaction.transaction,
+			resultSet.resultSetHandle = await statement.statementHandle.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
-			statement.resultSet = resultSet;
 			resultSet.outBuffer = new Uint8Array(statement.outMetadata.getMessageLengthSync(status));
+
 			return resultSet;
 		});
 	}
 
-	private constructor(public statement: StatementImpl) {
-	}
-
 	/** Closes this result set. */
-	async close(): Promise<void> {
+	protected async internalClose(): Promise<void> {
 		await this.statement.attachment.client.statusAction(async status => {
-			if (this.diposeStatementOnClose) {
-				this.diposeStatementOnClose = false;
-				await this.statement.dispose();
-				return;
-			}
+			await this.resultSetHandle.closeAsync(status);
 
-			await this.resultSet.closeAsync(status);
-
-			this.statement.resultSet = null;
-			this.statement = null;
-			this.resultSet = null;
+			this.resultSetHandle = null;
 		});
 	}
 
 	/** Fetchs data from this result set. */
-	async fetch(options?: FetchOptions): Promise<Array<Array<any>>> {
-		if (this.finished)
-			return await [];
-
+	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<Array<any>> }> {
 		return await this.statement.attachment.client.statusAction(async status => {
 			const rows = [];
 
 			while (true) {
-				if (await this.resultSet.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
+				if (await this.resultSetHandle.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
 					rows.push(await this.dataReader(this.outBuffer));
 				else {
-					this.finished = true;
-					return await rows;
+					return { finished: true, rows: await rows };
 				}
 			}
 		});

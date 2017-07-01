@@ -1,16 +1,12 @@
 import { AttachmentImpl } from './attachment';
 
 import {
-	Attachment,
 	Client,
 	ConnectOptions,
-	CreateDatabaseOptions,
-	ExecuteOptions,
-	ExecuteQueryOptions,
-	FetchOptions,
-	PrepareOptions,
-	TransactionOptions
+	CreateDatabaseOptions
 } from 'node-firebird-driver';
+
+import { AbstractClient } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -25,34 +21,13 @@ export function createNativeClient(library: string): Client {
 
 
 /** Client implementation. */
-export class ClientImpl implements Client {
+export class ClientImpl extends AbstractClient {
 	master: fb.Master;
 	dispatcher: fb.Provider;
 	util: fb.Util;
-	attachments = new Set<AttachmentImpl>();
-
-	/** Default connect options. */
-	defaultConnectOptions: ConnectOptions;
-
-	/** Set default create database options. */
-	defaultCreateDatabaseOptions: CreateDatabaseOptions;
-
-	/** Default transaction options. */
-	defaultTransactionOptions: TransactionOptions;
-
-	/** Default query's prepare options. */
-	defaultPrepareOptions: PrepareOptions;
-
-	/** Default query's execute options. */
-	defaultExecuteOptions: ExecuteOptions;
-
-	/** Default query's executeQuery options. */
-	defaultExecuteQueryOptions: ExecuteQueryOptions;
-
-	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
 
 	constructor(library: string) {
+		super();
 		this.master = fb.getMaster(library);
 		this.dispatcher = this.master.getDispatcherSync();
 		this.util = this.master.getUtilInterfaceSync();
@@ -68,16 +43,18 @@ export class ClientImpl implements Client {
 		}
 	}
 
-	/** Disposes this client's resources. */
-	async dispose(): Promise<void> {
-		try {
-			for (const attachment of this.attachments)
-				await attachment.disconnect();
-		}
-		finally {
-			this.attachments.clear();
-		}
+	/** Connects to a database. */
+	protected async internalConnect(uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
+		return await AttachmentImpl.connect(this, uri, options);
+	}
 
+	/** Creates a database. */
+	protected async internalCreateDatabase(uri: string, options?: CreateDatabaseOptions): Promise<AttachmentImpl> {
+		return await AttachmentImpl.createDatabase(this, uri, options);
+	}
+
+	/** Disposes this client's resources. */
+	protected async internalDispose(): Promise<void> {
 		await this.statusAction(async status => {
 			const fb_shutrsn_app_stopped = -3;
 			await this.dispatcher.shutdownAsync(status, 0, fb_shutrsn_app_stopped);
@@ -86,17 +63,8 @@ export class ClientImpl implements Client {
 		this.dispatcher.releaseSync();
 		fb.disposeMaster(this.master);
 
+		this.util = null;
 		this.dispatcher = null;
 		this.master = null;
-	}
-
-	/** Connects to a database. */
-	async connect(uri: string, options?: ConnectOptions): Promise<Attachment> {
-		return await AttachmentImpl.connect(this, uri, options);
-	}
-
-	/** Creates a database. */
-	async createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<Attachment> {
-		return await AttachmentImpl.createDatabase(this, uri, options);
 	}
 }

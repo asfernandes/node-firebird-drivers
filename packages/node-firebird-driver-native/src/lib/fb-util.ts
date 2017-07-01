@@ -136,8 +136,8 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 					let segLength: Uint32Array;
 					let pos = 0;
 
-					const blob = await transaction.attachment.attachment.openBlobAsync(
-						status, transaction.transaction, buffer.slice(offset, offset + 8), 0, null);
+					const blob = await transaction.attachment.attachmentHandle.openBlobAsync(
+						status, transaction.transactionHandle, buffer.slice(offset, offset + 8), 0, null);
 
 					try {
 						const infoReq = new Uint8Array([blobInfo.totalLength]);
@@ -289,7 +289,7 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 					//// TODO: transliterate sub_type text.
 					const valueBuffer = value as Buffer;
 					const blobId = buffer.subarray(offset, offset + 8);
-					const blob = await transaction.attachment.attachment.createBlobAsync(status, transaction.transaction, blobId, 0, null);
+					const blob = await transaction.attachment.attachmentHandle.createBlobAsync(status, transaction.transactionHandle, blobId, 0, null);
 
 					try {
 						await blob.putSegmentAsync(status, valueBuffer.length, valueBuffer);
