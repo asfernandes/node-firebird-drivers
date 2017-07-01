@@ -95,14 +95,12 @@ export class AttachmentImpl implements Attachment {
 	async disconnect(): Promise<void> {
 		await this.client.statusAction(status => this.attachment.detachAsync(status));
 		await this.finishDispose();
-		return await null;
 	}
 
 	/** Drops the database and release this attachment. */
 	async dropDatabase(): Promise<void> {
 		await this.client.statusAction(status => this.attachment.dropDatabaseAsync(status));
 		await this.finishDispose();
-		return await null;
 	}
 
 	/** Starts a new transaction. */
@@ -122,7 +120,7 @@ export class AttachmentImpl implements Attachment {
 			return await statement.executeTransaction(transaction);
 		}
 		finally {
-			statement.dispose();
+			await statement.dispose();
 		}
 	}
 
@@ -134,7 +132,7 @@ export class AttachmentImpl implements Attachment {
 			return await statement.execute(transaction, parameters, executeOptions);
 		}
 		finally {
-			statement.dispose();
+			await statement.dispose();
 		}
 	}
 
@@ -148,7 +146,7 @@ export class AttachmentImpl implements Attachment {
 			return resultSet;
 		}
 		catch (e) {
-			statement.dispose();
+			await statement.dispose();
 			throw e;
 		}
 	}

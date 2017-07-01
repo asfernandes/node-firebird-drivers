@@ -88,8 +88,6 @@ export class ClientImpl implements Client {
 
 		this.dispatcher = null;
 		this.master = null;
-
-		return await null;
 	}
 
 	/** Connects to a database. */

@@ -71,8 +71,6 @@ export class StatementImpl implements Statement {
 		this.attachment.statements.delete(this);
 		this.attachment = null;
 		this.statement = null;
-
-		return await null;
 	}
 
 	/** Executes a prepared statement that uses the SET TRANSACTION command. Returns the new transaction. */

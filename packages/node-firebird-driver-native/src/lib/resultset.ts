@@ -48,7 +48,7 @@ export class ResultSetImpl implements ResultSet {
 				return;
 			}
 
-			this.resultSet.closeAsync(status);
+			await this.resultSet.closeAsync(status);
 
 			this.statement.resultSet = null;
 			this.statement = null;
