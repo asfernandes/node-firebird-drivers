@@ -16,7 +16,7 @@ There is also plan to create a socket-based (pure Node.js) driver.
 
 ## Installation
 
-npm install --save node-firebird-driver
+yarn add node-firebird-driver
 
 ## Warning
 

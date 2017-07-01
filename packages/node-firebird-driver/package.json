@@ -5,9 +5,9 @@
   "main": "dist/lib/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
-    "build:w": "npm run clean && tsc -w",
-    "prepublish": "npm run build"
+    "build": "yarn run clean && tsc",
+    "build:w": "yarn run clean && tsc -w",
+    "prepublishOnly": "yarn run build"
   },
   "repository": {
     "type": "git",
@@ -28,10 +28,10 @@
   "homepage": "https://github.com/asfernandes/node-firebird-driver#readme",
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
-    "@types/node": "^7.0.5"
+    "@types/node": "^8.0.7"
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
-    "typescript": "^2.2.2"
+    "typescript": "^2.4.1"
   }
 }

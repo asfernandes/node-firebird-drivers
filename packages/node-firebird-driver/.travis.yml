@@ -1,7 +1,9 @@
 language: node_js
 
 node_js:
+  - '6'
   - '7'
+  - '8'
 
 sudo: false
 
@@ -13,11 +15,10 @@ branches:
   - master
 
 install:
-  - npm install
-  - npm update
+  - yarn
 
 script:
-  - npm run build
+  - yarn run build
 
 cache:
   directories:
