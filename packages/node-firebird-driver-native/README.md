@@ -8,7 +8,7 @@ node-firebird-driver API.
 
 ## Installation
 
-npm install --save node-firebird-driver-native
+yarn add node-firebird-driver-native
 
 ## Usage example
 
