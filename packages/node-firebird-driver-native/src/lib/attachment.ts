@@ -2,7 +2,7 @@ import { ClientImpl } from './client';
 import { ResultSetImpl } from './resultset';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
-import { dpb } from './fb-util';
+import { createDpb } from './fb-util';
 
 import {
 	Attachment,
@@ -19,31 +19,6 @@ import {
 } from 'node-firebird-driver';
 
 import * as fb from 'node-firebird-native-api';
-
-
-function getDpb(client: ClientImpl, status: fb.Status, options?: ConnectOptions | CreateDatabaseOptions):
-		{ buffer: fb.Pointer, length: number } {
-	const dpbBuilder = client.util.getXpbBuilderSync(status, fb.XpbBuilder.DPB, null, 0);
-
-	if (options) {
-		if (options.username)
-			dpbBuilder.insertStringSync(status, dpb.user_name, options.username);
-
-		if (options.password)
-			dpbBuilder.insertStringSync(status, dpb.password, options.password);
-	}
-
-	dpbBuilder.insertStringSync(status, dpb.lc_ctype, 'utf8');
-
-	const ret = {
-		buffer: dpbBuilder.getBufferSync(status),
-		length: dpbBuilder.getBufferLengthSync(status)
-	}
-
-	dpbBuilder.disposeSync();
-
-	return ret;
-}
 
 
 /** Attachment implementation. */
@@ -70,8 +45,8 @@ export class AttachmentImpl implements Attachment {
 		const attachment = new AttachmentImpl(client);
 
 		return await client.statusAction(async status => {
-			const dpb = getDpb(client, status, options || client.defaultConnectOptions);
-			attachment.attachment = await client.dispatcher.attachDatabaseAsync(status, uri, dpb.length, dpb.buffer);
+			const dpb = createDpb(options || client.defaultConnectOptions);
+			attachment.attachment = await client.dispatcher.attachDatabaseAsync(status, uri, dpb.length, dpb);
 			client.attachments.add(attachment);
 			return attachment;
 		});
@@ -81,8 +56,8 @@ export class AttachmentImpl implements Attachment {
 		const attachment = new AttachmentImpl(client);
 
 		return await client.statusAction(async status => {
-			const dpb = getDpb(client, status, options || client.defaultCreateDatabaseOptions);
-			attachment.attachment = await client.dispatcher.createDatabaseAsync(status, uri, dpb.length, dpb.buffer);
+			const dpb = createDpb(options || client.defaultCreateDatabaseOptions);
+			attachment.attachment = await client.dispatcher.createDatabaseAsync(status, uri, dpb.length, dpb);
 			client.attachments.add(attachment);
 			return attachment;
 		});
