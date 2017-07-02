@@ -19,7 +19,7 @@ export function runCommonTests(client: Client) {
 	}
 
 
-	describe('node-firebird-driver-native', function() {
+	describe('node-firebird-driver', function() {
 		let tmpDir: string;
 
 		function getTempFile(name: string): string {
