@@ -13,10 +13,13 @@ import * as stringDecoder from 'string_decoder';
 
 
 /** Fix metadata descriptors to types we want to read. */
-export function fixMetadata(status: fb.Status, metadata: fb.MessageMetadata): fb.MessageMetadata {
+export function fixMetadata(status: fb.Status, metadata?: fb.MessageMetadata): fb.MessageMetadata | undefined {
+	if (!metadata)
+		return undefined;
+
 	let ret: fb.MessageMetadata;
 
-	const outBuilder = metadata.getBuilderSync(status);
+	const outBuilder = metadata.getBuilderSync(status)!;
 	try {
 		for (let i = metadata.getCountSync(status) - 1; i >= 0; --i) {
 			switch (metadata.getTypeSync(status, i)) {
@@ -37,7 +40,7 @@ export function fixMetadata(status: fb.Status, metadata: fb.MessageMetadata): fb
 			}
 		}
 
-		ret = outBuilder.getMetadataSync(status);
+		ret = outBuilder.getMetadataSync(status)!;
 	}
 	finally {
 		outBuilder.releaseSync();
@@ -53,6 +56,7 @@ export type DataReader = (buffer: Uint8Array) => Promise<any[]>;
 /** Creates a data reader. */
 export function createDataReader(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
 		DataReader {
+	const util = client.util!;
 	const count = metadata.getCountSync(status);
 	const mappers = new Array<(buffer: Uint8Array) => Promise<any>>(count);
 
@@ -101,7 +105,7 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 					const minutes = new Uint32Array(1);
 					const seconds = new Uint32Array(1);
 					const fractions = new Uint32Array(1);
-					client.util.decodeTimeSync(dataView.getUint32(offset, littleEndian), hours, minutes, seconds, fractions);
+					util.decodeTimeSync(dataView.getUint32(offset, littleEndian), hours, minutes, seconds, fractions);
 					return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours[0], minutes[0], seconds[0], fractions[0] / 10);
 				}
 
@@ -109,7 +113,7 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 					const year = new Uint32Array(1);
 					const month = new Uint32Array(1);
 					const day = new Uint32Array(1);
-					client.util.decodeDateSync(dataView.getInt32(offset, littleEndian), year, month, day);
+					util.decodeDateSync(dataView.getInt32(offset, littleEndian), year, month, day);
 					return new Date(year[0], month[0] - 1, day[0]);
 				}
 
@@ -121,8 +125,8 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 					const minutes = new Uint32Array(1);
 					const seconds = new Uint32Array(1);
 					const fractions = new Uint32Array(1);
-					client.util.decodeDateSync(dataView.getInt32(offset, littleEndian), year, month, day);
-					client.util.decodeTimeSync(dataView.getUint32(offset + 4, littleEndian), hours, minutes, seconds, fractions);
+					util.decodeDateSync(dataView.getInt32(offset, littleEndian), year, month, day);
+					util.decodeTimeSync(dataView.getUint32(offset + 4, littleEndian), hours, minutes, seconds, fractions);
 					return new Date(year[0], month[0] - 1, day[0], hours[0], minutes[0], seconds[0], fractions[0] / 10);
 				}
 
@@ -136,8 +140,8 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 					let segLength: Uint32Array;
 					let pos = 0;
 
-					const blob = await transaction.attachment.attachmentHandle.openBlobAsync(
-						status, transaction.transactionHandle, buffer.slice(offset, offset + 8), 0, null);
+					const blob = (await transaction.attachment.attachmentHandle!.openBlobAsync(
+						status, transaction.transactionHandle, buffer.slice(offset, offset + 8), 0, undefined))!;
 
 					try {
 						const infoReq = new Uint8Array([blobInfo.totalLength]);
@@ -188,11 +192,12 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 	}
 }
 
-export type DataWriter = (buffer: Uint8Array, values: Array<any>) => Promise<void>;
+export type DataWriter = (buffer: Uint8Array, values?: Array<any>) => Promise<void>;
 
 /** Creates a data writer. */
 export function createDataWriter(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
 		DataWriter {
+	const util = client.util!;
 	const count = metadata.getCountSync(status);
 	const mappers = new Array<(buffer: Uint8Array, value: any) => Promise<void>>(count);
 
@@ -256,7 +261,7 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 				case sqlTypes.SQL_TYPE_TIME: {
 					const date = value as Date;
 					dataView.setUint32(offset,
-						client.util.encodeTimeSync(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds() * 10),
+						util.encodeTimeSync(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds() * 10),
 						littleEndian);
 					break;
 				}
@@ -264,7 +269,7 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 				case sqlTypes.SQL_TYPE_DATE: {
 					const date = value as Date;
 					dataView.setInt32(offset,
-						client.util.encodeDateSync(date.getFullYear(), date.getMonth() + 1, date.getDate()),
+						util.encodeDateSync(date.getFullYear(), date.getMonth() + 1, date.getDate()),
 						littleEndian);
 					break;
 				}
@@ -272,10 +277,10 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 				case sqlTypes.SQL_TIMESTAMP: {
 					const date = value as Date;
 					dataView.setInt32(offset,
-						client.util.encodeDateSync(date.getFullYear(), date.getMonth() + 1, date.getDate()),
+						util.encodeDateSync(date.getFullYear(), date.getMonth() + 1, date.getDate()),
 						littleEndian);
 					dataView.setUint32(offset + 4,
-						client.util.encodeTimeSync(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds() * 10),
+						util.encodeTimeSync(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds() * 10),
 						littleEndian);
 					break;
 				}
@@ -289,7 +294,8 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 					//// TODO: transliterate sub_type text.
 					const valueBuffer = value as Buffer;
 					const blobId = buffer.subarray(offset, offset + 8);
-					const blob = await transaction.attachment.attachmentHandle.createBlobAsync(status, transaction.transactionHandle, blobId, 0, null);
+					const blob = (await transaction.attachment.attachmentHandle!.createBlobAsync(status,
+						transaction.transactionHandle, blobId, 0, undefined))!;
 
 					try {
 						await blob.putSegmentAsync(status, valueBuffer.length, valueBuffer);

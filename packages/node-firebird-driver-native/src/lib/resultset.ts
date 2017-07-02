@@ -13,7 +13,7 @@ export class ResultSetImpl extends AbstractResultSet {
 	// Override declarations.
 	statement: StatementImpl;
 
-	resultSetHandle: fb.ResultSet;
+	resultSetHandle?: fb.ResultSet;
 	outBuffer: Uint8Array;
 	dataReader: DataReader;
 
@@ -23,13 +23,13 @@ export class ResultSetImpl extends AbstractResultSet {
 
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
-			resultSet.dataReader = createDataReader(status, statement.attachment.client, transaction, statement.outMetadata);
+			resultSet.dataReader = createDataReader(status, statement.attachment.client, transaction, statement.outMetadata!);
 
 			statement.dataWriter(statement.inBuffer, parameters);
 
-			resultSet.resultSetHandle = await statement.statementHandle.openCursorAsync(status, transaction.transactionHandle,
+			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
-			resultSet.outBuffer = new Uint8Array(statement.outMetadata.getMessageLengthSync(status));
+			resultSet.outBuffer = new Uint8Array(statement.outMetadata!.getMessageLengthSync(status));
 
 			return resultSet;
 		});
@@ -38,9 +38,9 @@ export class ResultSetImpl extends AbstractResultSet {
 	/** Closes this result set. */
 	protected async internalClose(): Promise<void> {
 		await this.statement.attachment.client.statusAction(async status => {
-			await this.resultSetHandle.closeAsync(status);
+			await this.resultSetHandle!.closeAsync(status);
 
-			this.resultSetHandle = null;
+			this.resultSetHandle = undefined;
 		});
 	}
 
@@ -50,7 +50,7 @@ export class ResultSetImpl extends AbstractResultSet {
 			const rows = [];
 
 			while (true) {
-				if (await this.resultSetHandle.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
+				if (await this.resultSetHandle!.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
 					rows.push(await this.dataReader(this.outBuffer));
 				else {
 					return { finished: true, rows: await rows };

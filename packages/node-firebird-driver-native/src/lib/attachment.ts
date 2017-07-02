@@ -20,14 +20,14 @@ export class AttachmentImpl extends AbstractAttachment {
 	// Override declarations.
 	client: ClientImpl;
 
-	attachmentHandle: fb.Attachment;
+	attachmentHandle?: fb.Attachment;
 
 	static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
 		const attachment = new AttachmentImpl(client);
 
 		return await client.statusAction(async status => {
 			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client.dispatcher.attachDatabaseAsync(status, uri, dpb.length, dpb);
+			attachment.attachmentHandle = await client!.dispatcher!.attachDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}
@@ -37,21 +37,21 @@ export class AttachmentImpl extends AbstractAttachment {
 
 		return await client.statusAction(async status => {
 			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client.dispatcher.createDatabaseAsync(status, uri, dpb.length, dpb);
+			attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}
 
 	/** Disconnects this attachment. */
 	protected async internalDisconnect(): Promise<void> {
-		await this.client.statusAction(status => this.attachmentHandle.detachAsync(status));
-		this.attachmentHandle = null;
+		await this.client.statusAction(status => this.attachmentHandle!.detachAsync(status));
+		this.attachmentHandle = undefined;
 	}
 
 	/** Drops the database and release this attachment. */
 	protected async internalDropDatabase(): Promise<void> {
-		await this.client.statusAction(status => this.attachmentHandle.dropDatabaseAsync(status));
-		this.attachmentHandle = null;
+		await this.client.statusAction(status => this.attachmentHandle!.dropDatabaseAsync(status));
+		this.attachmentHandle = undefined;
 	}
 
 	/** Starts a new transaction. */

@@ -22,9 +22,9 @@ export function createNativeClient(library: string): Client {
 
 /** Client implementation. */
 export class ClientImpl extends AbstractClient {
-	master: fb.Master;
-	dispatcher: fb.Provider;
-	util: fb.Util;
+	master?: fb.Master;
+	dispatcher?: fb.Provider;
+	util?: fb.Util;
 
 	constructor(library: string) {
 		super();
@@ -34,7 +34,7 @@ export class ClientImpl extends AbstractClient {
 	}
 
 	async statusAction<T>(action: (status: fb.Status) => Promise<T>): Promise<T> {
-		const status = this.master.getStatusSync();
+		const status = this.master!.getStatusSync()!;
 		try {
 			return await action(status);
 		}
@@ -57,14 +57,14 @@ export class ClientImpl extends AbstractClient {
 	protected async internalDispose(): Promise<void> {
 		await this.statusAction(async status => {
 			const fb_shutrsn_app_stopped = -3;
-			await this.dispatcher.shutdownAsync(status, 0, fb_shutrsn_app_stopped);
+			await this.dispatcher!.shutdownAsync(status, 0, fb_shutrsn_app_stopped);
 		});
 
-		this.dispatcher.releaseSync();
-		fb.disposeMaster(this.master);
+		this.dispatcher!.releaseSync();
+		fb.disposeMaster(this.master!);
 
-		this.util = null;
-		this.dispatcher = null;
-		this.master = null;
+		this.util = undefined;
+		this.dispatcher = undefined;
+		this.master = undefined;
 	}
 }

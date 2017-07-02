@@ -21,9 +21,9 @@ export class StatementImpl extends AbstractStatement {
 	attachment: AttachmentImpl;
 	///resultSet: ResultSetImpl;
 
-	statementHandle: fb.Statement;
-	inMetadata: fb.MessageMetadata;
-	outMetadata: fb.MessageMetadata;
+	statementHandle?: fb.Statement;
+	inMetadata?: fb.MessageMetadata;
+	outMetadata?: fb.MessageMetadata;
 	inBuffer: Uint8Array;
 	dataWriter: DataWriter;
 
@@ -33,14 +33,16 @@ export class StatementImpl extends AbstractStatement {
 
 		return await attachment.client.statusAction(async status => {
 			//// FIXME: options/flags, dialect
-			statement.statementHandle = await attachment.attachmentHandle.prepareAsync(status, transaction.transactionHandle,
+			statement.statementHandle = await attachment!.attachmentHandle!.prepareAsync(status, transaction.transactionHandle,
 				0, sqlStmt, 3, fb.Statement.PREPARE_PREFETCH_ALL);
 
-			statement.inMetadata = fixMetadata(status, await statement.statementHandle.getInputMetadataAsync(status));
-			statement.outMetadata = fixMetadata(status, await statement.statementHandle.getOutputMetadataAsync(status));
+			statement.inMetadata = fixMetadata(status, await statement.statementHandle!.getInputMetadataAsync(status));
+			statement.outMetadata = fixMetadata(status, await statement.statementHandle!.getOutputMetadataAsync(status));
 
-			statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
-			statement.dataWriter = createDataWriter(status, attachment.client, transaction, statement.inMetadata);
+			if (statement.inMetadata) {
+				statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
+				statement.dataWriter = createDataWriter(status, attachment.client, transaction, statement.inMetadata);
+			}
 
 			return statement;
 		});
@@ -50,17 +52,17 @@ export class StatementImpl extends AbstractStatement {
 	protected async internalDispose(): Promise<void> {
 		if (this.outMetadata) {
 			this.outMetadata.releaseSync();
-			this.outMetadata = null;
+			this.outMetadata = undefined;
 		}
 
 		if (this.inMetadata) {
 			this.inMetadata.releaseSync();
-			this.inMetadata = null;
+			this.inMetadata = undefined;
 		}
 
-		await this.attachment.client.statusAction(status => this.statementHandle.freeAsync(status));
+		await this.attachment.client.statusAction(status => this.statementHandle!.freeAsync(status));
 
-		this.statementHandle = null;
+		this.statementHandle = undefined;
 	}
 
 	/** Executes a prepared statement that uses the SET TRANSACTION command. Returns the new transaction. */
@@ -73,8 +75,8 @@ export class StatementImpl extends AbstractStatement {
 		return await this.attachment.client.statusAction(async status => {
 			await this.dataWriter(this.inBuffer, parameters);
 
-			const newTransaction = await this.statementHandle.executeAsync(status, transaction.transactionHandle,
-				this.inMetadata, this.inBuffer, this.outMetadata, null);
+			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
+				this.inMetadata, this.inBuffer, this.outMetadata, undefined);
 
 			if (newTransaction && transaction.transactionHandle != newTransaction)
 				{}	//// FIXME: newTransaction.releaseSync();

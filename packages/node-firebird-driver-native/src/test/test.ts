@@ -71,12 +71,12 @@ describe('node-firebird-driver-native', function() {
 			const statement = await attachment.prepare(transaction, 'create table t1 (n1 integer)');
 			await statement.dispose();
 
-			let error: Error;
+			let error: Error | undefined;
 			try {
 				await attachment.prepare(transaction, 'create select t1 (n1 integer)');
 			}
 			catch (e) {
-				error = e;
+				error = e as Error;
 				assert.equal(error.message,
 					'Dynamic SQL Error\n' +
 					'-SQL error code = -104\n' +
