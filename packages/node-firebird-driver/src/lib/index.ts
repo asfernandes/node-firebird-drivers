@@ -10,25 +10,25 @@ export interface Client {
 	createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<Attachment>;
 
 	/** Default connect options. */
-	defaultConnectOptions: ConnectOptions;
+	defaultConnectOptions?: ConnectOptions;
 
 	/** Default create database options. */
-	defaultCreateDatabaseOptions: CreateDatabaseOptions;
+	defaultCreateDatabaseOptions?: CreateDatabaseOptions;
 
 	/** Default transaction options. */
-	defaultTransactionOptions: TransactionOptions;
+	defaultTransactionOptions?: TransactionOptions;
 
 	/** Default query's prepare options. */
-	defaultPrepareOptions: PrepareOptions;
+	defaultPrepareOptions?: PrepareOptions;
 
 	/** Default query's execute options. */
-	defaultExecuteOptions: ExecuteOptions;
+	defaultExecuteOptions?: ExecuteOptions;
 
 	/** Default query's executeQuery options. */
-	defaultExecuteQueryOptions: ExecuteQueryOptions;
+	defaultExecuteQueryOptions?: ExecuteQueryOptions;
 
 	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	defaultFetchOptions?: FetchOptions;
 }
 
 /** ConnectOptions interface. */
@@ -90,19 +90,19 @@ export interface Attachment {
 		prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<ResultSet>;
 
 	/** Default transaction options. */
-	defaultTransactionOptions: TransactionOptions;
+	defaultTransactionOptions?: TransactionOptions;
 
 	/** Default query's prepare options. */
-	defaultPrepareOptions: PrepareOptions;
+	defaultPrepareOptions?: PrepareOptions;
 
 	/** Default query's execute options. */
-	defaultExecuteOptions: ExecuteOptions;
+	defaultExecuteOptions?: ExecuteOptions;
 
 	/** Default query's executeQuery options. */
-	defaultExecuteQueryOptions: ExecuteQueryOptions;
+	defaultExecuteQueryOptions?: ExecuteQueryOptions;
 
 	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	defaultFetchOptions?: FetchOptions;
 }
 
 /** Transaction interface. */
@@ -135,13 +135,13 @@ export interface Statement {
 	executeQuery(transaction: Transaction, parameters?: Array<any>, options?: ExecuteQueryOptions): Promise<ResultSet>;
 
 	/** Default query's execute options. */
-	defaultExecuteOptions: ExecuteOptions;
+	defaultExecuteOptions?: ExecuteOptions;
 
 	/** Default query's executeQuery options. */
-	defaultExecuteQueryOptions: ExecuteQueryOptions;
+	defaultExecuteQueryOptions?: ExecuteQueryOptions;
 
 	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	defaultFetchOptions?: FetchOptions;
 }
 
 /** ResultSet interface. */
@@ -153,7 +153,7 @@ export interface ResultSet {
 	fetch(options?: FetchOptions): Promise<Array<Array<any>>>;
 
 	/** Default result set's fetch options. */
-	defaultFetchOptions: FetchOptions;
+	defaultFetchOptions?: FetchOptions;
 }
 
 //// TODO: Event support.

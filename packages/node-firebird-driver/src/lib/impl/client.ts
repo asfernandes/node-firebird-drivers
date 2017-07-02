@@ -14,6 +14,7 @@ import {
 
 /** AbstractClient implementation. */
 export abstract class AbstractClient implements Client {
+	connected = true;
 	attachments = new Set<AbstractAttachment>();
 
 	/** Default connect options. */
@@ -39,6 +40,8 @@ export abstract class AbstractClient implements Client {
 
 	/** Disposes this client's resources. */
 	async dispose(): Promise<void> {
+		this.check();
+
 		try {
 			for (const attachment of this.attachments)
 				await attachment.disconnect();
@@ -48,10 +51,14 @@ export abstract class AbstractClient implements Client {
 		}
 
 		await this.internalDispose();
+
+		this.connected = false;
 	}
 
 	/** Connects to a database. */
 	async connect(uri: string, options?: ConnectOptions): Promise<AbstractAttachment> {
+		this.check();
+
 		const attachment = await this.internalConnect(uri, options || this.defaultConnectOptions);
 		this.attachments.add(attachment);
 		return attachment;
@@ -59,9 +66,16 @@ export abstract class AbstractClient implements Client {
 
 	/** Creates a database. */
 	async createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<AbstractAttachment> {
+		this.check();
+
 		const attachment = await this.internalCreateDatabase(uri, options || this.defaultCreateDatabaseOptions);
 		this.attachments.add(attachment);
 		return attachment;
+	}
+
+	private check() {
+		if (!this.connected)
+			throw new Error('Client is already disposed.');
 	}
 
 	protected abstract async internalDispose(): Promise<void>;

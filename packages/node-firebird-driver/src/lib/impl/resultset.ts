@@ -11,36 +11,45 @@ export abstract class AbstractResultSet implements ResultSet {
 	/** Default result set's fetch options. */
 	defaultFetchOptions: FetchOptions;
 
-	protected constructor(public statement: AbstractStatement) {
+	protected constructor(public statement?: AbstractStatement) {
 	}
 
 	/** Closes this result set. */
 	async close(): Promise<void> {
+		this.check();
+
 		if (this.diposeStatementOnClose) {
 			this.diposeStatementOnClose = false;
-			await this.statement.dispose();
+			await this.statement!.dispose();
 			return;
 		}
 
 		await this.internalClose();
 
-		this.statement.resultSet = null;
-		this.statement = null;
+		this.statement!.resultSet = undefined;
+		this.statement = undefined;
 	}
 
 	/** Fetchs data from this result set. */
 	async fetch(options?: FetchOptions): Promise<Array<Array<any>>> {
+		this.check();
+
 		if (this.finished)
 			return await [];
 
 		const fetchRet = await this.internalFetch(
-			options || this.statement.defaultFetchOptions || this.statement.attachment.defaultFetchOptions ||
-				this.statement.attachment.client.defaultFetchOptions);
+			options || this.statement!.defaultFetchOptions || this.statement!.attachment!.defaultFetchOptions ||
+				this.statement!.attachment!.client!.defaultFetchOptions);
 
 		if (fetchRet.finished)
 			this.finished = true;
 
 		return fetchRet.rows;
+	}
+
+	private check() {
+		if (!this.statement)
+			throw new Error('ResultSet is already closed.');
 	}
 
 	protected abstract async internalClose(): Promise<void>;

@@ -32,17 +32,21 @@ export abstract class AbstractAttachment implements Attachment {
 	/** Default result set's fetch options. */
 	defaultFetchOptions: FetchOptions;
 
-	protected constructor(public client: AbstractClient) {
+	protected constructor(public client?: AbstractClient) {
 	}
 
 	/** Disconnects this attachment. */
 	async disconnect(): Promise<void> {
+		this.check();
+
 		await this.internalDisconnect();
 		await this.finishDispose();
 	}
 
 	/** Drops the database and release this attachment. */
 	async dropDatabase(): Promise<void> {
+		this.check();
+
 		await this.internalDropDatabase();
 		await this.finishDispose();
 	}
@@ -50,6 +54,8 @@ export abstract class AbstractAttachment implements Attachment {
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
 	async executeTransaction(transaction: AbstractTransaction, sqlStmt: string, prepareOptions?: PrepareOptions):
 			Promise<AbstractTransaction> {
+		this.check();
+
 		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
 		try {
 			return await statement.executeTransaction(transaction);
@@ -62,6 +68,8 @@ export abstract class AbstractAttachment implements Attachment {
 	/** Executes a statement that has no result set. */
 	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<void> {
+		this.check();
+
 		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
 		try {
 			return await statement.execute(transaction, parameters, executeOptions);
@@ -74,6 +82,8 @@ export abstract class AbstractAttachment implements Attachment {
 	/** Executes a statement that has result set. */
 	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<AbstractResultSet> {
+		this.check();
+
 		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
 		try {
 			const resultSet = await statement.executeQuery(transaction, parameters, executeOptions);
@@ -88,19 +98,28 @@ export abstract class AbstractAttachment implements Attachment {
 
 	/** Starts a new transaction. */
 	async startTransaction(options?: TransactionOptions): Promise<AbstractTransaction> {
-		return await this.internalStartTransaction(options || this.defaultTransactionOptions || this.client.defaultTransactionOptions);
+		this.check();
+
+		return await this.internalStartTransaction(options || this.defaultTransactionOptions || this.client!.defaultTransactionOptions);
 	}
 
 	/** Prepares a query. */
 	async prepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions): Promise<AbstractStatement> {
+		this.check();
+
 		const statement = await this.internalPrepare(transaction, sqlStmt,
-			options || this.defaultPrepareOptions || this.client.defaultPrepareOptions);
+			options || this.defaultPrepareOptions || this.client!.defaultPrepareOptions);
 		this.statements.add(statement);
 		return statement;
 	}
 
+	private check() {
+		if (!this.client)
+			throw new Error('Attachment is already disconnected.');
+	}
+
 	private async finishDispose() {
-		this.client.attachments.delete(this);
+		this.client!.attachments.delete(this);
 
 		try {
 			for (const statement of this.statements)
@@ -110,7 +129,7 @@ export abstract class AbstractAttachment implements Attachment {
 			this.statements.clear();
 		}
 
-		this.client = null;
+		this.client = undefined;
 	}
 
 	protected abstract async internalDisconnect(): Promise<void>;

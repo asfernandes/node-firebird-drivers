@@ -5,27 +5,42 @@ import { Transaction } from '..';
 
 /** AbstractTransaction implementation. */
 export abstract class AbstractTransaction implements Transaction {
-	protected constructor(public attachment: AbstractAttachment) {
+	protected constructor(public attachment?: AbstractAttachment) {
 	}
 
 	/** Commits and release this transaction object. */
 	async commit(): Promise<void> {
-		return await this.internalCommit();
+		this.check();
+
+		await this.internalCommit();
+		this.attachment = undefined;
 	}
 
 	/** Commits and maintains this transaction object for subsequent work. */
 	async commitRetaining(): Promise<void> {
+		this.check();
+
 		return await this.internalCommitRetaining();
 	}
 
 	/** Rollbacks and release this transaction object. */
 	async rollback(): Promise<void> {
-		return await this.internalRollback();
+		this.check();
+
+		await this.internalRollback();
+		this.attachment = undefined;
 	}
 
 	/** Rollbacks and maintains this transaction object for subsequent work. */
 	async rollbackRetaining(): Promise<void> {
+		this.check();
+
 		return await this.internalRollbackRetaining();
+	}
+
+	private check() {
+		if (!this.attachment)
+			throw new Error('Transaction is already committed or rolled back.');
 	}
 
 	protected abstract async internalCommit(): Promise<void>;
