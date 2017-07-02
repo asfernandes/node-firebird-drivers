@@ -25,8 +25,8 @@ export interface Status extends Disposable {
 	initAsync(): Promise<void>;
 	getStateSync(): number;
 	getStateAsync(): Promise<number>;
-	cloneSync(): Status;
-	cloneAsync(): Promise<Status>;
+	cloneSync(): Status | undefined;
+	cloneAsync(): Promise<Status | undefined>;
 }
 
 export namespace Status {
@@ -39,28 +39,28 @@ export namespace Status {
 }
 
 export interface Master extends Versioned {
-	getStatusSync(): Status;
-	getStatusAsync(): Promise<Status>;
-	getDispatcherSync(): Provider;
-	getDispatcherAsync(): Promise<Provider>;
-	getPluginManagerSync(): PluginManager;
-	getPluginManagerAsync(): Promise<PluginManager>;
-	getTimerControlSync(): TimerControl;
-	getTimerControlAsync(): Promise<TimerControl>;
-	getDtcSync(): Dtc;
-	getDtcAsync(): Promise<Dtc>;
-	registerAttachmentSync(provider: Provider, attachment: Attachment): Attachment;
-	registerAttachmentAsync(provider: Provider, attachment: Attachment): Promise<Attachment>;
-	registerTransactionSync(attachment: Attachment, transaction: Transaction): Transaction;
-	registerTransactionAsync(attachment: Attachment, transaction: Transaction): Promise<Transaction>;
-	getMetadataBuilderSync(status: Status, fieldCount: number): MetadataBuilder;
-	getMetadataBuilderAsync(status: Status, fieldCount: number): Promise<MetadataBuilder>;
+	getStatusSync(): Status | undefined;
+	getStatusAsync(): Promise<Status | undefined>;
+	getDispatcherSync(): Provider | undefined;
+	getDispatcherAsync(): Promise<Provider | undefined>;
+	getPluginManagerSync(): PluginManager | undefined;
+	getPluginManagerAsync(): Promise<PluginManager | undefined>;
+	getTimerControlSync(): TimerControl | undefined;
+	getTimerControlAsync(): Promise<TimerControl | undefined>;
+	getDtcSync(): Dtc | undefined;
+	getDtcAsync(): Promise<Dtc | undefined>;
+	registerAttachmentSync(provider: Provider | undefined, attachment: Attachment | undefined): Attachment | undefined;
+	registerAttachmentAsync(provider: Provider | undefined, attachment: Attachment | undefined): Promise<Attachment | undefined>;
+	registerTransactionSync(attachment: Attachment | undefined, transaction: Transaction | undefined): Transaction | undefined;
+	registerTransactionAsync(attachment: Attachment | undefined, transaction: Transaction | undefined): Promise<Transaction | undefined>;
+	getMetadataBuilderSync(status: Status | undefined, fieldCount: number): MetadataBuilder | undefined;
+	getMetadataBuilderAsync(status: Status | undefined, fieldCount: number): Promise<MetadataBuilder | undefined>;
 	serverModeSync(mode: number): number;
 	serverModeAsync(mode: number): Promise<number>;
-	getUtilInterfaceSync(): Util;
-	getUtilInterfaceAsync(): Promise<Util>;
-	getConfigManagerSync(): ConfigManager;
-	getConfigManagerAsync(): Promise<ConfigManager>;
+	getUtilInterfaceSync(): Util | undefined;
+	getUtilInterfaceAsync(): Promise<Util | undefined>;
+	getConfigManagerSync(): ConfigManager | undefined;
+	getConfigManagerAsync(): Promise<ConfigManager | undefined>;
 	getProcessExitingSync(): boolean;
 	getProcessExitingAsync(): Promise<boolean>;
 }
@@ -70,10 +70,10 @@ export interface PluginBase extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
 }
 
 export interface PluginSet extends ReferenceCounted {
@@ -81,16 +81,16 @@ export interface PluginSet extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getNameSync(): string;
-	getNameAsync(): Promise<string>;
-	getModuleNameSync(): string;
-	getModuleNameAsync(): Promise<string>;
-	getPluginSync(status: Status): PluginBase;
-	getPluginAsync(status: Status): Promise<PluginBase>;
-	nextSync(status: Status): void;
-	nextAsync(status: Status): Promise<void>;
-	setSync(status: Status, s: string): void;
-	setAsync(status: Status, s: string): Promise<void>;
+	getNameSync(): string | undefined;
+	getNameAsync(): Promise<string | undefined>;
+	getModuleNameSync(): string | undefined;
+	getModuleNameAsync(): Promise<string | undefined>;
+	getPluginSync(status: Status | undefined): PluginBase | undefined;
+	getPluginAsync(status: Status | undefined): Promise<PluginBase | undefined>;
+	nextSync(status: Status | undefined): void;
+	nextAsync(status: Status | undefined): Promise<void>;
+	setSync(status: Status | undefined, s: string | undefined): void;
+	setAsync(status: Status | undefined, s: string | undefined): Promise<void>;
 }
 
 export interface ConfigEntry extends ReferenceCounted {
@@ -98,16 +98,16 @@ export interface ConfigEntry extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getNameSync(): string;
-	getNameAsync(): Promise<string>;
-	getValueSync(): string;
-	getValueAsync(): Promise<string>;
+	getNameSync(): string | undefined;
+	getNameAsync(): Promise<string | undefined>;
+	getValueSync(): string | undefined;
+	getValueAsync(): Promise<string | undefined>;
 	getIntValueSync(): number;
 	getIntValueAsync(): Promise<number>;
 	getBoolValueSync(): boolean;
 	getBoolValueAsync(): Promise<boolean>;
-	getSubConfigSync(status: Status): Config;
-	getSubConfigAsync(status: Status): Promise<Config>;
+	getSubConfigSync(status: Status | undefined): Config | undefined;
+	getSubConfigAsync(status: Status | undefined): Promise<Config | undefined>;
 }
 
 export interface Config extends ReferenceCounted {
@@ -115,12 +115,12 @@ export interface Config extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	findSync(status: Status, name: string): ConfigEntry;
-	findAsync(status: Status, name: string): Promise<ConfigEntry>;
-	findValueSync(status: Status, name: string, value: string): ConfigEntry;
-	findValueAsync(status: Status, name: string, value: string): Promise<ConfigEntry>;
-	findPosSync(status: Status, name: string, pos: number): ConfigEntry;
-	findPosAsync(status: Status, name: string, pos: number): Promise<ConfigEntry>;
+	findSync(status: Status | undefined, name: string | undefined): ConfigEntry | undefined;
+	findAsync(status: Status | undefined, name: string | undefined): Promise<ConfigEntry | undefined>;
+	findValueSync(status: Status | undefined, name: string | undefined, value: string | undefined): ConfigEntry | undefined;
+	findValueAsync(status: Status | undefined, name: string | undefined, value: string | undefined): Promise<ConfigEntry | undefined>;
+	findPosSync(status: Status | undefined, name: string | undefined, pos: number): ConfigEntry | undefined;
+	findPosAsync(status: Status | undefined, name: string | undefined, pos: number): Promise<ConfigEntry | undefined>;
 }
 
 export interface FirebirdConf extends ReferenceCounted {
@@ -128,12 +128,12 @@ export interface FirebirdConf extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getKeySync(name: string): number;
-	getKeyAsync(name: string): Promise<number>;
+	getKeySync(name: string | undefined): number;
+	getKeyAsync(name: string | undefined): Promise<number>;
 	asIntegerSync(key: number): number;
 	asIntegerAsync(key: number): Promise<number>;
-	asStringSync(key: number): string;
-	asStringAsync(key: number): Promise<string>;
+	asStringSync(key: number): string | undefined;
+	asStringAsync(key: number): Promise<string | undefined>;
 	asBooleanSync(key: number): boolean;
 	asBooleanAsync(key: number): Promise<boolean>;
 }
@@ -143,19 +143,19 @@ export interface PluginConfig extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getConfigFileNameSync(): string;
-	getConfigFileNameAsync(): Promise<string>;
-	getDefaultConfigSync(status: Status): Config;
-	getDefaultConfigAsync(status: Status): Promise<Config>;
-	getFirebirdConfSync(status: Status): FirebirdConf;
-	getFirebirdConfAsync(status: Status): Promise<FirebirdConf>;
-	setReleaseDelaySync(status: Status, microSeconds: number): void;
-	setReleaseDelayAsync(status: Status, microSeconds: number): Promise<void>;
+	getConfigFileNameSync(): string | undefined;
+	getConfigFileNameAsync(): Promise<string | undefined>;
+	getDefaultConfigSync(status: Status | undefined): Config | undefined;
+	getDefaultConfigAsync(status: Status | undefined): Promise<Config | undefined>;
+	getFirebirdConfSync(status: Status | undefined): FirebirdConf | undefined;
+	getFirebirdConfAsync(status: Status | undefined): Promise<FirebirdConf | undefined>;
+	setReleaseDelaySync(status: Status | undefined, microSeconds: number): void;
+	setReleaseDelayAsync(status: Status | undefined, microSeconds: number): Promise<void>;
 }
 
 export interface PluginFactory extends Versioned {
-	createPluginSync(status: Status, factoryParameter: PluginConfig): PluginBase;
-	createPluginAsync(status: Status, factoryParameter: PluginConfig): Promise<PluginBase>;
+	createPluginSync(status: Status | undefined, factoryParameter: PluginConfig | undefined): PluginBase | undefined;
+	createPluginAsync(status: Status | undefined, factoryParameter: PluginConfig | undefined): Promise<PluginBase | undefined>;
 }
 
 export interface PluginModule extends Versioned {
@@ -164,18 +164,18 @@ export interface PluginModule extends Versioned {
 }
 
 export interface PluginManager extends Versioned {
-	registerPluginFactorySync(pluginType: number, defaultName: string, factory: PluginFactory): void;
-	registerPluginFactoryAsync(pluginType: number, defaultName: string, factory: PluginFactory): Promise<void>;
-	registerModuleSync(cleanup: PluginModule): void;
-	registerModuleAsync(cleanup: PluginModule): Promise<void>;
-	unregisterModuleSync(cleanup: PluginModule): void;
-	unregisterModuleAsync(cleanup: PluginModule): Promise<void>;
-	getPluginsSync(status: Status, pluginType: number, namesList: string, firebirdConf: FirebirdConf): PluginSet;
-	getPluginsAsync(status: Status, pluginType: number, namesList: string, firebirdConf: FirebirdConf): Promise<PluginSet>;
-	getConfigSync(status: Status, filename: string): Config;
-	getConfigAsync(status: Status, filename: string): Promise<Config>;
-	releasePluginSync(plugin: PluginBase): void;
-	releasePluginAsync(plugin: PluginBase): Promise<void>;
+	registerPluginFactorySync(pluginType: number, defaultName: string | undefined, factory: PluginFactory | undefined): void;
+	registerPluginFactoryAsync(pluginType: number, defaultName: string | undefined, factory: PluginFactory | undefined): Promise<void>;
+	registerModuleSync(cleanup: PluginModule | undefined): void;
+	registerModuleAsync(cleanup: PluginModule | undefined): Promise<void>;
+	unregisterModuleSync(cleanup: PluginModule | undefined): void;
+	unregisterModuleAsync(cleanup: PluginModule | undefined): Promise<void>;
+	getPluginsSync(status: Status | undefined, pluginType: number, namesList: string | undefined, firebirdConf: FirebirdConf | undefined): PluginSet | undefined;
+	getPluginsAsync(status: Status | undefined, pluginType: number, namesList: string | undefined, firebirdConf: FirebirdConf | undefined): Promise<PluginSet | undefined>;
+	getConfigSync(status: Status | undefined, filename: string | undefined): Config | undefined;
+	getConfigAsync(status: Status | undefined, filename: string | undefined): Promise<Config | undefined>;
+	releasePluginSync(plugin: PluginBase | undefined): void;
+	releasePluginAsync(plugin: PluginBase | undefined): Promise<void>;
 }
 
 export namespace PluginManager {
@@ -196,18 +196,18 @@ export interface CryptKey extends Versioned {
 }
 
 export interface ConfigManager extends Versioned {
-	getDirectorySync(code: number): string;
-	getDirectoryAsync(code: number): Promise<string>;
-	getFirebirdConfSync(): FirebirdConf;
-	getFirebirdConfAsync(): Promise<FirebirdConf>;
-	getDatabaseConfSync(dbName: string): FirebirdConf;
-	getDatabaseConfAsync(dbName: string): Promise<FirebirdConf>;
-	getPluginConfigSync(configuredPlugin: string): Config;
-	getPluginConfigAsync(configuredPlugin: string): Promise<Config>;
-	getInstallDirectorySync(): string;
-	getInstallDirectoryAsync(): Promise<string>;
-	getRootDirectorySync(): string;
-	getRootDirectoryAsync(): Promise<string>;
+	getDirectorySync(code: number): string | undefined;
+	getDirectoryAsync(code: number): Promise<string | undefined>;
+	getFirebirdConfSync(): FirebirdConf | undefined;
+	getFirebirdConfAsync(): Promise<FirebirdConf | undefined>;
+	getDatabaseConfSync(dbName: string | undefined): FirebirdConf | undefined;
+	getDatabaseConfAsync(dbName: string | undefined): Promise<FirebirdConf | undefined>;
+	getPluginConfigSync(configuredPlugin: string | undefined): Config | undefined;
+	getPluginConfigAsync(configuredPlugin: string | undefined): Promise<Config | undefined>;
+	getInstallDirectorySync(): string | undefined;
+	getInstallDirectoryAsync(): Promise<string | undefined>;
+	getRootDirectorySync(): string | undefined;
+	getRootDirectoryAsync(): Promise<string | undefined>;
 }
 
 export namespace ConfigManager {
@@ -236,8 +236,8 @@ export interface EventCallback extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	eventCallbackFunctionSync(length: number, events: Uint8Array | Pointer): void;
-	eventCallbackFunctionAsync(length: number, events: Uint8Array | Pointer): Promise<void>;
+	eventCallbackFunctionSync(length: number, events: Uint8Array | Pointer | undefined): void;
+	eventCallbackFunctionAsync(length: number, events: Uint8Array | Pointer | undefined): Promise<void>;
 }
 
 export interface Blob extends ReferenceCounted {
@@ -245,18 +245,18 @@ export interface Blob extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getInfoSync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	getInfoAsync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	getSegmentSync(status: Status, bufferLength: number, buffer: Uint8Array | Pointer, segmentLength: Uint32Array): number;
-	getSegmentAsync(status: Status, bufferLength: number, buffer: Uint8Array | Pointer, segmentLength: Uint32Array): Promise<number>;
-	putSegmentSync(status: Status, length: number, buffer: Uint8Array | Pointer): void;
-	putSegmentAsync(status: Status, length: number, buffer: Uint8Array | Pointer): Promise<void>;
-	cancelSync(status: Status): void;
-	cancelAsync(status: Status): Promise<void>;
-	closeSync(status: Status): void;
-	closeAsync(status: Status): Promise<void>;
-	seekSync(status: Status, mode: number, offset: number): number;
-	seekAsync(status: Status, mode: number, offset: number): Promise<number>;
+	getInfoSync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	getInfoAsync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	getSegmentSync(status: Status | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined, segmentLength: Uint32Array | undefined): number;
+	getSegmentAsync(status: Status | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined, segmentLength: Uint32Array | undefined): Promise<number>;
+	putSegmentSync(status: Status | undefined, length: number, buffer: Uint8Array | Pointer | undefined): void;
+	putSegmentAsync(status: Status | undefined, length: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	cancelSync(status: Status | undefined): void;
+	cancelAsync(status: Status | undefined): Promise<void>;
+	closeSync(status: Status | undefined): void;
+	closeAsync(status: Status | undefined): Promise<void>;
+	seekSync(status: Status | undefined, mode: number, offset: number): number;
+	seekAsync(status: Status | undefined, mode: number, offset: number): Promise<number>;
 }
 
 export interface Transaction extends ReferenceCounted {
@@ -264,26 +264,26 @@ export interface Transaction extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getInfoSync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	getInfoAsync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	prepareSync(status: Status, msgLength: number, message: Uint8Array | Pointer): void;
-	prepareAsync(status: Status, msgLength: number, message: Uint8Array | Pointer): Promise<void>;
-	commitSync(status: Status): void;
-	commitAsync(status: Status): Promise<void>;
-	commitRetainingSync(status: Status): void;
-	commitRetainingAsync(status: Status): Promise<void>;
-	rollbackSync(status: Status): void;
-	rollbackAsync(status: Status): Promise<void>;
-	rollbackRetainingSync(status: Status): void;
-	rollbackRetainingAsync(status: Status): Promise<void>;
-	disconnectSync(status: Status): void;
-	disconnectAsync(status: Status): Promise<void>;
-	joinSync(status: Status, transaction: Transaction): Transaction;
-	joinAsync(status: Status, transaction: Transaction): Promise<Transaction>;
-	validateSync(status: Status, attachment: Attachment): Transaction;
-	validateAsync(status: Status, attachment: Attachment): Promise<Transaction>;
-	enterDtcSync(status: Status): Transaction;
-	enterDtcAsync(status: Status): Promise<Transaction>;
+	getInfoSync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	getInfoAsync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	prepareSync(status: Status | undefined, msgLength: number, message: Uint8Array | Pointer | undefined): void;
+	prepareAsync(status: Status | undefined, msgLength: number, message: Uint8Array | Pointer | undefined): Promise<void>;
+	commitSync(status: Status | undefined): void;
+	commitAsync(status: Status | undefined): Promise<void>;
+	commitRetainingSync(status: Status | undefined): void;
+	commitRetainingAsync(status: Status | undefined): Promise<void>;
+	rollbackSync(status: Status | undefined): void;
+	rollbackAsync(status: Status | undefined): Promise<void>;
+	rollbackRetainingSync(status: Status | undefined): void;
+	rollbackRetainingAsync(status: Status | undefined): Promise<void>;
+	disconnectSync(status: Status | undefined): void;
+	disconnectAsync(status: Status | undefined): Promise<void>;
+	joinSync(status: Status | undefined, transaction: Transaction | undefined): Transaction | undefined;
+	joinAsync(status: Status | undefined, transaction: Transaction | undefined): Promise<Transaction | undefined>;
+	validateSync(status: Status | undefined, attachment: Attachment | undefined): Transaction | undefined;
+	validateAsync(status: Status | undefined, attachment: Attachment | undefined): Promise<Transaction | undefined>;
+	enterDtcSync(status: Status | undefined): Transaction | undefined;
+	enterDtcAsync(status: Status | undefined): Promise<Transaction | undefined>;
 }
 
 export interface MessageMetadata extends ReferenceCounted {
@@ -291,36 +291,36 @@ export interface MessageMetadata extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getCountSync(status: Status): number;
-	getCountAsync(status: Status): Promise<number>;
-	getFieldSync(status: Status, index: number): string;
-	getFieldAsync(status: Status, index: number): Promise<string>;
-	getRelationSync(status: Status, index: number): string;
-	getRelationAsync(status: Status, index: number): Promise<string>;
-	getOwnerSync(status: Status, index: number): string;
-	getOwnerAsync(status: Status, index: number): Promise<string>;
-	getAliasSync(status: Status, index: number): string;
-	getAliasAsync(status: Status, index: number): Promise<string>;
-	getTypeSync(status: Status, index: number): number;
-	getTypeAsync(status: Status, index: number): Promise<number>;
-	isNullableSync(status: Status, index: number): boolean;
-	isNullableAsync(status: Status, index: number): Promise<boolean>;
-	getSubTypeSync(status: Status, index: number): number;
-	getSubTypeAsync(status: Status, index: number): Promise<number>;
-	getLengthSync(status: Status, index: number): number;
-	getLengthAsync(status: Status, index: number): Promise<number>;
-	getScaleSync(status: Status, index: number): number;
-	getScaleAsync(status: Status, index: number): Promise<number>;
-	getCharSetSync(status: Status, index: number): number;
-	getCharSetAsync(status: Status, index: number): Promise<number>;
-	getOffsetSync(status: Status, index: number): number;
-	getOffsetAsync(status: Status, index: number): Promise<number>;
-	getNullOffsetSync(status: Status, index: number): number;
-	getNullOffsetAsync(status: Status, index: number): Promise<number>;
-	getBuilderSync(status: Status): MetadataBuilder;
-	getBuilderAsync(status: Status): Promise<MetadataBuilder>;
-	getMessageLengthSync(status: Status): number;
-	getMessageLengthAsync(status: Status): Promise<number>;
+	getCountSync(status: Status | undefined): number;
+	getCountAsync(status: Status | undefined): Promise<number>;
+	getFieldSync(status: Status | undefined, index: number): string | undefined;
+	getFieldAsync(status: Status | undefined, index: number): Promise<string | undefined>;
+	getRelationSync(status: Status | undefined, index: number): string | undefined;
+	getRelationAsync(status: Status | undefined, index: number): Promise<string | undefined>;
+	getOwnerSync(status: Status | undefined, index: number): string | undefined;
+	getOwnerAsync(status: Status | undefined, index: number): Promise<string | undefined>;
+	getAliasSync(status: Status | undefined, index: number): string | undefined;
+	getAliasAsync(status: Status | undefined, index: number): Promise<string | undefined>;
+	getTypeSync(status: Status | undefined, index: number): number;
+	getTypeAsync(status: Status | undefined, index: number): Promise<number>;
+	isNullableSync(status: Status | undefined, index: number): boolean;
+	isNullableAsync(status: Status | undefined, index: number): Promise<boolean>;
+	getSubTypeSync(status: Status | undefined, index: number): number;
+	getSubTypeAsync(status: Status | undefined, index: number): Promise<number>;
+	getLengthSync(status: Status | undefined, index: number): number;
+	getLengthAsync(status: Status | undefined, index: number): Promise<number>;
+	getScaleSync(status: Status | undefined, index: number): number;
+	getScaleAsync(status: Status | undefined, index: number): Promise<number>;
+	getCharSetSync(status: Status | undefined, index: number): number;
+	getCharSetAsync(status: Status | undefined, index: number): Promise<number>;
+	getOffsetSync(status: Status | undefined, index: number): number;
+	getOffsetAsync(status: Status | undefined, index: number): Promise<number>;
+	getNullOffsetSync(status: Status | undefined, index: number): number;
+	getNullOffsetAsync(status: Status | undefined, index: number): Promise<number>;
+	getBuilderSync(status: Status | undefined): MetadataBuilder | undefined;
+	getBuilderAsync(status: Status | undefined): Promise<MetadataBuilder | undefined>;
+	getMessageLengthSync(status: Status | undefined): number;
+	getMessageLengthAsync(status: Status | undefined): Promise<number>;
 }
 
 export interface MetadataBuilder extends ReferenceCounted {
@@ -328,26 +328,26 @@ export interface MetadataBuilder extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setTypeSync(status: Status, index: number, type: number): void;
-	setTypeAsync(status: Status, index: number, type: number): Promise<void>;
-	setSubTypeSync(status: Status, index: number, subType: number): void;
-	setSubTypeAsync(status: Status, index: number, subType: number): Promise<void>;
-	setLengthSync(status: Status, index: number, length: number): void;
-	setLengthAsync(status: Status, index: number, length: number): Promise<void>;
-	setCharSetSync(status: Status, index: number, charSet: number): void;
-	setCharSetAsync(status: Status, index: number, charSet: number): Promise<void>;
-	setScaleSync(status: Status, index: number, scale: number): void;
-	setScaleAsync(status: Status, index: number, scale: number): Promise<void>;
-	truncateSync(status: Status, count: number): void;
-	truncateAsync(status: Status, count: number): Promise<void>;
-	moveNameToIndexSync(status: Status, name: string, index: number): void;
-	moveNameToIndexAsync(status: Status, name: string, index: number): Promise<void>;
-	removeSync(status: Status, index: number): void;
-	removeAsync(status: Status, index: number): Promise<void>;
-	addFieldSync(status: Status): number;
-	addFieldAsync(status: Status): Promise<number>;
-	getMetadataSync(status: Status): MessageMetadata;
-	getMetadataAsync(status: Status): Promise<MessageMetadata>;
+	setTypeSync(status: Status | undefined, index: number, type: number): void;
+	setTypeAsync(status: Status | undefined, index: number, type: number): Promise<void>;
+	setSubTypeSync(status: Status | undefined, index: number, subType: number): void;
+	setSubTypeAsync(status: Status | undefined, index: number, subType: number): Promise<void>;
+	setLengthSync(status: Status | undefined, index: number, length: number): void;
+	setLengthAsync(status: Status | undefined, index: number, length: number): Promise<void>;
+	setCharSetSync(status: Status | undefined, index: number, charSet: number): void;
+	setCharSetAsync(status: Status | undefined, index: number, charSet: number): Promise<void>;
+	setScaleSync(status: Status | undefined, index: number, scale: number): void;
+	setScaleAsync(status: Status | undefined, index: number, scale: number): Promise<void>;
+	truncateSync(status: Status | undefined, count: number): void;
+	truncateAsync(status: Status | undefined, count: number): Promise<void>;
+	moveNameToIndexSync(status: Status | undefined, name: string | undefined, index: number): void;
+	moveNameToIndexAsync(status: Status | undefined, name: string | undefined, index: number): Promise<void>;
+	removeSync(status: Status | undefined, index: number): void;
+	removeAsync(status: Status | undefined, index: number): Promise<void>;
+	addFieldSync(status: Status | undefined): number;
+	addFieldAsync(status: Status | undefined): Promise<number>;
+	getMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
 }
 
 export interface ResultSet extends ReferenceCounted {
@@ -355,28 +355,28 @@ export interface ResultSet extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	fetchNextSync(status: Status, message: Uint8Array | Pointer): number;
-	fetchNextAsync(status: Status, message: Uint8Array | Pointer): Promise<number>;
-	fetchPriorSync(status: Status, message: Uint8Array | Pointer): number;
-	fetchPriorAsync(status: Status, message: Uint8Array | Pointer): Promise<number>;
-	fetchFirstSync(status: Status, message: Uint8Array | Pointer): number;
-	fetchFirstAsync(status: Status, message: Uint8Array | Pointer): Promise<number>;
-	fetchLastSync(status: Status, message: Uint8Array | Pointer): number;
-	fetchLastAsync(status: Status, message: Uint8Array | Pointer): Promise<number>;
-	fetchAbsoluteSync(status: Status, position: number, message: Uint8Array | Pointer): number;
-	fetchAbsoluteAsync(status: Status, position: number, message: Uint8Array | Pointer): Promise<number>;
-	fetchRelativeSync(status: Status, offset: number, message: Uint8Array | Pointer): number;
-	fetchRelativeAsync(status: Status, offset: number, message: Uint8Array | Pointer): Promise<number>;
-	isEofSync(status: Status): boolean;
-	isEofAsync(status: Status): Promise<boolean>;
-	isBofSync(status: Status): boolean;
-	isBofAsync(status: Status): Promise<boolean>;
-	getMetadataSync(status: Status): MessageMetadata;
-	getMetadataAsync(status: Status): Promise<MessageMetadata>;
-	closeSync(status: Status): void;
-	closeAsync(status: Status): Promise<void>;
-	setDelayedOutputFormatSync(status: Status, format: MessageMetadata): void;
-	setDelayedOutputFormatAsync(status: Status, format: MessageMetadata): Promise<void>;
+	fetchNextSync(status: Status | undefined, message: Uint8Array | Pointer | undefined): number;
+	fetchNextAsync(status: Status | undefined, message: Uint8Array | Pointer | undefined): Promise<number>;
+	fetchPriorSync(status: Status | undefined, message: Uint8Array | Pointer | undefined): number;
+	fetchPriorAsync(status: Status | undefined, message: Uint8Array | Pointer | undefined): Promise<number>;
+	fetchFirstSync(status: Status | undefined, message: Uint8Array | Pointer | undefined): number;
+	fetchFirstAsync(status: Status | undefined, message: Uint8Array | Pointer | undefined): Promise<number>;
+	fetchLastSync(status: Status | undefined, message: Uint8Array | Pointer | undefined): number;
+	fetchLastAsync(status: Status | undefined, message: Uint8Array | Pointer | undefined): Promise<number>;
+	fetchAbsoluteSync(status: Status | undefined, position: number, message: Uint8Array | Pointer | undefined): number;
+	fetchAbsoluteAsync(status: Status | undefined, position: number, message: Uint8Array | Pointer | undefined): Promise<number>;
+	fetchRelativeSync(status: Status | undefined, offset: number, message: Uint8Array | Pointer | undefined): number;
+	fetchRelativeAsync(status: Status | undefined, offset: number, message: Uint8Array | Pointer | undefined): Promise<number>;
+	isEofSync(status: Status | undefined): boolean;
+	isEofAsync(status: Status | undefined): Promise<boolean>;
+	isBofSync(status: Status | undefined): boolean;
+	isBofAsync(status: Status | undefined): Promise<boolean>;
+	getMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	closeSync(status: Status | undefined): void;
+	closeAsync(status: Status | undefined): Promise<void>;
+	setDelayedOutputFormatSync(status: Status | undefined, format: MessageMetadata | undefined): void;
+	setDelayedOutputFormatAsync(status: Status | undefined, format: MessageMetadata | undefined): Promise<void>;
 }
 
 export interface Statement extends ReferenceCounted {
@@ -384,28 +384,28 @@ export interface Statement extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getInfoSync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	getInfoAsync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	getTypeSync(status: Status): number;
-	getTypeAsync(status: Status): Promise<number>;
-	getPlanSync(status: Status, detailed: boolean): string;
-	getPlanAsync(status: Status, detailed: boolean): Promise<string>;
-	getAffectedRecordsSync(status: Status): number;
-	getAffectedRecordsAsync(status: Status): Promise<number>;
-	getInputMetadataSync(status: Status): MessageMetadata;
-	getInputMetadataAsync(status: Status): Promise<MessageMetadata>;
-	getOutputMetadataSync(status: Status): MessageMetadata;
-	getOutputMetadataAsync(status: Status): Promise<MessageMetadata>;
-	executeSync(status: Status, transaction: Transaction, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, outBuffer: Uint8Array | Pointer): Transaction;
-	executeAsync(status: Status, transaction: Transaction, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, outBuffer: Uint8Array | Pointer): Promise<Transaction>;
-	openCursorSync(status: Status, transaction: Transaction, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, flags: number): ResultSet;
-	openCursorAsync(status: Status, transaction: Transaction, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, flags: number): Promise<ResultSet>;
-	setCursorNameSync(status: Status, name: string): void;
-	setCursorNameAsync(status: Status, name: string): Promise<void>;
-	freeSync(status: Status): void;
-	freeAsync(status: Status): Promise<void>;
-	getFlagsSync(status: Status): number;
-	getFlagsAsync(status: Status): Promise<number>;
+	getInfoSync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	getInfoAsync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	getTypeSync(status: Status | undefined): number;
+	getTypeAsync(status: Status | undefined): Promise<number>;
+	getPlanSync(status: Status | undefined, detailed: boolean): string | undefined;
+	getPlanAsync(status: Status | undefined, detailed: boolean): Promise<string | undefined>;
+	getAffectedRecordsSync(status: Status | undefined): number;
+	getAffectedRecordsAsync(status: Status | undefined): Promise<number>;
+	getInputMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getInputMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	getOutputMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getOutputMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	executeSync(status: Status | undefined, transaction: Transaction | undefined, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, outBuffer: Uint8Array | Pointer | undefined): Transaction | undefined;
+	executeAsync(status: Status | undefined, transaction: Transaction | undefined, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, outBuffer: Uint8Array | Pointer | undefined): Promise<Transaction | undefined>;
+	openCursorSync(status: Status | undefined, transaction: Transaction | undefined, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, flags: number): ResultSet | undefined;
+	openCursorAsync(status: Status | undefined, transaction: Transaction | undefined, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, flags: number): Promise<ResultSet | undefined>;
+	setCursorNameSync(status: Status | undefined, name: string | undefined): void;
+	setCursorNameAsync(status: Status | undefined, name: string | undefined): Promise<void>;
+	freeSync(status: Status | undefined): void;
+	freeAsync(status: Status | undefined): Promise<void>;
+	getFlagsSync(status: Status | undefined): number;
+	getFlagsAsync(status: Status | undefined): Promise<number>;
 }
 
 export namespace Statement {
@@ -429,20 +429,20 @@ export interface Request extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	receiveSync(status: Status, level: number, msgType: number, length: number, message: Uint8Array | Pointer): void;
-	receiveAsync(status: Status, level: number, msgType: number, length: number, message: Uint8Array | Pointer): Promise<void>;
-	sendSync(status: Status, level: number, msgType: number, length: number, message: Uint8Array | Pointer): void;
-	sendAsync(status: Status, level: number, msgType: number, length: number, message: Uint8Array | Pointer): Promise<void>;
-	getInfoSync(status: Status, level: number, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	getInfoAsync(status: Status, level: number, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	startSync(status: Status, tra: Transaction, level: number): void;
-	startAsync(status: Status, tra: Transaction, level: number): Promise<void>;
-	startAndSendSync(status: Status, tra: Transaction, level: number, msgType: number, length: number, message: Uint8Array | Pointer): void;
-	startAndSendAsync(status: Status, tra: Transaction, level: number, msgType: number, length: number, message: Uint8Array | Pointer): Promise<void>;
-	unwindSync(status: Status, level: number): void;
-	unwindAsync(status: Status, level: number): Promise<void>;
-	freeSync(status: Status): void;
-	freeAsync(status: Status): Promise<void>;
+	receiveSync(status: Status | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): void;
+	receiveAsync(status: Status | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): Promise<void>;
+	sendSync(status: Status | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): void;
+	sendAsync(status: Status | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): Promise<void>;
+	getInfoSync(status: Status | undefined, level: number, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	getInfoAsync(status: Status | undefined, level: number, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	startSync(status: Status | undefined, tra: Transaction | undefined, level: number): void;
+	startAsync(status: Status | undefined, tra: Transaction | undefined, level: number): Promise<void>;
+	startAndSendSync(status: Status | undefined, tra: Transaction | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): void;
+	startAndSendAsync(status: Status | undefined, tra: Transaction | undefined, level: number, msgType: number, length: number, message: Uint8Array | Pointer | undefined): Promise<void>;
+	unwindSync(status: Status | undefined, level: number): void;
+	unwindAsync(status: Status | undefined, level: number): Promise<void>;
+	freeSync(status: Status | undefined): void;
+	freeAsync(status: Status | undefined): Promise<void>;
 }
 
 export interface Events extends ReferenceCounted {
@@ -450,8 +450,8 @@ export interface Events extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	cancelSync(status: Status): void;
-	cancelAsync(status: Status): Promise<void>;
+	cancelSync(status: Status | undefined): void;
+	cancelAsync(status: Status | undefined): Promise<void>;
 }
 
 export interface Attachment extends ReferenceCounted {
@@ -459,38 +459,38 @@ export interface Attachment extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getInfoSync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	getInfoAsync(status: Status, itemsLength: number, items: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	startTransactionSync(status: Status, tpbLength: number, tpb: Uint8Array | Pointer): Transaction;
-	startTransactionAsync(status: Status, tpbLength: number, tpb: Uint8Array | Pointer): Promise<Transaction>;
-	reconnectTransactionSync(status: Status, length: number, id: Uint8Array | Pointer): Transaction;
-	reconnectTransactionAsync(status: Status, length: number, id: Uint8Array | Pointer): Promise<Transaction>;
-	compileRequestSync(status: Status, blrLength: number, blr: Uint8Array | Pointer): Request;
-	compileRequestAsync(status: Status, blrLength: number, blr: Uint8Array | Pointer): Promise<Request>;
-	transactRequestSync(status: Status, transaction: Transaction, blrLength: number, blr: Uint8Array | Pointer, inMsgLength: number, inMsg: Uint8Array | Pointer, outMsgLength: number, outMsg: Uint8Array | Pointer): void;
-	transactRequestAsync(status: Status, transaction: Transaction, blrLength: number, blr: Uint8Array | Pointer, inMsgLength: number, inMsg: Uint8Array | Pointer, outMsgLength: number, outMsg: Uint8Array | Pointer): Promise<void>;
-	createBlobSync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Blob;
-	createBlobAsync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Promise<Blob>;
-	openBlobSync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Blob;
-	openBlobAsync(status: Status, transaction: Transaction, id: Uint8Array | Pointer, bpbLength: number, bpb: Uint8Array | Pointer): Promise<Blob>;
-	executeDynSync(status: Status, transaction: Transaction, length: number, dyn: Uint8Array | Pointer): void;
-	executeDynAsync(status: Status, transaction: Transaction, length: number, dyn: Uint8Array | Pointer): Promise<void>;
-	prepareSync(status: Status, tra: Transaction, stmtLength: number, sqlStmt: string, dialect: number, flags: number): Statement;
-	prepareAsync(status: Status, tra: Transaction, stmtLength: number, sqlStmt: string, dialect: number, flags: number): Promise<Statement>;
-	executeSync(status: Status, transaction: Transaction, stmtLength: number, sqlStmt: string, dialect: number, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, outBuffer: Uint8Array | Pointer): Transaction;
-	executeAsync(status: Status, transaction: Transaction, stmtLength: number, sqlStmt: string, dialect: number, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, outBuffer: Uint8Array | Pointer): Promise<Transaction>;
-	openCursorSync(status: Status, transaction: Transaction, stmtLength: number, sqlStmt: string, dialect: number, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, cursorName: string, cursorFlags: number): ResultSet;
-	openCursorAsync(status: Status, transaction: Transaction, stmtLength: number, sqlStmt: string, dialect: number, inMetadata: MessageMetadata, inBuffer: Uint8Array | Pointer, outMetadata: MessageMetadata, cursorName: string, cursorFlags: number): Promise<ResultSet>;
-	queEventsSync(status: Status, callback: EventCallback, length: number, events: Uint8Array | Pointer): Events;
-	queEventsAsync(status: Status, callback: EventCallback, length: number, events: Uint8Array | Pointer): Promise<Events>;
-	cancelOperationSync(status: Status, option: number): void;
-	cancelOperationAsync(status: Status, option: number): Promise<void>;
-	pingSync(status: Status): void;
-	pingAsync(status: Status): Promise<void>;
-	detachSync(status: Status): void;
-	detachAsync(status: Status): Promise<void>;
-	dropDatabaseSync(status: Status): void;
-	dropDatabaseAsync(status: Status): Promise<void>;
+	getInfoSync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	getInfoAsync(status: Status | undefined, itemsLength: number, items: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	startTransactionSync(status: Status | undefined, tpbLength: number, tpb: Uint8Array | Pointer | undefined): Transaction | undefined;
+	startTransactionAsync(status: Status | undefined, tpbLength: number, tpb: Uint8Array | Pointer | undefined): Promise<Transaction | undefined>;
+	reconnectTransactionSync(status: Status | undefined, length: number, id: Uint8Array | Pointer | undefined): Transaction | undefined;
+	reconnectTransactionAsync(status: Status | undefined, length: number, id: Uint8Array | Pointer | undefined): Promise<Transaction | undefined>;
+	compileRequestSync(status: Status | undefined, blrLength: number, blr: Uint8Array | Pointer | undefined): Request | undefined;
+	compileRequestAsync(status: Status | undefined, blrLength: number, blr: Uint8Array | Pointer | undefined): Promise<Request | undefined>;
+	transactRequestSync(status: Status | undefined, transaction: Transaction | undefined, blrLength: number, blr: Uint8Array | Pointer | undefined, inMsgLength: number, inMsg: Uint8Array | Pointer | undefined, outMsgLength: number, outMsg: Uint8Array | Pointer | undefined): void;
+	transactRequestAsync(status: Status | undefined, transaction: Transaction | undefined, blrLength: number, blr: Uint8Array | Pointer | undefined, inMsgLength: number, inMsg: Uint8Array | Pointer | undefined, outMsgLength: number, outMsg: Uint8Array | Pointer | undefined): Promise<void>;
+	createBlobSync(status: Status | undefined, transaction: Transaction | undefined, id: Uint8Array | Pointer | undefined, bpbLength: number, bpb: Uint8Array | Pointer | undefined): Blob | undefined;
+	createBlobAsync(status: Status | undefined, transaction: Transaction | undefined, id: Uint8Array | Pointer | undefined, bpbLength: number, bpb: Uint8Array | Pointer | undefined): Promise<Blob | undefined>;
+	openBlobSync(status: Status | undefined, transaction: Transaction | undefined, id: Uint8Array | Pointer | undefined, bpbLength: number, bpb: Uint8Array | Pointer | undefined): Blob | undefined;
+	openBlobAsync(status: Status | undefined, transaction: Transaction | undefined, id: Uint8Array | Pointer | undefined, bpbLength: number, bpb: Uint8Array | Pointer | undefined): Promise<Blob | undefined>;
+	executeDynSync(status: Status | undefined, transaction: Transaction | undefined, length: number, dyn: Uint8Array | Pointer | undefined): void;
+	executeDynAsync(status: Status | undefined, transaction: Transaction | undefined, length: number, dyn: Uint8Array | Pointer | undefined): Promise<void>;
+	prepareSync(status: Status | undefined, tra: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, flags: number): Statement | undefined;
+	prepareAsync(status: Status | undefined, tra: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, flags: number): Promise<Statement | undefined>;
+	executeSync(status: Status | undefined, transaction: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, outBuffer: Uint8Array | Pointer | undefined): Transaction | undefined;
+	executeAsync(status: Status | undefined, transaction: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, outBuffer: Uint8Array | Pointer | undefined): Promise<Transaction | undefined>;
+	openCursorSync(status: Status | undefined, transaction: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, cursorName: string | undefined, cursorFlags: number): ResultSet | undefined;
+	openCursorAsync(status: Status | undefined, transaction: Transaction | undefined, stmtLength: number, sqlStmt: string | undefined, dialect: number, inMetadata: MessageMetadata | undefined, inBuffer: Uint8Array | Pointer | undefined, outMetadata: MessageMetadata | undefined, cursorName: string | undefined, cursorFlags: number): Promise<ResultSet | undefined>;
+	queEventsSync(status: Status | undefined, callback: EventCallback | undefined, length: number, events: Uint8Array | Pointer | undefined): Events | undefined;
+	queEventsAsync(status: Status | undefined, callback: EventCallback | undefined, length: number, events: Uint8Array | Pointer | undefined): Promise<Events | undefined>;
+	cancelOperationSync(status: Status | undefined, option: number): void;
+	cancelOperationAsync(status: Status | undefined, option: number): Promise<void>;
+	pingSync(status: Status | undefined): void;
+	pingAsync(status: Status | undefined): Promise<void>;
+	detachSync(status: Status | undefined): void;
+	detachAsync(status: Status | undefined): Promise<void>;
+	dropDatabaseSync(status: Status | undefined): void;
+	dropDatabaseAsync(status: Status | undefined): Promise<void>;
 }
 
 export interface Service extends ReferenceCounted {
@@ -498,12 +498,12 @@ export interface Service extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	detachSync(status: Status): void;
-	detachAsync(status: Status): Promise<void>;
-	querySync(status: Status, sendLength: number, sendItems: Uint8Array | Pointer, receiveLength: number, receiveItems: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): void;
-	queryAsync(status: Status, sendLength: number, sendItems: Uint8Array | Pointer, receiveLength: number, receiveItems: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<void>;
-	startSync(status: Status, spbLength: number, spb: Uint8Array | Pointer): void;
-	startAsync(status: Status, spbLength: number, spb: Uint8Array | Pointer): Promise<void>;
+	detachSync(status: Status | undefined): void;
+	detachAsync(status: Status | undefined): Promise<void>;
+	querySync(status: Status | undefined, sendLength: number, sendItems: Uint8Array | Pointer | undefined, receiveLength: number, receiveItems: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): void;
+	queryAsync(status: Status | undefined, sendLength: number, sendItems: Uint8Array | Pointer | undefined, receiveLength: number, receiveItems: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<void>;
+	startSync(status: Status | undefined, spbLength: number, spb: Uint8Array | Pointer | undefined): void;
+	startAsync(status: Status | undefined, spbLength: number, spb: Uint8Array | Pointer | undefined): Promise<void>;
 }
 
 export interface Provider extends PluginBase {
@@ -511,38 +511,38 @@ export interface Provider extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	attachDatabaseSync(status: Status, fileName: string, dpbLength: number, dpb: Uint8Array | Pointer): Attachment;
-	attachDatabaseAsync(status: Status, fileName: string, dpbLength: number, dpb: Uint8Array | Pointer): Promise<Attachment>;
-	createDatabaseSync(status: Status, fileName: string, dpbLength: number, dpb: Uint8Array | Pointer): Attachment;
-	createDatabaseAsync(status: Status, fileName: string, dpbLength: number, dpb: Uint8Array | Pointer): Promise<Attachment>;
-	attachServiceManagerSync(status: Status, service: string, spbLength: number, spb: Uint8Array | Pointer): Service;
-	attachServiceManagerAsync(status: Status, service: string, spbLength: number, spb: Uint8Array | Pointer): Promise<Service>;
-	shutdownSync(status: Status, timeout: number, reason: number): void;
-	shutdownAsync(status: Status, timeout: number, reason: number): Promise<void>;
-	setDbCryptCallbackSync(status: Status, cryptCallback: CryptKeyCallback): void;
-	setDbCryptCallbackAsync(status: Status, cryptCallback: CryptKeyCallback): Promise<void>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	attachDatabaseSync(status: Status | undefined, fileName: string | undefined, dpbLength: number, dpb: Uint8Array | Pointer | undefined): Attachment | undefined;
+	attachDatabaseAsync(status: Status | undefined, fileName: string | undefined, dpbLength: number, dpb: Uint8Array | Pointer | undefined): Promise<Attachment | undefined>;
+	createDatabaseSync(status: Status | undefined, fileName: string | undefined, dpbLength: number, dpb: Uint8Array | Pointer | undefined): Attachment | undefined;
+	createDatabaseAsync(status: Status | undefined, fileName: string | undefined, dpbLength: number, dpb: Uint8Array | Pointer | undefined): Promise<Attachment | undefined>;
+	attachServiceManagerSync(status: Status | undefined, service: string | undefined, spbLength: number, spb: Uint8Array | Pointer | undefined): Service | undefined;
+	attachServiceManagerAsync(status: Status | undefined, service: string | undefined, spbLength: number, spb: Uint8Array | Pointer | undefined): Promise<Service | undefined>;
+	shutdownSync(status: Status | undefined, timeout: number, reason: number): void;
+	shutdownAsync(status: Status | undefined, timeout: number, reason: number): Promise<void>;
+	setDbCryptCallbackSync(status: Status | undefined, cryptCallback: CryptKeyCallback | undefined): void;
+	setDbCryptCallbackAsync(status: Status | undefined, cryptCallback: CryptKeyCallback | undefined): Promise<void>;
 }
 
 export interface DtcStart extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	addAttachmentSync(status: Status, att: Attachment): void;
-	addAttachmentAsync(status: Status, att: Attachment): Promise<void>;
-	addWithTpbSync(status: Status, att: Attachment, length: number, tpb: Uint8Array | Pointer): void;
-	addWithTpbAsync(status: Status, att: Attachment, length: number, tpb: Uint8Array | Pointer): Promise<void>;
-	startSync(status: Status): Transaction;
-	startAsync(status: Status): Promise<Transaction>;
+	addAttachmentSync(status: Status | undefined, att: Attachment | undefined): void;
+	addAttachmentAsync(status: Status | undefined, att: Attachment | undefined): Promise<void>;
+	addWithTpbSync(status: Status | undefined, att: Attachment | undefined, length: number, tpb: Uint8Array | Pointer | undefined): void;
+	addWithTpbAsync(status: Status | undefined, att: Attachment | undefined, length: number, tpb: Uint8Array | Pointer | undefined): Promise<void>;
+	startSync(status: Status | undefined): Transaction | undefined;
+	startAsync(status: Status | undefined): Promise<Transaction | undefined>;
 }
 
 export interface Dtc extends Versioned {
-	joinSync(status: Status, one: Transaction, two: Transaction): Transaction;
-	joinAsync(status: Status, one: Transaction, two: Transaction): Promise<Transaction>;
-	startBuilderSync(status: Status): DtcStart;
-	startBuilderAsync(status: Status): Promise<DtcStart>;
+	joinSync(status: Status | undefined, one: Transaction | undefined, two: Transaction | undefined): Transaction | undefined;
+	joinAsync(status: Status | undefined, one: Transaction | undefined, two: Transaction | undefined): Promise<Transaction | undefined>;
+	startBuilderSync(status: Status | undefined): DtcStart | undefined;
+	startBuilderAsync(status: Status | undefined): Promise<DtcStart | undefined>;
 }
 
 export interface Auth extends PluginBase {
@@ -550,10 +550,10 @@ export interface Auth extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
 }
 
 export namespace Auth {
@@ -566,23 +566,23 @@ export namespace Auth {
 export interface Writer extends Versioned {
 	resetSync(): void;
 	resetAsync(): Promise<void>;
-	addSync(status: Status, name: string): void;
-	addAsync(status: Status, name: string): Promise<void>;
-	setTypeSync(status: Status, value: string): void;
-	setTypeAsync(status: Status, value: string): Promise<void>;
-	setDbSync(status: Status, value: string): void;
-	setDbAsync(status: Status, value: string): Promise<void>;
+	addSync(status: Status | undefined, name: string | undefined): void;
+	addAsync(status: Status | undefined, name: string | undefined): Promise<void>;
+	setTypeSync(status: Status | undefined, value: string | undefined): void;
+	setTypeAsync(status: Status | undefined, value: string | undefined): Promise<void>;
+	setDbSync(status: Status | undefined, value: string | undefined): void;
+	setDbAsync(status: Status | undefined, value: string | undefined): Promise<void>;
 }
 
 export interface ServerBlock extends Versioned {
-	getLoginSync(): string;
-	getLoginAsync(): Promise<string>;
-	getDataSync(length: Uint32Array): Pointer;
-	getDataAsync(length: Uint32Array): Promise<Pointer>;
-	putDataSync(status: Status, length: number, data: Uint8Array | Pointer): void;
-	putDataAsync(status: Status, length: number, data: Uint8Array | Pointer): Promise<void>;
-	newKeySync(status: Status): CryptKey;
-	newKeyAsync(status: Status): Promise<CryptKey>;
+	getLoginSync(): string | undefined;
+	getLoginAsync(): Promise<string | undefined>;
+	getDataSync(length: Uint32Array | undefined): Pointer | undefined;
+	getDataAsync(length: Uint32Array | undefined): Promise<Pointer | undefined>;
+	putDataSync(status: Status | undefined, length: number, data: Uint8Array | Pointer | undefined): void;
+	putDataAsync(status: Status | undefined, length: number, data: Uint8Array | Pointer | undefined): Promise<void>;
+	newKeySync(status: Status | undefined): CryptKey | undefined;
+	newKeyAsync(status: Status | undefined): Promise<CryptKey | undefined>;
 }
 
 export interface ClientBlock extends ReferenceCounted {
@@ -590,16 +590,16 @@ export interface ClientBlock extends ReferenceCounted {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	getLoginSync(): string;
-	getLoginAsync(): Promise<string>;
-	getPasswordSync(): string;
-	getPasswordAsync(): Promise<string>;
-	getDataSync(length: Uint32Array): Pointer;
-	getDataAsync(length: Uint32Array): Promise<Pointer>;
-	putDataSync(status: Status, length: number, data: Uint8Array | Pointer): void;
-	putDataAsync(status: Status, length: number, data: Uint8Array | Pointer): Promise<void>;
-	newKeySync(status: Status): CryptKey;
-	newKeyAsync(status: Status): Promise<CryptKey>;
+	getLoginSync(): string | undefined;
+	getLoginAsync(): Promise<string | undefined>;
+	getPasswordSync(): string | undefined;
+	getPasswordAsync(): Promise<string | undefined>;
+	getDataSync(length: Uint32Array | undefined): Pointer | undefined;
+	getDataAsync(length: Uint32Array | undefined): Promise<Pointer | undefined>;
+	putDataSync(status: Status | undefined, length: number, data: Uint8Array | Pointer | undefined): void;
+	putDataAsync(status: Status | undefined, length: number, data: Uint8Array | Pointer | undefined): Promise<void>;
+	newKeySync(status: Status | undefined): CryptKey | undefined;
+	newKeyAsync(status: Status | undefined): Promise<CryptKey | undefined>;
 }
 
 export interface Server extends Auth {
@@ -607,12 +607,12 @@ export interface Server extends Auth {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	authenticateSync(status: Status, sBlock: ServerBlock, writerInterface: Writer): number;
-	authenticateAsync(status: Status, sBlock: ServerBlock, writerInterface: Writer): Promise<number>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	authenticateSync(status: Status | undefined, sBlock: ServerBlock | undefined, writerInterface: Writer | undefined): number;
+	authenticateAsync(status: Status | undefined, sBlock: ServerBlock | undefined, writerInterface: Writer | undefined): Promise<number>;
 }
 
 export interface Client extends Auth {
@@ -620,12 +620,12 @@ export interface Client extends Auth {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	authenticateSync(status: Status, cBlock: ClientBlock): number;
-	authenticateAsync(status: Status, cBlock: ClientBlock): Promise<number>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	authenticateSync(status: Status | undefined, cBlock: ClientBlock | undefined): number;
+	authenticateAsync(status: Status | undefined, cBlock: ClientBlock | undefined): Promise<number>;
 }
 
 export interface UserField extends Versioned {
@@ -633,8 +633,8 @@ export interface UserField extends Versioned {
 	enteredAsync(): Promise<number>;
 	specifiedSync(): number;
 	specifiedAsync(): Promise<number>;
-	setEnteredSync(status: Status, newValue: number): void;
-	setEnteredAsync(status: Status, newValue: number): Promise<void>;
+	setEnteredSync(status: Status | undefined, newValue: number): void;
+	setEnteredAsync(status: Status | undefined, newValue: number): Promise<void>;
 }
 
 export interface CharUserField extends UserField {
@@ -642,12 +642,12 @@ export interface CharUserField extends UserField {
 	enteredAsync(): Promise<number>;
 	specifiedSync(): number;
 	specifiedAsync(): Promise<number>;
-	setEnteredSync(status: Status, newValue: number): void;
-	setEnteredAsync(status: Status, newValue: number): Promise<void>;
-	getSync(): string;
-	getAsync(): Promise<string>;
-	setSync(status: Status, newValue: string): void;
-	setAsync(status: Status, newValue: string): Promise<void>;
+	setEnteredSync(status: Status | undefined, newValue: number): void;
+	setEnteredAsync(status: Status | undefined, newValue: number): Promise<void>;
+	getSync(): string | undefined;
+	getAsync(): Promise<string | undefined>;
+	setSync(status: Status | undefined, newValue: string | undefined): void;
+	setAsync(status: Status | undefined, newValue: string | undefined): Promise<void>;
 }
 
 export interface IntUserField extends UserField {
@@ -655,37 +655,37 @@ export interface IntUserField extends UserField {
 	enteredAsync(): Promise<number>;
 	specifiedSync(): number;
 	specifiedAsync(): Promise<number>;
-	setEnteredSync(status: Status, newValue: number): void;
-	setEnteredAsync(status: Status, newValue: number): Promise<void>;
+	setEnteredSync(status: Status | undefined, newValue: number): void;
+	setEnteredAsync(status: Status | undefined, newValue: number): Promise<void>;
 	getSync(): number;
 	getAsync(): Promise<number>;
-	setSync(status: Status, newValue: number): void;
-	setAsync(status: Status, newValue: number): Promise<void>;
+	setSync(status: Status | undefined, newValue: number): void;
+	setAsync(status: Status | undefined, newValue: number): Promise<void>;
 }
 
 export interface User extends Versioned {
 	operationSync(): number;
 	operationAsync(): Promise<number>;
-	userNameSync(): CharUserField;
-	userNameAsync(): Promise<CharUserField>;
-	passwordSync(): CharUserField;
-	passwordAsync(): Promise<CharUserField>;
-	firstNameSync(): CharUserField;
-	firstNameAsync(): Promise<CharUserField>;
-	lastNameSync(): CharUserField;
-	lastNameAsync(): Promise<CharUserField>;
-	middleNameSync(): CharUserField;
-	middleNameAsync(): Promise<CharUserField>;
-	commentSync(): CharUserField;
-	commentAsync(): Promise<CharUserField>;
-	attributesSync(): CharUserField;
-	attributesAsync(): Promise<CharUserField>;
-	activeSync(): IntUserField;
-	activeAsync(): Promise<IntUserField>;
-	adminSync(): IntUserField;
-	adminAsync(): Promise<IntUserField>;
-	clearSync(status: Status): void;
-	clearAsync(status: Status): Promise<void>;
+	userNameSync(): CharUserField | undefined;
+	userNameAsync(): Promise<CharUserField | undefined>;
+	passwordSync(): CharUserField | undefined;
+	passwordAsync(): Promise<CharUserField | undefined>;
+	firstNameSync(): CharUserField | undefined;
+	firstNameAsync(): Promise<CharUserField | undefined>;
+	lastNameSync(): CharUserField | undefined;
+	lastNameAsync(): Promise<CharUserField | undefined>;
+	middleNameSync(): CharUserField | undefined;
+	middleNameAsync(): Promise<CharUserField | undefined>;
+	commentSync(): CharUserField | undefined;
+	commentAsync(): Promise<CharUserField | undefined>;
+	attributesSync(): CharUserField | undefined;
+	attributesAsync(): Promise<CharUserField | undefined>;
+	activeSync(): IntUserField | undefined;
+	activeAsync(): Promise<IntUserField | undefined>;
+	adminSync(): IntUserField | undefined;
+	adminAsync(): Promise<IntUserField | undefined>;
+	clearSync(status: Status | undefined): void;
+	clearAsync(status: Status | undefined): Promise<void>;
 }
 
 export namespace User {
@@ -698,21 +698,21 @@ export namespace User {
 }
 
 export interface ListUsers extends Versioned {
-	listSync(status: Status, user: User): void;
-	listAsync(status: Status, user: User): Promise<void>;
+	listSync(status: Status | undefined, user: User | undefined): void;
+	listAsync(status: Status | undefined, user: User | undefined): Promise<void>;
 }
 
 export interface LogonInfo extends Versioned {
-	nameSync(): string;
-	nameAsync(): Promise<string>;
-	roleSync(): string;
-	roleAsync(): Promise<string>;
-	networkProtocolSync(): string;
-	networkProtocolAsync(): Promise<string>;
-	remoteAddressSync(): string;
-	remoteAddressAsync(): Promise<string>;
-	authBlockSync(length: Uint32Array): Pointer;
-	authBlockAsync(length: Uint32Array): Promise<Pointer>;
+	nameSync(): string | undefined;
+	nameAsync(): Promise<string | undefined>;
+	roleSync(): string | undefined;
+	roleAsync(): Promise<string | undefined>;
+	networkProtocolSync(): string | undefined;
+	networkProtocolAsync(): Promise<string | undefined>;
+	remoteAddressSync(): string | undefined;
+	remoteAddressAsync(): Promise<string | undefined>;
+	authBlockSync(length: Uint32Array | undefined): Pointer | undefined;
+	authBlockAsync(length: Uint32Array | undefined): Promise<Pointer | undefined>;
 }
 
 export interface Management extends PluginBase {
@@ -720,18 +720,18 @@ export interface Management extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	startSync(status: Status, logonInfo: LogonInfo): void;
-	startAsync(status: Status, logonInfo: LogonInfo): Promise<void>;
-	executeSync(status: Status, user: User, callback: ListUsers): number;
-	executeAsync(status: Status, user: User, callback: ListUsers): Promise<number>;
-	commitSync(status: Status): void;
-	commitAsync(status: Status): Promise<void>;
-	rollbackSync(status: Status): void;
-	rollbackAsync(status: Status): Promise<void>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	startSync(status: Status | undefined, logonInfo: LogonInfo | undefined): void;
+	startAsync(status: Status | undefined, logonInfo: LogonInfo | undefined): Promise<void>;
+	executeSync(status: Status | undefined, user: User | undefined, callback: ListUsers | undefined): number;
+	executeAsync(status: Status | undefined, user: User | undefined, callback: ListUsers | undefined): Promise<number>;
+	commitSync(status: Status | undefined): void;
+	commitAsync(status: Status | undefined): Promise<void>;
+	rollbackSync(status: Status | undefined): void;
+	rollbackAsync(status: Status | undefined): Promise<void>;
 }
 
 export interface WireCryptPlugin extends PluginBase {
@@ -739,23 +739,23 @@ export interface WireCryptPlugin extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	getKnownTypesSync(status: Status): string;
-	getKnownTypesAsync(status: Status): Promise<string>;
-	setKeySync(status: Status, key: CryptKey): void;
-	setKeyAsync(status: Status, key: CryptKey): Promise<void>;
-	encryptSync(status: Status, length: number, from: Uint8Array | Pointer, to: Uint8Array | Pointer): void;
-	encryptAsync(status: Status, length: number, from: Uint8Array | Pointer, to: Uint8Array | Pointer): Promise<void>;
-	decryptSync(status: Status, length: number, from: Uint8Array | Pointer, to: Uint8Array | Pointer): void;
-	decryptAsync(status: Status, length: number, from: Uint8Array | Pointer, to: Uint8Array | Pointer): Promise<void>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	getKnownTypesSync(status: Status | undefined): string | undefined;
+	getKnownTypesAsync(status: Status | undefined): Promise<string | undefined>;
+	setKeySync(status: Status | undefined, key: CryptKey | undefined): void;
+	setKeyAsync(status: Status | undefined, key: CryptKey | undefined): Promise<void>;
+	encryptSync(status: Status | undefined, length: number, from: Uint8Array | Pointer | undefined, to: Uint8Array | Pointer | undefined): void;
+	encryptAsync(status: Status | undefined, length: number, from: Uint8Array | Pointer | undefined, to: Uint8Array | Pointer | undefined): Promise<void>;
+	decryptSync(status: Status | undefined, length: number, from: Uint8Array | Pointer | undefined, to: Uint8Array | Pointer | undefined): void;
+	decryptAsync(status: Status | undefined, length: number, from: Uint8Array | Pointer | undefined, to: Uint8Array | Pointer | undefined): Promise<void>;
 }
 
 export interface CryptKeyCallback extends Versioned {
-	callbackSync(dataLength: number, data: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): number;
-	callbackAsync(dataLength: number, data: Uint8Array | Pointer, bufferLength: number, buffer: Uint8Array | Pointer): Promise<number>;
+	callbackSync(dataLength: number, data: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): number;
+	callbackAsync(dataLength: number, data: Uint8Array | Pointer | undefined, bufferLength: number, buffer: Uint8Array | Pointer | undefined): Promise<number>;
 }
 
 export interface KeyHolderPlugin extends PluginBase {
@@ -763,14 +763,14 @@ export interface KeyHolderPlugin extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
-	keyCallbackSync(status: Status, callback: CryptKeyCallback): number;
-	keyCallbackAsync(status: Status, callback: CryptKeyCallback): Promise<number>;
-	keyHandleSync(status: Status, keyName: string): CryptKeyCallback;
-	keyHandleAsync(status: Status, keyName: string): Promise<CryptKeyCallback>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
+	keyCallbackSync(status: Status | undefined, callback: CryptKeyCallback | undefined): number;
+	keyCallbackAsync(status: Status | undefined, callback: CryptKeyCallback | undefined): Promise<number>;
+	keyHandleSync(status: Status | undefined, keyName: string | undefined): CryptKeyCallback | undefined;
+	keyHandleAsync(status: Status | undefined, keyName: string | undefined): Promise<CryptKeyCallback | undefined>;
 }
 
 export interface DbCryptPlugin extends PluginBase {
@@ -778,10 +778,10 @@ export interface DbCryptPlugin extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
 }
 
 export interface ExternalContext extends Versioned {
@@ -790,8 +790,8 @@ export interface ExternalContext extends Versioned {
 export interface ExternalResultSet extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	fetchSync(status: Status): boolean;
-	fetchAsync(status: Status): Promise<boolean>;
+	fetchSync(status: Status | undefined): boolean;
+	fetchAsync(status: Status | undefined): Promise<boolean>;
 }
 
 export interface ExternalFunction extends Disposable {
@@ -825,24 +825,24 @@ export namespace ExternalTrigger {
 }
 
 export interface RoutineMetadata extends Versioned {
-	getPackageSync(status: Status): string;
-	getPackageAsync(status: Status): Promise<string>;
-	getNameSync(status: Status): string;
-	getNameAsync(status: Status): Promise<string>;
-	getEntryPointSync(status: Status): string;
-	getEntryPointAsync(status: Status): Promise<string>;
-	getBodySync(status: Status): string;
-	getBodyAsync(status: Status): Promise<string>;
-	getInputMetadataSync(status: Status): MessageMetadata;
-	getInputMetadataAsync(status: Status): Promise<MessageMetadata>;
-	getOutputMetadataSync(status: Status): MessageMetadata;
-	getOutputMetadataAsync(status: Status): Promise<MessageMetadata>;
-	getTriggerMetadataSync(status: Status): MessageMetadata;
-	getTriggerMetadataAsync(status: Status): Promise<MessageMetadata>;
-	getTriggerTableSync(status: Status): string;
-	getTriggerTableAsync(status: Status): Promise<string>;
-	getTriggerTypeSync(status: Status): number;
-	getTriggerTypeAsync(status: Status): Promise<number>;
+	getPackageSync(status: Status | undefined): string | undefined;
+	getPackageAsync(status: Status | undefined): Promise<string | undefined>;
+	getNameSync(status: Status | undefined): string | undefined;
+	getNameAsync(status: Status | undefined): Promise<string | undefined>;
+	getEntryPointSync(status: Status | undefined): string | undefined;
+	getEntryPointAsync(status: Status | undefined): Promise<string | undefined>;
+	getBodySync(status: Status | undefined): string | undefined;
+	getBodyAsync(status: Status | undefined): Promise<string | undefined>;
+	getInputMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getInputMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	getOutputMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getOutputMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	getTriggerMetadataSync(status: Status | undefined): MessageMetadata | undefined;
+	getTriggerMetadataAsync(status: Status | undefined): Promise<MessageMetadata | undefined>;
+	getTriggerTableSync(status: Status | undefined): string | undefined;
+	getTriggerTableAsync(status: Status | undefined): Promise<string | undefined>;
+	getTriggerTypeSync(status: Status | undefined): number;
+	getTriggerTypeAsync(status: Status | undefined): Promise<number>;
 }
 
 export interface ExternalEngine extends PluginBase {
@@ -850,10 +850,10 @@ export interface ExternalEngine extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
 }
 
 export interface Timer extends ReferenceCounted {
@@ -866,86 +866,86 @@ export interface Timer extends ReferenceCounted {
 }
 
 export interface TimerControl extends Versioned {
-	startSync(status: Status, timer: Timer, microSeconds: number): void;
-	startAsync(status: Status, timer: Timer, microSeconds: number): Promise<void>;
-	stopSync(status: Status, timer: Timer): void;
-	stopAsync(status: Status, timer: Timer): Promise<void>;
+	startSync(status: Status | undefined, timer: Timer | undefined, microSeconds: number): void;
+	startAsync(status: Status | undefined, timer: Timer | undefined, microSeconds: number): Promise<void>;
+	stopSync(status: Status | undefined, timer: Timer | undefined): void;
+	stopAsync(status: Status | undefined, timer: Timer | undefined): Promise<void>;
 }
 
 export interface VersionCallback extends Versioned {
-	callbackSync(status: Status, text: string): void;
-	callbackAsync(status: Status, text: string): Promise<void>;
+	callbackSync(status: Status | undefined, text: string | undefined): void;
+	callbackAsync(status: Status | undefined, text: string | undefined): Promise<void>;
 }
 
 export interface Util extends Versioned {
-	getFbVersionSync(status: Status, att: Attachment, callback: VersionCallback): void;
-	getFbVersionAsync(status: Status, att: Attachment, callback: VersionCallback): Promise<void>;
-	executeCreateDatabaseSync(status: Status, stmtLength: number, creatDBstatement: string, dialect: number, stmtIsCreateDb: Uint8Array | Pointer): Attachment;
-	executeCreateDatabaseAsync(status: Status, stmtLength: number, creatDBstatement: string, dialect: number, stmtIsCreateDb: Uint8Array | Pointer): Promise<Attachment>;
-	decodeDateSync(date: number, year: Uint32Array, month: Uint32Array, day: Uint32Array): void;
-	decodeDateAsync(date: number, year: Uint32Array, month: Uint32Array, day: Uint32Array): Promise<void>;
-	decodeTimeSync(time: number, hours: Uint32Array, minutes: Uint32Array, seconds: Uint32Array, fractions: Uint32Array): void;
-	decodeTimeAsync(time: number, hours: Uint32Array, minutes: Uint32Array, seconds: Uint32Array, fractions: Uint32Array): Promise<void>;
+	getFbVersionSync(status: Status | undefined, att: Attachment | undefined, callback: VersionCallback | undefined): void;
+	getFbVersionAsync(status: Status | undefined, att: Attachment | undefined, callback: VersionCallback | undefined): Promise<void>;
+	executeCreateDatabaseSync(status: Status | undefined, stmtLength: number, creatDBstatement: string | undefined, dialect: number, stmtIsCreateDb: Uint8Array | Pointer | undefined): Attachment | undefined;
+	executeCreateDatabaseAsync(status: Status | undefined, stmtLength: number, creatDBstatement: string | undefined, dialect: number, stmtIsCreateDb: Uint8Array | Pointer | undefined): Promise<Attachment | undefined>;
+	decodeDateSync(date: number, year: Uint32Array | undefined, month: Uint32Array | undefined, day: Uint32Array | undefined): void;
+	decodeDateAsync(date: number, year: Uint32Array | undefined, month: Uint32Array | undefined, day: Uint32Array | undefined): Promise<void>;
+	decodeTimeSync(time: number, hours: Uint32Array | undefined, minutes: Uint32Array | undefined, seconds: Uint32Array | undefined, fractions: Uint32Array | undefined): void;
+	decodeTimeAsync(time: number, hours: Uint32Array | undefined, minutes: Uint32Array | undefined, seconds: Uint32Array | undefined, fractions: Uint32Array | undefined): Promise<void>;
 	encodeDateSync(year: number, month: number, day: number): number;
 	encodeDateAsync(year: number, month: number, day: number): Promise<number>;
 	encodeTimeSync(hours: number, minutes: number, seconds: number, fractions: number): number;
 	encodeTimeAsync(hours: number, minutes: number, seconds: number, fractions: number): Promise<number>;
 	getClientVersionSync(): number;
 	getClientVersionAsync(): Promise<number>;
-	getXpbBuilderSync(status: Status, kind: number, buf: Uint8Array | Pointer, len: number): XpbBuilder;
-	getXpbBuilderAsync(status: Status, kind: number, buf: Uint8Array | Pointer, len: number): Promise<XpbBuilder>;
-	setOffsetsSync(status: Status, metadata: MessageMetadata, callback: OffsetsCallback): number;
-	setOffsetsAsync(status: Status, metadata: MessageMetadata, callback: OffsetsCallback): Promise<number>;
+	getXpbBuilderSync(status: Status | undefined, kind: number, buf: Uint8Array | Pointer | undefined, len: number): XpbBuilder | undefined;
+	getXpbBuilderAsync(status: Status | undefined, kind: number, buf: Uint8Array | Pointer | undefined, len: number): Promise<XpbBuilder | undefined>;
+	setOffsetsSync(status: Status | undefined, metadata: MessageMetadata | undefined, callback: OffsetsCallback | undefined): number;
+	setOffsetsAsync(status: Status | undefined, metadata: MessageMetadata | undefined, callback: OffsetsCallback | undefined): Promise<number>;
 }
 
 export interface OffsetsCallback extends Versioned {
-	setOffsetSync(status: Status, index: number, offset: number, nullOffset: number): void;
-	setOffsetAsync(status: Status, index: number, offset: number, nullOffset: number): Promise<void>;
+	setOffsetSync(status: Status | undefined, index: number, offset: number, nullOffset: number): void;
+	setOffsetAsync(status: Status | undefined, index: number, offset: number, nullOffset: number): Promise<void>;
 }
 
 export interface XpbBuilder extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	clearSync(status: Status): void;
-	clearAsync(status: Status): Promise<void>;
-	removeCurrentSync(status: Status): void;
-	removeCurrentAsync(status: Status): Promise<void>;
-	insertIntSync(status: Status, tag: number, value: number): void;
-	insertIntAsync(status: Status, tag: number, value: number): Promise<void>;
-	insertBigIntSync(status: Status, tag: number, value: number): void;
-	insertBigIntAsync(status: Status, tag: number, value: number): Promise<void>;
-	insertBytesSync(status: Status, tag: number, bytes: Uint8Array | Pointer, length: number): void;
-	insertBytesAsync(status: Status, tag: number, bytes: Uint8Array | Pointer, length: number): Promise<void>;
-	insertStringSync(status: Status, tag: number, str: string): void;
-	insertStringAsync(status: Status, tag: number, str: string): Promise<void>;
-	insertTagSync(status: Status, tag: number): void;
-	insertTagAsync(status: Status, tag: number): Promise<void>;
-	isEofSync(status: Status): boolean;
-	isEofAsync(status: Status): Promise<boolean>;
-	moveNextSync(status: Status): void;
-	moveNextAsync(status: Status): Promise<void>;
-	rewindSync(status: Status): void;
-	rewindAsync(status: Status): Promise<void>;
-	findFirstSync(status: Status, tag: number): boolean;
-	findFirstAsync(status: Status, tag: number): Promise<boolean>;
-	findNextSync(status: Status): boolean;
-	findNextAsync(status: Status): Promise<boolean>;
-	getTagSync(status: Status): number;
-	getTagAsync(status: Status): Promise<number>;
-	getLengthSync(status: Status): number;
-	getLengthAsync(status: Status): Promise<number>;
-	getIntSync(status: Status): number;
-	getIntAsync(status: Status): Promise<number>;
-	getBigIntSync(status: Status): number;
-	getBigIntAsync(status: Status): Promise<number>;
-	getStringSync(status: Status): string;
-	getStringAsync(status: Status): Promise<string>;
-	getBytesSync(status: Status): Pointer;
-	getBytesAsync(status: Status): Promise<Pointer>;
-	getBufferLengthSync(status: Status): number;
-	getBufferLengthAsync(status: Status): Promise<number>;
-	getBufferSync(status: Status): Pointer;
-	getBufferAsync(status: Status): Promise<Pointer>;
+	clearSync(status: Status | undefined): void;
+	clearAsync(status: Status | undefined): Promise<void>;
+	removeCurrentSync(status: Status | undefined): void;
+	removeCurrentAsync(status: Status | undefined): Promise<void>;
+	insertIntSync(status: Status | undefined, tag: number, value: number): void;
+	insertIntAsync(status: Status | undefined, tag: number, value: number): Promise<void>;
+	insertBigIntSync(status: Status | undefined, tag: number, value: number): void;
+	insertBigIntAsync(status: Status | undefined, tag: number, value: number): Promise<void>;
+	insertBytesSync(status: Status | undefined, tag: number, bytes: Uint8Array | Pointer | undefined, length: number): void;
+	insertBytesAsync(status: Status | undefined, tag: number, bytes: Uint8Array | Pointer | undefined, length: number): Promise<void>;
+	insertStringSync(status: Status | undefined, tag: number, str: string | undefined): void;
+	insertStringAsync(status: Status | undefined, tag: number, str: string | undefined): Promise<void>;
+	insertTagSync(status: Status | undefined, tag: number): void;
+	insertTagAsync(status: Status | undefined, tag: number): Promise<void>;
+	isEofSync(status: Status | undefined): boolean;
+	isEofAsync(status: Status | undefined): Promise<boolean>;
+	moveNextSync(status: Status | undefined): void;
+	moveNextAsync(status: Status | undefined): Promise<void>;
+	rewindSync(status: Status | undefined): void;
+	rewindAsync(status: Status | undefined): Promise<void>;
+	findFirstSync(status: Status | undefined, tag: number): boolean;
+	findFirstAsync(status: Status | undefined, tag: number): Promise<boolean>;
+	findNextSync(status: Status | undefined): boolean;
+	findNextAsync(status: Status | undefined): Promise<boolean>;
+	getTagSync(status: Status | undefined): number;
+	getTagAsync(status: Status | undefined): Promise<number>;
+	getLengthSync(status: Status | undefined): number;
+	getLengthAsync(status: Status | undefined): Promise<number>;
+	getIntSync(status: Status | undefined): number;
+	getIntAsync(status: Status | undefined): Promise<number>;
+	getBigIntSync(status: Status | undefined): number;
+	getBigIntAsync(status: Status | undefined): Promise<number>;
+	getStringSync(status: Status | undefined): string | undefined;
+	getStringAsync(status: Status | undefined): Promise<string | undefined>;
+	getBytesSync(status: Status | undefined): Pointer | undefined;
+	getBytesAsync(status: Status | undefined): Promise<Pointer | undefined>;
+	getBufferLengthSync(status: Status | undefined): number;
+	getBufferLengthAsync(status: Status | undefined): Promise<number>;
+	getBufferSync(status: Status | undefined): Pointer | undefined;
+	getBufferAsync(status: Status | undefined): Promise<Pointer | undefined>;
 }
 
 export namespace XpbBuilder {
@@ -960,20 +960,20 @@ export interface TraceConnection extends Versioned {
 	getKindAsync(): Promise<number>;
 	getProcessIDSync(): number;
 	getProcessIDAsync(): Promise<number>;
-	getUserNameSync(): string;
-	getUserNameAsync(): Promise<string>;
-	getRoleNameSync(): string;
-	getRoleNameAsync(): Promise<string>;
-	getCharSetSync(): string;
-	getCharSetAsync(): Promise<string>;
-	getRemoteProtocolSync(): string;
-	getRemoteProtocolAsync(): Promise<string>;
-	getRemoteAddressSync(): string;
-	getRemoteAddressAsync(): Promise<string>;
+	getUserNameSync(): string | undefined;
+	getUserNameAsync(): Promise<string | undefined>;
+	getRoleNameSync(): string | undefined;
+	getRoleNameAsync(): Promise<string | undefined>;
+	getCharSetSync(): string | undefined;
+	getCharSetAsync(): Promise<string | undefined>;
+	getRemoteProtocolSync(): string | undefined;
+	getRemoteProtocolAsync(): Promise<string | undefined>;
+	getRemoteAddressSync(): string | undefined;
+	getRemoteAddressAsync(): Promise<string | undefined>;
 	getRemoteProcessIDSync(): number;
 	getRemoteProcessIDAsync(): Promise<number>;
-	getRemoteProcessNameSync(): string;
-	getRemoteProcessNameAsync(): Promise<string>;
+	getRemoteProcessNameSync(): string | undefined;
+	getRemoteProcessNameAsync(): Promise<string | undefined>;
 }
 
 export namespace TraceConnection {
@@ -986,24 +986,24 @@ export interface TraceDatabaseConnection extends TraceConnection {
 	getKindAsync(): Promise<number>;
 	getProcessIDSync(): number;
 	getProcessIDAsync(): Promise<number>;
-	getUserNameSync(): string;
-	getUserNameAsync(): Promise<string>;
-	getRoleNameSync(): string;
-	getRoleNameAsync(): Promise<string>;
-	getCharSetSync(): string;
-	getCharSetAsync(): Promise<string>;
-	getRemoteProtocolSync(): string;
-	getRemoteProtocolAsync(): Promise<string>;
-	getRemoteAddressSync(): string;
-	getRemoteAddressAsync(): Promise<string>;
+	getUserNameSync(): string | undefined;
+	getUserNameAsync(): Promise<string | undefined>;
+	getRoleNameSync(): string | undefined;
+	getRoleNameAsync(): Promise<string | undefined>;
+	getCharSetSync(): string | undefined;
+	getCharSetAsync(): Promise<string | undefined>;
+	getRemoteProtocolSync(): string | undefined;
+	getRemoteProtocolAsync(): Promise<string | undefined>;
+	getRemoteAddressSync(): string | undefined;
+	getRemoteAddressAsync(): Promise<string | undefined>;
 	getRemoteProcessIDSync(): number;
 	getRemoteProcessIDAsync(): Promise<number>;
-	getRemoteProcessNameSync(): string;
-	getRemoteProcessNameAsync(): Promise<string>;
+	getRemoteProcessNameSync(): string | undefined;
+	getRemoteProcessNameAsync(): Promise<string | undefined>;
 	getConnectionIDSync(): number;
 	getConnectionIDAsync(): Promise<number>;
-	getDatabaseNameSync(): string;
-	getDatabaseNameAsync(): Promise<string>;
+	getDatabaseNameSync(): string | undefined;
+	getDatabaseNameAsync(): Promise<string | undefined>;
 }
 
 export interface TraceTransaction extends Versioned {
@@ -1054,20 +1054,20 @@ export interface TraceServiceConnection extends TraceConnection {
 	getKindAsync(): Promise<number>;
 	getProcessIDSync(): number;
 	getProcessIDAsync(): Promise<number>;
-	getUserNameSync(): string;
-	getUserNameAsync(): Promise<string>;
-	getRoleNameSync(): string;
-	getRoleNameAsync(): Promise<string>;
-	getCharSetSync(): string;
-	getCharSetAsync(): Promise<string>;
-	getRemoteProtocolSync(): string;
-	getRemoteProtocolAsync(): Promise<string>;
-	getRemoteAddressSync(): string;
-	getRemoteAddressAsync(): Promise<string>;
+	getUserNameSync(): string | undefined;
+	getUserNameAsync(): Promise<string | undefined>;
+	getRoleNameSync(): string | undefined;
+	getRoleNameAsync(): Promise<string | undefined>;
+	getCharSetSync(): string | undefined;
+	getCharSetAsync(): Promise<string | undefined>;
+	getRemoteProtocolSync(): string | undefined;
+	getRemoteProtocolAsync(): Promise<string | undefined>;
+	getRemoteAddressSync(): string | undefined;
+	getRemoteAddressAsync(): Promise<string | undefined>;
 	getRemoteProcessIDSync(): number;
 	getRemoteProcessIDAsync(): Promise<number>;
-	getRemoteProcessNameSync(): string;
-	getRemoteProcessNameAsync(): Promise<string>;
+	getRemoteProcessNameSync(): string | undefined;
+	getRemoteProcessNameAsync(): Promise<string | undefined>;
 }
 
 export interface TraceStatusVector extends Versioned {
@@ -1108,10 +1108,10 @@ export interface TraceFactory extends PluginBase {
 	addRefAsync(): Promise<void>;
 	releaseSync(): number;
 	releaseAsync(): Promise<number>;
-	setOwnerSync(r: ReferenceCounted): void;
-	setOwnerAsync(r: ReferenceCounted): Promise<void>;
-	getOwnerSync(): ReferenceCounted;
-	getOwnerAsync(): Promise<ReferenceCounted>;
+	setOwnerSync(r: ReferenceCounted | undefined): void;
+	setOwnerAsync(r: ReferenceCounted | undefined): Promise<void>;
+	getOwnerSync(): ReferenceCounted | undefined;
+	getOwnerAsync(): Promise<ReferenceCounted | undefined>;
 }
 
 export namespace TraceFactory {
@@ -1141,37 +1141,37 @@ export namespace TraceFactory {
 export interface UdrFunctionFactory extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	setupSync(status: Status, context: ExternalContext, metadata: RoutineMetadata, inBuilder: MetadataBuilder, outBuilder: MetadataBuilder): void;
-	setupAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata, inBuilder: MetadataBuilder, outBuilder: MetadataBuilder): Promise<void>;
-	newItemSync(status: Status, context: ExternalContext, metadata: RoutineMetadata): ExternalFunction;
-	newItemAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata): Promise<ExternalFunction>;
+	setupSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, inBuilder: MetadataBuilder | undefined, outBuilder: MetadataBuilder | undefined): void;
+	setupAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, inBuilder: MetadataBuilder | undefined, outBuilder: MetadataBuilder | undefined): Promise<void>;
+	newItemSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): ExternalFunction | undefined;
+	newItemAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): Promise<ExternalFunction | undefined>;
 }
 
 export interface UdrProcedureFactory extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	setupSync(status: Status, context: ExternalContext, metadata: RoutineMetadata, inBuilder: MetadataBuilder, outBuilder: MetadataBuilder): void;
-	setupAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata, inBuilder: MetadataBuilder, outBuilder: MetadataBuilder): Promise<void>;
-	newItemSync(status: Status, context: ExternalContext, metadata: RoutineMetadata): ExternalProcedure;
-	newItemAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata): Promise<ExternalProcedure>;
+	setupSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, inBuilder: MetadataBuilder | undefined, outBuilder: MetadataBuilder | undefined): void;
+	setupAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, inBuilder: MetadataBuilder | undefined, outBuilder: MetadataBuilder | undefined): Promise<void>;
+	newItemSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): ExternalProcedure | undefined;
+	newItemAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): Promise<ExternalProcedure | undefined>;
 }
 
 export interface UdrTriggerFactory extends Disposable {
 	disposeSync(): void;
 	disposeAsync(): Promise<void>;
-	setupSync(status: Status, context: ExternalContext, metadata: RoutineMetadata, fieldsBuilder: MetadataBuilder): void;
-	setupAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata, fieldsBuilder: MetadataBuilder): Promise<void>;
-	newItemSync(status: Status, context: ExternalContext, metadata: RoutineMetadata): ExternalTrigger;
-	newItemAsync(status: Status, context: ExternalContext, metadata: RoutineMetadata): Promise<ExternalTrigger>;
+	setupSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, fieldsBuilder: MetadataBuilder | undefined): void;
+	setupAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined, fieldsBuilder: MetadataBuilder | undefined): Promise<void>;
+	newItemSync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): ExternalTrigger | undefined;
+	newItemAsync(status: Status | undefined, context: ExternalContext | undefined, metadata: RoutineMetadata | undefined): Promise<ExternalTrigger | undefined>;
 }
 
 export interface UdrPlugin extends Versioned {
-	getMasterSync(): Master;
-	getMasterAsync(): Promise<Master>;
-	registerFunctionSync(status: Status, name: string, factory: UdrFunctionFactory): void;
-	registerFunctionAsync(status: Status, name: string, factory: UdrFunctionFactory): Promise<void>;
-	registerProcedureSync(status: Status, name: string, factory: UdrProcedureFactory): void;
-	registerProcedureAsync(status: Status, name: string, factory: UdrProcedureFactory): Promise<void>;
-	registerTriggerSync(status: Status, name: string, factory: UdrTriggerFactory): void;
-	registerTriggerAsync(status: Status, name: string, factory: UdrTriggerFactory): Promise<void>;
+	getMasterSync(): Master | undefined;
+	getMasterAsync(): Promise<Master | undefined>;
+	registerFunctionSync(status: Status | undefined, name: string | undefined, factory: UdrFunctionFactory | undefined): void;
+	registerFunctionAsync(status: Status | undefined, name: string | undefined, factory: UdrFunctionFactory | undefined): Promise<void>;
+	registerProcedureSync(status: Status | undefined, name: string | undefined, factory: UdrProcedureFactory | undefined): void;
+	registerProcedureAsync(status: Status | undefined, name: string | undefined, factory: UdrProcedureFactory | undefined): Promise<void>;
+	registerTriggerSync(status: Status | undefined, name: string | undefined, factory: UdrTriggerFactory | undefined): void;
+	registerTriggerAsync(status: Status | undefined, name: string | undefined, factory: UdrTriggerFactory | undefined): Promise<void>;
 }

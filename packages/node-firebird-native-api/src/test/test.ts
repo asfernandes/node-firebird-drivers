@@ -18,12 +18,12 @@ describe('node-firebird-native-api', function() {
 
 	before(() => {
 		master = getMaster(getDefaultLibraryFilename());
-		dispatcher = master.getDispatcherSync();
+		dispatcher = master.getDispatcherSync()!;
 		tmpDir = tmp.mkdirSync().path.toString();
 	});
 
 	after(() => {
-		const status = master.getStatusSync();
+		const status = master.getStatusSync()!;
 		const fb_shutrsn_app_stopped = -3;
 		dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
 		status.disposeSync();
@@ -36,13 +36,13 @@ describe('node-firebird-native-api', function() {
 
 	describe('Master', () => {
 		it('#getStatus()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			assert.notEqual(status, null);
 			status.disposeSync();
 		});
 
 		it('#getDispatcher()', () => {
-			const dispatcher = master.getDispatcherSync();
+			const dispatcher = master.getDispatcherSync()!;
 			assert.notEqual(dispatcher, null);
 			dispatcher.addRefSync();
 			assert.equal(dispatcher.releaseSync(), 1);
@@ -60,7 +60,7 @@ describe('node-firebird-native-api', function() {
 		let util: Util;
 
 		before(() => {
-			util = master.getUtilInterfaceSync();
+			util = master.getUtilInterfaceSync()!;
 		});
 
 		it('#encodeDate()', () => {
@@ -89,9 +89,9 @@ describe('node-firebird-native-api', function() {
 
 	describe('Provider', () => {
 		it('#createDatabaseSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
-				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Provider-createDatabaseSync.fdb'), 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Provider-createDatabaseSync.fdb'), 0, undefined)!;
 				attachment.dropDatabaseSync(status);
 			}
 			finally {
@@ -100,9 +100,9 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#createDatabaseAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
-				const attachment = await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase.fdb'), 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase.fdb'), 0, undefined))!;
 				await attachment.dropDatabaseAsync(status);
 			}
 			finally {
@@ -113,9 +113,9 @@ describe('node-firebird-native-api', function() {
 
 	describe('Attachment', () => {
 		it('#dropDatabaseSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
-				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Attachment-dropDatabaseSync.fdb'), 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Attachment-dropDatabaseSync.fdb'), 0, undefined)!;
 				attachment.dropDatabaseSync(status);
 			}
 			finally {
@@ -124,9 +124,9 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#dropDatabaseAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
-				const attachment = await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-dropDatabase.fdb'), 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-dropDatabase.fdb'), 0, undefined))!;
 				await attachment.dropDatabaseAsync(status);
 			}
 			finally {
@@ -135,10 +135,10 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#detachSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-detachSync.fdb');
-				const attachment = dispatcher.createDatabaseSync(status, filename, 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, filename, 0, undefined)!;
 				attachment.detachSync(status);
 				fs.removeSync(filename);
 			}
@@ -148,10 +148,10 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#detachAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-detach.fdb');
-				const attachment = await dispatcher.createDatabaseAsync(status, filename, 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, filename, 0, undefined))!;
 				await attachment.detachAsync(status);
 				await fs.removeAsync(filename);
 			}
@@ -161,13 +161,13 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#startTransactionSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-startTransactionSync.fdb');
 
-				const attachment = dispatcher.createDatabaseSync(status, filename, 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, filename, 0, undefined)!;
 				try {
-					const transaction = attachment.startTransactionSync(status, 0, null);
+					const transaction = attachment.startTransactionSync(status, 0, undefined)!;
 					transaction.commitSync(status);
 				}
 				finally {
@@ -180,13 +180,13 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#startTransactionAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-startTransaction.fdb');
 
-				const attachment = await dispatcher.createDatabaseAsync(status, filename, 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, filename, 0, undefined))!;
 				try {
-					const transaction = await attachment.startTransactionAsync(status, 0, null);
+					const transaction = (await attachment.startTransactionAsync(status, 0, undefined))!;
 					await transaction.commitAsync(status);
 				}
 				finally {
@@ -199,27 +199,27 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#executeSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-executeSync.fdb');
 				const stmt1 = 'create table t1 (n1 integer)';
 				const stmt2 = 'insert into t1 values (1)';
 				const stmt3 = 'select';	// error
 
-				const attachment = dispatcher.createDatabaseSync(status, filename, 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, filename, 0, undefined)!;
 				try {
-					const transaction = attachment.startTransactionSync(status, 0, null);
+					const transaction = attachment.startTransactionSync(status, 0, undefined)!;
 					try {
-						attachment.executeSync(status, transaction, 0, stmt1, 3, null, null, null, null);
+						attachment.executeSync(status, transaction, 0, stmt1, 3, undefined, undefined, undefined, undefined);
 						transaction.commitRetainingSync(status);
-						attachment.executeSync(status, transaction, 0, stmt2, 3, null, null, null, null);
+						attachment.executeSync(status, transaction, 0, stmt2, 3, undefined, undefined, undefined, undefined);
 
-						let error: Error;
+						let error: Error | undefined;
 						try {
-							attachment.executeSync(status, transaction, 0, stmt3, 3, null, null, null, null);
+							attachment.executeSync(status, transaction, 0, stmt3, 3, undefined, undefined, undefined, undefined);
 						}
 						catch (e) {
-							error = e;
+							error = e as Error;
 							assert.equal(error.message,
 								'Dynamic SQL Error\n' +
 								'-SQL error code = -104\n' +
@@ -242,27 +242,27 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#executeAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-execute.fdb');
 				const stmt1 = 'create table t1 (n1 integer)';
 				const stmt2 = 'insert into t1 values (1)';
 				const stmt3 = 'select';	// error
 
-				const attachment = await dispatcher.createDatabaseAsync(status, filename, 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, filename, 0, undefined))!;
 				try {
-					const transaction = await attachment.startTransactionAsync(status, 0, null);
+					const transaction = (await attachment.startTransactionAsync(status, 0, undefined))!;
 					try {
-						await attachment.executeAsync(status, transaction, 0, stmt1, 3, null, null, null, null);
+						await attachment.executeAsync(status, transaction, 0, stmt1, 3, undefined, undefined, undefined, undefined);
 						await transaction.commitRetainingAsync(status);
-						await attachment.executeAsync(status, transaction, 0, stmt2, 3, null, null, null, null);
+						await attachment.executeAsync(status, transaction, 0, stmt2, 3, undefined, undefined, undefined, undefined);
 
-						let error: Error;
+						let error: Error | undefined;
 						try {
-							await attachment.executeAsync(status, transaction, 0, stmt3, 3, null, null, null, null);
+							await attachment.executeAsync(status, transaction, 0, stmt3, 3, undefined, undefined, undefined, undefined);
 						}
 						catch (e) {
-							error = e;
+							error = e as Error;
 							assert.equal(error.message,
 								'Dynamic SQL Error\n' +
 								'-SQL error code = -104\n' +
@@ -285,22 +285,22 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#prepareSync()', () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-prepareSync.fdb');
 				const stmt1 = 'create table t1 (n1 integer)';
 				const stmt2 = 'insert into t1 values (?)';
 
-				const attachment = dispatcher.createDatabaseSync(status, filename, 0, null);
+				const attachment = dispatcher.createDatabaseSync(status, filename, 0, undefined)!;
 				try {
-					const transaction = attachment.startTransactionSync(status, 0, null);
+					const transaction = attachment.startTransactionSync(status, 0, undefined)!;
 					try {
-						attachment.executeSync(status, transaction, 0, stmt1, 3, null, null, null, null);
+						attachment.executeSync(status, transaction, 0, stmt1, 3, undefined, undefined, undefined, undefined);
 						transaction.commitRetainingSync(status);
 
-						const statement2 = attachment.prepareSync(status, transaction, 0, stmt2, 3, 0);
+						const statement2 = attachment.prepareSync(status, transaction, 0, stmt2, 3, 0)!;
 						try {
-							const inputMetadata2 = statement2.getInputMetadataSync(status);
+							const inputMetadata2 = statement2.getInputMetadataSync(status)!;
 							try {
 								assert.equal(inputMetadata2.getCountSync(status), 1);
 								assert.equal(inputMetadata2.getMessageLengthSync(status), 2 + 4);
@@ -309,7 +309,7 @@ describe('node-firebird-native-api', function() {
 								inputMetadata2.releaseSync();
 							}
 
-							const outputMetadata2 = statement2.getOutputMetadataSync(status);
+							const outputMetadata2 = statement2.getOutputMetadataSync(status)!;
 							try {
 								assert.equal(outputMetadata2.getCountSync(status), 0);
 								assert.equal(outputMetadata2.getMessageLengthSync(status), 0);
@@ -336,22 +336,22 @@ describe('node-firebird-native-api', function() {
 		});
 
 		it('#prepareAsync()', async () => {
-			const status = master.getStatusSync();
+			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-prepare.fdb');
 				const stmt1 = 'create table t1 (n1 integer)';
 				const stmt2 = 'insert into t1 values (?)';
 
-				const attachment = await dispatcher.createDatabaseAsync(status, filename, 0, null);
+				const attachment = (await dispatcher.createDatabaseAsync(status, filename, 0, undefined))!;
 				try {
-					const transaction = await attachment.startTransactionAsync(status, 0, null);
+					const transaction = (await attachment.startTransactionAsync(status, 0, undefined))!;
 					try {
-						await attachment.executeAsync(status, transaction, 0, stmt1, 3, null, null, null, null);
+						await attachment.executeAsync(status, transaction, 0, stmt1, 3, undefined, undefined, undefined, undefined);
 						await transaction.commitRetainingAsync(status);
 
-						const statement2 = await attachment.prepareAsync(status, transaction, 0, stmt2, 3, 0);
+						const statement2 = (await attachment.prepareAsync(status, transaction, 0, stmt2, 3, 0))!;
 						try {
-							const inputMetadata2 = await statement2.getInputMetadataAsync(status);
+							const inputMetadata2 = (await statement2.getInputMetadataAsync(status))!;
 							try {
 								assert.equal(inputMetadata2.getCountSync(status), 1);
 								assert.equal(inputMetadata2.getMessageLengthSync(status), 2 + 4);
@@ -360,7 +360,7 @@ describe('node-firebird-native-api', function() {
 								inputMetadata2.releaseSync();
 							}
 
-							const outputMetadata2 = await statement2.getOutputMetadataSync(status);
+							const outputMetadata2 = (await statement2.getOutputMetadataSync(status))!;
 							try {
 								assert.equal(outputMetadata2.getCountSync(status), 0);
 								assert.equal(outputMetadata2.getMessageLengthSync(status), 0);

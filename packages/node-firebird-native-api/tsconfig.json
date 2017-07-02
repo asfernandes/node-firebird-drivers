@@ -10,7 +10,7 @@
         "lib": [
             "es6"
         ],
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
         "alwaysStrict": true,
