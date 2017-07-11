@@ -39,13 +39,20 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 	const charSet = 'utf8';
 	let ret = `${code(dpb.isc_dpb_version1)}${code(dpb.lc_ctype)}${code(charSet.length)}${charSet}`;
 
-	if (options) {
-		if (options.username)
-			ret += `${code(dpb.user_name)}${code(options.username.length)}${options.username}`;
+	if (!options)
+		options = {};
 
-		if (options.password)
-			ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
-	}
+	if (!options.username)
+		options.username = process.env.ISC_USER;
+
+	if (!options.password)
+		options.password = process.env.ISC_PASSWORD;
+
+	if (options.username)
+		ret += `${code(dpb.user_name)}${code(options.username.length)}${options.username}`;
+
+	if (options.password)
+		ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
 
 	return Buffer.from(ret);
 }
