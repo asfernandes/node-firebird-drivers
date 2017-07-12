@@ -195,7 +195,7 @@ export function runCommonTests(client: Client) {
 		describe('ResultSet', () => {
 			it('#fetch()', async () => {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
-				const transaction = await attachment.startTransaction();
+				let transaction = await attachment.startTransaction();
 
 				const fields = [
 					{ name: 'x_short', type: 'numeric(2)', valToStr: (v: any) => v },
@@ -240,6 +240,10 @@ export function runCommonTests(client: Client) {
 				{	// scope
 					const statement2a = await attachment.prepare(transaction,
 						`insert into t1 (${fields.map(f => f.name).join(', ')}) values (${fields.map(() => '?').join(', ')})`);
+
+					// Test execution in a new transaction, after the one used in prepare was committed.
+					await transaction.commit();
+					transaction = await attachment.startTransaction();
 
 					for (let i = 0; i < recordCount; ++i)
 						await statement2a.execute(transaction, parameters);

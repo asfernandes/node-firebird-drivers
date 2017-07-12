@@ -1,4 +1,5 @@
 import { AbstractStatement } from './statement';
+import { AbstractTransaction } from './transaction';
 
 import { FetchOptions, ResultSet } from '..';
 
@@ -11,7 +12,7 @@ export abstract class AbstractResultSet implements ResultSet {
 	/** Default result set's fetch options. */
 	defaultFetchOptions: FetchOptions;
 
-	protected constructor(public statement?: AbstractStatement) {
+	protected constructor(public statement?: AbstractStatement, public transaction?: AbstractTransaction) {
 	}
 
 	/** Closes this result set. */
