@@ -39,16 +39,18 @@ export abstract class AbstractAttachment implements Attachment {
 	async disconnect(): Promise<void> {
 		this.check();
 
+		await this.preDispose();
 		await this.internalDisconnect();
-		await this.finishDispose();
+		await this.postDispose();
 	}
 
 	/** Drops the database and release this attachment. */
 	async dropDatabase(): Promise<void> {
 		this.check();
 
+		await this.preDispose();
 		await this.internalDropDatabase();
-		await this.finishDispose();
+		await this.postDispose();
 	}
 
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
@@ -118,17 +120,17 @@ export abstract class AbstractAttachment implements Attachment {
 			throw new Error('Attachment is already disconnected.');
 	}
 
-	private async finishDispose() {
-		this.client!.attachments.delete(this);
-
+	private async preDispose() {
 		try {
-			for (const statement of this.statements)
-				await statement.dispose();
+			await Promise.all(Array.from(this.statements).map(statement => statement.dispose()));
 		}
 		finally {
 			this.statements.clear();
 		}
+	}
 
+	private async postDispose() {
+		this.client!.attachments.delete(this);
 		this.client = undefined;
 	}
 

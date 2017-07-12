@@ -43,8 +43,7 @@ export abstract class AbstractClient implements Client {
 		this.check();
 
 		try {
-			for (const attachment of this.attachments)
-				await attachment.disconnect();
+			await Promise.all(Array.from(this.attachments).map(attachment => attachment.disconnect()));
 		}
 		finally {
 			this.attachments.clear();
