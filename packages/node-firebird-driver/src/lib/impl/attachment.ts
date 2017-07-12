@@ -16,6 +16,7 @@ import {
 /** AbstractAttachment implementation. */
 export abstract class AbstractAttachment implements Attachment {
 	statements = new Set<AbstractStatement>();
+	transactions = new Set<AbstractTransaction>();
 
 	/** Default transaction options. */
 	defaultTransactionOptions: TransactionOptions;
@@ -60,7 +61,9 @@ export abstract class AbstractAttachment implements Attachment {
 
 		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
 		try {
-			return await statement.executeTransaction(transaction);
+			const newTransaction = await statement.executeTransaction(transaction);
+			this.transactions.add(newTransaction);
+			return newTransaction;
 		}
 		finally {
 			await statement.dispose();
@@ -102,7 +105,10 @@ export abstract class AbstractAttachment implements Attachment {
 	async startTransaction(options?: TransactionOptions): Promise<AbstractTransaction> {
 		this.check();
 
-		return await this.internalStartTransaction(options || this.defaultTransactionOptions || this.client!.defaultTransactionOptions);
+		const transaction = await this.internalStartTransaction(
+			options || this.defaultTransactionOptions || this.client!.defaultTransactionOptions);
+		this.transactions.add(transaction);
+		return transaction;
 	}
 
 	/** Prepares a query. */
@@ -123,9 +129,11 @@ export abstract class AbstractAttachment implements Attachment {
 	private async preDispose() {
 		try {
 			await Promise.all(Array.from(this.statements).map(statement => statement.dispose()));
+			await Promise.all(Array.from(this.transactions).map(transaction => transaction.rollback()));
 		}
 		finally {
 			this.statements.clear();
+			this.transactions.clear();
 		}
 	}
 

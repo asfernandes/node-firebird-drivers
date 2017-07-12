@@ -147,6 +147,12 @@ export function runCommonTests(client: Client) {
 				await transaction.rollback();
 				await attachment.dropDatabase();
 			});
+
+			it('transaction left opened', async () => {
+				const attachment = await client.createDatabase(getTempFile('Transaction-left-opened.fdb'));
+				await attachment.startTransaction();
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('Statement', () => {

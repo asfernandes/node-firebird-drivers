@@ -13,6 +13,8 @@ export abstract class AbstractTransaction implements Transaction {
 		this.check();
 
 		await this.internalCommit();
+
+		this.attachment!.transactions.delete(this);
 		this.attachment = undefined;
 	}
 
@@ -28,6 +30,8 @@ export abstract class AbstractTransaction implements Transaction {
 		this.check();
 
 		await this.internalRollback();
+
+		this.attachment!.transactions.delete(this);
 		this.attachment = undefined;
 	}
 
