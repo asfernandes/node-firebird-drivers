@@ -12,6 +12,7 @@ import * as fb from 'node-firebird-native-api';
 export class ResultSetImpl extends AbstractResultSet {
 	// Override declarations.
 	statement: StatementImpl;
+	transaction: TransactionImpl;
 
 	resultSetHandle?: fb.ResultSet;
 	outBuffer: Uint8Array;
@@ -19,13 +20,13 @@ export class ResultSetImpl extends AbstractResultSet {
 
 	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
 			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
-		const resultSet = new ResultSetImpl(statement);
+		const resultSet = new ResultSetImpl(statement, transaction);
 
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
-			resultSet.dataReader = createDataReader(status, statement.attachment.client, transaction, statement.outMetadata!);
+			resultSet.dataReader = createDataReader(status, statement.attachment.client, statement.outMetadata!);
 
-			statement.dataWriter(statement.inBuffer, parameters);
+			statement.dataWriter(transaction, statement.inBuffer, parameters);
 
 			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
@@ -51,7 +52,7 @@ export class ResultSetImpl extends AbstractResultSet {
 
 			while (true) {
 				if (await this.resultSetHandle!.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
-					rows.push(await this.dataReader(this.outBuffer));
+					rows.push(await this.dataReader(this.transaction, this.outBuffer));
 				else {
 					return { finished: true, rows: await rows };
 				}

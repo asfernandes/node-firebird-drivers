@@ -41,7 +41,7 @@ export class StatementImpl extends AbstractStatement {
 
 			if (statement.inMetadata) {
 				statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
-				statement.dataWriter = createDataWriter(status, attachment.client, transaction, statement.inMetadata);
+				statement.dataWriter = createDataWriter(status, attachment.client, statement.inMetadata);
 			}
 
 			return statement;
@@ -73,7 +73,7 @@ export class StatementImpl extends AbstractStatement {
 	/** Executes a prepared statement that has no result set. */
 	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<void> {
 		return await this.attachment.client.statusAction(async status => {
-			await this.dataWriter(this.inBuffer, parameters);
+			await this.dataWriter(transaction, this.inBuffer, parameters);
 
 			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
 				this.inMetadata, this.inBuffer, this.outMetadata, undefined);

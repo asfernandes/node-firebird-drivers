@@ -51,14 +51,13 @@ export function fixMetadata(status: fb.Status, metadata?: fb.MessageMetadata): f
 	return ret;
 }
 
-export type DataReader = (buffer: Uint8Array) => Promise<any[]>;
+export type DataReader = (transaction: TransactionImpl, buffer: Uint8Array) => Promise<any[]>;
 
 /** Creates a data reader. */
-export function createDataReader(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
-		DataReader {
+export function createDataReader(status: fb.Status, client: ClientImpl, metadata: fb.MessageMetadata): DataReader {
 	const util = client.util!;
 	const count = metadata.getCountSync(status);
-	const mappers = new Array<(buffer: Uint8Array) => Promise<any>>(count);
+	const mappers = new Array<DataReader>(count);
 
 	for (let i = 0; i < count; ++i) {
 		const nullOffset = metadata.getNullOffsetSync(status, i);
@@ -67,7 +66,7 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 		///const length = metadata.getLengthSync(status, i);
 		///const scale = metadata.getScaleSync(status, i);
 
-		mappers[i] = async (buffer: Uint8Array): Promise<any> => {
+		mappers[i] = async (transaction: TransactionImpl, buffer: Uint8Array): Promise<any> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (dataView.getInt16(nullOffset, littleEndian) == -1)
@@ -182,24 +181,24 @@ export function createDataReader(status: fb.Status, client: ClientImpl, transact
 		}
 	}
 
-	return async (buffer: Uint8Array): Promise<any[]> => {
+	return async (transaction: TransactionImpl, buffer: Uint8Array): Promise<any[]> => {
 		const ret = new Array(count);
 
 		for (let i = 0; i < count; ++i)
-			ret[i] = await mappers[i](buffer);
+			ret[i] = await mappers[i](transaction, buffer);
 
 		return ret;
 	}
 }
 
-export type DataWriter = (buffer: Uint8Array, values?: Array<any>) => Promise<void>;
+export type DataWriter = (transaction: TransactionImpl, buffer: Uint8Array, values?: Array<any>) => Promise<void>;
 
 /** Creates a data writer. */
-export function createDataWriter(status: fb.Status, client: ClientImpl, transaction: TransactionImpl, metadata: fb.MessageMetadata):
+export function createDataWriter(status: fb.Status, client: ClientImpl, metadata: fb.MessageMetadata):
 		DataWriter {
 	const util = client.util!;
 	const count = metadata.getCountSync(status);
-	const mappers = new Array<(buffer: Uint8Array, value: any) => Promise<void>>(count);
+	const mappers = new Array<DataWriter>(count);
 
 	for (let i = 0; i < count; ++i) {
 		const nullOffset = metadata.getNullOffsetSync(status, i);
@@ -208,7 +207,7 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 		const length = metadata.getLengthSync(status, i);
 		///const scale = metadata.getScaleSync(status, i);
 
-		mappers[i] = async (buffer: Uint8Array, value: any): Promise<void> => {
+		mappers[i] = async (transaction: TransactionImpl, buffer: Uint8Array, value: any): Promise<void> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (value == null) {
@@ -316,11 +315,11 @@ export function createDataWriter(status: fb.Status, client: ClientImpl, transact
 		}
 	}
 
-	return async (buffer: Uint8Array, values: Array<any>): Promise<void> => {
+	return async (transaction: TransactionImpl, buffer: Uint8Array, values: Array<any>): Promise<void> => {
 		if ((values || []).length !== count)
 			throw new Error(`Incorrect number of parameters: expected ${count}, received ${(values || []).length}.`);
 
 		for (let i = 0; i < count; ++i)
-			await mappers[i](buffer, values[i]);
+			await mappers[i](transaction, buffer, values[i]);
 	}
 }
