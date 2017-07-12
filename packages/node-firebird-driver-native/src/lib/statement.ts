@@ -10,7 +10,7 @@ import {
 
 import { AbstractStatement } from 'node-firebird-driver/dist/lib/impl';
 
-import { createDataWriter, DataWriter, fixMetadata } from './fb-util';
+import { createDataWriter, createDescriptors, writeBlob, DataWriter, fixMetadata } from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -41,7 +41,7 @@ export class StatementImpl extends AbstractStatement {
 
 			if (statement.inMetadata) {
 				statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
-				statement.dataWriter = createDataWriter(status, attachment.client, statement.inMetadata);
+				statement.dataWriter = createDataWriter(createDescriptors(status, statement.inMetadata));
 			}
 
 			return statement;
@@ -73,7 +73,7 @@ export class StatementImpl extends AbstractStatement {
 	/** Executes a prepared statement that has no result set. */
 	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<void> {
 		return await this.attachment.client.statusAction(async status => {
-			await this.dataWriter(transaction, this.inBuffer, parameters);
+			await this.dataWriter(this.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
 
 			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
 				this.inMetadata, this.inBuffer, this.outMetadata, undefined);

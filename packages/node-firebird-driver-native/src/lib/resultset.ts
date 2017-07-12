@@ -1,6 +1,6 @@
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
-import { createDataReader, DataReader } from './fb-util';
+import { createDataReader, createDescriptors, readBlob, writeBlob, DataReader } from './fb-util';
 
 import { ExecuteQueryOptions, FetchOptions } from 'node-firebird-driver';
 import { AbstractResultSet } from 'node-firebird-driver/dist/lib/impl';
@@ -24,9 +24,9 @@ export class ResultSetImpl extends AbstractResultSet {
 
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
-			resultSet.dataReader = createDataReader(status, statement.attachment.client, statement.outMetadata!);
+			resultSet.dataReader = createDataReader(createDescriptors(status, statement.outMetadata));
 
-			statement.dataWriter(transaction, statement.inBuffer, parameters);
+			statement.dataWriter(statement.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
 
 			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
@@ -52,7 +52,7 @@ export class ResultSetImpl extends AbstractResultSet {
 
 			while (true) {
 				if (await this.resultSetHandle!.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
-					rows.push(await this.dataReader(this.transaction, this.outBuffer));
+					rows.push(await this.dataReader(this.outBuffer, blobId => readBlob(status, this.transaction, blobId)));
 				else {
 					return { finished: true, rows: await rows };
 				}
