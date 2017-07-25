@@ -184,12 +184,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 	}
 
 	return async (buffer: Uint8Array, blobReader: BlobReader): Promise<any[]> => {
-		const ret = new Array(descriptors.length);
-
-		for (let i = 0; i < descriptors.length; ++i)
-			ret[i] = await mappers[i](buffer, blobReader);
-
-		return ret;
+		return await Promise.all(mappers.map(mapper => mapper(buffer, blobReader)));
 	}
 }
 
@@ -307,7 +302,6 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 		if ((values || []).length !== descriptors.length)
 			throw new Error(`Incorrect number of parameters: expected ${descriptors.length}, received ${(values || []).length}.`);
 
-		for (let i = 0; i < descriptors.length; ++i)
-			await mappers[i](buffer, values[i], blobWriter);
+		await Promise.all(mappers.map((mapper, index) => mapper(buffer, values[index], blobWriter)));
 	}
 }
