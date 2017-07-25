@@ -26,7 +26,7 @@ export class ResultSetImpl extends AbstractResultSet {
 			//// FIXME: options
 			resultSet.dataReader = createDataReader(createDescriptors(status, statement.outMetadata));
 
-			statement.dataWriter(statement.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
+			await statement.dataWriter(statement.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
 
 			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
