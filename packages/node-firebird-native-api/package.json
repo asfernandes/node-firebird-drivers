@@ -1,6 +1,6 @@
 {
   "name": "node-firebird-native-api",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "Firebird native API for Node.js",
   "gypfile": true,
   "main": "dist/lib/index.js",
@@ -46,7 +46,7 @@
     "@types/temp-fs": "^0.9.27",
     "fs-extra-promise": "^1.0.1",
     "mocha": "^3.4.2",
-    "node-cloop-gen": "0.0.1-alpha.2",
+    "node-cloop-gen": "0.0.1-alpha.3",
     "power-assert": "^1.4.4",
     "rimraf": "^2.6.1",
     "source-map-support": "^0.4.15",
