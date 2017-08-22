@@ -10,7 +10,16 @@ import {
 
 import { AbstractStatement } from 'node-firebird-driver/dist/lib/impl';
 
-import { createDataWriter, createDescriptors, writeBlob, DataWriter, fixMetadata } from './fb-util';
+import {
+	createDataReader,
+	createDataWriter,
+	createDescriptors,
+	fixMetadata,
+	readBlob,
+	writeBlob,
+	DataReader,
+	DataWriter,
+} from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -19,13 +28,14 @@ import * as fb from 'node-firebird-native-api';
 export class StatementImpl extends AbstractStatement {
 	// Override declarations.
 	attachment: AttachmentImpl;
-	///resultSet: ResultSetImpl;
 
 	statementHandle?: fb.Statement;
 	inMetadata?: fb.MessageMetadata;
 	outMetadata?: fb.MessageMetadata;
 	inBuffer: Uint8Array;
+	outBuffer: Uint8Array;
 	dataWriter: DataWriter;
+	dataReader: DataReader;
 
 	static async prepare(attachment: AttachmentImpl, transaction: TransactionImpl, sqlStmt: string, options?: PrepareOptions):
 			Promise<StatementImpl> {
@@ -42,6 +52,11 @@ export class StatementImpl extends AbstractStatement {
 			if (statement.inMetadata) {
 				statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
 				statement.dataWriter = createDataWriter(createDescriptors(status, statement.inMetadata));
+			}
+
+			if (statement.outMetadata) {
+				statement.outBuffer = new Uint8Array(statement.outMetadata.getMessageLengthSync(status));
+				statement.dataReader = createDataReader(createDescriptors(status, statement.outMetadata));
 			}
 
 			return statement;
@@ -71,15 +86,17 @@ export class StatementImpl extends AbstractStatement {
 	}
 
 	/** Executes a prepared statement that has no result set. */
-	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<void> {
+	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<Array<any>> {
 		return await this.attachment.client.statusAction(async status => {
 			await this.dataWriter(this.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
 
 			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
-				this.inMetadata, this.inBuffer, this.outMetadata, undefined);
+				this.inMetadata, this.inBuffer, this.outMetadata, this.outBuffer);
 
 			if (newTransaction && transaction.transactionHandle != newTransaction)
 				{}	//// FIXME: newTransaction.releaseSync();
+
+			return this.outMetadata ? await this.dataReader(this.outBuffer, blobId => readBlob(status, transaction, blobId)) : [];
 		});
 	}
 

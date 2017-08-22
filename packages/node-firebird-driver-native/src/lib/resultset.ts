@@ -1,6 +1,6 @@
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
-import { createDataReader, createDescriptors, readBlob, writeBlob, DataReader } from './fb-util';
+import { readBlob, writeBlob } from './fb-util';
 
 import { ExecuteQueryOptions, FetchOptions } from 'node-firebird-driver';
 import { AbstractResultSet } from 'node-firebird-driver/dist/lib/impl';
@@ -15,8 +15,6 @@ export class ResultSetImpl extends AbstractResultSet {
 	transaction: TransactionImpl;
 
 	resultSetHandle?: fb.ResultSet;
-	outBuffer: Uint8Array;
-	dataReader: DataReader;
 
 	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
 			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
@@ -24,13 +22,11 @@ export class ResultSetImpl extends AbstractResultSet {
 
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
-			resultSet.dataReader = createDataReader(createDescriptors(status, statement.outMetadata));
 
 			await statement.dataWriter(statement.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
 
 			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
-			resultSet.outBuffer = new Uint8Array(statement.outMetadata!.getMessageLengthSync(status));
 
 			return resultSet;
 		});
@@ -51,8 +47,10 @@ export class ResultSetImpl extends AbstractResultSet {
 			const rows = [];
 
 			while (true) {
-				if (await this.resultSetHandle!.fetchNextAsync(status, this.outBuffer) == fb.Status.RESULT_OK)
-					rows.push(await this.dataReader(this.outBuffer, blobId => readBlob(status, this.transaction, blobId)));
+				if (await this.resultSetHandle!.fetchNextAsync(status, this.statement.outBuffer) == fb.Status.RESULT_OK) {
+					rows.push(await this.statement.dataReader(
+						this.statement.outBuffer, blobId => readBlob(status, this.transaction, blobId)));
+				}
 				else {
 					return { finished: true, rows: await rows };
 				}
