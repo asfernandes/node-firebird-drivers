@@ -85,6 +85,10 @@ export interface Attachment {
 	execute(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<void>;
 
+	/** Executes a statement that returns a single record. */
+	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+		prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<Array<any>>;
+
 	/** Executes a statement that has result set. */
 	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<ResultSet>;
@@ -130,6 +134,9 @@ export interface Statement {
 
 	/** Executes a prepared statement that has no result set. */
 	execute(transaction: Transaction, parameters?: Array<any>, options?: ExecuteOptions): Promise<void>;
+
+	/** Executes a statement that returns a single record. */
+	executeReturning(transaction: Transaction, parameters?: Array<any>, executeOptions?: ExecuteOptions): Promise<Array<any>>;
 
 	/** Executes a prepared statement that has result set. */
 	executeQuery(transaction: Transaction, parameters?: Array<any>, options?: ExecuteQueryOptions): Promise<ResultSet>;

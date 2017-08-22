@@ -52,6 +52,15 @@ export abstract class AbstractStatement implements Statement {
 		this.check();
 
 		//// TODO: check opened resultSet.
+		await this.internalExecute(transaction, parameters,
+			options || this.attachment!.defaultExecuteOptions || this.attachment!.client!.defaultExecuteOptions);
+	}
+
+	/** Executes a statement that returns a single record. */
+	async executeReturning(transaction: AbstractTransaction, parameters?: Array<any>, options?: ExecuteOptions): Promise<Array<any>> {
+		this.check();
+
+		//// TODO: check opened resultSet.
 		return await this.internalExecute(transaction, parameters,
 			options || this.attachment!.defaultExecuteOptions || this.attachment!.client!.defaultExecuteOptions);
 	}
@@ -76,7 +85,7 @@ export abstract class AbstractStatement implements Statement {
 	protected abstract async internalDispose(): Promise<void>;
 	protected abstract async internalExecuteTransaction(transaction: AbstractTransaction): Promise<AbstractTransaction>;
 	protected abstract async internalExecute(transaction: AbstractTransaction, parameters?: Array<any>, options?: ExecuteOptions):
-		Promise<void>;
+		Promise<Array<any>>;
 	protected abstract async internalExecuteQuery(transaction: AbstractTransaction, parameters?: Array<any>, options?: ExecuteQueryOptions):
 		Promise<AbstractResultSet>;
 }

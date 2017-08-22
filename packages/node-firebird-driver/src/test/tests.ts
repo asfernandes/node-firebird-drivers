@@ -115,6 +115,21 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			it('#executeReturning()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturning.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const result = await attachment.executeReturning(transaction, 'insert into t1 values (11) returning n1');
+				assert.equal(result.length, 1);
+				assert.equal(result[0], 11);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('Transaction', () => {
@@ -186,6 +201,26 @@ export function runCommonTests(client: Client) {
 				const resultSet2 = await statement2.executeQuery(transaction);
 				await resultSet2.close();
 				await statement2.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			it('#executeReturning()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturning.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const statement = await attachment.prepare(transaction, 'insert into t1 values (11) returning n1, n1 * 2');
+
+				const result = await statement.executeReturning(transaction);
+				assert.equal(result.length, 2);
+				assert.equal(result[0], 11);
+				assert.equal(result[1], 11 * 2);
+
+				await statement.dispose();
 
 				await transaction.commit();
 				await attachment.dropDatabase();

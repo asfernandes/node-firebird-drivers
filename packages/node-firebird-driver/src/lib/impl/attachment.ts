@@ -84,6 +84,20 @@ export abstract class AbstractAttachment implements Attachment {
 		}
 	}
 
+	/** Executes a statement that returns a single record. */
+	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+			prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<Array<any>> {
+		this.check();
+
+		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
+		try {
+			return await statement.executeReturning(transaction, parameters, executeOptions);
+		}
+		finally {
+			await statement.dispose();
+		}
+	}
+
 	/** Executes a statement that has result set. */
 	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<AbstractResultSet> {
