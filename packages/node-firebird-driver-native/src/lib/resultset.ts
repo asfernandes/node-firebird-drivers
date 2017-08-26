@@ -50,9 +50,12 @@ export class ResultSetImpl extends AbstractResultSet {
 				if (await this.resultSetHandle!.fetchNextAsync(status, this.statement.outBuffer) == fb.Status.RESULT_OK) {
 					rows.push(await this.statement.dataReader(
 						this.statement.outBuffer, blobId => readBlob(status, this.transaction, blobId)));
+
+					if (options && options.fetchSize && rows.length >= options.fetchSize)
+						return { finished: false, rows: rows };
 				}
 				else {
-					return { finished: true, rows: await rows };
+					return { finished: true, rows: rows };
 				}
 			}
 		});
