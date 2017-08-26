@@ -45,7 +45,7 @@ export class ResultSetImpl extends AbstractResultSet {
 	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<Array<any>> }> {
 		return await this.statement.attachment.client.statusAction(async status => {
 			const rows = [];
-			const buffers = [this.statement.outBuffer, new Buffer(this.statement.outBuffer.length)];
+			const buffers = [this.statement.outBuffer, new Buffer(this.statement.outBuffer.buffer.byteLength)];
 			let buffer = 0;
 			let nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
 

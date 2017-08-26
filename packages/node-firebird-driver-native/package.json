@@ -29,7 +29,7 @@
   "homepage": "https://github.com/asfernandes/node-firebird-driver-native#readme",
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
-    "@types/node": "^8.0.7",
+    "@types/node": "6.0.88",
     "node-firebird-driver": "0.0.1-alpha.4",
     "node-firebird-native-api": "0.0.1-alpha.3"
   },

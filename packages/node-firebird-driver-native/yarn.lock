@@ -32,9 +32,9 @@
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.7.tgz#fb0ad04b5b6f6eabe0372a32a8f1fbba5c130cae"
 
-"@types/node@^7.0.5":
-  version "7.0.33"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.33.tgz#ae3c53ad01d7e9d62c7f1a85c5f7500d59b9d25b"
+"@types/node@6.0.88":
+  version "6.0.88"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.88.tgz#f618f11a944f6a18d92b5c472028728a3e3d4b66"
 
 "@types/power-assert-formatter@*":
   version "1.4.28"
@@ -592,26 +592,26 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-nan@^2.5.1:
+nan@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
-node-firebird-driver@0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/node-firebird-driver/-/node-firebird-driver-0.0.1-alpha.2.tgz#00c24c08d469af86f512c9bf207ff48494c1c484"
+node-firebird-driver@0.0.1-alpha.4:
+  version "0.0.1-alpha.4"
+  resolved "https://registry.yarnpkg.com/node-firebird-driver/-/node-firebird-driver-0.0.1-alpha.4.tgz#1b7b5027cce95660d96f03befe62a84a6bf59658"
   dependencies:
-    "@types/node" "^7.0.5"
+    "@types/node" "^8.0.7"
 
-node-firebird-native-api@0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/node-firebird-native-api/-/node-firebird-native-api-0.0.1-alpha.2.tgz#b038fac722ea83bd6d96fe239eaab0816f6086a2"
+node-firebird-native-api@0.0.1-alpha.3:
+  version "0.0.1-alpha.3"
+  resolved "https://registry.yarnpkg.com/node-firebird-native-api/-/node-firebird-native-api-0.0.1-alpha.3.tgz#60d92715b3f9a44977f5d62e6c5b6bda4e3347a1"
   dependencies:
-    "@types/node" "^7.0.5"
+    "@types/node" "^8.0.7"
     bindings "^1.2.1"
-    nan "^2.5.1"
-    node-gyp "^3.6.0"
+    nan "^2.6.2"
+    node-gyp "^3.6.2"
 
-node-gyp@^3.6.0:
+node-gyp@^3.6.2:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-3.6.2.tgz#9bfbe54562286284838e750eac05295853fa1c60"
   dependencies:
