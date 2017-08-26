@@ -39,7 +39,7 @@ export abstract class AbstractResultSet implements ResultSet {
 			return await [];
 
 		const fetchRet = await this.internalFetch(
-			options || this.statement!.defaultFetchOptions || this.statement!.attachment!.defaultFetchOptions ||
+			options || this.defaultFetchOptions || this.statement!.defaultFetchOptions || this.statement!.attachment!.defaultFetchOptions ||
 				this.statement!.attachment!.client!.defaultFetchOptions);
 
 		if (fetchRet.finished)

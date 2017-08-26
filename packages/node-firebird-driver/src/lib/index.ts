@@ -62,6 +62,8 @@ export interface ExecuteQueryOptions extends ExecuteOptions {
 
 /** FetchOptions interface. */
 export interface FetchOptions {
+	/** Number of rows to fetch. */
+	fetchSize?: number;
 }
 
 /** Attachment interface. */
@@ -79,19 +81,31 @@ export interface Attachment {
 	prepare(transaction: Transaction, sqlStmt: string, options?: PrepareOptions): Promise<Statement>;
 
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
-	executeTransaction(transaction: Transaction, sqlStmt: string, prepareOptions?: PrepareOptions): Promise<Transaction>;
+	executeTransaction(transaction: Transaction, sqlStmt: string,
+		options?: {
+			prepareOptions?: PrepareOptions
+		}): Promise<Transaction>;
 
 	/** Executes a statement that has no result set. */
 	execute(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-		prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<void>;
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions,
+		}): Promise<void>;
 
 	/** Executes a statement that returns a single record. */
 	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-		prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<Array<any>>;
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions,
+		}): Promise<Array<any>>;
 
 	/** Executes a statement that has result set. */
 	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-		prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<ResultSet>;
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteQueryOptions,
+		}): Promise<ResultSet>;
 
 	/** Default transaction options. */
 	defaultTransactionOptions?: TransactionOptions;
@@ -162,5 +176,3 @@ export interface ResultSet {
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
 }
-
-//// TODO: Event support.

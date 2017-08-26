@@ -357,6 +357,42 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			it('#fetch() with fetchSize', async () => {
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				await attachment.execute(transaction, `
+					execute block
+					as
+						declare n integer = 0;
+					begin
+						while (n < 50) do
+						begin
+							insert into t1 values (:n);
+							n = n + 1;
+						end
+					end
+				`);
+
+				const rs = await attachment.executeQuery(transaction, 'select n1 from t1 order by n1');
+				rs.defaultFetchOptions = { fetchSize: 5 };
+
+				assert.equal((await rs.fetch()).length, 5);
+				assert.equal((await rs.fetch({ fetchSize: 2 })).length, 2);
+				assert.equal((await rs.fetch()).length, 5);
+				assert.equal((await rs.fetch({ fetchSize: 36 })).length, 36);
+				assert.equal((await rs.fetch()).length, 2);
+				assert.equal((await rs.fetch()).length, 0);
+
+				await rs.close();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 	});
 }

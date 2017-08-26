@@ -55,11 +55,13 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
-	async executeTransaction(transaction: AbstractTransaction, sqlStmt: string, prepareOptions?: PrepareOptions):
-			Promise<AbstractTransaction> {
+	async executeTransaction(transaction: AbstractTransaction, sqlStmt: string,
+			options?: {
+				prepareOptions?: PrepareOptions
+			}): Promise<AbstractTransaction> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
 			const newTransaction = await statement.executeTransaction(transaction);
 			this.transactions.add(newTransaction);
@@ -72,12 +74,15 @@ export abstract class AbstractAttachment implements Attachment {
 
 	/** Executes a statement that has no result set. */
 	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
-			prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<void> {
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteOptions,
+			}): Promise<void> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
-			return await statement.execute(transaction, parameters, executeOptions);
+			return await statement.execute(transaction, parameters, options && options.executeOptions);
 		}
 		finally {
 			await statement.dispose();
@@ -86,12 +91,15 @@ export abstract class AbstractAttachment implements Attachment {
 
 	/** Executes a statement that returns a single record. */
 	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
-			prepareOptions?: PrepareOptions, executeOptions?: ExecuteOptions): Promise<Array<any>> {
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteOptions,
+			}): Promise<Array<any>> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
-			return await statement.executeReturning(transaction, parameters, executeOptions);
+			return await statement.executeReturning(transaction, parameters, options && options.executeOptions);
 		}
 		finally {
 			await statement.dispose();
@@ -100,12 +108,15 @@ export abstract class AbstractAttachment implements Attachment {
 
 	/** Executes a statement that has result set. */
 	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
-			prepareOptions?: PrepareOptions, executeOptions?: ExecuteQueryOptions): Promise<AbstractResultSet> {
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteQueryOptions,
+			}): Promise<AbstractResultSet> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
-			const resultSet = await statement.executeQuery(transaction, parameters, executeOptions);
+			const resultSet = await statement.executeQuery(transaction, parameters, options && options.executeOptions);
 			resultSet.diposeStatementOnClose = true;
 			return resultSet;
 		}
