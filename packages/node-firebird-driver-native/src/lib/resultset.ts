@@ -45,13 +45,24 @@ export class ResultSetImpl extends AbstractResultSet {
 	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<Array<any>> }> {
 		return await this.statement.attachment.client.statusAction(async status => {
 			const rows = [];
+			const buffers = [this.statement.outBuffer, new Buffer(this.statement.outBuffer.length)];
+			let buffer = 0;
+			let nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
 
 			while (true) {
-				if (await this.resultSetHandle!.fetchNextAsync(status, this.statement.outBuffer) == fb.Status.RESULT_OK) {
-					rows.push(await this.statement.dataReader(
-						this.statement.outBuffer, blobId => readBlob(status, this.transaction, blobId)));
+				if (await nextFetch == fb.Status.RESULT_OK) {
+					const buffer1 = buffer;
+					buffer = ++buffer % 2;
 
-					if (options && options.fetchSize && rows.length >= options.fetchSize)
+					const finish = options && options.fetchSize && rows.length + 1 >= options.fetchSize;
+
+					if (!finish)
+						nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
+
+					rows.push(await this.statement.dataReader(
+						buffers[buffer1], blobId => readBlob(status, this.transaction, blobId)));
+
+					if (finish)
 						return { finished: false, rows: rows };
 				}
 				else {
