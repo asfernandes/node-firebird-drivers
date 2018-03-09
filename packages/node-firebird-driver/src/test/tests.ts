@@ -1,4 +1,4 @@
-import { Client } from '../lib';
+import { Client, TransactionIsolation } from '../lib';
 
 import * as assert from 'power-assert';
 import * as fs from 'fs-extra-promise';
@@ -56,8 +56,21 @@ export function runCommonTests(client: Client) {
 		describe('Attachment', () => {
 			it('#startTransaction()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-startTransaction.fdb'));
-				const transaction = await attachment.startTransaction();
-				await transaction.commit();
+
+				const isolationQuery = 'select rdb$get_context(\'SYSTEM\', \'ISOLATION_LEVEL\') from rdb$database';
+
+				const transaction1 = await attachment.startTransaction();
+				assert.equal((await attachment.executeReturning(transaction1, isolationQuery))[0], 'SNAPSHOT');
+				await transaction1.commit();
+
+				const transaction2 = await attachment.startTransaction({ isolation: TransactionIsolation.READ_COMMITTED });
+				assert.equal((await attachment.executeReturning(transaction2, isolationQuery))[0], 'READ COMMITTED');
+				await transaction2.commit();
+
+				const transaction3 = await attachment.startTransaction({ isolation: TransactionIsolation.CONSISTENCY });
+				assert.equal((await attachment.executeReturning(transaction3, isolationQuery))[0], 'CONSISTENCY');
+				await transaction3.commit();
+
 				await attachment.dropDatabase();
 			});
 

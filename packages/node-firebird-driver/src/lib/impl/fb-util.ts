@@ -5,7 +5,7 @@ import * as stringDecoder from 'string_decoder';
 
 import { decodeDate, decodeTime, encodeDate, encodeTime }  from './date-time';
 
-import { ConnectOptions, CreateDatabaseOptions } from '..';
+import { ConnectOptions, CreateDatabaseOptions, TransactionIsolation, TransactionOptions } from '..';
 
 
 /** SQL_* type constants */
@@ -36,6 +36,24 @@ export namespace dpb {
 	export const password = 29;
 }
 
+/** TPB constants. */
+export namespace tpb {
+	export const isc_tpb_version1 = 1;
+	export const isc_tpb_consistency = 1;
+	export const isc_tpb_concurrency = 2;
+	export const isc_tpb_wait = 6;
+	export const isc_tpb_nowait = 7;
+	export const isc_tpb_read = 8;
+	export const isc_tpb_write = 9;
+	export const isc_tpb_ignore_limbo = 14;
+	export const isc_tpb_read_committed = 15;
+	export const isc_tpb_autocommit = 16;
+	export const isc_tpb_rec_version = 17;
+	export const isc_tpb_no_rec_version = 18;
+	export const isc_tpb_restart_requests = 19;
+	export const isc_tpb_no_auto_undo = 20;
+}
+
 /** Blob info. */
 export namespace blobInfo {
 	export const totalLength = 6;
@@ -60,6 +78,63 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 
 	if (options.password)
 		ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
+
+	return Buffer.from(ret);
+}
+
+export function createTpb(options?: TransactionOptions): Buffer {
+	const code = (c: number) => String.fromCharCode(c);
+	let ret = code(tpb.isc_tpb_version1);
+
+	if (!options)
+		options = {};
+
+	switch (options.accessMode) {
+		case 'READ_ONLY':
+			ret += code(tpb.isc_tpb_read);
+			break;
+
+		case 'READ_WRITE':
+			ret += code(tpb.isc_tpb_write);
+			break;
+	}
+
+	switch (options.waitMode) {
+		case 'NO_WAIT':
+			ret += code(tpb.isc_tpb_nowait);
+			break;
+
+		case 'WAIT':
+			ret += code(tpb.isc_tpb_wait);
+			break;
+	}
+
+	switch (options.isolation) {
+		case TransactionIsolation.CONSISTENCY:
+			ret += code(tpb.isc_tpb_consistency);
+			break;
+
+		case TransactionIsolation.SNAPSHOT:
+			ret += code(tpb.isc_tpb_concurrency);
+			break;
+
+		case TransactionIsolation.READ_COMMITTED:
+			ret += code(tpb.isc_tpb_read_committed) +
+				code(options.readCommittedMode == 'RECORD_VERSION' ? tpb.isc_tpb_rec_version : tpb.isc_tpb_no_rec_version);
+			break;
+	}
+
+	if (options.noAutoUndo)
+		ret += code(tpb.isc_tpb_no_auto_undo);
+
+	if (options.ignoreLimbo)
+		ret += code(tpb.isc_tpb_ignore_limbo);
+
+	if (options.restartRequests)
+		ret += code(tpb.isc_tpb_restart_requests);
+
+	if (options.autoCommit)
+		ret += code(tpb.isc_tpb_autocommit);
 
 	return Buffer.from(ret);
 }
