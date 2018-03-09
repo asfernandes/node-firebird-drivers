@@ -1,4 +1,5 @@
 import { AttachmentImpl } from './attachment';
+import { createTpb } from './fb-util';
 
 import { TransactionOptions } from 'node-firebird-driver';
 import { AbstractTransaction } from 'node-firebird-driver/dist/lib/impl';
@@ -17,7 +18,8 @@ export class TransactionImpl extends AbstractTransaction {
 		const transaction = new TransactionImpl(attachment);
 
 		return await attachment.client.statusAction(async status => {
-			transaction.transactionHandle = await attachment!.attachmentHandle!.startTransactionAsync(status, 0, undefined);	//// FIXME: options
+			const tpb = createTpb(options);
+			transaction.transactionHandle = await attachment!.attachmentHandle!.startTransactionAsync(status, tpb.length, tpb);
 			return transaction;
 		});
 	}
