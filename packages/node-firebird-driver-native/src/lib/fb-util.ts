@@ -1,6 +1,4 @@
-import { TransactionImpl } from './transaction';
-
-import { blobInfo, getPortableInteger, sqlTypes, Descriptor } from 'node-firebird-driver/dist/lib/impl';
+import { sqlTypes, Descriptor } from 'node-firebird-driver/dist/lib/impl';
 export * from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
@@ -64,56 +62,4 @@ export function createDescriptors(status: fb.Status, metadata?: fb.MessageMetada
 	}
 
 	return ret;
-}
-
-export async function readBlob(status: fb.Status, transaction: TransactionImpl, blobId: Uint8Array): Promise<Buffer> {
-	//// TODO: transliterate sub_type text.
-	let retBuffer: Buffer;
-	let segLength: Uint32Array;
-	let pos = 0;
-
-	const blob = (await transaction.attachment.attachmentHandle!.openBlobAsync(
-		status, transaction.transactionHandle, blobId, 0, undefined))!;
-
-	try {
-		const infoReq = new Uint8Array([blobInfo.totalLength]);
-		const infoRet = new Uint8Array(20);
-		await blob.getInfoAsync(status, infoReq.byteLength, infoReq, infoRet.byteLength, infoRet);
-
-		if (infoRet[0] != blobInfo.totalLength || infoRet[1] != 4 || infoRet[2] != 0)
-			throw new Error('Unrecognized response from Blob::getInfo.');
-
-		const length = getPortableInteger(infoRet.subarray(3), 4);
-
-		retBuffer = Buffer.alloc(length);
-		segLength = new Uint32Array(1);
-
-		let segRet: number;
-
-		do {
-			segRet = await blob.getSegmentAsync(status, retBuffer.length - pos, retBuffer.subarray(pos), segLength);
-			pos += segLength[0];
-		} while (segRet === fb.Status.RESULT_SEGMENT);
-
-		if (pos !== length)
-			throw new Error('Cannot retrieve full blob.');
-	}
-	finally {
-		await blob.closeAsync(status);
-	}
-
-	return retBuffer;
-}
-
-export async function writeBlob(status: fb.Status, transaction: TransactionImpl, blobId: Uint8Array, buffer: Buffer): Promise<void> {
-	//// TODO: transliterate sub_type text.
-	const blob = (await transaction.attachment.attachmentHandle!.createBlobAsync(status,
-		transaction.transactionHandle, blobId, 0, undefined))!;
-
-	try {
-		await blob.putSegmentAsync(status, buffer.length, buffer);
-	}
-	finally {
-		await blob.closeAsync(status);
-	}
 }

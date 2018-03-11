@@ -15,8 +15,6 @@ import {
 	createDataWriter,
 	createDescriptors,
 	fixMetadata,
-	readBlob,
-	writeBlob,
 	DataReader,
 	DataWriter,
 } from './fb-util';
@@ -88,7 +86,7 @@ export class StatementImpl extends AbstractStatement {
 	/** Executes a prepared statement that has no result set. */
 	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<Array<any>> {
 		return await this.attachment.client.statusAction(async status => {
-			await this.dataWriter(this.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
+			await this.dataWriter(this.attachment, transaction, this.inBuffer, parameters);
 
 			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
 				this.inMetadata, this.inBuffer, this.outMetadata, this.outBuffer);
@@ -96,7 +94,7 @@ export class StatementImpl extends AbstractStatement {
 			if (newTransaction && transaction.transactionHandle != newTransaction)
 				{}	//// FIXME: newTransaction.releaseSync();
 
-			return this.outMetadata ? await this.dataReader(this.outBuffer, blobId => readBlob(status, transaction, blobId)) : [];
+			return this.outMetadata ? await this.dataReader(this.attachment, transaction, this.outBuffer) : [];
 		});
 	}
 

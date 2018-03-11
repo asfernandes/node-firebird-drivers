@@ -1,6 +1,5 @@
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
-import { readBlob, writeBlob } from './fb-util';
 
 import { ExecuteQueryOptions, FetchOptions } from 'node-firebird-driver';
 import { AbstractResultSet } from 'node-firebird-driver/dist/lib/impl';
@@ -23,7 +22,7 @@ export class ResultSetImpl extends AbstractResultSet {
 		return await statement.attachment.client.statusAction(async status => {
 			//// FIXME: options
 
-			await statement.dataWriter(statement.inBuffer, parameters, (blobId, buffer) => writeBlob(status, transaction, blobId, buffer));
+			await statement.dataWriter(statement.attachment, transaction, statement.inBuffer, parameters);
 
 			resultSet.resultSetHandle = await statement.statementHandle!.openCursorAsync(status, transaction.transactionHandle,
 				statement.inMetadata, statement.inBuffer, statement.outMetadata, 0);
@@ -59,8 +58,7 @@ export class ResultSetImpl extends AbstractResultSet {
 					if (!finish)
 						nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
 
-					rows.push(await this.statement.dataReader(
-						buffers[buffer1], blobId => readBlob(status, this.transaction, blobId)));
+					rows.push(await this.statement.dataReader(this.statement.attachment, this.transaction, buffers[buffer1]));
 
 					if (finish)
 						return { finished: false, rows: rows };

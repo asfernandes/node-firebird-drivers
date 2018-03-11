@@ -1,9 +1,11 @@
+import { BlobStreamImpl } from './blob';
 import { ClientImpl } from './client';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
 import { createDpb } from './fb-util';
 
 import {
+	Blob,
 	ConnectOptions,
 	CreateDatabaseOptions,
 	PrepareOptions,
@@ -57,6 +59,14 @@ export class AttachmentImpl extends AbstractAttachment {
 	/** Starts a new transaction. */
 	protected async internalStartTransaction(options?: TransactionOptions): Promise<TransactionImpl> {
 		return await TransactionImpl.start(this, options);
+	}
+
+	protected async internalCreateBlob(transaction: TransactionImpl): Promise<BlobStreamImpl> {
+		return await BlobStreamImpl.create(this, transaction);
+	}
+
+	protected async internalOpenBlob(transaction: TransactionImpl, blob: Blob): Promise<BlobStreamImpl> {
+		return await BlobStreamImpl.open(this, transaction, blob);
 	}
 
 	/** Prepares a query. */
