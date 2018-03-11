@@ -1,4 +1,5 @@
 export * from './attachment';
+export * from './blob';
 export * from './client';
 export * from './resultset';
 export * from './statement';

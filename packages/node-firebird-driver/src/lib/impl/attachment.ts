@@ -1,3 +1,4 @@
+import { AbstractBlobStream } from './blob';
 import { AbstractClient } from './client';
 import { AbstractResultSet } from './resultset';
 import { AbstractStatement } from './statement';
@@ -5,6 +6,7 @@ import { AbstractTransaction } from './transaction';
 
 import {
 	Attachment,
+	Blob,
 	ExecuteOptions,
 	ExecuteQueryOptions,
 	FetchOptions,
@@ -126,6 +128,14 @@ export abstract class AbstractAttachment implements Attachment {
 		}
 	}
 
+	async createBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream> {
+		return await this.internalCreateBlob(transaction);
+	}
+
+	async openBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream> {
+		return await this.internalOpenBlob(transaction, blob);
+	}
+
 	/** Starts a new transaction. */
 	async startTransaction(options?: TransactionOptions): Promise<AbstractTransaction> {
 		this.check();
@@ -169,6 +179,8 @@ export abstract class AbstractAttachment implements Attachment {
 
 	protected abstract async internalDisconnect(): Promise<void>;
 	protected abstract async internalDropDatabase(): Promise<void>;
+	protected abstract async internalCreateBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream>;
+	protected abstract async internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
 	protected abstract async internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
 		Promise<AbstractStatement>;
 	protected abstract async internalStartTransaction(options?: TransactionOptions): Promise<AbstractTransaction>;

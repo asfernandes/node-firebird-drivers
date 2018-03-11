@@ -1,4 +1,4 @@
-import { Client, TransactionIsolation } from '../lib';
+import { Blob, Client, TransactionIsolation } from '../lib';
 
 import * as assert from 'power-assert';
 import * as fs from 'fs-extra-promise';
@@ -245,6 +245,8 @@ export function runCommonTests(client: Client) {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
 				let transaction = await attachment.startTransaction();
 
+				const blobBuffer = Buffer.alloc(11, '12345678á9');
+
 				const fields = [
 					{ name: 'x_short', type: 'numeric(2)', valToStr: (v: any) => v },
 					{ name: 'x_int', type: 'integer', valToStr: (v: any) => v },
@@ -258,7 +260,8 @@ export function runCommonTests(client: Client) {
 					{ name: 'x_boolean', type: 'boolean', valToStr: (v: any) => v },
 					{ name: 'x_varchar', type: 'varchar(10) character set utf8', valToStr: (v: any) => `'${v}'` },
 					{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` },
-					{ name: 'x_blob', type: 'blob', valToStr: (v: Buffer) => `'${v.toString()}'` }
+					{ name: 'x_blob1', type: 'blob', valToStr: (v: Buffer) => `'${v.toString()}'` },
+					{ name: 'x_blob2', type: 'blob', valToStr: () => `'${blobBuffer.toString()}'` }
 				];
 
 				const statement1 = await attachment.prepare(transaction,
@@ -269,21 +272,7 @@ export function runCommonTests(client: Client) {
 
 				const recordCount = 5;
 				const now = new Date();
-				const parameters = [
-					-1,
-					-2,
-					-3.45,
-					-2,
-					-3.45,
-					-4.567,
-					new Date(2017, 3 - 1, 26),
-					new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 56, 32, 123),
-					new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
-					true,
-					'123áé4567',
-					'123áé4567',
-					Buffer.alloc(11, '12345678á9')
-				];
+				let parameters: any[];
 
 				{	// scope
 					const statement2a = await attachment.prepare(transaction,
@@ -292,6 +281,27 @@ export function runCommonTests(client: Client) {
 					// Test execution in a new transaction, after the one used in prepare was committed.
 					await transaction.commit();
 					transaction = await attachment.startTransaction();
+
+					const blob = await attachment.createBlob(transaction);
+					await blob.write(blobBuffer);
+					await blob.close();
+
+					parameters = [
+						-1,
+						-2,
+						-3.45,
+						-2,
+						-3.45,
+						-4.567,
+						new Date(2017, 3 - 1, 26),
+						new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 56, 32, 123),
+						new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
+						true,
+						'123áé4567',
+						'123áé4567',
+						blobBuffer,
+						blob
+					];
 
 					for (let i = 0; i < recordCount; ++i)
 						await statement2a.execute(transaction, parameters);
@@ -329,7 +339,8 @@ export function runCommonTests(client: Client) {
 							octet_length(x_char),
 							null,
 							x_char || null,
-							x_blob
+							x_blob1,
+							x_blob2
 					from t1`);
 				const resultSet3 = await statement3.executeQuery(transaction);
 
@@ -356,7 +367,18 @@ export function runCommonTests(client: Client) {
 					assert.equal(columns[n++], 12);
 					assert.equal(columns[n++], null);
 					assert.equal(columns[n++], null);
-					assert.equal((columns[n++] as Buffer).toString(), '12345678á9');
+
+					for (let i = n + 2; n < i; ++n) {
+						const blob = columns[n] as Blob;
+						const blobStream = await attachment.openBlob(transaction, blob);
+						const buffer = Buffer.alloc(await blobStream.length);
+						assert.equal(await blobStream.read(buffer), buffer.length);
+						assert.equal(await blobStream.read(buffer), -1);
+
+						await blobStream.close();
+
+						assert.equal(buffer.toString(), '12345678á9');
+					}
 
 					assert.equal(columns.length, n);
 				}
@@ -372,7 +394,7 @@ export function runCommonTests(client: Client) {
 			});
 
 			it('#fetch() with fetchSize', async () => {
-				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch-with-fetchSize.fdb'));
 				const transaction = await attachment.startTransaction();
 
 				await attachment.execute(transaction, 'create table t1 (n1 integer)');

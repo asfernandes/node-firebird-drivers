@@ -90,6 +90,12 @@ export interface Attachment {
 	/** Drops the database and release this attachment. */
 	dropDatabase(): Promise<void>;
 
+	/** Creates a blob and return its stream. */
+	createBlob(transaction: Transaction): Promise<BlobStream>;
+
+	/** Opens a blob's stream. */
+	openBlob(transaction: Transaction, blob: Blob): Promise<BlobStream>;
+
 	/** Starts a new transaction. */
 	startTransaction(options?: TransactionOptions): Promise<Transaction>;
 
@@ -191,4 +197,43 @@ export interface ResultSet {
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
+}
+
+/** Blob class. */
+export class Blob {
+	/** Gets the blob's attachment. */
+	readonly attachment: Attachment;
+
+	/** Gets the blob's id. */
+	readonly id = new Uint8Array(8);
+
+	constructor(attachment: Attachment, id: Uint8Array) {
+		this.attachment = attachment;
+		this.id.set(id);
+	}
+}
+
+/** BlobStream class. */
+export abstract class BlobStream {
+	/** Gets the blob's. */
+	readonly blob: Blob;
+
+	/** Gets the blob's stream length in bytes.  */
+	readonly length: Promise<number>;
+
+	protected constructor(blob: Blob) {
+		this.blob = blob;
+	}
+
+	/** Closes the blob's stream. */
+	abstract close(): Promise<void>;
+
+	/** Cancels the blob's creation. */
+	abstract cancel(): Promise<void>;
+
+	/** Reads data from the blob. */
+	abstract read(buffer: Buffer): Promise<number>;
+
+	/** Writes data to the blob. */
+	abstract write(buffer: Buffer): Promise<void>;
 }

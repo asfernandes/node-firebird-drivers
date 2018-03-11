@@ -3,9 +3,20 @@ const littleEndian = os.endianness() === 'LE';
 
 import * as stringDecoder from 'string_decoder';
 
+import { AbstractAttachment } from './attachment';
+import { AbstractTransaction } from './transaction';
 import { decodeDate, decodeTime, encodeDate, encodeTime }  from './date-time';
 
-import { ConnectOptions, CreateDatabaseOptions, TransactionIsolation, TransactionOptions } from '..';
+import {
+	Attachment,
+	Blob,
+	BlobStream,
+	ConnectOptions,
+	CreateDatabaseOptions,
+	Transaction,
+	TransactionIsolation,
+	TransactionOptions
+} from '..';
 
 
 /** SQL_* type constants */
@@ -181,9 +192,8 @@ export interface Descriptor {
 }
 
 
-export type BlobReader = (blobId: Uint8Array) => Promise<Buffer>;
-export type DataReader = (buffer: Uint8Array, blobReader: BlobReader) => Promise<any[]>;
-export type ItemReader = (buffer: Uint8Array, blobReader: BlobReader) => Promise<any>;
+export type DataReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any[]>;
+export type ItemReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any>;
 
 /** Creates a data reader. */
 export function createDataReader(descriptors: Descriptor[]): DataReader {
@@ -192,7 +202,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 	for (let i = 0; i < descriptors.length; ++i) {
 		const descriptor = descriptors[i];
 
-		mappers[i] = async (buffer: Uint8Array, blobReader: BlobReader): Promise<any> => {
+		mappers[i] = async (attachment: AbstractAttachment, transaction: AbstractTransaction, buffer: Uint8Array): Promise<any> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (dataView.getInt16(descriptor.nullOffset, littleEndian) == -1)
@@ -247,7 +257,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 					return dataView.getInt8(descriptor.offset) != 0;
 
 				case sqlTypes.SQL_BLOB:
-					return blobReader(buffer.slice(descriptor.offset, descriptor.offset + 8));
+					return new Blob(attachment, buffer.slice(descriptor.offset, descriptor.offset + 8));
 
 				case sqlTypes.SQL_NULL:
 					return null;
@@ -258,15 +268,15 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 		}
 	}
 
-	return async (buffer: Uint8Array, blobReader: BlobReader): Promise<any[]> => {
-		return await Promise.all(mappers.map(mapper => mapper(buffer, blobReader)));
+	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array): Promise<any[]> => {
+		return await Promise.all(mappers.map(mapper => mapper(attachment, transaction, buffer)));
 	}
 }
 
 
-export type BlobWriter = (blobId: Uint8Array, buffer: Buffer) => Promise<void>;
-export type DataWriter = (buffer: Uint8Array, values: Array<any> | undefined, blobWriter: BlobWriter) => Promise<void>;
-export type ItemWriter = (buffer: Uint8Array, values: any, blobWriter: BlobWriter) => Promise<void>;
+export type DataWriter = (attachment: Attachment, transaction: Transaction,
+	buffer: Uint8Array, values: Array<any> | undefined) => Promise<void>;
+export type ItemWriter = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: any) => Promise<void>;
 
 /** Creates a data writer. */
 export function createDataWriter(descriptors: Descriptor[]): DataWriter {
@@ -275,7 +285,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 	for (let i = 0; i < descriptors.length; ++i) {
 		const descriptor = descriptors[i];
 
-		mappers[i] = async (buffer: Uint8Array, value: any, blobWriter: BlobWriter): Promise<void> => {
+		mappers[i] = async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, value: any): Promise<void> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (value == null) {
@@ -358,9 +368,34 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 
 				case sqlTypes.SQL_BLOB:
 				{
-					const valueBuffer = value as Buffer;
-					const blobId = buffer.subarray(descriptor.offset, descriptor.offset + 8);
-					await blobWriter(blobId, valueBuffer);
+					const targetBlobId = buffer.subarray(descriptor.offset, descriptor.offset + 8);
+
+					if (value instanceof BlobStream)
+						value = value.blob;
+
+					if (value instanceof Buffer) {
+						let blobStream = await attachment.createBlob(transaction);
+						try {
+							await blobStream.write(value);
+						}
+						catch (e) {
+							await blobStream.cancel();
+							throw e;
+						}
+
+						await blobStream.close();
+
+						targetBlobId.set(blobStream.blob.id);
+					}
+					else if (value instanceof Blob) {
+						if (value.attachment == attachment)
+							targetBlobId.set(value.id);
+						else
+							throw new Error('Cannot pass a BLOB from another attachment as parameter.');	//// TODO: add support for it
+					}
+					else
+						throw new Error('Unrecognized type used as BLOB. Must be: Buffer or Blob.');
+
 					break;
 				}
 
@@ -373,10 +408,10 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 		}
 	}
 
-	return async (buffer: Uint8Array, values: Array<any>, blobWriter: BlobWriter): Promise<void> => {
+	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: Array<any>): Promise<void> => {
 		if ((values || []).length !== descriptors.length)
 			throw new Error(`Incorrect number of parameters: expected ${descriptors.length}, received ${(values || []).length}.`);
 
-		await Promise.all(mappers.map((mapper, index) => mapper(buffer, values[index], blobWriter)));
+		await Promise.all(mappers.map((mapper, index) => mapper(attachment, transaction, buffer, values[index])));
 	}
 }
