@@ -28,7 +28,7 @@
   version "2.2.41"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
-"@types/node@*", "@types/node@^7.0.5":
+"@types/node@*":
   version "7.0.33"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.33.tgz#ae3c53ad01d7e9d62c7f1a85c5f7500d59b9d25b"
 
@@ -596,11 +596,11 @@ nan@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
-node-cloop-gen@0.0.1-alpha.2:
-  version "0.0.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-0.0.1-alpha.2.tgz#303ae966c1ee297a22b78cc867705041ab3eedc8"
+node-cloop-gen@0.0.1-alpha.3:
+  version "0.0.1-alpha.3"
+  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-0.0.1-alpha.3.tgz#3daf73ec8d9712a7fb4bf20baacd01342df948d0"
   dependencies:
-    "@types/node" "^7.0.5"
+    "@types/node" "^8.0.7"
 
 node-gyp@^3.6.2:
   version "3.6.2"
