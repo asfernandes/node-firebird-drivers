@@ -52,7 +52,6 @@ See more examples in `src/test` directory.
 
 ## TODO
 
-- BLOBs
 - Events
 - Verify usage of node-pre-gyp
 
