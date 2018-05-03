@@ -5,7 +5,14 @@ import * as os from 'os';
 
 /** Gets the default platform Firebird client library filename. */
 export function getDefaultLibraryFilename(): string {
-	return os.platform() == 'win32' ? 'fbclient.dll' : 'libfbclient.so';
+	switch (os.platform()) {
+		case 'win32':
+			return 'fbclient.dll';
+		case 'darwin':
+			return 'libfbclient.dylib';
+		default:
+			return 'libfbclient.so';
+	}
 }
 
 const native = require('bindings')('addon');
