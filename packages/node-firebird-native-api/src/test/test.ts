@@ -17,9 +17,14 @@ describe('node-firebird-native-api', function() {
 	this.timeout(5000);
 
 	before(() => {
+		const tempMaster = getMaster(getDefaultLibraryFilename());
+
 		master = getMaster(getDefaultLibraryFilename());
 		dispatcher = master.getDispatcherSync()!;
 		tmpDir = tmp.mkdirSync().path.toString();
+
+		// Test premature shutdown prevention. 'master' variable should still be usable.
+		assert.equal(disposeMaster(tempMaster), true);
 	});
 
 	after(() => {

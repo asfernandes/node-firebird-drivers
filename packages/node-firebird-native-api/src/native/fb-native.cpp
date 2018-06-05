@@ -32,6 +32,7 @@ static void initAll(v8::Local<v8::Object> exports, v8::Local<v8::Object> module)
 
 
 static map<Master*, Handle> masterHandles;
+static map<Handle, unsigned> handleCounters;
 
 
 //----------------------------------------------------------------------------
@@ -107,6 +108,13 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 	Master* obj = Nan::ObjectWrap::Unwrap<Master>(instance);
 	masterHandles[obj] = handle;
 
+	auto handleCounter = handleCounters.find(handle);
+
+	if (handleCounter != handleCounters.end())
+		++handleCounter->second;
+	else
+		handleCounters[handle] = 1;
+
 	info.GetReturnValue().Set(instance);
 }
 
@@ -118,6 +126,29 @@ static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 	if (i != masterHandles.end())
 	{
+		auto handleCounter = handleCounters.find(i->second);
+
+		if (handleCounter == handleCounters.end())
+			assert(false);
+		else
+		{
+			if (--handleCounter->second == 0)
+			{
+				auto* status = master->interface->getStatus();
+				try
+				{
+					fb::ThrowStatusWrapper statusWrapper(status);
+					auto* dispatcher = master->interface->getDispatcher();
+					dispatcher->shutdown(&statusWrapper, 0, fb_shutrsn_app_stopped);
+				}
+				catch (...)
+				{
+				}
+
+				status->dispose();
+			}
+		}
+
 #ifdef _WIN32
 		FreeLibrary(i->second);
 #else
