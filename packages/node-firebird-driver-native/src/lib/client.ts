@@ -55,11 +55,6 @@ export class ClientImpl extends AbstractClient {
 
 	/** Disposes this client's resources. */
 	protected async internalDispose(): Promise<void> {
-		await this.statusAction(async status => {
-			const fb_shutrsn_app_stopped = -3;
-			await this.dispatcher!.shutdownAsync(status, 0, fb_shutrsn_app_stopped);
-		});
-
 		this.dispatcher!.releaseSync();
 		fb.disposeMaster(this.master!);
 
