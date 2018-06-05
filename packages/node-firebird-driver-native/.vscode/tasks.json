@@ -5,7 +5,7 @@
 	"tasks": [
 		{
 			"taskName": "run build:w",
-			"command": "npm",
+			"command": "yarn",
 			"isShellCommand": true,
 			"showOutput": "always",
 			"suppressTaskName": true,
