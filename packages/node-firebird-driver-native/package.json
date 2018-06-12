@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/asfernandes/node-firebird-driver-native.git"
+    "url": "git+https://github.com/asfernandes/node-firebird-drivers.git"
   },
   "keywords": [
     "firebird"
@@ -24,26 +24,13 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/asfernandes/node-firebird-driver-native/issues"
+    "url": "https://github.com/asfernandes/node-firebird-drivers/issues"
   },
-  "homepage": "https://github.com/asfernandes/node-firebird-driver-native#readme",
+  "homepage": "https://github.com/asfernandes/node-firebird-drivers#readme",
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
-    "@types/node": "6.0.88",
+    "@types/node": "8.10.19",
     "node-firebird-driver": "0.0.1-beta.1",
     "node-firebird-native-api": "0.0.1-beta.1"
-  },
-  "devDependencies": {
-    "@types/fs-extra-promise": "1.0.2",
-    "@types/mocha": "^2.2.41",
-    "@types/power-assert": "^1.4.29",
-    "@types/temp-fs": "^0.9.27",
-    "fs-extra-promise": "^1.0.1",
-    "mocha": "^3.4.2",
-    "power-assert": "^1.4.4",
-    "rimraf": "^2.6.1",
-    "source-map-support": "^0.4.15",
-    "temp-fs": "^0.9.9",
-    "typescript": "^2.4.1"
   }
 }
