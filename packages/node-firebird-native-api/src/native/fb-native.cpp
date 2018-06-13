@@ -59,49 +59,70 @@ string formatStatus(fb::IStatus* status)
 
 static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
+	typedef fb::IMaster* (*Func)();
+
+	const char* const MASTER_FUNCTION = "fb_get_master_interface";
 	Nan::Utf8String str(info[0]->ToString());
+	fb::IMaster* master = nullptr;
+	string errorMessage;
 
 #ifdef _WIN32
 	HMODULE handle = LoadLibrary(*str);
-	if (!handle)
-		return;
 
-	typedef fb::IMaster* (*Func)();
-	Func func = (Func) GetProcAddress(handle, "fb_get_master_interface");
-
-	if (!func)
+	if (handle)
 	{
-		FreeLibrary(handle);
-		return;
-	}
+		Func func = (Func) GetProcAddress(handle, MASTER_FUNCTION);
 
-	fb::IMaster* master = func();
-	if (!master)
-	{
-		FreeLibrary(handle);
-		return;
+		if (func)
+		{
+			master = func();
+			if (!master)
+			{
+				FreeLibrary(handle);
+				errorMessage = "Cannot get Firebird client's master interface.";
+			}
+		}
+		else
+		{
+			FreeLibrary(handle);
+			errorMessage = string("Cannot find Firebird client's master function: '") + MASTER_FUNCTION + "'.";
+		}
 	}
+	else
+		errorMessage = string("Cannot load Firebird client library: '") + *str + "'.";
 #else
 	void* handle = dlopen(*str, RTLD_NOW);
-	if (!handle)
-		return;
 
-	typedef fb::IMaster* (*Func)();
-	Func func = (Func) dlsym(handle, "fb_get_master_interface");
-
-	if (!func)
+	if (handle)
 	{
-		dlclose(handle);
-		return;
-	}
+		Func func = (Func) dlsym(handle, MASTER_FUNCTION);
 
-	fb::IMaster* master = func();
-	if (!master)
-	{
-		dlclose(handle);
-		return;
+		if (func)
+		{
+			master = func();
+			if (!master)
+			{
+				dlclose(handle);
+				errorMessage = "Cannot get Firebird client's master interface.";
+			}
+		}
+		else
+		{
+			dlclose(handle);
+			errorMessage = string("Cannot find Firebird client's master function: '") + MASTER_FUNCTION + "'.";
+		}
 	}
+	else
+		errorMessage = string("Cannot load Firebird client library: '") + *str + "'.";
 #endif
+
+	if (!errorMessage.empty())
+	{
+		Nan::ThrowError(errorMessage.c_str());
+		return;
+	}
+
+	assert(master);
 
 	v8::Local<v8::Object> instance = Master::NewInstance(master);
 

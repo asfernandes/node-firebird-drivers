@@ -28,6 +28,9 @@ describe('node-firebird-native-api', function() {
 	});
 
 	after(() => {
+		if (!master)
+			return;
+
 		const status = master.getStatusSync()!;
 		const fb_shutrsn_app_stopped = -3;
 		dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
@@ -37,6 +40,12 @@ describe('node-firebird-native-api', function() {
 		fs.rmdirSync(tmpDir);
 		assert.equal(disposeMaster(master), true);
 		assert.equal(disposeMaster(master), false);
+	});
+
+	describe('getMaster', () => {
+		it('with error', () => {
+			assert.throws(() => getMaster('not-a-firebird-client-library'));
+		});
 	});
 
 	describe('Master', () => {
