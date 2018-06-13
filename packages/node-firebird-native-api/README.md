@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/asfernandes/node-firebird-native-api.svg?branch=master)](https://travis-ci.org/asfernandes/node-firebird-native-api)
+[![Build Status](https://travis-ci.com/asfernandes/node-firebird-drivers.svg?branch=master)](https://travis-ci.com/asfernandes/node-firebird-drivers)
 [![npm version](https://badge.fury.io/js/node-firebird-native-api.svg)](https://www.npmjs.com/package/node-firebird-native-api)
 
 # Firebird low-level API for Node.js / TypeScript
@@ -10,7 +10,7 @@ directly.
 
 If you are looking to use Firebird from a Node.js application or library, look at:
 
-https://github.com/asfernandes/node-firebird-driver-native.git / https://www.npmjs.com/package/node-firebird-driver-native.git
+https://github.com/asfernandes/node-firebird-drivers/tree/master/packages/node-firebird-driver-native / https://www.npmjs.com/package/node-firebird-driver-native
 
 ## Installation
 

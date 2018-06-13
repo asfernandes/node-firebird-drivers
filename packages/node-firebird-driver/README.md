@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/asfernandes/node-firebird-driver.svg?branch=master)](https://travis-ci.org/asfernandes/node-firebird-driver)
+[![Build Status](https://travis-ci.com/asfernandes/node-firebird-drivers.svg?branch=master)](https://travis-ci.com/asfernandes/node-firebird-drivers)
 [![npm version](https://badge.fury.io/js/node-firebird-driver.svg)](https://www.npmjs.com/package/node-firebird-driver)
 
 # Firebird client interfaces for Node.js / TypeScript
@@ -10,7 +10,7 @@ like connection pools and utility functions.
 
 If you are looking to use Firebird from a Node.js application or library, look at:
 
-https://github.com/asfernandes/node-firebird-driver-native.git / https://www.npmjs.com/package/node-firebird-driver-native.git
+https://github.com/asfernandes/node-firebird-drivers/tree/master/packages/node-firebird-driver-native / https://www.npmjs.com/package/node-firebird-driver-native
 
 There is also plan to create a socket-based (pure Node.js) driver.
 

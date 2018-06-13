@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/asfernandes/node-firebird-driver-native.svg?branch=master)](https://travis-ci.org/asfernandes/node-firebird-driver-native)
+[![Build Status](https://travis-ci.com/asfernandes/node-firebird-drivers.svg?branch=master)](https://travis-ci.com/asfernandes/node-firebird-drivers)
 [![npm version](https://badge.fury.io/js/node-firebird-driver-native.svg)](https://www.npmjs.com/package/node-firebird-driver-native)
 
 # Firebird high-level native client for Node.js / TypeScript
