@@ -18,4 +18,4 @@ yarn add node-firebird-native-api
 
 ## Warning
 
-This project is in ALPHA state and the API is subject to change.
+This project is in BETA state and the API is subject to change.
