@@ -7,7 +7,7 @@
     "clean": "rimraf dist",
     "build": "yarn run clean && tsc",
     "build:w": "yarn run clean && tsc -w",
-    "test": "mocha --require source-map-support/register dist/test",
+    "test": "jest",
     "prepublishOnly": "yarn run build && yarn test"
   },
   "repository": {
@@ -28,6 +28,20 @@
   },
   "homepage": "https://github.com/asfernandes/node-firebird-drivers#readme",
   "typings": "./dist/lib/index.d.ts",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "dependencies": {
     "@types/node": "8.10.19",
     "node-firebird-driver": "^0.0.1-beta.2",

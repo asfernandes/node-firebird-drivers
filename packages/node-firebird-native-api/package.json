@@ -12,7 +12,7 @@
     "gyp:clean": "rimraf build",
     "gyp:build": "node-gyp build",
     "gyp:configure": "node-gyp configure",
-    "test": "mocha --require source-map-support/register dist/test",
+    "test": "jest",
     "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test"
   },
   "repository": {
@@ -33,6 +33,20 @@
   },
   "homepage": "https://github.com/asfernandes/node-firebird-drivers#readme",
   "typings": "./dist/lib/index.d.ts",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "dependencies": {
     "@types/node": "^8.10.19",
     "bindings": "^1.2.1",

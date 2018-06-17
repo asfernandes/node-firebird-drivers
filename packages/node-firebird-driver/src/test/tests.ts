@@ -1,6 +1,5 @@
 import { Blob, Client, TransactionIsolation } from '../lib';
 
-import * as assert from 'power-assert';
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
@@ -26,24 +25,24 @@ export function runCommonTests(client: Client) {
 			return `${tmpDir}/${name}`;
 		}
 
-		this.timeout(5000);
+		jest.setTimeout(5000);
 
-		before(() => {
+		beforeAll(() => {
 			tmpDir = tmp.mkdirSync().path.toString();
 		});
 
-		after(async () => {
+		afterAll(async () => {
 			await client.dispose();
 			fs.rmdirSync(tmpDir);
 		});
 
 		describe('Client', () => {
-			it('#createDatabase()', async () => {
+			test('#createDatabase()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Client-createDatabase.fdb'));
 				await attachment.dropDatabase();
 			});
 
-			it('#connect()', async () => {
+			test('#connect()', async () => {
 				const filename = getTempFile('Client-connect.fdb');
 				const attachment1 = await client.createDatabase(filename);
 				const attachment2 = await client.connect(filename);
@@ -54,27 +53,27 @@ export function runCommonTests(client: Client) {
 		});
 
 		describe('Attachment', () => {
-			it('#startTransaction()', async () => {
+			test('#startTransaction()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-startTransaction.fdb'));
 
 				const isolationQuery = 'select rdb$get_context(\'SYSTEM\', \'ISOLATION_LEVEL\') from rdb$database';
 
 				const transaction1 = await attachment.startTransaction();
-				assert.equal((await attachment.executeReturning(transaction1, isolationQuery))[0], 'SNAPSHOT');
+				expect((await attachment.executeReturning(transaction1, isolationQuery))[0]).toBe('SNAPSHOT');
 				await transaction1.commit();
 
 				const transaction2 = await attachment.startTransaction({ isolation: TransactionIsolation.READ_COMMITTED });
-				assert.equal((await attachment.executeReturning(transaction2, isolationQuery))[0], 'READ COMMITTED');
+				expect((await attachment.executeReturning(transaction2, isolationQuery))[0]).toBe('READ COMMITTED');
 				await transaction2.commit();
 
 				const transaction3 = await attachment.startTransaction({ isolation: TransactionIsolation.CONSISTENCY });
-				assert.equal((await attachment.executeReturning(transaction3, isolationQuery))[0], 'CONSISTENCY');
+				expect((await attachment.executeReturning(transaction3, isolationQuery))[0]).toBe('CONSISTENCY');
 				await transaction3.commit();
 
 				await attachment.dropDatabase();
 			});
 
-			it('#prepare()', async () => {
+			test('#prepare()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-prepare.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -87,14 +86,14 @@ export function runCommonTests(client: Client) {
 				}
 				catch (e) {
 					error = e as Error;
-					assert.equal(error.message,
+					expect(error.message).toBe(
 						'Dynamic SQL Error\n' +
 						'-SQL error code = -104\n' +
 						'-Token unknown - line 1, column 8\n' +
 						'-select');
 				}
 
-				assert.ok(error);
+				expect(error).toBeTruthy();
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -102,7 +101,7 @@ export function runCommonTests(client: Client) {
 
 			//// TODO: #executeTransaction
 
-			it('#execute()', async () => {
+			test('#execute()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-execute.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -115,7 +114,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#executeQuery()', async () => {
+			test('#executeQuery()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-executeQuery.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -129,7 +128,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#executeReturning()', async () => {
+			test('#executeReturning()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturning.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -137,8 +136,8 @@ export function runCommonTests(client: Client) {
 				await transaction.commitRetaining();
 
 				const result = await attachment.executeReturning(transaction, 'insert into t1 values (11) returning n1');
-				assert.equal(result.length, 1);
-				assert.equal(result[0], 11);
+				expect(result.length).toBe(1);
+				expect(result[0]).toBe(11);
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -146,14 +145,14 @@ export function runCommonTests(client: Client) {
 		});
 
 		describe('Transaction', () => {
-			it('#commit()', async () => {
+			test('#commit()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-commit.fdb'));
 				const transaction = await attachment.startTransaction();
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
 
-			it('#commitRetaining()', async () => {
+			test('#commitRetaining()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-commitRetaining.fdb'));
 				const transaction = await attachment.startTransaction();
 				await transaction.commitRetaining();
@@ -161,14 +160,14 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#rollback()', async () => {
+			test('#rollback()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-rollback.fdb'));
 				const transaction = await attachment.startTransaction();
 				await transaction.rollback();
 				await attachment.dropDatabase();
 			});
 
-			it('#rollbackRetaining()', async () => {
+			test('#rollbackRetaining()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-rollbackRetaining.fdb'));
 				const transaction = await attachment.startTransaction();
 				await transaction.rollbackRetaining();
@@ -176,7 +175,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('transaction left opened', async () => {
+			test('transaction left opened', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-left-opened.fdb'));
 				await attachment.startTransaction();
 				await attachment.dropDatabase();
@@ -184,7 +183,7 @@ export function runCommonTests(client: Client) {
 		});
 
 		describe('Statement', () => {
-			it('#execute()', async () => {
+			test('#execute()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Statement-execute.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -201,7 +200,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#executeQuery()', async () => {
+			test('#executeQuery()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Statement-executeQuery.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -219,7 +218,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#executeReturning()', async () => {
+			test('#executeReturning()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturning.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -229,9 +228,9 @@ export function runCommonTests(client: Client) {
 				const statement = await attachment.prepare(transaction, 'insert into t1 values (11) returning n1, n1 * 2');
 
 				const result = await statement.executeReturning(transaction);
-				assert.equal(result.length, 2);
-				assert.equal(result[0], 11);
-				assert.equal(result[1], 11 * 2);
+				expect(result.length).toBe(2);
+				expect(result[0]).toBe(11);
+				expect(result[1]).toBe(11 * 2);
 
 				await statement.dispose();
 
@@ -241,7 +240,7 @@ export function runCommonTests(client: Client) {
 		});
 
 		describe('ResultSet', () => {
-			it('#fetch()', async () => {
+			test('#fetch()', async () => {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
 				let transaction = await attachment.startTransaction();
 
@@ -345,46 +344,46 @@ export function runCommonTests(client: Client) {
 				const resultSet3 = await statement3.executeQuery(transaction);
 
 				const data = await resultSet3.fetch();
-				assert.equal(data.length, recordCount * 2);
+				expect(data.length).toBe(recordCount * 2);
 
 				for (const columns of data) {
 					let n = 0;
-					assert.equal(columns[n++], -1);
-					assert.equal(columns[n++], -2);
-					assert.equal(columns[n++], -3.45);
-					assert.equal(columns[n++], -2);
-					assert.equal(columns[n++], -3.45);
-					assert.equal(columns[n++], -4.567);
-					assert.equal(dateTimeToString(columns[n++]), '2017-3-26 0:0:0.0');
-					assert.equal(timeToString(columns[n++]), '11:56:32.123');
-					assert.equal(dateTimeToString(columns[n++]), '2017-3-26 11:56:32.123');
-					assert.equal(columns[n++], true);
-					assert.equal(columns[n++], '123áé4567');
-					assert.equal(columns[n++], 9);
-					assert.equal(columns[n++], 11);
-					assert.equal(columns[n++], '123áé4567 ');
-					assert.equal(columns[n++], 10);
-					assert.equal(columns[n++], 12);
-					assert.equal(columns[n++], null);
-					assert.equal(columns[n++], null);
+					expect(columns[n++]).toBe(-1);
+					expect(columns[n++]).toBe(-2);
+					expect(columns[n++]).toBe(-3.45);
+					expect(columns[n++]).toBe(-2);
+					expect(columns[n++]).toBe(-3.45);
+					expect(columns[n++]).toBe(-4.567);
+					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 0:0:0.0');
+					expect(timeToString(columns[n++])).toBe('11:56:32.123');
+					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 11:56:32.123');
+					expect(columns[n++]).toBe(true);
+					expect(columns[n++]).toBe('123áé4567');
+					expect(columns[n++]).toBe(9);
+					expect(columns[n++]).toBe(11);
+					expect(columns[n++]).toBe('123áé4567 ');
+					expect(columns[n++]).toBe(10);
+					expect(columns[n++]).toBe(12);
+					expect(columns[n++]).toBeNull();
+					expect(columns[n++]).toBeNull();
 
 					for (let i = n + 2; n < i; ++n) {
 						const blob = columns[n] as Blob;
 						const blobStream = await attachment.openBlob(transaction, blob);
 						const buffer = Buffer.alloc(await blobStream.length);
-						assert.equal(await blobStream.read(buffer), buffer.length);
-						assert.equal(await blobStream.read(buffer), -1);
+						expect(await blobStream.read(buffer)).toBe(buffer.length);
+						expect(await blobStream.read(buffer)).toBe(-1);
 
 						await blobStream.close();
 
-						assert.equal(buffer.toString(), '12345678á9');
+						expect(buffer.toString()).toBe('12345678á9');
 					}
 
-					assert.equal(columns.length, n);
+					expect(columns.length).toBe(n);
 				}
 
-				assert.equal((await resultSet3.fetch()).length, 0);
-				assert.equal((await resultSet3.fetch()).length, 0);
+				expect((await resultSet3.fetch()).length).toBe(0);
+				expect((await resultSet3.fetch()).length).toBe(0);
 
 				await resultSet3.close();
 				await statement3.dispose();
@@ -393,7 +392,7 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			it('#fetch() with fetchSize', async () => {
+			test('#fetch() with fetchSize', async () => {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch-with-fetchSize.fdb'));
 				const transaction = await attachment.startTransaction();
 
@@ -416,12 +415,12 @@ export function runCommonTests(client: Client) {
 				const rs = await attachment.executeQuery(transaction, 'select n1 from t1 order by n1');
 				rs.defaultFetchOptions = { fetchSize: 5 };
 
-				assert.equal((await rs.fetch()).length, 5);
-				assert.equal((await rs.fetch({ fetchSize: 2 })).length, 2);
-				assert.equal((await rs.fetch()).length, 5);
-				assert.equal((await rs.fetch({ fetchSize: 36 })).length, 36);
-				assert.equal((await rs.fetch()).length, 2);
-				assert.equal((await rs.fetch()).length, 0);
+				expect((await rs.fetch()).length).toBe(5);
+				expect((await rs.fetch({ fetchSize: 2 })).length).toBe(2);
+				expect((await rs.fetch()).length).toBe(5);
+				expect((await rs.fetch({ fetchSize: 36 })).length).toBe(36);
+				expect((await rs.fetch()).length).toBe(2);
+				expect((await rs.fetch()).length).toBe(0);
 
 				await rs.close();
 

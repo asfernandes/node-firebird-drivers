@@ -1,4 +1,3 @@
-import * as assert from 'power-assert';
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
@@ -14,9 +13,9 @@ describe('node-firebird-native-api', function() {
 		return `${tmpDir}/${name}`;
 	}
 
-	this.timeout(5000);
+	jest.setTimeout(5000);
 
-	before(() => {
+	beforeAll(() => {
 		const tempMaster = getMaster(getDefaultLibraryFilename());
 
 		master = getMaster(getDefaultLibraryFilename());
@@ -24,10 +23,10 @@ describe('node-firebird-native-api', function() {
 		tmpDir = tmp.mkdirSync().path.toString();
 
 		// Test premature shutdown prevention. 'master' variable should still be usable.
-		assert.equal(disposeMaster(tempMaster), true);
+		expect(disposeMaster(tempMaster)).toBe(true);
 	});
 
-	after(() => {
+	afterAll(() => {
 		if (!master)
 			return;
 
@@ -38,34 +37,34 @@ describe('node-firebird-native-api', function() {
 
 		dispatcher.releaseSync();
 		fs.rmdirSync(tmpDir);
-		assert.equal(disposeMaster(master), true);
-		assert.equal(disposeMaster(master), false);
+		expect(disposeMaster(master)).toBe(true);
+		expect(disposeMaster(master)).toBe(false);
 	});
 
 	describe('getMaster', () => {
-		it('with error', () => {
-			assert.throws(() => getMaster('not-a-firebird-client-library'));
+		test('with error', () => {
+			expect(() => getMaster('not-a-firebird-client-library')).toThrow();
 		});
 	});
 
 	describe('Master', () => {
-		it('#getStatus()', () => {
+		test('#getStatus()', () => {
 			const status = master.getStatusSync()!;
-			assert.notEqual(status, null);
+			expect(status).toBeTruthy();
 			status.disposeSync();
 		});
 
-		it('#getDispatcher()', () => {
+		test('#getDispatcher()', () => {
 			const dispatcher = master.getDispatcherSync()!;
-			assert.notEqual(dispatcher, null);
+			expect(dispatcher).toBeTruthy();
 			dispatcher.addRefSync();
-			assert.equal(dispatcher.releaseSync(), 1);
-			assert.equal(dispatcher.releaseSync(), 0);
+			expect(dispatcher.releaseSync()).toBe(1);
+			expect(dispatcher.releaseSync()).toBe(0);
 		});
 
-		it('#getUtilInterface()', () => {
+		test('#getUtilInterface()', () => {
 			const util = master.getUtilInterfaceSync();
-			assert.notEqual(util, null);
+			expect(util).toBeTruthy();
 		});
 	});
 
@@ -73,36 +72,36 @@ describe('node-firebird-native-api', function() {
 		const DATE_2016_10_14 = 57675;
 		let util: Util;
 
-		before(() => {
+		beforeAll(() => {
 			util = master.getUtilInterfaceSync()!;
 		});
 
-		it('#encodeDate()', () => {
+		test('#encodeDate()', () => {
 			const n = util.encodeDateSync(2016, 10, 14);
-			assert.equal(n, DATE_2016_10_14);
+			expect(n).toBe(DATE_2016_10_14);
 		});
 
-		it('#decodeDate()', () => {
+		test('#decodeDate()', () => {
 			const year = new Uint32Array(1);
 			const month = new Uint32Array(1);
 			const day = new Uint32Array(1);
 
 			util.decodeDateSync(DATE_2016_10_14, year, month, day);
 
-			assert.equal(year[0], 2016);
-			assert.equal(month[0], 10);
-			assert.equal(day[0], 14);
+			expect(year[0]).toBe(2016);
+			expect(month[0]).toBe(10);
+			expect(day[0]).toBe(14);
 		});
 
-		it('#getClientVersion()', () => {
+		test('#getClientVersion()', () => {
 			const rawVersion = util.getClientVersionSync();
 			const majorVersion = rawVersion >> 8;
-			assert.ok(majorVersion >= 3);
+			expect(majorVersion).toBeGreaterThanOrEqual(3);
 		});
 	});
 
 	describe('Provider', () => {
-		it('#createDatabaseSync()', () => {
+		test('#createDatabaseSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Provider-createDatabaseSync.fdb'), 0, undefined)!;
@@ -113,7 +112,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#createDatabaseAsync()', async () => {
+		test('#createDatabaseAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase.fdb'), 0, undefined))!;
@@ -126,7 +125,7 @@ describe('node-firebird-native-api', function() {
 	});
 
 	describe('Attachment', () => {
-		it('#dropDatabaseSync()', () => {
+		test('#dropDatabaseSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Attachment-dropDatabaseSync.fdb'), 0, undefined)!;
@@ -137,7 +136,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#dropDatabaseAsync()', async () => {
+		test('#dropDatabaseAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-dropDatabase.fdb'), 0, undefined))!;
@@ -148,7 +147,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#detachSync()', () => {
+		test('#detachSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-detachSync.fdb');
@@ -161,7 +160,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#detachAsync()', async () => {
+		test('#detachAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-detach.fdb');
@@ -174,7 +173,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#startTransactionSync()', () => {
+		test('#startTransactionSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-startTransactionSync.fdb');
@@ -193,7 +192,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#startTransactionAsync()', async () => {
+		test('#startTransactionAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-startTransaction.fdb');
@@ -212,7 +211,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#executeSync()', () => {
+		test('#executeSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-executeSync.fdb');
@@ -234,13 +233,13 @@ describe('node-firebird-native-api', function() {
 						}
 						catch (e) {
 							error = e as Error;
-							assert.equal(error.message,
+							expect(error.message).toBe(
 								'Dynamic SQL Error\n' +
 								'-SQL error code = -104\n' +
 								'-Unexpected end of command - line 1, column 1');
 						}
 
-						assert.ok(error);
+						expect(error).toBeTruthy();
 					}
 					finally {
 						transaction.commitSync(status);
@@ -255,7 +254,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#executeAsync()', async () => {
+		test('#executeAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-execute.fdb');
@@ -277,13 +276,13 @@ describe('node-firebird-native-api', function() {
 						}
 						catch (e) {
 							error = e as Error;
-							assert.equal(error.message,
+							expect(error.message).toBe(
 								'Dynamic SQL Error\n' +
 								'-SQL error code = -104\n' +
 								'-Unexpected end of command - line 1, column 1');
 						}
 
-						assert.notEqual(error, null);
+						expect(error).toBeTruthy();
 					}
 					finally {
 						await transaction.commitAsync(status);
@@ -298,7 +297,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#prepareSync()', () => {
+		test('#prepareSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-prepareSync.fdb');
@@ -316,8 +315,8 @@ describe('node-firebird-native-api', function() {
 						try {
 							const inputMetadata2 = statement2.getInputMetadataSync(status)!;
 							try {
-								assert.equal(inputMetadata2.getCountSync(status), 1);
-								assert.equal(inputMetadata2.getMessageLengthSync(status), 2 + 4);
+								expect(inputMetadata2.getCountSync(status)).toBe(1);
+								expect(inputMetadata2.getMessageLengthSync(status)).toBe(2 + 4);
 							}
 							finally {
 								inputMetadata2.releaseSync();
@@ -325,8 +324,8 @@ describe('node-firebird-native-api', function() {
 
 							const outputMetadata2 = statement2.getOutputMetadataSync(status)!;
 							try {
-								assert.equal(outputMetadata2.getCountSync(status), 0);
-								assert.equal(outputMetadata2.getMessageLengthSync(status), 0);
+								expect(outputMetadata2.getCountSync(status)).toBe(0);
+								expect(outputMetadata2.getMessageLengthSync(status)).toBe(0);
 							}
 							finally {
 								outputMetadata2.releaseSync();
@@ -349,7 +348,7 @@ describe('node-firebird-native-api', function() {
 			}
 		});
 
-		it('#prepareAsync()', async () => {
+		test('#prepareAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
 				const filename = getTempFile('Attachment-prepare.fdb');
@@ -367,8 +366,8 @@ describe('node-firebird-native-api', function() {
 						try {
 							const inputMetadata2 = (await statement2.getInputMetadataAsync(status))!;
 							try {
-								assert.equal(inputMetadata2.getCountSync(status), 1);
-								assert.equal(inputMetadata2.getMessageLengthSync(status), 2 + 4);
+								expect(inputMetadata2.getCountSync(status)).toBe(1);
+								expect(inputMetadata2.getMessageLengthSync(status)).toBe(2 + 4);
 							}
 							finally {
 								inputMetadata2.releaseSync();
@@ -376,8 +375,8 @@ describe('node-firebird-native-api', function() {
 
 							const outputMetadata2 = (await statement2.getOutputMetadataSync(status))!;
 							try {
-								assert.equal(outputMetadata2.getCountSync(status), 0);
-								assert.equal(outputMetadata2.getMessageLengthSync(status), 0);
+								expect(outputMetadata2.getCountSync(status)).toBe(0);
+								expect(outputMetadata2.getMessageLengthSync(status)).toBe(0);
 							}
 							finally {
 								outputMetadata2.releaseSync();
