@@ -15,10 +15,6 @@ env:
 matrix:
   fast_finish: true
 
-branches:
-  only:
-  - master
-
 install:
   - wget -O Firebird-3.0.3.32900-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_3/Firebird-3.0.3.32900-0.amd64.tar.gz"
   - tar xzvf Firebird-3.0.3.32900-0.amd64.tar.gz
