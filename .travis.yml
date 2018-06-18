@@ -20,9 +20,9 @@ branches:
   - master
 
 install:
-  - wget -O Firebird-3.0.2.32703-0.amd64.tar.gz "https://downloads.sourceforge.net/project/firebird/firebird-linux-amd64/3.0.2-Release/Firebird-3.0.2.32703-0.amd64.tar.gz?r=http%3A%2F%2Fwww.firebirdsql.org%2Fen%2Ffirebird-3-0-2%2F&ts=1490819755&use_mirror=ufpr"
-  - tar xzvf Firebird-3.0.2.32703-0.amd64.tar.gz
-  - (cd Firebird-3.0.2.32703-0.amd64; sudo ./install.sh -silent)
+  - wget -O Firebird-3.0.3.32900-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_3/Firebird-3.0.3.32900-0.amd64.tar.gz"
+  - tar xzvf Firebird-3.0.3.32900-0.amd64.tar.gz
+  - (cd Firebird-3.0.3.32900-0.amd64; sudo ./install.sh -silent)
   - sudo usermod -a -G firebird travis
 
 script:
