@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/asfernandes/node-firebird-drivers.svg?branch=master)](https://travis-ci.com/asfernandes/node-firebird-drivers)
+[![Build Status](https://travis-ci.com/asfernandes/node-firebird-drivers.svg?branch=master)](https://travis-ci.com/asfernandes/node-firebird-drivers) [![Build Status](https://ci.appveyor.com/api/projects/status/github/asfernandes/node-firebird-drivers?branch=master&svg=true)](https://ci.appveyor.com/project/asfernandes/node-firebird-drivers)
 
 # Firebird drivers for Node.js / TypeScript
 
