@@ -2598,7 +2598,7 @@ MethodStart<fb::IMetadataBuilder*> Master::getMetadataBuilderStart(Nan::NAN_METH
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned fieldCount = info[1]->NumberValue();
+	unsigned fieldCount = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, fieldCount]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -2614,7 +2614,7 @@ v8::Local<v8::Value> Master::getMetadataBuilderFinish(fb::IMetadataBuilder* ret)
 MethodStart<int> Master::serverModeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
-	int mode = info[0]->NumberValue();
+	int mode = (int) info[0]->NumberValue();
 
 	return [obj, mode]() {
 		return obj->interface->serverMode(mode);
@@ -3044,7 +3044,7 @@ MethodStart<fb::IConfigEntry*> Config::findPosStart(Nan::NAN_METHOD_ARGS_TYPE in
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string name = *v8::String::Utf8Value(info[1]->ToString());
-	unsigned pos = info[2]->NumberValue();
+	unsigned pos = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, name, pos]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -3114,7 +3114,7 @@ v8::Local<v8::Value> FirebirdConf::getKeyFinish(unsigned ret)
 MethodStart<int64_t> FirebirdConf::asIntegerStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
-	unsigned key = info[0]->NumberValue();
+	unsigned key = (unsigned) info[0]->NumberValue();
 
 	return [obj, key]() {
 		return obj->interface->asInteger(key);
@@ -3129,7 +3129,7 @@ v8::Local<v8::Value> FirebirdConf::asIntegerFinish(int64_t ret)
 MethodStart<std::string> FirebirdConf::asStringStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
-	unsigned key = info[0]->NumberValue();
+	unsigned key = (unsigned) info[0]->NumberValue();
 
 	return [obj, key]() {
 		return obj->interface->asString(key);
@@ -3144,7 +3144,7 @@ v8::Local<v8::Value> FirebirdConf::asStringFinish(std::string ret)
 MethodStart<FB_BOOLEAN> FirebirdConf::asBooleanStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
-	unsigned key = info[0]->NumberValue();
+	unsigned key = (unsigned) info[0]->NumberValue();
 
 	return [obj, key]() {
 		return obj->interface->asBoolean(key);
@@ -3245,7 +3245,7 @@ MethodStart<void*> PluginConfig::setReleaseDelayStart(Nan::NAN_METHOD_ARGS_TYPE 
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	uint64_t microSeconds = info[1]->NumberValue();
+	uint64_t microSeconds = (uint64_t) info[1]->NumberValue();
 
 	return [obj, status, microSeconds]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -3314,7 +3314,7 @@ void PluginManager::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 MethodStart<void*> PluginManager::registerPluginFactoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
-	unsigned pluginType = info[0]->NumberValue();
+	unsigned pluginType = (unsigned) info[0]->NumberValue();
 	std::string defaultName = *v8::String::Utf8Value(info[1]->ToString());
 	auto* factory = PluginFactory::CheckedUnwrap(info[2], "factory argument", true);
 
@@ -3365,7 +3365,7 @@ MethodStart<fb::IPluginSet*> PluginManager::getPluginsStart(Nan::NAN_METHOD_ARGS
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned pluginType = info[1]->NumberValue();
+	unsigned pluginType = (unsigned) info[1]->NumberValue();
 	std::string namesList = *v8::String::Utf8Value(info[2]->ToString());
 	auto* firebirdConf = FirebirdConf::CheckedUnwrap(info[3], "firebirdConf argument", true);
 
@@ -3430,7 +3430,7 @@ void ConfigManager::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 MethodStart<std::string> ConfigManager::getDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
-	unsigned code = info[0]->NumberValue();
+	unsigned code = (unsigned) info[0]->NumberValue();
 
 	return [obj, code]() {
 		return obj->interface->getDirectory(code);
@@ -3553,7 +3553,7 @@ v8::Local<v8::Value> EventCallback::releaseFinish(int ret)
 MethodStart<void*> EventCallback::eventCallbackFunctionStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<EventCallback>(info.This());
-	unsigned length = info[0]->NumberValue();
+	unsigned length = (unsigned) info[0]->NumberValue();
 	auto* events = getAddress<unsigned char>(info[1]);
 
 	return [obj, length, events]() {
@@ -3612,9 +3612,9 @@ MethodStart<void*> Blob::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned itemsLength = info[1]->NumberValue();
+	unsigned itemsLength = (unsigned) info[1]->NumberValue();
 	auto* items = getAddress<unsigned char>(info[2]);
-	unsigned bufferLength = info[3]->NumberValue();
+	unsigned bufferLength = (unsigned) info[3]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, itemsLength, items, bufferLength, buffer]() {
@@ -3633,7 +3633,7 @@ MethodStart<int> Blob::getSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned bufferLength = info[1]->NumberValue();
+	unsigned bufferLength = (unsigned) info[1]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[2]);
 	auto* segmentLength = getAddress<unsigned>(info[3]);
 
@@ -3652,7 +3652,7 @@ MethodStart<void*> Blob::putSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, length, buffer]() {
@@ -3705,8 +3705,8 @@ MethodStart<int> Blob::seekStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int mode = info[1]->NumberValue();
-	int offset = info[2]->NumberValue();
+	int mode = (int) info[1]->NumberValue();
+	int offset = (int) info[2]->NumberValue();
 
 	return [obj, status, mode, offset]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -3768,9 +3768,9 @@ MethodStart<void*> Transaction::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned itemsLength = info[1]->NumberValue();
+	unsigned itemsLength = (unsigned) info[1]->NumberValue();
 	auto* items = getAddress<unsigned char>(info[2]);
-	unsigned bufferLength = info[3]->NumberValue();
+	unsigned bufferLength = (unsigned) info[3]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, itemsLength, items, bufferLength, buffer]() {
@@ -3789,7 +3789,7 @@ MethodStart<void*> Transaction::prepareStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned msgLength = info[1]->NumberValue();
+	unsigned msgLength = (unsigned) info[1]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, msgLength, message]() {
@@ -4009,7 +4009,7 @@ MethodStart<std::string> MessageMetadata::getFieldStart(Nan::NAN_METHOD_ARGS_TYP
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4026,7 +4026,7 @@ MethodStart<std::string> MessageMetadata::getRelationStart(Nan::NAN_METHOD_ARGS_
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4043,7 +4043,7 @@ MethodStart<std::string> MessageMetadata::getOwnerStart(Nan::NAN_METHOD_ARGS_TYP
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4060,7 +4060,7 @@ MethodStart<std::string> MessageMetadata::getAliasStart(Nan::NAN_METHOD_ARGS_TYP
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4077,7 +4077,7 @@ MethodStart<unsigned> MessageMetadata::getTypeStart(Nan::NAN_METHOD_ARGS_TYPE in
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4094,7 +4094,7 @@ MethodStart<FB_BOOLEAN> MessageMetadata::isNullableStart(Nan::NAN_METHOD_ARGS_TY
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4111,7 +4111,7 @@ MethodStart<int> MessageMetadata::getSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE info
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4128,7 +4128,7 @@ MethodStart<unsigned> MessageMetadata::getLengthStart(Nan::NAN_METHOD_ARGS_TYPE 
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4145,7 +4145,7 @@ MethodStart<int> MessageMetadata::getScaleStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4162,7 +4162,7 @@ MethodStart<unsigned> MessageMetadata::getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4179,7 +4179,7 @@ MethodStart<unsigned> MessageMetadata::getOffsetStart(Nan::NAN_METHOD_ARGS_TYPE 
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4196,7 +4196,7 @@ MethodStart<unsigned> MessageMetadata::getNullOffsetStart(Nan::NAN_METHOD_ARGS_T
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4290,8 +4290,8 @@ MethodStart<void*> MetadataBuilder::setTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	unsigned type = info[2]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	unsigned type = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, index, type]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4309,8 +4309,8 @@ MethodStart<void*> MetadataBuilder::setSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE in
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	int subType = info[2]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	int subType = (int) info[2]->NumberValue();
 
 	return [obj, status, index, subType]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4328,8 +4328,8 @@ MethodStart<void*> MetadataBuilder::setLengthStart(Nan::NAN_METHOD_ARGS_TYPE inf
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	unsigned length = info[2]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	unsigned length = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, index, length]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4347,8 +4347,8 @@ MethodStart<void*> MetadataBuilder::setCharSetStart(Nan::NAN_METHOD_ARGS_TYPE in
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	unsigned charSet = info[2]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	unsigned charSet = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, index, charSet]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4366,8 +4366,8 @@ MethodStart<void*> MetadataBuilder::setScaleStart(Nan::NAN_METHOD_ARGS_TYPE info
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	unsigned scale = info[2]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	unsigned scale = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, index, scale]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4385,7 +4385,7 @@ MethodStart<void*> MetadataBuilder::truncateStart(Nan::NAN_METHOD_ARGS_TYPE info
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned count = info[1]->NumberValue();
+	unsigned count = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, count]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4404,7 +4404,7 @@ MethodStart<void*> MetadataBuilder::moveNameToIndexStart(Nan::NAN_METHOD_ARGS_TY
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string name = *v8::String::Utf8Value(info[1]->ToString());
-	unsigned index = info[2]->NumberValue();
+	unsigned index = (unsigned) info[2]->NumberValue();
 
 	return [obj, status, name, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4422,7 +4422,7 @@ MethodStart<void*> MetadataBuilder::removeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
 
 	return [obj, status, index]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4586,7 +4586,7 @@ MethodStart<int> ResultSet::fetchAbsoluteStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int position = info[1]->NumberValue();
+	int position = (int) info[1]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, position, message]() {
@@ -4604,7 +4604,7 @@ MethodStart<int> ResultSet::fetchRelativeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int offset = info[1]->NumberValue();
+	int offset = (int) info[1]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, offset, message]() {
@@ -4751,9 +4751,9 @@ MethodStart<void*> Statement::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned itemsLength = info[1]->NumberValue();
+	unsigned itemsLength = (unsigned) info[1]->NumberValue();
 	auto* items = getAddress<unsigned char>(info[2]);
-	unsigned bufferLength = info[3]->NumberValue();
+	unsigned bufferLength = (unsigned) info[3]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, itemsLength, items, bufferLength, buffer]() {
@@ -4878,7 +4878,7 @@ MethodStart<fb::IResultSet*> Statement::openCursorStart(Nan::NAN_METHOD_ARGS_TYP
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[2], "inMetadata argument", true);
 	auto* inBuffer = getAddress<unsigned char>(info[3]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[4], "outMetadata argument", true);
-	unsigned flags = info[5]->NumberValue();
+	unsigned flags = (unsigned) info[5]->NumberValue();
 
 	return [obj, status, transaction, inMetadata, inBuffer, outMetadata, flags]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -4988,9 +4988,9 @@ MethodStart<void*> Request::receiveStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int level = info[1]->NumberValue();
-	unsigned msgType = info[2]->NumberValue();
-	unsigned length = info[3]->NumberValue();
+	int level = (int) info[1]->NumberValue();
+	unsigned msgType = (unsigned) info[2]->NumberValue();
+	unsigned length = (unsigned) info[3]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, level, msgType, length, message]() {
@@ -5009,9 +5009,9 @@ MethodStart<void*> Request::sendStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int level = info[1]->NumberValue();
-	unsigned msgType = info[2]->NumberValue();
-	unsigned length = info[3]->NumberValue();
+	int level = (int) info[1]->NumberValue();
+	unsigned msgType = (unsigned) info[2]->NumberValue();
+	unsigned length = (unsigned) info[3]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, level, msgType, length, message]() {
@@ -5030,10 +5030,10 @@ MethodStart<void*> Request::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int level = info[1]->NumberValue();
-	unsigned itemsLength = info[2]->NumberValue();
+	int level = (int) info[1]->NumberValue();
+	unsigned itemsLength = (unsigned) info[2]->NumberValue();
 	auto* items = getAddress<unsigned char>(info[3]);
-	unsigned bufferLength = info[4]->NumberValue();
+	unsigned bufferLength = (unsigned) info[4]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[5]);
 
 	return [obj, status, level, itemsLength, items, bufferLength, buffer]() {
@@ -5053,7 +5053,7 @@ MethodStart<void*> Request::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* tra = Transaction::CheckedUnwrap(info[1], "tra argument", true);
-	int level = info[2]->NumberValue();
+	int level = (int) info[2]->NumberValue();
 
 	return [obj, status, tra, level]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5072,9 +5072,9 @@ MethodStart<void*> Request::startAndSendStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* tra = Transaction::CheckedUnwrap(info[1], "tra argument", true);
-	int level = info[2]->NumberValue();
-	unsigned msgType = info[3]->NumberValue();
-	unsigned length = info[4]->NumberValue();
+	int level = (int) info[2]->NumberValue();
+	unsigned msgType = (unsigned) info[3]->NumberValue();
+	unsigned length = (unsigned) info[4]->NumberValue();
 	auto* message = getAddress<unsigned char>(info[5]);
 
 	return [obj, status, tra, level, msgType, length, message]() {
@@ -5093,7 +5093,7 @@ MethodStart<void*> Request::unwindStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int level = info[1]->NumberValue();
+	int level = (int) info[1]->NumberValue();
 
 	return [obj, status, level]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5232,9 +5232,9 @@ MethodStart<void*> Attachment::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned itemsLength = info[1]->NumberValue();
+	unsigned itemsLength = (unsigned) info[1]->NumberValue();
 	auto* items = getAddress<unsigned char>(info[2]);
-	unsigned bufferLength = info[3]->NumberValue();
+	unsigned bufferLength = (unsigned) info[3]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, itemsLength, items, bufferLength, buffer]() {
@@ -5253,7 +5253,7 @@ MethodStart<fb::ITransaction*> Attachment::startTransactionStart(Nan::NAN_METHOD
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned tpbLength = info[1]->NumberValue();
+	unsigned tpbLength = (unsigned) info[1]->NumberValue();
 	auto* tpb = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, tpbLength, tpb]() {
@@ -5271,7 +5271,7 @@ MethodStart<fb::ITransaction*> Attachment::reconnectTransactionStart(Nan::NAN_ME
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* id = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, length, id]() {
@@ -5289,7 +5289,7 @@ MethodStart<fb::IRequest*> Attachment::compileRequestStart(Nan::NAN_METHOD_ARGS_
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned blrLength = info[1]->NumberValue();
+	unsigned blrLength = (unsigned) info[1]->NumberValue();
 	auto* blr = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, blrLength, blr]() {
@@ -5308,11 +5308,11 @@ MethodStart<void*> Attachment::transactRequestStart(Nan::NAN_METHOD_ARGS_TYPE in
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
-	unsigned blrLength = info[2]->NumberValue();
+	unsigned blrLength = (unsigned) info[2]->NumberValue();
 	auto* blr = getAddress<unsigned char>(info[3]);
-	unsigned inMsgLength = info[4]->NumberValue();
+	unsigned inMsgLength = (unsigned) info[4]->NumberValue();
 	auto* inMsg = getAddress<unsigned char>(info[5]);
-	unsigned outMsgLength = info[6]->NumberValue();
+	unsigned outMsgLength = (unsigned) info[6]->NumberValue();
 	auto* outMsg = getAddress<unsigned char>(info[7]);
 
 	return [obj, status, transaction, blrLength, blr, inMsgLength, inMsg, outMsgLength, outMsg]() {
@@ -5333,7 +5333,7 @@ MethodStart<fb::IBlob*> Attachment::createBlobStart(Nan::NAN_METHOD_ARGS_TYPE in
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
-	unsigned bpbLength = info[3]->NumberValue();
+	unsigned bpbLength = (unsigned) info[3]->NumberValue();
 	auto* bpb = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, transaction, id, bpbLength, bpb]() {
@@ -5353,7 +5353,7 @@ MethodStart<fb::IBlob*> Attachment::openBlobStart(Nan::NAN_METHOD_ARGS_TYPE info
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
-	unsigned bpbLength = info[3]->NumberValue();
+	unsigned bpbLength = (unsigned) info[3]->NumberValue();
 	auto* bpb = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, transaction, id, bpbLength, bpb]() {
@@ -5372,7 +5372,7 @@ MethodStart<void*> Attachment::executeDynStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
-	unsigned length = info[2]->NumberValue();
+	unsigned length = (unsigned) info[2]->NumberValue();
 	auto* dyn = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, transaction, length, dyn]() {
@@ -5392,10 +5392,10 @@ MethodStart<fb::IStatement*> Attachment::prepareStart(Nan::NAN_METHOD_ARGS_TYPE 
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* tra = Transaction::CheckedUnwrap(info[1], "tra argument", true);
-	unsigned stmtLength = info[2]->NumberValue();
+	unsigned stmtLength = (unsigned) info[2]->NumberValue();
 	std::string sqlStmt = *v8::String::Utf8Value(info[3]->ToString());
-	unsigned dialect = info[4]->NumberValue();
-	unsigned flags = info[5]->NumberValue();
+	unsigned dialect = (unsigned) info[4]->NumberValue();
+	unsigned flags = (unsigned) info[5]->NumberValue();
 
 	return [obj, status, tra, stmtLength, sqlStmt, dialect, flags]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5413,9 +5413,9 @@ MethodStart<fb::ITransaction*> Attachment::executeStart(Nan::NAN_METHOD_ARGS_TYP
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
-	unsigned stmtLength = info[2]->NumberValue();
+	unsigned stmtLength = (unsigned) info[2]->NumberValue();
 	std::string sqlStmt = *v8::String::Utf8Value(info[3]->ToString());
-	unsigned dialect = info[4]->NumberValue();
+	unsigned dialect = (unsigned) info[4]->NumberValue();
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[5], "inMetadata argument", true);
 	auto* inBuffer = getAddress<unsigned char>(info[6]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[7], "outMetadata argument", true);
@@ -5437,14 +5437,14 @@ MethodStart<fb::IResultSet*> Attachment::openCursorStart(Nan::NAN_METHOD_ARGS_TY
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
-	unsigned stmtLength = info[2]->NumberValue();
+	unsigned stmtLength = (unsigned) info[2]->NumberValue();
 	std::string sqlStmt = *v8::String::Utf8Value(info[3]->ToString());
-	unsigned dialect = info[4]->NumberValue();
+	unsigned dialect = (unsigned) info[4]->NumberValue();
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[5], "inMetadata argument", true);
 	auto* inBuffer = getAddress<unsigned char>(info[6]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[7], "outMetadata argument", true);
 	std::string cursorName = *v8::String::Utf8Value(info[8]->ToString());
-	unsigned cursorFlags = info[9]->NumberValue();
+	unsigned cursorFlags = (unsigned) info[9]->NumberValue();
 
 	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, inBuffer, outMetadata, cursorName, cursorFlags]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5462,7 +5462,7 @@ MethodStart<fb::IEvents*> Attachment::queEventsStart(Nan::NAN_METHOD_ARGS_TYPE i
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* callback = EventCallback::CheckedUnwrap(info[1], "callback argument", true);
-	unsigned length = info[2]->NumberValue();
+	unsigned length = (unsigned) info[2]->NumberValue();
 	auto* events = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, callback, length, events]() {
@@ -5480,7 +5480,7 @@ MethodStart<void*> Attachment::cancelOperationStart(Nan::NAN_METHOD_ARGS_TYPE in
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int option = info[1]->NumberValue();
+	int option = (int) info[1]->NumberValue();
 
 	return [obj, status, option]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5604,11 +5604,11 @@ MethodStart<void*> Service::queryStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned sendLength = info[1]->NumberValue();
+	unsigned sendLength = (unsigned) info[1]->NumberValue();
 	auto* sendItems = getAddress<unsigned char>(info[2]);
-	unsigned receiveLength = info[3]->NumberValue();
+	unsigned receiveLength = (unsigned) info[3]->NumberValue();
 	auto* receiveItems = getAddress<unsigned char>(info[4]);
-	unsigned bufferLength = info[5]->NumberValue();
+	unsigned bufferLength = (unsigned) info[5]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[6]);
 
 	return [obj, status, sendLength, sendItems, receiveLength, receiveItems, bufferLength, buffer]() {
@@ -5627,7 +5627,7 @@ MethodStart<void*> Service::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned spbLength = info[1]->NumberValue();
+	unsigned spbLength = (unsigned) info[1]->NumberValue();
 	auto* spb = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, spbLength, spb]() {
@@ -5719,7 +5719,7 @@ MethodStart<fb::IAttachment*> Provider::attachDatabaseStart(Nan::NAN_METHOD_ARGS
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string fileName = *v8::String::Utf8Value(info[1]->ToString());
-	unsigned dpbLength = info[2]->NumberValue();
+	unsigned dpbLength = (unsigned) info[2]->NumberValue();
 	auto* dpb = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, fileName, dpbLength, dpb]() {
@@ -5738,7 +5738,7 @@ MethodStart<fb::IAttachment*> Provider::createDatabaseStart(Nan::NAN_METHOD_ARGS
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string fileName = *v8::String::Utf8Value(info[1]->ToString());
-	unsigned dpbLength = info[2]->NumberValue();
+	unsigned dpbLength = (unsigned) info[2]->NumberValue();
 	auto* dpb = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, fileName, dpbLength, dpb]() {
@@ -5757,7 +5757,7 @@ MethodStart<fb::IService*> Provider::attachServiceManagerStart(Nan::NAN_METHOD_A
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string service = *v8::String::Utf8Value(info[1]->ToString());
-	unsigned spbLength = info[2]->NumberValue();
+	unsigned spbLength = (unsigned) info[2]->NumberValue();
 	auto* spb = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, service, spbLength, spb]() {
@@ -5775,8 +5775,8 @@ MethodStart<void*> Provider::shutdownStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned timeout = info[1]->NumberValue();
-	int reason = info[2]->NumberValue();
+	unsigned timeout = (unsigned) info[1]->NumberValue();
+	int reason = (int) info[2]->NumberValue();
 
 	return [obj, status, timeout, reason]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -5854,7 +5854,7 @@ MethodStart<void*> DtcStart::addWithTpbStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	auto* obj = ObjectWrap::Unwrap<DtcStart>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* att = Attachment::CheckedUnwrap(info[1], "att argument", true);
-	unsigned length = info[2]->NumberValue();
+	unsigned length = (unsigned) info[2]->NumberValue();
 	auto* tpb = getAddress<unsigned char>(info[3]);
 
 	return [obj, status, att, length, tpb]() {
@@ -6110,7 +6110,7 @@ MethodStart<void*> ServerBlock::putDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ServerBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* data = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, length, data]() {
@@ -6228,7 +6228,7 @@ MethodStart<void*> ClientBlock::putDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* data = getAddress<unsigned char>(info[2]);
 
 	return [obj, status, length, data]() {
@@ -6469,7 +6469,7 @@ MethodStart<void*> UserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int newValue = info[1]->NumberValue();
+	int newValue = (int) info[1]->NumberValue();
 
 	return [obj, status, newValue]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -6524,7 +6524,7 @@ MethodStart<void*> CharUserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int newValue = info[1]->NumberValue();
+	int newValue = (int) info[1]->NumberValue();
 
 	return [obj, status, newValue]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -6611,7 +6611,7 @@ MethodStart<void*> IntUserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int newValue = info[1]->NumberValue();
+	int newValue = (int) info[1]->NumberValue();
 
 	return [obj, status, newValue]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -6643,7 +6643,7 @@ MethodStart<void*> IntUserField::setStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	int newValue = info[1]->NumberValue();
+	int newValue = (int) info[1]->NumberValue();
 
 	return [obj, status, newValue]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -7182,7 +7182,7 @@ MethodStart<void*> WireCryptPlugin::encryptStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* from = getAddress<unsigned char>(info[2]);
 	auto* to = getAddress<unsigned char>(info[3]);
 
@@ -7202,7 +7202,7 @@ MethodStart<void*> WireCryptPlugin::decryptStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned length = info[1]->NumberValue();
+	unsigned length = (unsigned) info[1]->NumberValue();
 	auto* from = getAddress<unsigned char>(info[2]);
 	auto* to = getAddress<unsigned char>(info[3]);
 
@@ -7226,9 +7226,9 @@ void CryptKeyCallback::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 MethodStart<unsigned> CryptKeyCallback::callbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CryptKeyCallback>(info.This());
-	unsigned dataLength = info[0]->NumberValue();
+	unsigned dataLength = (unsigned) info[0]->NumberValue();
 	auto* data = getAddress<unsigned char>(info[1]);
-	unsigned bufferLength = info[2]->NumberValue();
+	unsigned bufferLength = (unsigned) info[2]->NumberValue();
 	auto* buffer = getAddress<unsigned char>(info[3]);
 
 	return [obj, dataLength, data, bufferLength, buffer]() {
@@ -7798,7 +7798,7 @@ MethodStart<void*> TimerControl::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	auto* obj = ObjectWrap::Unwrap<TimerControl>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* timer = Timer::CheckedUnwrap(info[1], "timer argument", true);
-	uint64_t microSeconds = info[2]->NumberValue();
+	uint64_t microSeconds = (uint64_t) info[2]->NumberValue();
 
 	return [obj, status, timer, microSeconds]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -7889,9 +7889,9 @@ MethodStart<fb::IAttachment*> Util::executeCreateDatabaseStart(Nan::NAN_METHOD_A
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned stmtLength = info[1]->NumberValue();
+	unsigned stmtLength = (unsigned) info[1]->NumberValue();
 	std::string creatDBstatement = *v8::String::Utf8Value(info[2]->ToString());
-	unsigned dialect = info[3]->NumberValue();
+	unsigned dialect = (unsigned) info[3]->NumberValue();
 	auto* stmtIsCreateDb = getAddress<unsigned char>(info[4]);
 
 	return [obj, status, stmtLength, creatDBstatement, dialect, stmtIsCreateDb]() {
@@ -7908,7 +7908,7 @@ v8::Local<v8::Value> Util::executeCreateDatabaseFinish(fb::IAttachment* ret)
 MethodStart<void*> Util::decodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
-	int date = info[0]->NumberValue();
+	int date = (int) info[0]->NumberValue();
 	auto* year = getAddress<unsigned>(info[1]);
 	auto* month = getAddress<unsigned>(info[2]);
 	auto* day = getAddress<unsigned>(info[3]);
@@ -7927,7 +7927,7 @@ v8::Local<v8::Value> Util::decodeDateFinish(void* ret)
 MethodStart<void*> Util::decodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
-	int time = info[0]->NumberValue();
+	int time = (int) info[0]->NumberValue();
 	auto* hours = getAddress<unsigned>(info[1]);
 	auto* minutes = getAddress<unsigned>(info[2]);
 	auto* seconds = getAddress<unsigned>(info[3]);
@@ -7947,9 +7947,9 @@ v8::Local<v8::Value> Util::decodeTimeFinish(void* ret)
 MethodStart<int> Util::encodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
-	unsigned year = info[0]->NumberValue();
-	unsigned month = info[1]->NumberValue();
-	unsigned day = info[2]->NumberValue();
+	unsigned year = (unsigned) info[0]->NumberValue();
+	unsigned month = (unsigned) info[1]->NumberValue();
+	unsigned day = (unsigned) info[2]->NumberValue();
 
 	return [obj, year, month, day]() {
 		return obj->interface->encodeDate(year, month, day);
@@ -7964,10 +7964,10 @@ v8::Local<v8::Value> Util::encodeDateFinish(int ret)
 MethodStart<int> Util::encodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
-	unsigned hours = info[0]->NumberValue();
-	unsigned minutes = info[1]->NumberValue();
-	unsigned seconds = info[2]->NumberValue();
-	unsigned fractions = info[3]->NumberValue();
+	unsigned hours = (unsigned) info[0]->NumberValue();
+	unsigned minutes = (unsigned) info[1]->NumberValue();
+	unsigned seconds = (unsigned) info[2]->NumberValue();
+	unsigned fractions = (unsigned) info[3]->NumberValue();
 
 	return [obj, hours, minutes, seconds, fractions]() {
 		return obj->interface->encodeTime(hours, minutes, seconds, fractions);
@@ -7997,9 +7997,9 @@ MethodStart<fb::IXpbBuilder*> Util::getXpbBuilderStart(Nan::NAN_METHOD_ARGS_TYPE
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned kind = info[1]->NumberValue();
+	unsigned kind = (unsigned) info[1]->NumberValue();
 	auto* buf = getAddress<unsigned char>(info[2]);
-	unsigned len = info[3]->NumberValue();
+	unsigned len = (unsigned) info[3]->NumberValue();
 
 	return [obj, status, kind, buf, len]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8039,9 +8039,9 @@ MethodStart<void*> OffsetsCallback::setOffsetStart(Nan::NAN_METHOD_ARGS_TYPE inf
 {
 	auto* obj = ObjectWrap::Unwrap<OffsetsCallback>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned index = info[1]->NumberValue();
-	unsigned offset = info[2]->NumberValue();
-	unsigned nullOffset = info[3]->NumberValue();
+	unsigned index = (unsigned) info[1]->NumberValue();
+	unsigned offset = (unsigned) info[2]->NumberValue();
+	unsigned nullOffset = (unsigned) info[3]->NumberValue();
 
 	return [obj, status, index, offset, nullOffset]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8133,8 +8133,8 @@ MethodStart<void*> XpbBuilder::insertIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
-	int value = info[2]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
+	int value = (int) info[2]->NumberValue();
 
 	return [obj, status, tag, value]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8152,8 +8152,8 @@ MethodStart<void*> XpbBuilder::insertBigIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
-	int64_t value = info[2]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
+	int64_t value = (int64_t) info[2]->NumberValue();
 
 	return [obj, status, tag, value]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8171,9 +8171,9 @@ MethodStart<void*> XpbBuilder::insertBytesStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
 	auto* bytes = getAddress<unsigned char>(info[2]);
-	unsigned length = info[3]->NumberValue();
+	unsigned length = (unsigned) info[3]->NumberValue();
 
 	return [obj, status, tag, bytes, length]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8191,7 +8191,7 @@ MethodStart<void*> XpbBuilder::insertStringStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
 	std::string str = *v8::String::Utf8Value(info[2]->ToString());
 
 	return [obj, status, tag, str]() {
@@ -8210,7 +8210,7 @@ MethodStart<void*> XpbBuilder::insertTagStart(Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
 
 	return [obj, status, tag]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -8278,7 +8278,7 @@ MethodStart<FB_BOOLEAN> XpbBuilder::findFirstStart(Nan::NAN_METHOD_ARGS_TYPE inf
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
-	unsigned char tag = info[1]->NumberValue();
+	unsigned char tag = (unsigned char) info[1]->NumberValue();
 
 	return [obj, status, tag]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
