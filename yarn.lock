@@ -42,7 +42,7 @@
   version "10.3.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.2.tgz#3840ec6c12556fdda6e0e6d036df853101d732a4"
 
-"@types/node@8.10.19", "@types/node@^8.0.7", "@types/node@^8.10.19":
+"@types/node@8.10.19", "@types/node@^8.10.19":
   version "8.10.19"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.19.tgz#66b5b6325c048cbf4512b7a88b0e79c2ee99d3d2"
 
@@ -3135,11 +3135,11 @@ needle@^2.2.0:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-node-cloop-gen@0.0.1-alpha.3:
-  version "0.0.1-alpha.3"
-  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-0.0.1-alpha.3.tgz#3daf73ec8d9712a7fb4bf20baacd01342df948d0"
+node-cloop-gen@0.0.1-beta.1:
+  version "0.0.1-beta.1"
+  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-0.0.1-beta.1.tgz#34a1426fb85bbec8b7aa63c982d023cbdc81724b"
   dependencies:
-    "@types/node" "^8.0.7"
+    "@types/node" "^8.10.19"
 
 node-gyp@^3.6.2:
   version "3.7.0"
