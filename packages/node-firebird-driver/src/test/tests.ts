@@ -452,7 +452,6 @@ export function runCommonTests(client: Client) {
 
 				expect((await rs.fetch()).length).toBe(2);
 				expect(rs.fetch()).rejects.toBeTruthy();
-				expect((await rs.fetch()).length).toBe(0);
 
 				await rs.close();
 
