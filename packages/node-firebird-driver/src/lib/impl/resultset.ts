@@ -31,7 +31,13 @@ export abstract class AbstractResultSet implements ResultSet {
 		this.statement = undefined;
 	}
 
-	/** Fetchs data from this result set. */
+	/**
+	 * Fetchs data from this result set.
+	 *
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 *
+	 * If result set has no more rows, returns an empty array.
+	 */
 	async fetch(options?: FetchOptions): Promise<Array<Array<any>>> {
 		this.check();
 

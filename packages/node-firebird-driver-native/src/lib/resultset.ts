@@ -14,6 +14,7 @@ export class ResultSetImpl extends AbstractResultSet {
 	transaction: TransactionImpl;
 
 	resultSetHandle?: fb.ResultSet;
+	delayedError: any;
 
 	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
 			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
@@ -43,20 +44,40 @@ export class ResultSetImpl extends AbstractResultSet {
 	/** Fetchs data from this result set. */
 	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<Array<any>> }> {
 		return await this.statement.attachment.client.statusAction(async status => {
+			if (this.delayedError) {
+				const error = this.delayedError;
+				this.delayedError = undefined;
+				throw error;
+			}
+
 			const rows = [];
 			const buffers = [this.statement.outBuffer, new Uint8Array(this.statement.outMetadata!.getMessageLengthSync(status))];
 			let buffer = 0;
-			let nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
+			let nextFetchPromise = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
 
 			while (true) {
-				if (await nextFetch == fb.Status.RESULT_OK) {
+				let nextFetch: number;
+
+				try {
+					nextFetch = await nextFetchPromise;
+				}
+				catch (e) {
+					if (rows.length == 0)
+						throw e;
+					else {
+						this.delayedError = e;
+						return { finished: false, rows: rows };
+					}
+				}
+
+				if (nextFetch == fb.Status.RESULT_OK) {
 					const buffer1 = buffer;
 					buffer = ++buffer % 2;
 
 					const finish = options && options.fetchSize && rows.length + 1 >= options.fetchSize;
 
 					if (!finish)
-						nextFetch = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
+						nextFetchPromise = this.resultSetHandle!.fetchNextAsync(status, buffers[buffer]);
 
 					rows.push(await this.statement.dataReader(this.statement.attachment, this.transaction, buffers[buffer1]));
 

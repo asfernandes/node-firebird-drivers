@@ -427,6 +427,38 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			test('#fetch() with fetchSize and exception', async () => {
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch-with-fetchSize.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create exception e1 \'e1\'');
+				await transaction.commitRetaining();
+
+				const rs = await attachment.executeQuery(transaction, `
+					execute block returns (n integer)
+					as
+					begin
+						n = 1;
+						suspend;
+						n = 2;
+						suspend;
+						exception e1;
+						n = 3;
+						suspend;
+					end
+				`);
+				rs.defaultFetchOptions = { fetchSize: 5 };
+
+				expect((await rs.fetch()).length).toBe(2);
+				expect(rs.fetch()).rejects.toBeTruthy();
+				expect((await rs.fetch()).length).toBe(0);
+
+				await rs.close();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 	});
 }
