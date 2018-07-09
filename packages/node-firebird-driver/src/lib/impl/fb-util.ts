@@ -43,6 +43,7 @@ export namespace sqlTypes {
 export namespace dpb {
 	export const isc_dpb_version1 = 1;
 	export const lc_ctype = 48;
+	export const dpb_force_write = 24;
 	export const user_name = 28;
 	export const password = 29;
 }
@@ -89,6 +90,11 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 
 	if (options.password)
 		ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
+
+	const createOptions = options as CreateDatabaseOptions;
+
+	if (createOptions.forcedWrite != undefined)
+		ret += `${code(dpb.dpb_force_write)}${code(1)}${code(createOptions.forcedWrite ? 1 : 0)}`;
 
 	return Buffer.from(ret);
 }

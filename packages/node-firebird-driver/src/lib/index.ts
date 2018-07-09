@@ -42,6 +42,8 @@ export interface ConnectOptions {
 
 /** CreateDatabaseOptions interface. */
 export interface CreateDatabaseOptions extends ConnectOptions {
+	/** Forced write. */
+	forcedWrite?: boolean;
 }
 
 /** TransactionIsolation enum */

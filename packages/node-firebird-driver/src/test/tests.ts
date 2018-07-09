@@ -29,6 +29,10 @@ export function runCommonTests(client: Client) {
 
 		beforeAll(() => {
 			tmpDir = tmp.mkdirSync().path.toString();
+
+			client.defaultCreateDatabaseOptions = {
+				forcedWrite: false
+			}
 		});
 
 		afterAll(async () => {
