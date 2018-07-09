@@ -19,7 +19,7 @@
     "comment-format": [false],
     "member-access": false,
     "array-type": false,
-    "max-classes-per-file": [false],
+    "max-classes-per-file": false,
     "align": [true, "elements", "members", "statements"],
     "member-ordering": [false],
     "no-namespace": false,
