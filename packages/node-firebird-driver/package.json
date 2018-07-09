@@ -4,9 +4,10 @@
   "description": "Firebird Driver Interfaces for Node.js",
   "main": "dist/lib/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "yarn run clean && tsc",
+    "build": "yarn run clean && yarn run lint && tsc",
     "build:w": "yarn run clean && tsc -w",
+    "clean": "rimraf dist",
+    "lint": "tslint --project .",
     "prepublishOnly": "yarn run build"
   },
   "repository": {

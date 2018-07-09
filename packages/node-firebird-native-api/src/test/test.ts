@@ -4,7 +4,7 @@ import * as tmp from 'temp-fs';
 import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util } from '../lib';
 
 
-describe('node-firebird-native-api', function() {
+describe('node-firebird-native-api', () => {
 	let master: Master;
 	let dispatcher: Provider;
 	let tmpDir: string;
@@ -31,6 +31,7 @@ describe('node-firebird-native-api', function() {
 			return;
 
 		const status = master.getStatusSync()!;
+		// tslint:disable-next-line:variable-name
 		const fb_shutrsn_app_stopped = -3;
 		dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
 		status.disposeSync();
@@ -55,11 +56,11 @@ describe('node-firebird-native-api', function() {
 		});
 
 		test('#getDispatcher()', () => {
-			const dispatcher = master.getDispatcherSync()!;
-			expect(dispatcher).toBeTruthy();
-			dispatcher.addRefSync();
-			expect(dispatcher.releaseSync()).toBe(1);
-			expect(dispatcher.releaseSync()).toBe(0);
+			const thisDispatcher = master.getDispatcherSync()!;
+			expect(thisDispatcher).toBeTruthy();
+			thisDispatcher.addRefSync();
+			expect(thisDispatcher.releaseSync()).toBe(1);
+			expect(thisDispatcher.releaseSync()).toBe(0);
 		});
 
 		test('#getUtilInterface()', () => {
@@ -115,7 +116,8 @@ describe('node-firebird-native-api', function() {
 		test('#createDatabaseAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
-				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase.fdb'), 0, undefined))!;
+				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase.fdb'),
+					0, undefined))!;
 				await attachment.dropDatabaseAsync(status);
 			}
 			finally {
@@ -139,7 +141,8 @@ describe('node-firebird-native-api', function() {
 		test('#dropDatabaseAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
-				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-dropDatabase.fdb'), 0, undefined))!;
+				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-dropDatabase.fdb'),
+					0, undefined))!;
 				await attachment.dropDatabaseAsync(status);
 			}
 			finally {

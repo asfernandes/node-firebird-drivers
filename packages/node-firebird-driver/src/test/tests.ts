@@ -18,7 +18,7 @@ export function runCommonTests(client: Client) {
 	}
 
 
-	describe('node-firebird-driver', function() {
+	describe('node-firebird-driver', () => {
 		let tmpDir: string;
 
 		function getTempFile(name: string): string {
@@ -371,7 +371,7 @@ export function runCommonTests(client: Client) {
 					expect(columns[n++]).toBeNull();
 					expect(columns[n++]).toBeNull();
 
-					for (let i = n + 2; n < i; ++n) {
+					for (const i = n + 2; n < i; ++n) {
 						const blob = columns[n] as Blob;
 						const blobStream = await attachment.openBlob(transaction, blob);
 						const buffer = Buffer.alloc(await blobStream.length);

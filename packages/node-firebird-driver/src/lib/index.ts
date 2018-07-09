@@ -114,21 +114,21 @@ export interface Attachment {
 	execute(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		options?: {
 			prepareOptions?: PrepareOptions,
-			executeOptions?: ExecuteOptions,
+			executeOptions?: ExecuteOptions
 		}): Promise<void>;
 
 	/** Executes a statement that returns a single record. */
 	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		options?: {
 			prepareOptions?: PrepareOptions,
-			executeOptions?: ExecuteOptions,
+			executeOptions?: ExecuteOptions
 		}): Promise<Array<any>>;
 
 	/** Executes a statement that has result set. */
 	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		options?: {
 			prepareOptions?: PrepareOptions,
-			executeOptions?: ExecuteQueryOptions,
+			executeOptions?: ExecuteQueryOptions
 		}): Promise<ResultSet>;
 
 	/** Default transaction options. */

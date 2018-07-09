@@ -78,7 +78,7 @@ export abstract class AbstractAttachment implements Attachment {
 	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			options?: {
 				prepareOptions?: PrepareOptions,
-				executeOptions?: ExecuteOptions,
+				executeOptions?: ExecuteOptions
 			}): Promise<void> {
 		this.check();
 
@@ -95,7 +95,7 @@ export abstract class AbstractAttachment implements Attachment {
 	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			options?: {
 				prepareOptions?: PrepareOptions,
-				executeOptions?: ExecuteOptions,
+				executeOptions?: ExecuteOptions
 			}): Promise<Array<any>> {
 		this.check();
 
@@ -112,7 +112,7 @@ export abstract class AbstractAttachment implements Attachment {
 	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			options?: {
 				prepareOptions?: PrepareOptions,
-				executeOptions?: ExecuteQueryOptions,
+				executeOptions?: ExecuteQueryOptions
 			}): Promise<AbstractResultSet> {
 		this.check();
 

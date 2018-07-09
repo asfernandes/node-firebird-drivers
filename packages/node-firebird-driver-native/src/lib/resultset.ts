@@ -66,7 +66,7 @@ export class ResultSetImpl extends AbstractResultSet {
 						throw e;
 					else {
 						this.delayedError = e;
-						return { finished: false, rows: rows };
+						return { finished: false, rows };
 					}
 				}
 
@@ -82,10 +82,10 @@ export class ResultSetImpl extends AbstractResultSet {
 					rows.push(await this.statement.dataReader(this.statement.attachment, this.transaction, buffers[buffer1]));
 
 					if (finish)
-						return { finished: false, rows: rows };
+						return { finished: false, rows };
 				}
 				else {
-					return { finished: true, rows: rows };
+					return { finished: true, rows };
 				}
 			}
 		});

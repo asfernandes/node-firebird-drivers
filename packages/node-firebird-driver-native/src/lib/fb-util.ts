@@ -57,7 +57,7 @@ export function createDescriptors(status: fb.Status, metadata?: fb.MessageMetada
 			nullOffset: metadata.getNullOffsetSync(status, i),
 			offset: metadata.getOffsetSync(status, i),
 			length: metadata.getLengthSync(status, i),
-			scale: metadata.getScaleSync(status, i),
+			scale: metadata.getScaleSync(status, i)
 		});
 	}
 

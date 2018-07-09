@@ -16,7 +16,7 @@ import {
 	createDescriptors,
 	fixMetadata,
 	DataReader,
-	DataWriter,
+	DataWriter
 } from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
@@ -91,8 +91,9 @@ export class StatementImpl extends AbstractStatement {
 			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
 				this.inMetadata, this.inBuffer, this.outMetadata, this.outBuffer);
 
-			if (newTransaction && transaction.transactionHandle != newTransaction)
-				{}	//// FIXME: newTransaction.releaseSync();
+			if (newTransaction && transaction.transactionHandle != newTransaction) {
+				//// FIXME: newTransaction.releaseSync();
+			}
 
 			return this.outMetadata ? await this.dataReader(this.attachment, transaction, this.outBuffer) : [];
 		});

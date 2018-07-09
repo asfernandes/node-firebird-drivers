@@ -5,15 +5,16 @@
   "gypfile": true,
   "main": "dist/lib/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "yarn run clean && tsc",
+    "build": "yarn run clean && yarn run lint && tsc",
     "build:w": "yarn run clean && tsc -w",
+    "clean": "rimraf dist",
+    "lint": "tslint --project .",
     "generate": "node dist/generate-files",
     "gyp:clean": "rimraf build",
     "gyp:build": "node-gyp build",
     "gyp:configure": "node-gyp configure",
-    "test": "jest",
-    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test"
+    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,6 @@
     "node-gyp": "^3.6.2"
   },
   "devDependencies": {
-    "node-cloop-gen": "0.0.1-beta.1"
+    "node-cloop-gen": "0.0.1-beta.2"
   }
 }

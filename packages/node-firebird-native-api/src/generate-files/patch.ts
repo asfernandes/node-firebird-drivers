@@ -12,7 +12,7 @@ interface InterfaceConfig
 //// FIXME: release/dispose - async?
 
 const interfaceConfig: InterfaceConfig = {
-	'Util': {
+	Util: {
 		deleteMethods: [
 			'dumpBlob',
 			'loadBlob',
@@ -21,7 +21,7 @@ const interfaceConfig: InterfaceConfig = {
 		]
 	},
 
-	'Statement': {
+	Statement: {
 		asyncMethods: [
 			'getInfo',
 			'getType',
@@ -37,7 +37,7 @@ const interfaceConfig: InterfaceConfig = {
 		]
 	},
 
-	'Status': {
+	Status: {
 		deleteMethods: [
 			'getErrors',
 			'getWarnings',
@@ -48,7 +48,7 @@ const interfaceConfig: InterfaceConfig = {
 		]
 	},
 
-	'Attachment': {
+	Attachment: {
 		asyncMethods: [
 			'getInfo',
 			'startTransaction',
@@ -76,158 +76,158 @@ const interfaceConfig: InterfaceConfig = {
 		]
 	},
 
-	'Transaction': {
+	Transaction: {
 		asyncMethods: [
 			'commit',
 			'commitRetaining'
 		]
 	},
 
-	'Provider': {
+	Provider: {
 		asyncMethods: [
 			'createDatabase'
 		]
 	},
 
-	'CryptKey': {
+	CryptKey: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'DbCryptPlugin': {
+	DbCryptPlugin: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'ExternalEngine': {
+	ExternalEngine: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'ExternalContext': {
+	ExternalContext: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'ExternalFunction': {
+	ExternalFunction: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'ExternalProcedure': {
+	ExternalProcedure: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'ExternalTrigger': {
+	ExternalTrigger: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceTransaction': {
+	TraceTransaction: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceParams': {
+	TraceParams: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceStatement': {
+	TraceStatement: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceSQLStatement': {
+	TraceSQLStatement: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceBLRStatement': {
+	TraceBLRStatement: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceDYNRequest': {
+	TraceDYNRequest: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceContextVariable': {
+	TraceContextVariable: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceProcedure': {
+	TraceProcedure: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceFunction': {
+	TraceFunction: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceTrigger': {
+	TraceTrigger: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceServiceConnection': {
+	TraceServiceConnection: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceStatusVector': {
+	TraceStatusVector: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceSweepInfo': {
+	TraceSweepInfo: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceLogWriter': {
+	TraceLogWriter: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceInitInfo': {
+	TraceInitInfo: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TracePlugin': {
+	TracePlugin: {
 		deleteMethods: [
 			'*'
 		]
 	},
 
-	'TraceFactory': {
+	TraceFactory: {
 		deleteMethods: [
 			'*'
 		]
@@ -237,6 +237,9 @@ const interfaceConfig: InterfaceConfig = {
 
 export function patch(library: Library) {
 	for (const intfName in interfaceConfig) {
+		if (!interfaceConfig.hasOwnProperty(intfName))
+			continue;
+
 		const intf = library.interfacesByName[intfName];
 		const config = interfaceConfig[intfName];
 
@@ -266,10 +269,10 @@ export function patch(library: Library) {
 		}
 	}
 
-	library.interfacesByName['Util'].methodsByName['decodeDate'].parameters[0].type.name = "int";
-	library.interfacesByName['Util'].methodsByName['decodeTime'].parameters[0].type.name = "int";
-	library.interfacesByName['Util'].methodsByName['encodeDate'].returnType.name = "int";
-	library.interfacesByName['Util'].methodsByName['encodeTime'].returnType.name = "int";
+	library.interfacesByName.Util.methodsByName.decodeDate.parameters[0].type.name = 'int';
+	library.interfacesByName.Util.methodsByName.decodeTime.parameters[0].type.name = 'int';
+	library.interfacesByName.Util.methodsByName.encodeDate.returnType.name = 'int';
+	library.interfacesByName.Util.methodsByName.encodeTime.returnType.name = 'int';
 
 	for (const intf of library.interfaces) {
 		for (const method of intf.methods)

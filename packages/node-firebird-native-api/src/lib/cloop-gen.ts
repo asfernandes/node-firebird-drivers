@@ -1,5 +1,7 @@
 // Auto-generated file. Do not edit!
 
+/* tslint:disable:max-line-length */
+
 export interface Pointer {
 }
 

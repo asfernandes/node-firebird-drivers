@@ -5,7 +5,7 @@ import * as stringDecoder from 'string_decoder';
 
 import { AbstractAttachment } from './attachment';
 import { AbstractTransaction } from './transaction';
-import { decodeDate, decodeTime, encodeDate, encodeTime }  from './date-time';
+import { decodeDate, decodeTime, encodeDate, encodeTime } from './date-time';
 
 import {
 	Attachment,
@@ -41,29 +41,33 @@ export namespace sqlTypes {
 
 /** DPB constants. */
 export namespace dpb {
-	export const isc_dpb_version1 = 1;
+	/* tslint:disable */
+	export const version1 = 1;
 	export const lc_ctype = 48;
-	export const dpb_force_write = 24;
+	export const force_write = 24;
 	export const user_name = 28;
 	export const password = 29;
+	/* tslint:enable */
 }
 
 /** TPB constants. */
 export namespace tpb {
-	export const isc_tpb_version1 = 1;
-	export const isc_tpb_consistency = 1;
-	export const isc_tpb_concurrency = 2;
-	export const isc_tpb_wait = 6;
-	export const isc_tpb_nowait = 7;
-	export const isc_tpb_read = 8;
-	export const isc_tpb_write = 9;
-	export const isc_tpb_ignore_limbo = 14;
-	export const isc_tpb_read_committed = 15;
-	export const isc_tpb_autocommit = 16;
-	export const isc_tpb_rec_version = 17;
-	export const isc_tpb_no_rec_version = 18;
-	export const isc_tpb_restart_requests = 19;
-	export const isc_tpb_no_auto_undo = 20;
+	/* tslint:disable */
+	export const version1 = 1;
+	export const consistency = 1;
+	export const concurrency = 2;
+	export const wait = 6;
+	export const nowait = 7;
+	export const read = 8;
+	export const write = 9;
+	export const ignore_limbo = 14;
+	export const read_committed = 15;
+	export const autocommit = 16;
+	export const rec_version = 17;
+	export const no_rec_version = 18;
+	export const restart_requests = 19;
+	export const no_auto_undo = 20;
+	/* tslint:enable */
 }
 
 /** Blob info. */
@@ -74,7 +78,7 @@ export namespace blobInfo {
 export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {
 	const code = (c: number) => String.fromCharCode(c);
 	const charSet = 'utf8';
-	let ret = `${code(dpb.isc_dpb_version1)}${code(dpb.lc_ctype)}${code(charSet.length)}${charSet}`;
+	let ret = `${code(dpb.version1)}${code(dpb.lc_ctype)}${code(charSet.length)}${charSet}`;
 
 	if (!options)
 		options = {};
@@ -94,64 +98,64 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 	const createOptions = options as CreateDatabaseOptions;
 
 	if (createOptions.forcedWrite != undefined)
-		ret += `${code(dpb.dpb_force_write)}${code(1)}${code(createOptions.forcedWrite ? 1 : 0)}`;
+		ret += `${code(dpb.force_write)}${code(1)}${code(createOptions.forcedWrite ? 1 : 0)}`;
 
 	return Buffer.from(ret);
 }
 
 export function createTpb(options?: TransactionOptions): Buffer {
 	const code = (c: number) => String.fromCharCode(c);
-	let ret = code(tpb.isc_tpb_version1);
+	let ret = code(tpb.version1);
 
 	if (!options)
 		options = {};
 
 	switch (options.accessMode) {
 		case 'READ_ONLY':
-			ret += code(tpb.isc_tpb_read);
+			ret += code(tpb.read);
 			break;
 
 		case 'READ_WRITE':
-			ret += code(tpb.isc_tpb_write);
+			ret += code(tpb.write);
 			break;
 	}
 
 	switch (options.waitMode) {
 		case 'NO_WAIT':
-			ret += code(tpb.isc_tpb_nowait);
+			ret += code(tpb.nowait);
 			break;
 
 		case 'WAIT':
-			ret += code(tpb.isc_tpb_wait);
+			ret += code(tpb.wait);
 			break;
 	}
 
 	switch (options.isolation) {
 		case TransactionIsolation.CONSISTENCY:
-			ret += code(tpb.isc_tpb_consistency);
+			ret += code(tpb.consistency);
 			break;
 
 		case TransactionIsolation.SNAPSHOT:
-			ret += code(tpb.isc_tpb_concurrency);
+			ret += code(tpb.concurrency);
 			break;
 
 		case TransactionIsolation.READ_COMMITTED:
-			ret += code(tpb.isc_tpb_read_committed) +
-				code(options.readCommittedMode == 'RECORD_VERSION' ? tpb.isc_tpb_rec_version : tpb.isc_tpb_no_rec_version);
+			ret += code(tpb.read_committed) +
+				code(options.readCommittedMode == 'RECORD_VERSION' ? tpb.rec_version : tpb.no_rec_version);
 			break;
 	}
 
 	if (options.noAutoUndo)
-		ret += code(tpb.isc_tpb_no_auto_undo);
+		ret += code(tpb.no_auto_undo);
 
 	if (options.ignoreLimbo)
-		ret += code(tpb.isc_tpb_ignore_limbo);
+		ret += code(tpb.ignore_limbo);
 
 	if (options.restartRequests)
-		ret += code(tpb.isc_tpb_restart_requests);
+		ret += code(tpb.restart_requests);
 
 	if (options.autoCommit)
-		ret += code(tpb.isc_tpb_autocommit);
+		ret += code(tpb.autocommit);
 
 	return Buffer.from(ret);
 }
@@ -271,12 +275,12 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 				default:
 					throw new Error(`Unrecognized Firebird type number ${descriptor.type}`);
 			}
-		}
+		};
 	}
 
 	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array): Promise<any[]> => {
 		return await Promise.all(mappers.map(mapper => mapper(attachment, transaction, buffer)));
-	}
+	};
 }
 
 
@@ -315,8 +319,8 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 
 					dataView.setUint16(descriptor.offset, bytesArray.length, littleEndian);
 
-					for (let i = 0; i < bytesArray.length; ++i)
-						buffer[descriptor.offset + 2 + i] = bytesArray[i];
+					for (let j = 0; j < bytesArray.length; ++j)
+						buffer[descriptor.offset + 2 + j] = bytesArray[j];
 
 					break;
 				}
@@ -380,7 +384,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 						value = value.blob;
 
 					if (value instanceof Buffer) {
-						let blobStream = await attachment.createBlob(transaction);
+						const blobStream = await attachment.createBlob(transaction);
 						try {
 							await blobStream.write(value);
 						}
@@ -411,7 +415,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 				default:
 					throw new Error(`Unrecognized Firebird type number ${descriptor.type}`);
 			}
-		}
+		};
 	}
 
 	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: Array<any>): Promise<void> => {
@@ -419,5 +423,5 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 			throw new Error(`Incorrect number of parameters: expected ${descriptors.length}, received ${(values || []).length}.`);
 
 		await Promise.all(mappers.map((mapper, index) => mapper(attachment, transaction, buffer, values[index])));
-	}
+	};
 }
