@@ -32,7 +32,7 @@ export function runCommonTests(client: Client) {
 
 			client.defaultCreateDatabaseOptions = {
 				forcedWrite: false
-			}
+			};
 		});
 
 		afterAll(async () => {
