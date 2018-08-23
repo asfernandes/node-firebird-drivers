@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna run build && lerna run gyp:configure && lerna run gyp:build",
+    "publish": "lerna publish",
     "test": "lerna run test"
   },
   "devDependencies": {
