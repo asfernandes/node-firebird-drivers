@@ -55,6 +55,10 @@ See more examples in `src/test` directory.
 - Events
 - Verify usage of node-pre-gyp
 
-## Warning
+# Donation
 
-This project is in BETA state and the API is subject to change.
+If this project help you reduce time to develop, you can show your appreciation with a donation.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=X3JMTGW92LQEL)
+
+BTC: 1Q1W3tLD1xbk81kTeFqobiyrEXcKN1GfHG
