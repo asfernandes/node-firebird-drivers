@@ -44,7 +44,7 @@ public:
 	{
 		Nan::EscapableHandleScope scope;
 
-		auto resolver = v8::Promise::Resolver::New(info.GetIsolate());
+		auto resolver = v8::Promise::Resolver::New(info.GetIsolate()->GetCurrentContext()).ToLocalChecked();
 		auto worker = new PromiseWorker(executeLambda, returnLambda);
 
 		worker->SaveToPersistent("resolver", resolver);
@@ -69,12 +69,13 @@ public:
 
 	void HandleOKCallback() override
 	{
+		auto context = v8::Isolate::GetCurrent()->GetCurrentContext();
 		auto res = GetFromPersistent("resolver").template As<v8::Promise::Resolver>();
 
 		if (!error)
-			res->Resolve(returnLambda(ret));
+			res->Resolve(context, returnLambda(ret));
 		else
-			res->Reject(Nan::Error(errorMsg.c_str()));
+			res->Reject(context, Nan::Error(errorMsg.c_str()));
 
 		v8::Isolate::GetCurrent()->RunMicrotasks();
 	}
