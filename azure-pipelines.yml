@@ -1,0 +1,41 @@
+jobs:
+
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+
+  - script: |
+      wget -O Firebird-3.0.3.32900-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_3/Firebird-3.0.3.32900-0.amd64.tar.gz"
+      tar xzvf Firebird-3.0.3.32900-0.amd64.tar.gz
+      (cd Firebird-3.0.3.32900-0.amd64; sudo ./install.sh -silent)
+      sudo usermod -a -G firebird travis
+    displayName: 'Install Firebird'
+
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  strategy:
+    matrix:
+      node_8_x:
+        node_version: 8.x
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: $(node_version)
+
+  - script: |
+      if %PLATFORM% == "x64" call "C:\Program Files (x86)\Microsoft Visual Studio %MSVS_TOOLSET%.0\VC\vcvarsall.bat" amd64
+      if %PLATFORM% == "x86" call "C:\Program Files (x86)\Microsoft Visual Studio %MSVS_TOOLSET%.0\VC\vcvarsall.bat" x86
+    displayName: 'Install Firebird'
