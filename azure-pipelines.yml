@@ -58,8 +58,13 @@ jobs:
     displayName: 'Extract Firebird'
 
   - script: |
+      echo a1
       set PATH=C:\Firebird;%PATH%
+      echo a2
       yarn
+      echo a3
       yarn bootstrap
+      echo a4
       yarn test
+      echo a5
     displayName: 'Build and test'
