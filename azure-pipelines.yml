@@ -15,15 +15,21 @@ jobs:
       versionSpec: $(node_version)
 
   - script: |
-      sudo apt-get install gcc-5 g++-5 libtommath0
+      sudo apt-get install libtommath0
     displayName: 'Install dependencies'
 
   - script: |
       wget -O Firebird-3.0.3.32900-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_3/Firebird-3.0.3.32900-0.amd64.tar.gz"
       tar xzvf Firebird-3.0.3.32900-0.amd64.tar.gz
       (cd Firebird-3.0.3.32900-0.amd64; sudo ./install.sh -silent)
-      sudo usermod -a -G firebird travis
+      sudo usermod -a -G firebird $USER
     displayName: 'Install Firebird'
+
+  - script:
+      sg firebird -c "yarn"
+      sg firebird -c "yarn bootstrap"
+      sg firebird -c "yarn test"
+    displayName: 'Build and test'
 
 - job: Windows
   pool:
