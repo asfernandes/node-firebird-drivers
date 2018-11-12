@@ -10,7 +10,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna run build && lerna run gyp:configure && lerna run gyp:build",
     "publish": "lerna publish",
-    "test": "lerna run test"
+    "test": "lerna run test --stream"
   },
   "devDependencies": {
     "@types/fs-extra-promise": "^1.0.6",

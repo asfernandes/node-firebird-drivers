@@ -60,20 +60,11 @@ jobs:
   - script: |
       echo a1
       set PATH=C:\Firebird;%PATH%
-      echo %PATH%
-      dir C:\Firebird
-      echo x0
-      echo "create database 't.fdb';" | isql
-      echo x1
-      echo "select _utf8 'a' from rdb$database;" | isql t.fdb
-      echo x2
-      echo "select _utf8 'a' collate unicode from rdb$database;" | isql t.fdb
-      echo x3
       echo a2
-      #call yarn
-      #echo a3
-      #call yarn bootstrap
-      #echo a4
-      #call yarn test
-      #echo a5
+      call yarn
+      echo a3
+      call yarn bootstrap
+      echo a4
+      call yarn test
+      echo a5
     displayName: 'Build and test'
