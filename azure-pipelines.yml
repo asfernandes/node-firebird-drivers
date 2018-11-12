@@ -60,6 +60,8 @@ jobs:
   - script: |
       echo a1
       set PATH=C:\Firebird;%PATH%
+      echo %PATH%
+      dir C:\Firebird
       echo a2
       call yarn
       echo a3
