@@ -60,11 +60,12 @@ jobs:
   - script: |
       echo a1
       set PATH=C:\Firebird;%PATH%
+      isql -i test.sql
       echo a2
-      call yarn
-      echo a3
-      call yarn bootstrap
-      echo a4
-      call yarn test
-      echo a5
+      REM call yarn
+      REM echo a3
+      REM call yarn bootstrap
+      REM echo a4
+      REM call yarn test
+      REM echo a5
     displayName: 'Build and test'
