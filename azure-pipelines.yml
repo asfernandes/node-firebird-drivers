@@ -62,11 +62,12 @@ jobs:
       set PATH=C:\Firebird;%PATH%
       echo %PATH%
       dir C:\Firebird
+      isql -?
       echo a2
-      call yarn
-      echo a3
-      call yarn bootstrap
-      echo a4
-      call yarn test
-      echo a5
+      #call yarn
+      #echo a3
+      #call yarn bootstrap
+      #echo a4
+      #call yarn test
+      #echo a5
     displayName: 'Build and test'
