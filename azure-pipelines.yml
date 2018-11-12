@@ -61,10 +61,10 @@ jobs:
       echo a1
       set PATH=C:\Firebird;%PATH%
       echo a2
-      yarn
+      call yarn
       echo a3
-      yarn bootstrap
+      call yarn bootstrap
       echo a4
-      yarn test
+      call yarn test
       echo a5
     displayName: 'Build and test'
