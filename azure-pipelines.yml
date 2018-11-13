@@ -68,6 +68,6 @@ jobs:
       echo a4
       REM call yarn test
       REM echo a5
-      cd packages\node-firebird-driver-native
-      call yarn run test
+      cd packages\node-firebird-native-api
+      node_modules\.bin\jest
     displayName: 'Build and test'
