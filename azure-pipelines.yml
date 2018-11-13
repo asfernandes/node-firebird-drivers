@@ -62,10 +62,12 @@ jobs:
       set PATH=C:\Firebird;%PATH%
       isql -i test.sql
       echo a2
-      REM call yarn
-      REM echo a3
-      REM call yarn bootstrap
-      REM echo a4
+      call yarn
+      echo a3
+      call yarn bootstrap
+      echo a4
       REM call yarn test
       REM echo a5
+      cd packages\node-firebird-driver-native
+      call yarn run test
     displayName: 'Build and test'
