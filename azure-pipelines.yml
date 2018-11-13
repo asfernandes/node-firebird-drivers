@@ -70,6 +70,5 @@ jobs:
       REM echo a5
       cd packages\node-firebird-native-api
       dir ..\..\node_modules\.bin
-      ..\..\node_modules\.bin\jest
-      ..\..\node_modules\.bin\jest.cmd
+      call ..\..\node_modules\.bin\jest.cmd
     displayName: 'Build and test'
