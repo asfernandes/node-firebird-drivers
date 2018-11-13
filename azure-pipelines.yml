@@ -69,5 +69,7 @@ jobs:
       REM call yarn test
       REM echo a5
       cd packages\node-firebird-native-api
-      node_modules\.bin\jest
+      dir ..\..\node_modules\.bin
+      ..\..\node_modules\.bin\jest
+      ..\..\node_modules\.bin\jest.cmd
     displayName: 'Build and test'
