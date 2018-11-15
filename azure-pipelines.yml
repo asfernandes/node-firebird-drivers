@@ -66,9 +66,5 @@ jobs:
       echo a3
       call yarn bootstrap
       echo a4
-      REM call yarn test
-      REM echo a5
-      cd packages\node-firebird-native-api
-      dir ..\..\node_modules\.bin
-      call ..\..\node_modules\.bin\jest.cmd
+      call yarn test
     displayName: 'Build and test'
