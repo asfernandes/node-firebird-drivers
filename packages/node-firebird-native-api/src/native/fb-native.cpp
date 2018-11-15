@@ -68,6 +68,7 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 #ifdef _WIN32
 	HMODULE handle = LoadLibrary(*str);
+	printf("--> str: %s\n", *str); fflush(stdout);
 	printf("--> handle: %p\n", (void*) handle); fflush(stdout);
 
 	if (handle)
@@ -119,6 +120,7 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 		errorMessage = string("Cannot load Firebird client library: '") + *str + "'.";
 #endif
 
+	printf("--> errorMessage: %s\n", errorMessage.c_str()); fflush(stdout);
 	if (!errorMessage.empty())
 	{
 		Nan::ThrowError(errorMessage.c_str());

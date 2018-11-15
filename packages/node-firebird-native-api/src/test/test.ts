@@ -17,9 +17,12 @@ describe('node-firebird-native-api', () => {
 
 	beforeAll(() => {
 		const tempMaster = getMaster(getDefaultLibraryFilename());
+		console.log('after tempMaster', tempMaster);
 
 		master = getMaster(getDefaultLibraryFilename());
+		console.log('after master', master);
 		dispatcher = master.getDispatcherSync()!;
+		console.log('after dispatcher', dispatcher);
 		tmpDir = tmp.mkdirSync().path.toString();
 
 		// Test premature shutdown prevention. 'master' variable should still be usable.
