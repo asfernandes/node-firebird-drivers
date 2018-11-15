@@ -68,14 +68,17 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 #ifdef _WIN32
 	HMODULE handle = LoadLibrary(*str);
+	printf("--> handle: %p\n", (void*) handle); fflush(stdout);
 
 	if (handle)
 	{
 		Func func = (Func) GetProcAddress(handle, MASTER_FUNCTION);
+		printf("--> func: %p\n", (void*) func); fflush(stdout);
 
 		if (func)
 		{
 			master = func();
+			printf("--> master: %p\n", (void*) master); fflush(stdout);
 			if (!master)
 			{
 				FreeLibrary(handle);
@@ -137,6 +140,7 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 		handleCounters[handle] = 1;
 
 	info.GetReturnValue().Set(instance);
+	printf("--> getMaster end\n"); fflush(stdout);
 }
 
 
