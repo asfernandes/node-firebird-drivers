@@ -123,7 +123,8 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 	printf("--> errorMessage: %s\n", errorMessage.c_str()); fflush(stdout);
 	if (!errorMessage.empty())
 	{
-		Nan::ThrowError(errorMessage.c_str());
+		///Nan::ThrowError(errorMessage.c_str());
+		Nan::ThrowError(Nan::New(errorMessage.c_str()).ToLocalChecked());
 		return;
 	}
 

@@ -8,8 +8,7 @@
     "build:w": "yarn run clean && tsc -w",
     "clean": "rimraf dist",
     "lint": "tslint --project .",
-    "prepublishOnly": "yarn run build && yarn test",
-    "test": "jest"
+    "prepublishOnly": "yarn run build && yarn test"
   },
   "repository": {
     "type": "git",

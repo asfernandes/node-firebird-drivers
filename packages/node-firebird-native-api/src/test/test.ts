@@ -45,13 +45,11 @@ describe('node-firebird-native-api', () => {
 		expect(disposeMaster(master)).toBe(false);
 	});
 
-	/*
 	describe('getMaster', () => {
 		test('with error', () => {
 			expect(() => getMaster('not-a-firebird-client-library')).toThrow();
 		});
 	});
-	*/
 
 	describe('Master', () => {
 		test('#getStatus()', () => {
@@ -131,6 +129,7 @@ describe('node-firebird-native-api', () => {
 		});
 	});
 
+	/***
 	describe('Attachment', () => {
 		test('#dropDatabaseSync()', () => {
 			const status = master.getStatusSync()!;
@@ -407,4 +406,5 @@ describe('node-firebird-native-api', () => {
 			}
 		});
 	});
+	***/
 });

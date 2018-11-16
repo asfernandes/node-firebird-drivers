@@ -153,7 +153,7 @@ public:
 		{
 			std::string msg = std::string(description) + " must be an instance of " +
 				className() + " class" + (allowNull ? " or null" : "") + ".";
-			Nan::ThrowTypeError(msg.c_str());
+			Nan::ThrowTypeError(Nan::New(msg.c_str()).ToLocalChecked());
 			throw NodeThrow();
 		}
 
@@ -183,7 +183,7 @@ protected:
 			}
 			catch (const fb::FbException& e)
 			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
+				Nan::ThrowError(Nan::New(formatStatus(e.getStatus()).c_str()).ToLocalChecked());
 			}
 			catch (const NodeThrow&)
 			{
@@ -208,7 +208,7 @@ protected:
 			}
 			catch (const fb::FbException& e)
 			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
+				Nan::ThrowError(Nan::New(formatStatus(e.getStatus()).c_str()).ToLocalChecked());
 			}
 			catch (const NodeThrow&)
 			{
@@ -225,7 +225,7 @@ protected:
 			}
 			catch (const fb::FbException& e)
 			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
+				Nan::ThrowError(Nan::New(formatStatus(e.getStatus()).c_str()).ToLocalChecked());
 			}
 			catch (const NodeThrow&)
 			{
