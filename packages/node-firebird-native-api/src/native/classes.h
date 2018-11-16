@@ -177,6 +177,8 @@ protected:
 	static void DefineSyncMethod(v8::Local<v8::FunctionTemplate>& tpl, const char* name)
 	{
 		void (*wrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
+			Nan::HandleScope scope;
+
 			try
 			{
 				ptr(info);
@@ -201,6 +203,8 @@ protected:
 	static void DefineAsyncMethod(v8::Local<v8::FunctionTemplate>& tpl, const char* name)
 	{
 		void (*syncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
+			Nan::HandleScope scope;
+
 			try
 			{
 				auto ret = ptr1(info)();
@@ -218,6 +222,8 @@ protected:
 		SetPrototypeMethod(tpl, (std::string(name) + "Sync").c_str(), syncWrapper);
 
 		void (*asyncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
+			Nan::HandleScope scope;
+
 			try
 			{
 				auto ret = ptr1(info);
