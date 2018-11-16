@@ -17,12 +17,9 @@ describe('node-firebird-native-api', () => {
 
 	beforeAll(() => {
 		const tempMaster = getMaster(getDefaultLibraryFilename());
-		console.log('after tempMaster', tempMaster);
 
 		master = getMaster(getDefaultLibraryFilename());
-		console.log('after master', master);
 		dispatcher = master.getDispatcherSync()!;
-		console.log('after dispatcher', dispatcher);
 		tmpDir = tmp.mkdirSync().path.toString();
 
 		// Test premature shutdown prevention. 'master' variable should still be usable.
@@ -129,7 +126,6 @@ describe('node-firebird-native-api', () => {
 		});
 	});
 
-	/***
 	describe('Attachment', () => {
 		test('#dropDatabaseSync()', () => {
 			const status = master.getStatusSync()!;
@@ -199,6 +195,7 @@ describe('node-firebird-native-api', () => {
 			}
 		});
 
+		/***
 		test('#startTransactionAsync()', async () => {
 			const status = master.getStatusSync()!;
 			try {
@@ -405,6 +402,6 @@ describe('node-firebird-native-api', () => {
 				status.disposeSync();
 			}
 		});
+		***/
 	});
-	***/
 });

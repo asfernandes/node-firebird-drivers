@@ -11,7 +11,7 @@
     "lint": "tslint --project .",
     "generate": "node dist/generate-files",
     "gyp:clean": "rimraf build",
-    "gyp:build": "node-gyp build --debug",
+    "gyp:build": "node-gyp build",
     "gyp:configure": "node-gyp configure",
     "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
     "test": "jest"

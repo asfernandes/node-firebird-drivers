@@ -58,13 +58,8 @@ jobs:
     displayName: 'Extract Firebird'
 
   - script: |
-      echo a1
       set PATH=C:\Firebird;%PATH%
-      isql -i test.sql
-      echo a2
       call yarn
-      echo a3
       call yarn bootstrap
-      echo a4
       call yarn test
     displayName: 'Build and test'
