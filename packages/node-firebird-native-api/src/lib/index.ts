@@ -2,6 +2,12 @@ import { Master } from './cloop-gen';
 
 import * as os from 'os';
 
+// @ts-ignore
+import binary from 'node-pre-gyp';
+// @ts-ignore
+import path from 'path';
+
+const bindingPath = binary.find(path.resolve(path.join(__dirname, '../../package.json')));
 
 /** Gets the default platform Firebird client library filename. */
 export function getDefaultLibraryFilename(): string {
@@ -15,7 +21,7 @@ export function getDefaultLibraryFilename(): string {
 	}
 }
 
-const native = require('bindings')('addon');
+const native = require(bindingPath)('addon');
 
 export const getMaster: (library: string) => Master = native.getMaster;
 export const disposeMaster: (master: Master) => boolean = native.disposeMaster;

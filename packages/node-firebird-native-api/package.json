@@ -5,16 +5,19 @@
   "gypfile": true,
   "main": "dist/lib/index.js",
   "scripts": {
+    "_preinstall": "npm install node-pre-gyp",
+    "_install": "node-pre-gyp install --fallback-to-build",
+    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
+    "test": "jest",
     "build": "yarn run clean && yarn run lint && tsc",
     "build:w": "yarn run clean && tsc -w",
     "clean": "rimraf dist",
-    "lint": "tslint --project .",
     "generate": "node dist/generate-files",
-    "gyp:clean": "rimraf build",
     "gyp:build": "node-gyp build",
+    "gyp:clean": "rimraf build",
     "gyp:configure": "node-gyp configure",
-    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
-    "test": "jest"
+    "lint": "tslint --project .",
+    "pre-gyp:pack": "rimraf build-pre-gyp && node-pre-gyp rebuild && node-pre-gyp package"
   },
   "repository": {
     "type": "git",
@@ -56,9 +59,16 @@
     "@types/node": "^8.10.19",
     "bindings": "^1.2.1",
     "nan": "^2.6.2",
-    "node-gyp": "^3.6.2"
+    "node-gyp": "^3.6.2",
+    "node-pre-gyp": "^0.12.0"
   },
   "devDependencies": {
     "node-cloop-gen": "0.0.1-beta.2"
+  },
+  "binary": {
+    "module_name": "addon",
+    "module_path": "./build-pre-gyp/{node_abi}-{platform}-{arch}",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://github.com/asfernandes/node-firebird-drivers/releases/download/node-firebird-native-api@0.1.0"
   }
 }
