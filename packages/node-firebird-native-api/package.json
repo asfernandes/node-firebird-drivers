@@ -5,16 +5,24 @@
   "gypfile": true,
   "main": "dist/lib/index.js",
   "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build",
+    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
+    "test": "jest",
     "build": "yarn run clean && yarn run lint && tsc",
     "build:w": "yarn run clean && tsc -w",
     "clean": "rimraf dist",
-    "lint": "tslint --project .",
     "generate": "node dist/generate-files",
-    "gyp:clean": "rimraf build",
-    "gyp:build": "node-gyp build",
-    "gyp:configure": "node-gyp configure",
-    "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build && yarn test",
-    "test": "jest"
+    "gyp:build": "node-pre-gyp build",
+    "gyp:clean": "rimraf build build-pre-gyp",
+    "gyp:configure": "node-pre-gyp configure",
+    "lint": "tslint --project .",
+    "pre-gyp:prebuild": "yarn run gyp:clean && node-pre-gyp configure",
+    "pre-gyp:publish": "yarn run pre-gyp:publish-darwin && yarn run pre-gyp:publish-linux && yarn run pre-gyp:publish-linux-ia32 && yarn run pre-gyp:publish-win32 && yarn run pre-gyp:publish-win32-ia32",
+    "pre-gyp:publish-darwin": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=darwin && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-linux": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=linux --target_arch=x64 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-linux-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=linux --target_arch=ia32 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-win32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=win32 --target_arch=x64 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-win32-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=win32 --target_arch=ia32 && node-pre-gyp-github publish --release"
   },
   "repository": {
     "type": "git",
@@ -56,9 +64,18 @@
     "@types/node": "^8.10.19",
     "bindings": "^1.2.1",
     "nan": "^2.6.2",
-    "node-gyp": "^3.6.2"
+    "node-gyp": "^3.6.2",
+    "node-pre-gyp": "^0.12.0"
   },
   "devDependencies": {
-    "node-cloop-gen": "0.0.1-beta.2"
+    "node-cloop-gen": "0.0.1-beta.2",
+    "node-pre-gyp-github": "^1.4.3"
+  },
+  "binary": {
+    "module_name": "addon",
+    "module_path": "./build-pre-gyp/{node_abi}-{platform}-{arch}",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://github.com/asfernandes/node-firebird-drivers/releases/download/",
+    "remote_path": "node-firebird-native-api@{version}"
   }
 }
