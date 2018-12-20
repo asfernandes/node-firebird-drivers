@@ -18,11 +18,11 @@
     "lint": "tslint --project .",
     "pre-gyp:prebuild": "yarn run gyp:clean && node-pre-gyp configure",
     "pre-gyp:publish": "yarn run pre-gyp:publish-darwin && yarn run pre-gyp:publish-linux && yarn run pre-gyp:publish-linux-ia32 && yarn run pre-gyp:publish-win32 && yarn run pre-gyp:publish-win32-ia32",
-    "pre-gyp:publish-darwin": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild --target_platform=darwin && node-pre-gyp package --target_platform=darwin && node-pre-gyp-github publish --release",
-    "pre-gyp:publish-linux": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild --target_platform=linux --target_arch=x64 && node-pre-gyp package --target_platform=linux --target_arch=x64 && node-pre-gyp-github publish --release",
-    "pre-gyp:publish-linux-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild --target_platform=linux --target_arch=ia32 && node-pre-gyp package --target_platform=linux --target_arch=ia32 && node-pre-gyp-github publish --release",
-    "pre-gyp:publish-win32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild --target_platform=win32 --target_arch=x64 && node-pre-gyp package --target_platform=win32 --target_arch=x64 && node-pre-gyp-github publish --release",
-    "pre-gyp:publish-win32-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild --target_platform=win32 --target_arch=ia32 && node-pre-gyp package --target_platform=win32 --target_arch=ia32 && node-pre-gyp-github publish --release"
+    "pre-gyp:publish-darwin": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=darwin && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-linux": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=linux --target_arch=x64 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-linux-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=linux --target_arch=ia32 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-win32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=win32 --target_arch=x64 && node-pre-gyp-github publish --release",
+    "pre-gyp:publish-win32-ia32": "yarn run pre-gyp:prebuild && node-pre-gyp rebuild package --target_platform=win32 --target_arch=ia32 && node-pre-gyp-github publish --release"
   },
   "repository": {
     "type": "git",
