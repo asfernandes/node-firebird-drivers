@@ -43,10 +43,12 @@ export class BlobStreamImpl extends AbstractBlobStream {
 			const infoRet = new Uint8Array(20);
 			await this.blobHandle!.getInfoAsync(status, infoReq.byteLength, infoReq, infoRet.byteLength, infoRet);
 
-			if (infoRet[0] != blobInfo.totalLength || infoRet[1] != 4 || infoRet[2] != 0)
+			if (infoRet[0] != blobInfo.totalLength)
 				throw new Error('Unrecognized response from Blob::getInfo.');
 
-			return getPortableInteger(infoRet.subarray(3), 4);
+			const size = getPortableInteger(infoRet.subarray(1), 2);
+
+			return getPortableInteger(infoRet.subarray(3), size);
 		});
 	}
 
