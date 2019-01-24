@@ -6,10 +6,13 @@
 				"src/native/fb-native.cpp"
 			],
 			"include_dirs": [
-				"<!(node -e \"require('nan')\")"
+				"<!@(node -p \"require('node-addon-api').include\")"
 			],
 			"cflags!": [ "-fno-exceptions" ],
 			"cflags_cc!": [ "-fno-exceptions" ],
+			"defines": [
+				'NAPI_VERSION=1'
+			],
 			'conditions': [
 				[
 					'OS == "win"', {

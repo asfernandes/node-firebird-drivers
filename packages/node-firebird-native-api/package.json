@@ -55,10 +55,10 @@
   "dependencies": {
     "@types/node": "^8.10.19",
     "bindings": "^1.2.1",
-    "nan": "^2.6.2",
+    "node-addon-api": "^1.6.2",
     "node-gyp": "^3.6.2"
   },
   "devDependencies": {
-    "node-cloop-gen": "0.0.1"
+    "node-cloop-gen": "1.0.0"
   }
 }

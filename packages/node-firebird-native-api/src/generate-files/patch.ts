@@ -4,12 +4,9 @@ import { Library } from 'node-cloop-gen';
 interface InterfaceConfig
 {
 	[intf: string]: {
-		deleteMethods?: string[],
-		asyncMethods?: string[]
+		deleteMethods?: string[]
 	};
 }
-
-//// FIXME: release/dispose - async?
 
 const interfaceConfig: InterfaceConfig = {
 	Util: {
@@ -22,19 +19,6 @@ const interfaceConfig: InterfaceConfig = {
 	},
 
 	Statement: {
-		asyncMethods: [
-			'getInfo',
-			'getType',
-			'getPlan',
-			'getAffectedRecords',
-			'getInputMetadata',
-			'getOutputMetadata',
-			'execute',
-			'openCursor',
-			'setCursorName',
-			'free',
-			'getFlags'
-		]
 	},
 
 	Status: {
@@ -49,27 +33,6 @@ const interfaceConfig: InterfaceConfig = {
 	},
 
 	Attachment: {
-		asyncMethods: [
-			'getInfo',
-			'startTransaction',
-			'reconnectTransaction',
-			'compileRequest',
-			'transactRequest',
-			'executeDyn',
-			'prepare',
-			'execute',
-			'openCursor',
-			'queEvents',
-			'cancelOperation',
-			'ping',
-			'detach',
-			'dropDatabase',
-			'createBlob',
-			'openBlob',
-			'getSlice',
-			'putSlice'
-		],
-
 		deleteMethods: [
 			'getSlice',
 			'putSlice'
@@ -77,16 +40,9 @@ const interfaceConfig: InterfaceConfig = {
 	},
 
 	Transaction: {
-		asyncMethods: [
-			'commit',
-			'commitRetaining'
-		]
 	},
 
 	Provider: {
-		asyncMethods: [
-			'createDatabase'
-		]
 	},
 
 	CryptKey: {
@@ -243,9 +199,6 @@ export function patch(library: Library) {
 		const intf = library.interfacesByName[intfName];
 		const config = interfaceConfig[intfName];
 
-		for (const asyncMethod of config.asyncMethods || [])
-			intf.methodsByName[asyncMethod].async = true;
-
 		for (const deleteMethod of config.deleteMethods || []) {
 			const methods = intf.methods;
 			let found = false;
@@ -273,9 +226,4 @@ export function patch(library: Library) {
 	library.interfacesByName.Util.methodsByName.decodeTime.parameters[0].type.name = 'int';
 	library.interfacesByName.Util.methodsByName.encodeDate.returnType.name = 'int';
 	library.interfacesByName.Util.methodsByName.encodeTime.returnType.name = 'int';
-
-	for (const intf of library.interfaces) {
-		for (const method of intf.methods)
-			method.async = true;
-	}
 }

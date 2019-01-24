@@ -3,22 +3,174 @@
 
 #include <functional>
 #include <string>
-#include <nan.h>
 #include "./include/firebird/Interface.h"
 
 #ifdef _WIN32
 #undef interface
 #endif
 
+
+//----------------------------------------------------------------------------
+
+
+namespace Napi
+{
+	// Customize N-API AsyncWorker as the original API is very ugly and
+	// with slower unused things.
+	class CustomAsyncWorker
+	{
+	protected:
+		explicit CustomAsyncWorker(Env env);
+		explicit CustomAsyncWorker(Env env, const char* resource_name);
+
+	public:
+		// An async worker can be moved but cannot be copied.
+		CustomAsyncWorker(const CustomAsyncWorker&) = delete;
+		CustomAsyncWorker& operator=(CustomAsyncWorker&) = delete;
+
+		CustomAsyncWorker(CustomAsyncWorker&& other);
+		CustomAsyncWorker& operator=(CustomAsyncWorker&& other);
+
+		virtual ~CustomAsyncWorker();
+
+		operator napi_async_work() const
+		{
+			return _work;
+		}
+
+		void Queue();
+		void Cancel();
+
+	protected:
+		virtual void Execute() = 0;
+		virtual void OnOK(Env env) = 0;
+		virtual void OnError(Env env, const Error& e) = 0;
+
+		void SetError(const std::string& error);
+
+	private:
+		static void OnExecute(napi_env env, void* this_pointer);
+		static void OnWorkComplete(napi_env env, napi_status status, void* this_pointer);
+
+		napi_env _env;
+		napi_async_work _work;
+		std::string _error;
+	};
+
+	inline CustomAsyncWorker::CustomAsyncWorker(Env env)
+		: CustomAsyncWorker(env, "generic")
+	{
+	}
+
+	inline CustomAsyncWorker::CustomAsyncWorker(Env env, const char* resource_name)
+		: _env(env)
+	{
+		napi_value resource_id;
+		napi_status status = napi_create_string_latin1(
+			_env, resource_name, NAPI_AUTO_LENGTH, &resource_id);
+		NAPI_THROW_IF_FAILED_VOID(_env, status);
+
+		status = napi_create_async_work(_env, nullptr, resource_id,
+			OnExecute, OnWorkComplete, this, &_work);
+		NAPI_THROW_IF_FAILED_VOID(_env, status);
+	}
+
+	inline CustomAsyncWorker::CustomAsyncWorker(CustomAsyncWorker&& other)
+	{
+		_env = other._env;
+		other._env = nullptr;
+		_work = other._work;
+		other._work = nullptr;
+		_error = std::move(other._error);
+	}
+
+	inline CustomAsyncWorker& CustomAsyncWorker::operator=(CustomAsyncWorker&& other)
+	{
+		_env = other._env;
+		other._env = nullptr;
+		_work = other._work;
+		other._work = nullptr;
+		_error = std::move(other._error);
+		return *this;
+	}
+
+	inline CustomAsyncWorker::~CustomAsyncWorker()
+	{
+		if (_work != nullptr)
+		{
+			napi_delete_async_work(_env, _work);
+			_work = nullptr;
+		}
+	}
+
+	inline void CustomAsyncWorker::Queue()
+	{
+		napi_status status = napi_queue_async_work(_env, _work);
+		NAPI_THROW_IF_FAILED_VOID(_env, status);
+	}
+
+	inline void CustomAsyncWorker::Cancel()
+	{
+		napi_status status = napi_cancel_async_work(_env, _work);
+		NAPI_THROW_IF_FAILED_VOID(_env, status);
+	}
+
+	inline void CustomAsyncWorker::SetError(const std::string& error)
+	{
+		_error = error;
+	}
+
+	inline void CustomAsyncWorker::OnExecute(napi_env /*env*/, void* this_pointer)
+	{
+		CustomAsyncWorker* self = static_cast<CustomAsyncWorker*>(this_pointer);
+#ifdef NAPI_CPP_EXCEPTIONS
+		try
+		{
+			self->Execute();
+		}
+		catch (const std::exception& e)
+		{
+			self->SetError(e.what());
+		}
+#else  // NAPI_CPP_EXCEPTIONS
+		self->Execute();
+#endif // NAPI_CPP_EXCEPTIONS
+	}
+
+	inline void CustomAsyncWorker::OnWorkComplete(
+		napi_env env, napi_status status, void* this_pointer)
+	{
+		CustomAsyncWorker* self = static_cast<CustomAsyncWorker*>(this_pointer);
+
+		if (status != napi_cancelled)
+		{
+			HandleScope scope(self->_env);
+
+			details::WrapCallback([&] {
+				if (self->_error.size() == 0)
+					self->OnOK(env);
+				else
+					self->OnError(env, Error::New(self->_env, self->_error));
+
+				return nullptr;
+			});
+		}
+
+		delete self;
+	}
+}
+
+
+//----------------------------------------------------------------------------
+
+
 namespace fb = Firebird;
 
 
 std::string formatStatus(fb::IStatus* status);
 
-
-class NodeThrow
-{
-};
+[[noreturn]]
+void rethrowException(const Napi::Env env);
 
 
 template <typename T>
@@ -26,34 +178,33 @@ using MethodStart = std::function<T ()>;
 
 
 template <typename T>
-class PromiseWorker: public Nan::AsyncWorker
+class PromiseWorker : public Napi::CustomAsyncWorker
 {
 protected:
-	PromiseWorker(const std::function<T ()>& executeLambda,
-			const std::function<v8::Local<v8::Value> (T)>& returnLambda)
-		: AsyncWorker(nullptr),
+	PromiseWorker(const Napi::Env env,
+			MethodStart<T> executeLambda,
+			std::function<Napi::Value (const Napi::Env, T)> returnLambda)
+		: CustomAsyncWorker(env),
 		  executeLambda(executeLambda),
-		  returnLambda(returnLambda)
+		  returnLambda(returnLambda),
+		  deferred(env)
 	{
 	}
 
 public:
-	static void Run(const Nan::FunctionCallbackInfo<v8::Value>& info,
-		const std::function<T ()>& executeLambda,
-		const std::function<v8::Local<v8::Value> (T)> returnLambda)
+	static Napi::Value Run(const Napi::Env env,
+		MethodStart<T> executeLambda,
+		std::function<Napi::Value (const Napi::Env, T)> returnLambda)
 	{
-		Nan::EscapableHandleScope scope;
+		Napi::HandleScope scope(env);
 
-		auto resolver = v8::Promise::Resolver::New(info.GetIsolate()->GetCurrentContext()).ToLocalChecked();
-		auto worker = new PromiseWorker(executeLambda, returnLambda);
+		auto worker = new PromiseWorker(env, executeLambda, returnLambda);
+		worker->Queue();
 
-		worker->SaveToPersistent("resolver", resolver);
-		Nan::AsyncQueueWorker(worker);
-
-		info.GetReturnValue().Set(scope.Escape(resolver->GetPromise()));
+		return worker->deferred.Promise();
 	}
 
-public:
+protected:
 	void Execute() override
 	{
 		try
@@ -67,98 +218,89 @@ public:
 		}
 	}
 
-	void HandleOKCallback() override
+	void OnOK(Napi::Env env) override
 	{
-		auto context = v8::Isolate::GetCurrent()->GetCurrentContext();
-		auto res = GetFromPersistent("resolver").template As<v8::Promise::Resolver>();
+		if (!error)
+			deferred.Resolve(returnLambda(env, ret));
+		else
+			deferred.Reject(Napi::Error::New(env, errorMsg.c_str()).Value());
+	}
 
-		auto resRet = !error ?
-			res->Resolve(context, returnLambda(ret)) :
-			res->Reject(context, Nan::Error(errorMsg.c_str()));
-
-		(void) resRet;	// avoid warning
-
-		v8::Isolate::GetCurrent()->RunMicrotasks();
+	void OnError(Napi::Env env, const Napi::Error& e) override
+	{
+		assert(false);
 	}
 
 private:
 	T ret = 0;
-	std::function<T ()> executeLambda;
-	std::function<v8::Local<v8::Value> (T)> returnLambda;
+	MethodStart<T> executeLambda;
+	std::function<Napi::Value (const Napi::Env, T)> returnLambda;
 	bool error = false;
 	std::string errorMsg;
+	Napi::Promise::Deferred deferred;
 };
 
 
 template <typename This, typename Interface>
-class BaseClass : public Nan::ObjectWrap
+class BaseClass : public Napi::ObjectWrap<This>
 {
 public:
-	static void Init(v8::Local<v8::Object> exports, const char* name)
+	using Napi::ObjectWrap<This>::ObjectWrap;
+
+public:
+	static void Init(Napi::Env env, Napi::Object& exports, const char* name)
 	{
-		Nan::HandleScope scope;
+		Napi::HandleScope scope(env);
 
 		className() = name;
 
-		// Prepare constructor template
-		v8::Local<v8::String> nameObj = Nan::New(name).ToLocalChecked();
-		v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-		tpl->SetClassName(nameObj);
-		tpl->InstanceTemplate()->SetInternalFieldCount(1);
-
 		// Prototype
-		This::InitPrototype(tpl);
+		std::vector<typename Napi::ObjectWrap<This>::PropertyDescriptor> properties;
+		This::InitPrototype(properties);
 
-		constructor().Reset(tpl);
+		Napi::Function function = Napi::ObjectWrap<This>::DefineClass(env, name, properties);
 
-		exports->Set(nameObj, tpl->GetFunction());
+		constructor().Reset(function);
+		constructor().SuppressDestruct();
+
+		exports.Set(name, function);
 	}
 
-	static v8::Local<v8::Object> NewInstance(Interface* interface)
+	static Napi::Object NewInstance(const Napi::Env env, Interface* interface)
 	{
-		Nan::EscapableHandleScope scope;
+		Napi::EscapableHandleScope scope(env);
 
-		v8::Local<v8::FunctionTemplate> cons = Nan::New<v8::FunctionTemplate>(constructor());
-		v8::Local<v8::Object> instance = Nan::NewInstance(Nan::GetFunction(cons).ToLocalChecked()).ToLocalChecked();
+		auto instance = constructor().Value().New({});
 
-		This* obj = ObjectWrap::Unwrap<This>(instance);
+		This* obj = Napi::ObjectWrap<This>::Unwrap(instance);
 		obj->interface = interface;
 
-		return scope.Escape(instance);
+		return scope.Escape(instance).ToObject();
 	}
 
-	static bool HasInstance(const v8::Local<v8::Value>& object)
-	{
-		return Nan::New(constructor())->HasInstance(object);
-	}
-
-	static This* CheckedUnwrap(v8::Local<v8::Value> object, const char* description,
+	static This* CheckedUnwrap(const Napi::Env env, const Napi::Value& value, const char* description,
 		bool allowNull = false)
 	{
-		if (allowNull && (object->IsNull() || object->IsUndefined()))
+		const auto type = value.Type();
+
+		if (allowNull && (type == napi_null || type == napi_undefined))
 			return nullptr;
 
-		bool err = object->IsNull() || !object->IsObject();
+		bool err = type == napi_null ||
+			!(type == napi_object || type == napi_function);	// !IsObject()
 
-		if (!err)
-		{
-			if (Nan::Get(object->ToObject(), Nan::New("cloop").ToLocalChecked()).ToLocal(&object))
-				err = !object->IsObject();
-			else
-				err = true;
-		}
+		auto object = value.ToObject();
 
-		err = err || !Nan::New(constructor())->HasInstance(object);
+		err = err || !object.InstanceOf(constructor().Value());
 
 		if (err)
 		{
 			std::string msg = std::string(description) + " must be an instance of " +
 				className() + " class" + (allowNull ? " or null" : "") + ".";
-			Nan::ThrowTypeError(msg.c_str());
-			throw NodeThrow();
+			throw Napi::Error::New(env, msg);
 		}
 
-		return ObjectWrap::Unwrap<This>(object->ToObject());
+		return Napi::ObjectWrap<This>::Unwrap(object);
 	}
 
 protected:
@@ -168,83 +310,10 @@ protected:
 		return var;
 	}
 
-	static Nan::Persistent<v8::FunctionTemplate>& constructor()
+	static Napi::Reference<Napi::Function>& constructor()
 	{
-		static Nan::Persistent<v8::FunctionTemplate> var;
+		static Napi::Reference<Napi::Function> var;
 		return var;
-	}
-
-	template <void (*ptr)(Nan::NAN_METHOD_ARGS_TYPE)>
-	static void DefineSyncMethod(v8::Local<v8::FunctionTemplate>& tpl, const char* name)
-	{
-		void (*wrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
-			try
-			{
-				ptr(info);
-			}
-			catch (const fb::FbException& e)
-			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
-			}
-			catch (const NodeThrow&)
-			{
-			}
-		};
-
-		SetPrototypeMethod(tpl, name, wrapper);
-	}
-
-	template <
-		typename T,
-		MethodStart<T> (*ptr1)(bool async, Nan::NAN_METHOD_ARGS_TYPE),
-		v8::Local<v8::Value> (*ptr2)(T)
-	>
-	static void DefineAsyncMethod(v8::Local<v8::FunctionTemplate>& tpl, const char* name)
-	{
-		void (*syncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
-			try
-			{
-				auto ret = ptr1(false, info)();
-				info.GetReturnValue().Set(ptr2(ret));
-			}
-			catch (const fb::FbException& e)
-			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
-			}
-			catch (const NodeThrow&)
-			{
-			}
-		};
-
-		SetPrototypeMethod(tpl, (std::string(name) + "Sync").c_str(), syncWrapper);
-
-		void (*asyncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
-			try
-			{
-				auto ret = ptr1(true, info);
-				PromiseWorker<T>::Run(info, ret, ptr2);
-			}
-			catch (const fb::FbException& e)
-			{
-				Nan::ThrowError(formatStatus(e.getStatus()).c_str());
-			}
-			catch (const NodeThrow&)
-			{
-			}
-		};
-
-		SetPrototypeMethod(tpl, (std::string(name) + "Async").c_str(), asyncWrapper);
-	}
-
-private:
-	static NAN_METHOD(New)
-	{
-		This* obj = new This();
-		obj->Wrap(info.This());
-
-		Nan::Set(info.This(), Nan::New("cloop").ToLocalChecked(), info.This());
-
-		info.GetReturnValue().Set(info.This());
 	}
 
 public:
@@ -252,17 +321,9 @@ public:
 };
 
 
-template <typename This, template<typename...> typename T>
+template <typename This, template<typename...> class T>
 class BaseImpl : public T<This, fb::ThrowStatusWrapper>
 {
-public:
-	BaseImpl(v8::Local<v8::Object> localObject)
-		: persistentObject(localObject)
-	{
-	}
-
-protected:
-	Nan::Persistent<v8::Object> persistentObject;
 };
 
 
@@ -271,26 +332,40 @@ class Pointer : public BaseClass<Pointer, void>
 friend class BaseClass<Pointer, void>;
 
 public:
-	static v8::Local<v8::Object> NewInstance(const void* ptr)
+	using BaseClass::BaseClass;
+
+public:
+	static Napi::Object NewInstance(const Napi::Env env, const void* ptr)
 	{
-		return Pointer::BaseClass::NewInstance(const_cast<void*>(ptr));
+		return Pointer::BaseClass::NewInstance(env, const_cast<void*>(ptr));
 	}
 
 private:
-	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
+	static void InitPrototype(std::vector<Napi::ObjectWrap<Pointer>::PropertyDescriptor>& properties)
 	{
 	}
 };
 
 
 template <typename T>
-T* getAddress(v8::Local<v8::Value> from)
+T* getAddress(const Napi::Env env, bool async, const Napi::Value& from,
+	std::shared_ptr<Napi::Reference<Napi::Value>>& persistent)
 {
-	T* address = *Nan::TypedArrayContents<T>(from);
+	const auto type = from.Type();
 
-	if (!address)
+	if (type == napi_null || type == napi_undefined)
+		return nullptr;
+
+	T* address = Napi::TypedArrayOf<T>(env, from).Data();
+
+	if (address)
 	{
-		auto* pointer = Pointer::CheckedUnwrap(from, "pointer argument", true);
+		if (async)
+			persistent = std::make_shared<Napi::Reference<Napi::Value>>(Napi::Persistent(from));
+	}
+	else
+	{
+		auto* pointer = Pointer::CheckedUnwrap(env, from, "pointer argument", true);
 
 		if (pointer)
 			address = static_cast<T*>(const_cast<void*>(pointer->interface));

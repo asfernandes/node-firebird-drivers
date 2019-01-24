@@ -6,7 +6,7 @@ import { patch } from './patch';
 
 const root = process.cwd();
 const inputFile = `${root}/src/generate-files/firebird.cloop.json`;
-const outputCpp = `${root}/src/native/cloop-gen.h`;
+const outputCppNapi = `${root}/src/native/cloop-gen.h`;
 const outputTs = `${root}/src/lib/cloop-gen.ts`;
 
 const library = load(inputFile);
@@ -15,7 +15,7 @@ patch(library);
 
 generate({
 	library,
-	outputCpp,
+	outputCppNapi,
 	outputTs,
 	namespace: 'fb'
 });

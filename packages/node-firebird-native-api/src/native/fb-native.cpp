@@ -1,7 +1,8 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <nan.h>
+#include <napi.h>
+
 #include "./classes.h"
 #include "./cloop-gen.h"
 
@@ -21,12 +22,13 @@ typedef HMODULE Handle;
 typedef void* Handle;
 #endif
 
+
 //----------------------------------------------------------------------------
 
 
-static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info);
-static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info);
-static void initAll(v8::Local<v8::Object> exports, v8::Local<v8::Object> module);
+static Napi::Value getMaster(const Napi::CallbackInfo& info);
+static Napi::Boolean disposeMaster(const Napi::CallbackInfo& info);
+static Napi::Object initAll(Napi::Env env, Napi::Object exports);
 
 
 //----------------------------------------------------------------------------
@@ -58,17 +60,36 @@ string formatStatus(fb::IStatus* status)
 }
 
 
-static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
+void rethrowException(const Napi::Env env)
+{
+	try
+	{
+		throw;
+	}
+	catch (const fb::FbException& e)
+	{
+		throw Napi::Error::New(env, formatStatus(e.getStatus()).c_str());
+	}
+	catch (...)
+	{
+		throw;
+	}
+
+	assert(false);
+}
+
+
+static Napi::Value getMaster(const Napi::CallbackInfo& info)
 {
 	typedef fb::IMaster* (*Func)();
 
 	const char* const MASTER_FUNCTION = "fb_get_master_interface";
-	Nan::Utf8String str(info[0]->ToString());
+	auto str = info[0].ToString().Utf8Value();
 	fb::IMaster* master = nullptr;
 	string errorMessage;
 
 #ifdef _WIN32
-	HMODULE handle = LoadLibrary(*str);
+	HMODULE handle = LoadLibrary(str.c_str());
 
 	if (handle)
 	{
@@ -90,9 +111,9 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 		}
 	}
 	else
-		errorMessage = string("Cannot load Firebird client library: '") + *str + "'.";
+		errorMessage = string("Cannot load Firebird client library: '") + str + "'.";
 #else
-	void* handle = dlopen(*str, RTLD_NOW);
+	void* handle = dlopen(str.c_str(), RTLD_NOW);
 
 	if (handle)
 	{
@@ -114,20 +135,17 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 		}
 	}
 	else
-		errorMessage = string("Cannot load Firebird client library: '") + *str + "'.";
+		errorMessage = string("Cannot load Firebird client library: '") + str + "'.";
 #endif
 
 	if (!errorMessage.empty())
-	{
-		Nan::ThrowError(errorMessage.c_str());
-		return;
-	}
+		throw Napi::Error::New(info.Env(), errorMessage.c_str());
 
 	assert(master);
 
-	v8::Local<v8::Object> instance = Master::NewInstance(master);
+	Napi::Object instance = Master::NewInstance(info.Env(), master);
 
-	Master* obj = Nan::ObjectWrap::Unwrap<Master>(instance);
+	Master* obj = Napi::ObjectWrap<Master>::Unwrap(instance);
 	masterHandles[obj] = handle;
 
 	auto handleCounter = handleCounters.find(handle);
@@ -137,13 +155,13 @@ static void getMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 	else
 		handleCounters[handle] = 1;
 
-	info.GetReturnValue().Set(instance);
+	return instance;
 }
 
 
-static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
+static Napi::Boolean disposeMaster(const Napi::CallbackInfo& info)
 {
-	auto* master = Master::CheckedUnwrap(info[0], "master argument", false);
+	auto* master = Master::CheckedUnwrap(info.Env(), info[0], "master argument", false);
 	auto i = masterHandles.find(master);
 
 	if (i != masterHandles.end())
@@ -178,23 +196,30 @@ static void disposeMaster(const Nan::FunctionCallbackInfo<v8::Value>& info)
 #endif
 
 		masterHandles.erase(i);
-		info.GetReturnValue().Set(true);
+		return Napi::Boolean::New(info.Env(), true);
 	}
 	else
-		info.GetReturnValue().Set(false);
+		return Napi::Boolean::New(info.Env(), false);
 }
 
 
-static void initAll(v8::Local<v8::Object> exports, v8::Local<v8::Object> module)
+static Napi::Object initAll(Napi::Env env, Napi::Object exports)
 {
-	Nan::HandleScope scope;
+	exports.Set(Napi::String::New(env, "getMaster"), Napi::Function::New(env, getMaster));
 
-	initClasses(exports, module);
+	Napi::HandleScope scope(env);
 
-	Nan::SetMethod(exports, "getMaster", getMaster);
-	Nan::SetMethod(exports, "disposeMaster", disposeMaster);
+	initClasses(env, exports);
 
-	Pointer::Init(exports, "Pointer");
+	Napi::Function getMasterFunction = Napi::Function::New(env, getMaster, "getMaster");
+	exports.Set("getMaster", getMasterFunction);
+
+	Napi::Function disposeMasterFunction = Napi::Function::New(env, disposeMaster, "disposeMaster");
+	exports.Set("disposeMaster", disposeMasterFunction);
+
+	Pointer::Init(env, exports, "Pointer");
+
+	return exports;
 }
 
-NODE_MODULE(addon, initAll)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, initAll)

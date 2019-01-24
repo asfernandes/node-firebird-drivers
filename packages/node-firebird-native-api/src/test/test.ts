@@ -102,6 +102,12 @@ describe('node-firebird-native-api', () => {
 	});
 
 	describe('Provider', () => {
+		test('wrong status class', () => {
+			expect(() =>
+				dispatcher.createDatabaseSync(master as any, getTempFile('wrong-class.fdb'), 0, undefined)
+			).toThrow();
+		});
+
 		test('#createDatabaseSync()', () => {
 			const status = master.getStatusSync()!;
 			try {
