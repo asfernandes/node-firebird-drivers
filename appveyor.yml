@@ -29,6 +29,11 @@ install:
 cache:
   - "%LOCALAPPDATA%\\Yarn"
 
+artifacts:
+  - path: packages\node-firebird-native-api\build\Release
+    name: node-firebird-native-api
+    type: zip
+
 build: off
 test: off
 deploy: off
