@@ -35,9 +35,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
 };
 
@@ -58,7 +58,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
 };
 
@@ -79,13 +79,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> initStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> initStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> initFinish(void* ret);
-	static MethodStart<unsigned> getStateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getStateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getStateFinish(unsigned ret);
-	static MethodStart<fb::IStatus*> cloneStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IStatus*> cloneStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> cloneFinish(fb::IStatus* ret);
 };
 
@@ -106,29 +106,29 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<fb::IStatus*> getStatusStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IStatus*> getStatusStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getStatusFinish(fb::IStatus* ret);
-	static MethodStart<fb::IProvider*> getDispatcherStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IProvider*> getDispatcherStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDispatcherFinish(fb::IProvider* ret);
-	static MethodStart<fb::IPluginManager*> getPluginManagerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IPluginManager*> getPluginManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPluginManagerFinish(fb::IPluginManager* ret);
-	static MethodStart<fb::ITimerControl*> getTimerControlStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITimerControl*> getTimerControlStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTimerControlFinish(fb::ITimerControl* ret);
-	static MethodStart<fb::IDtc*> getDtcStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IDtc*> getDtcStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDtcFinish(fb::IDtc* ret);
-	static MethodStart<fb::IAttachment*> registerAttachmentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IAttachment*> registerAttachmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerAttachmentFinish(fb::IAttachment* ret);
-	static MethodStart<fb::ITransaction*> registerTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> registerTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerTransactionFinish(fb::ITransaction* ret);
-	static MethodStart<fb::IMetadataBuilder*> getMetadataBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMetadataBuilder*> getMetadataBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getMetadataBuilderFinish(fb::IMetadataBuilder* ret);
-	static MethodStart<int> serverModeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> serverModeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> serverModeFinish(int ret);
-	static MethodStart<fb::IUtil*> getUtilInterfaceStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IUtil*> getUtilInterfaceStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getUtilInterfaceFinish(fb::IUtil* ret);
-	static MethodStart<fb::IConfigManager*> getConfigManagerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfigManager*> getConfigManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getConfigManagerFinish(fb::IConfigManager* ret);
-	static MethodStart<FB_BOOLEAN> getProcessExitingStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> getProcessExitingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getProcessExitingFinish(FB_BOOLEAN ret);
 };
 
@@ -149,13 +149,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
 };
 
@@ -176,19 +176,19 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<std::string> getNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getNameFinish(std::string ret);
-	static MethodStart<std::string> getModuleNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getModuleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getModuleNameFinish(std::string ret);
-	static MethodStart<fb::IPluginBase*> getPluginStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IPluginBase*> getPluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPluginFinish(fb::IPluginBase* ret);
-	static MethodStart<void*> nextStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> nextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> nextFinish(void* ret);
-	static MethodStart<void*> setStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setFinish(void* ret);
 };
 
@@ -209,19 +209,19 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<std::string> getNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getNameFinish(std::string ret);
-	static MethodStart<std::string> getValueStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getValueFinish(std::string ret);
-	static MethodStart<int64_t> getIntValueStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int64_t> getIntValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getIntValueFinish(int64_t ret);
-	static MethodStart<FB_BOOLEAN> getBoolValueStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> getBoolValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBoolValueFinish(FB_BOOLEAN ret);
-	static MethodStart<fb::IConfig*> getSubConfigStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfig*> getSubConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getSubConfigFinish(fb::IConfig* ret);
 };
 
@@ -242,15 +242,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<fb::IConfigEntry*> findStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfigEntry*> findStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> findFinish(fb::IConfigEntry* ret);
-	static MethodStart<fb::IConfigEntry*> findValueStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfigEntry*> findValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> findValueFinish(fb::IConfigEntry* ret);
-	static MethodStart<fb::IConfigEntry*> findPosStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfigEntry*> findPosStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> findPosFinish(fb::IConfigEntry* ret);
 };
 
@@ -271,17 +271,17 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<unsigned> getKeyStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getKeyFinish(unsigned ret);
-	static MethodStart<int64_t> asIntegerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int64_t> asIntegerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> asIntegerFinish(int64_t ret);
-	static MethodStart<std::string> asStringStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> asStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> asStringFinish(std::string ret);
-	static MethodStart<FB_BOOLEAN> asBooleanStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> asBooleanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> asBooleanFinish(FB_BOOLEAN ret);
 };
 
@@ -302,17 +302,17 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<std::string> getConfigFileNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getConfigFileNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getConfigFileNameFinish(std::string ret);
-	static MethodStart<fb::IConfig*> getDefaultConfigStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfig*> getDefaultConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDefaultConfigFinish(fb::IConfig* ret);
-	static MethodStart<fb::IFirebirdConf*> getFirebirdConfStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IFirebirdConf*> getFirebirdConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFirebirdConfFinish(fb::IFirebirdConf* ret);
-	static MethodStart<void*> setReleaseDelayStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setReleaseDelayStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setReleaseDelayFinish(void* ret);
 };
 
@@ -333,7 +333,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<fb::IPluginBase*> createPluginStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IPluginBase*> createPluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> createPluginFinish(fb::IPluginBase* ret);
 };
 
@@ -354,7 +354,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> doCleanStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> doCleanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> doCleanFinish(void* ret);
 };
 
@@ -375,17 +375,17 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> registerPluginFactoryStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> registerPluginFactoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerPluginFactoryFinish(void* ret);
-	static MethodStart<void*> registerModuleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> registerModuleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerModuleFinish(void* ret);
-	static MethodStart<void*> unregisterModuleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> unregisterModuleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> unregisterModuleFinish(void* ret);
-	static MethodStart<fb::IPluginSet*> getPluginsStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IPluginSet*> getPluginsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPluginsFinish(fb::IPluginSet* ret);
-	static MethodStart<fb::IConfig*> getConfigStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfig*> getConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getConfigFinish(fb::IConfig* ret);
-	static MethodStart<void*> releasePluginStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> releasePluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releasePluginFinish(void* ret);
 };
 
@@ -425,17 +425,17 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<std::string> getDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDirectoryFinish(std::string ret);
-	static MethodStart<fb::IFirebirdConf*> getFirebirdConfStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IFirebirdConf*> getFirebirdConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFirebirdConfFinish(fb::IFirebirdConf* ret);
-	static MethodStart<fb::IFirebirdConf*> getDatabaseConfStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IFirebirdConf*> getDatabaseConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDatabaseConfFinish(fb::IFirebirdConf* ret);
-	static MethodStart<fb::IConfig*> getPluginConfigStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IConfig*> getPluginConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPluginConfigFinish(fb::IConfig* ret);
-	static MethodStart<std::string> getInstallDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getInstallDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInstallDirectoryFinish(std::string ret);
-	static MethodStart<std::string> getRootDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRootDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRootDirectoryFinish(std::string ret);
 };
 
@@ -456,11 +456,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> eventCallbackFunctionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> eventCallbackFunctionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> eventCallbackFunctionFinish(void* ret);
 };
 
@@ -481,21 +481,21 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInfoFinish(void* ret);
-	static MethodStart<int> getSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getSegmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getSegmentFinish(int ret);
-	static MethodStart<void*> putSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> putSegmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> putSegmentFinish(void* ret);
-	static MethodStart<void*> cancelStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> cancelStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> cancelFinish(void* ret);
-	static MethodStart<void*> closeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> closeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> closeFinish(void* ret);
-	static MethodStart<int> seekStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> seekStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> seekFinish(int ret);
 };
 
@@ -516,29 +516,29 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInfoFinish(void* ret);
-	static MethodStart<void*> prepareStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> prepareStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> prepareFinish(void* ret);
-	static MethodStart<void*> commitStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> commitStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> commitFinish(void* ret);
-	static MethodStart<void*> commitRetainingStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> commitRetainingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> commitRetainingFinish(void* ret);
-	static MethodStart<void*> rollbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> rollbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> rollbackFinish(void* ret);
-	static MethodStart<void*> rollbackRetainingStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> rollbackRetainingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> rollbackRetainingFinish(void* ret);
-	static MethodStart<void*> disconnectStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disconnectStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disconnectFinish(void* ret);
-	static MethodStart<fb::ITransaction*> joinStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> joinStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> joinFinish(fb::ITransaction* ret);
-	static MethodStart<fb::ITransaction*> validateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> validateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> validateFinish(fb::ITransaction* ret);
-	static MethodStart<fb::ITransaction*> enterDtcStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> enterDtcStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> enterDtcFinish(fb::ITransaction* ret);
 };
 
@@ -559,39 +559,39 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<unsigned> getCountStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getCountStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getCountFinish(unsigned ret);
-	static MethodStart<std::string> getFieldStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getFieldStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFieldFinish(std::string ret);
-	static MethodStart<std::string> getRelationStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRelationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRelationFinish(std::string ret);
-	static MethodStart<std::string> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(std::string ret);
-	static MethodStart<std::string> getAliasStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getAliasStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getAliasFinish(std::string ret);
-	static MethodStart<unsigned> getTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTypeFinish(unsigned ret);
-	static MethodStart<FB_BOOLEAN> isNullableStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> isNullableStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> isNullableFinish(FB_BOOLEAN ret);
-	static MethodStart<int> getSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getSubTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getSubTypeFinish(int ret);
-	static MethodStart<unsigned> getLengthStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getLengthFinish(unsigned ret);
-	static MethodStart<int> getScaleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getScaleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getScaleFinish(int ret);
-	static MethodStart<unsigned> getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getCharSetFinish(unsigned ret);
-	static MethodStart<unsigned> getOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOffsetFinish(unsigned ret);
-	static MethodStart<unsigned> getNullOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getNullOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getNullOffsetFinish(unsigned ret);
-	static MethodStart<fb::IMetadataBuilder*> getBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMetadataBuilder*> getBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBuilderFinish(fb::IMetadataBuilder* ret);
-	static MethodStart<unsigned> getMessageLengthStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getMessageLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getMessageLengthFinish(unsigned ret);
 };
 
@@ -612,29 +612,29 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setTypeFinish(void* ret);
-	static MethodStart<void*> setSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setSubTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setSubTypeFinish(void* ret);
-	static MethodStart<void*> setLengthStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setLengthFinish(void* ret);
-	static MethodStart<void*> setCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setCharSetFinish(void* ret);
-	static MethodStart<void*> setScaleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setScaleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setScaleFinish(void* ret);
-	static MethodStart<void*> truncateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> truncateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> truncateFinish(void* ret);
-	static MethodStart<void*> moveNameToIndexStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> moveNameToIndexStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> moveNameToIndexFinish(void* ret);
-	static MethodStart<void*> removeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> removeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> removeFinish(void* ret);
-	static MethodStart<unsigned> addFieldStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> addFieldStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addFieldFinish(unsigned ret);
-	static MethodStart<fb::IMessageMetadata*> getMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getMetadataFinish(fb::IMessageMetadata* ret);
 };
 
@@ -655,31 +655,31 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<int> fetchNextStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchNextFinish(int ret);
-	static MethodStart<int> fetchPriorStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchPriorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchPriorFinish(int ret);
-	static MethodStart<int> fetchFirstStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchFirstStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchFirstFinish(int ret);
-	static MethodStart<int> fetchLastStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchLastStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchLastFinish(int ret);
-	static MethodStart<int> fetchAbsoluteStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchAbsoluteStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchAbsoluteFinish(int ret);
-	static MethodStart<int> fetchRelativeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> fetchRelativeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchRelativeFinish(int ret);
-	static MethodStart<FB_BOOLEAN> isEofStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> isEofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> isEofFinish(FB_BOOLEAN ret);
-	static MethodStart<FB_BOOLEAN> isBofStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> isBofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> isBofFinish(FB_BOOLEAN ret);
-	static MethodStart<fb::IMessageMetadata*> getMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<void*> closeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> closeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> closeFinish(void* ret);
-	static MethodStart<void*> setDelayedOutputFormatStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setDelayedOutputFormatStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setDelayedOutputFormatFinish(void* ret);
 };
 
@@ -700,31 +700,31 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInfoFinish(void* ret);
-	static MethodStart<unsigned> getTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTypeFinish(unsigned ret);
-	static MethodStart<std::string> getPlanStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getPlanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPlanFinish(std::string ret);
-	static MethodStart<uint64_t> getAffectedRecordsStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<uint64_t> getAffectedRecordsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getAffectedRecordsFinish(uint64_t ret);
-	static MethodStart<fb::IMessageMetadata*> getInputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getInputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInputMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<fb::IMessageMetadata*> getOutputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getOutputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOutputMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<fb::ITransaction*> executeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeFinish(fb::ITransaction* ret);
-	static MethodStart<fb::IResultSet*> openCursorStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IResultSet*> openCursorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> openCursorFinish(fb::IResultSet* ret);
-	static MethodStart<void*> setCursorNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setCursorNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setCursorNameFinish(void* ret);
-	static MethodStart<void*> freeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> freeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> freeFinish(void* ret);
-	static MethodStart<unsigned> getFlagsStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getFlagsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFlagsFinish(unsigned ret);
 };
 
@@ -745,23 +745,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> receiveStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> receiveStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> receiveFinish(void* ret);
-	static MethodStart<void*> sendStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> sendStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> sendFinish(void* ret);
-	static MethodStart<void*> getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInfoFinish(void* ret);
-	static MethodStart<void*> startStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startFinish(void* ret);
-	static MethodStart<void*> startAndSendStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> startAndSendStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startAndSendFinish(void* ret);
-	static MethodStart<void*> unwindStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> unwindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> unwindFinish(void* ret);
-	static MethodStart<void*> freeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> freeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> freeFinish(void* ret);
 };
 
@@ -782,11 +782,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> cancelStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> cancelStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> cancelFinish(void* ret);
 };
 
@@ -807,41 +807,41 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInfoFinish(void* ret);
-	static MethodStart<fb::ITransaction*> startTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> startTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startTransactionFinish(fb::ITransaction* ret);
-	static MethodStart<fb::ITransaction*> reconnectTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> reconnectTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> reconnectTransactionFinish(fb::ITransaction* ret);
-	static MethodStart<fb::IRequest*> compileRequestStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IRequest*> compileRequestStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> compileRequestFinish(fb::IRequest* ret);
-	static MethodStart<void*> transactRequestStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> transactRequestStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> transactRequestFinish(void* ret);
-	static MethodStart<fb::IBlob*> createBlobStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IBlob*> createBlobStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> createBlobFinish(fb::IBlob* ret);
-	static MethodStart<fb::IBlob*> openBlobStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IBlob*> openBlobStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> openBlobFinish(fb::IBlob* ret);
-	static MethodStart<void*> executeDynStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> executeDynStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeDynFinish(void* ret);
-	static MethodStart<fb::IStatement*> prepareStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IStatement*> prepareStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> prepareFinish(fb::IStatement* ret);
-	static MethodStart<fb::ITransaction*> executeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeFinish(fb::ITransaction* ret);
-	static MethodStart<fb::IResultSet*> openCursorStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IResultSet*> openCursorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> openCursorFinish(fb::IResultSet* ret);
-	static MethodStart<fb::IEvents*> queEventsStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IEvents*> queEventsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> queEventsFinish(fb::IEvents* ret);
-	static MethodStart<void*> cancelOperationStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> cancelOperationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> cancelOperationFinish(void* ret);
-	static MethodStart<void*> pingStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> pingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> pingFinish(void* ret);
-	static MethodStart<void*> detachStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> detachStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> detachFinish(void* ret);
-	static MethodStart<void*> dropDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> dropDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> dropDatabaseFinish(void* ret);
 };
 
@@ -862,15 +862,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> detachStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> detachStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> detachFinish(void* ret);
-	static MethodStart<void*> queryStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> queryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> queryFinish(void* ret);
-	static MethodStart<void*> startStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startFinish(void* ret);
 };
 
@@ -891,23 +891,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<fb::IAttachment*> attachDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IAttachment*> attachDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> attachDatabaseFinish(fb::IAttachment* ret);
-	static MethodStart<fb::IAttachment*> createDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IAttachment*> createDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> createDatabaseFinish(fb::IAttachment* ret);
-	static MethodStart<fb::IService*> attachServiceManagerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IService*> attachServiceManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> attachServiceManagerFinish(fb::IService* ret);
-	static MethodStart<void*> shutdownStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> shutdownStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> shutdownFinish(void* ret);
-	static MethodStart<void*> setDbCryptCallbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setDbCryptCallbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setDbCryptCallbackFinish(void* ret);
 };
 
@@ -928,13 +928,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> addAttachmentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addAttachmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addAttachmentFinish(void* ret);
-	static MethodStart<void*> addWithTpbStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addWithTpbStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addWithTpbFinish(void* ret);
-	static MethodStart<fb::ITransaction*> startStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startFinish(fb::ITransaction* ret);
 };
 
@@ -955,9 +955,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<fb::ITransaction*> joinStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ITransaction*> joinStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> joinFinish(fb::ITransaction* ret);
-	static MethodStart<fb::IDtcStart*> startBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IDtcStart*> startBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startBuilderFinish(fb::IDtcStart* ret);
 };
 
@@ -978,13 +978,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
 };
 
@@ -1005,13 +1005,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> resetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> resetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> resetFinish(void* ret);
-	static MethodStart<void*> addStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addFinish(void* ret);
-	static MethodStart<void*> setTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setTypeFinish(void* ret);
-	static MethodStart<void*> setDbStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setDbStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setDbFinish(void* ret);
 };
 
@@ -1032,13 +1032,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<std::string> getLoginStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getLoginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getLoginFinish(std::string ret);
-	static MethodStart<const unsigned char*> getDataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<const unsigned char*> getDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDataFinish(const unsigned char* ret);
-	static MethodStart<void*> putDataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> putDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> putDataFinish(void* ret);
-	static MethodStart<fb::ICryptKey*> newKeyStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICryptKey*> newKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> newKeyFinish(fb::ICryptKey* ret);
 };
 
@@ -1059,19 +1059,19 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<std::string> getLoginStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getLoginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getLoginFinish(std::string ret);
-	static MethodStart<std::string> getPasswordStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getPasswordStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPasswordFinish(std::string ret);
-	static MethodStart<const unsigned char*> getDataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<const unsigned char*> getDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDataFinish(const unsigned char* ret);
-	static MethodStart<void*> putDataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> putDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> putDataFinish(void* ret);
-	static MethodStart<fb::ICryptKey*> newKeyStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICryptKey*> newKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> newKeyFinish(fb::ICryptKey* ret);
 };
 
@@ -1092,15 +1092,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<int> authenticateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> authenticateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> authenticateFinish(int ret);
 };
 
@@ -1121,15 +1121,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<int> authenticateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> authenticateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> authenticateFinish(int ret);
 };
 
@@ -1150,11 +1150,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<int> enteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> enteredFinish(int ret);
-	static MethodStart<int> specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> specifiedFinish(int ret);
-	static MethodStart<void*> setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setEnteredFinish(void* ret);
 };
 
@@ -1175,15 +1175,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<int> enteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> enteredFinish(int ret);
-	static MethodStart<int> specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> specifiedFinish(int ret);
-	static MethodStart<void*> setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setEnteredFinish(void* ret);
-	static MethodStart<std::string> getStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFinish(std::string ret);
-	static MethodStart<void*> setStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setFinish(void* ret);
 };
 
@@ -1204,15 +1204,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<int> enteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> enteredFinish(int ret);
-	static MethodStart<int> specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> specifiedFinish(int ret);
-	static MethodStart<void*> setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setEnteredFinish(void* ret);
-	static MethodStart<int> getStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFinish(int ret);
-	static MethodStart<void*> setStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setFinish(void* ret);
 };
 
@@ -1233,27 +1233,27 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<unsigned> operationStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> operationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> operationFinish(unsigned ret);
-	static MethodStart<fb::ICharUserField*> userNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> userNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> userNameFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> passwordStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> passwordStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> passwordFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> firstNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> firstNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> firstNameFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> lastNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> lastNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> lastNameFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> middleNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> middleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> middleNameFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> commentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> commentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> commentFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::ICharUserField*> attributesStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICharUserField*> attributesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> attributesFinish(fb::ICharUserField* ret);
-	static MethodStart<fb::IIntUserField*> activeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IIntUserField*> activeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> activeFinish(fb::IIntUserField* ret);
-	static MethodStart<fb::IIntUserField*> adminStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IIntUserField*> adminStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> adminFinish(fb::IIntUserField* ret);
-	static MethodStart<void*> clearStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> clearStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> clearFinish(void* ret);
 };
 
@@ -1274,7 +1274,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> listStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> listStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> listFinish(void* ret);
 };
 
@@ -1295,15 +1295,15 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<std::string> nameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> nameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> nameFinish(std::string ret);
-	static MethodStart<std::string> roleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> roleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> roleFinish(std::string ret);
-	static MethodStart<std::string> networkProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> networkProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> networkProtocolFinish(std::string ret);
-	static MethodStart<std::string> remoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> remoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> remoteAddressFinish(std::string ret);
-	static MethodStart<const unsigned char*> authBlockStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<const unsigned char*> authBlockStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> authBlockFinish(const unsigned char* ret);
 };
 
@@ -1324,21 +1324,21 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<void*> startStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startFinish(void* ret);
-	static MethodStart<int> executeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeFinish(int ret);
-	static MethodStart<void*> commitStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> commitStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> commitFinish(void* ret);
-	static MethodStart<void*> rollbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> rollbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> rollbackFinish(void* ret);
 };
 
@@ -1359,21 +1359,21 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<std::string> getKnownTypesStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getKnownTypesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getKnownTypesFinish(std::string ret);
-	static MethodStart<void*> setKeyStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setKeyFinish(void* ret);
-	static MethodStart<void*> encryptStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> encryptStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> encryptFinish(void* ret);
-	static MethodStart<void*> decryptStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> decryptStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> decryptFinish(void* ret);
 };
 
@@ -1394,7 +1394,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<unsigned> callbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> callbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> callbackFinish(unsigned ret);
 };
 
@@ -1415,17 +1415,17 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
-	static MethodStart<int> keyCallbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> keyCallbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> keyCallbackFinish(int ret);
-	static MethodStart<fb::ICryptKeyCallback*> keyHandleStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::ICryptKeyCallback*> keyHandleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> keyHandleFinish(fb::ICryptKeyCallback* ret);
 };
 
@@ -1446,13 +1446,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
 };
 
@@ -1492,9 +1492,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<FB_BOOLEAN> fetchStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> fetchStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> fetchFinish(FB_BOOLEAN ret);
 };
 
@@ -1515,7 +1515,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
 };
 
@@ -1536,7 +1536,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
 };
 
@@ -1557,7 +1557,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
 };
 
@@ -1578,23 +1578,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<std::string> getPackageStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getPackageStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getPackageFinish(std::string ret);
-	static MethodStart<std::string> getNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getNameFinish(std::string ret);
-	static MethodStart<std::string> getEntryPointStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getEntryPointStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getEntryPointFinish(std::string ret);
-	static MethodStart<std::string> getBodyStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getBodyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBodyFinish(std::string ret);
-	static MethodStart<fb::IMessageMetadata*> getInputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getInputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getInputMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<fb::IMessageMetadata*> getOutputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getOutputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOutputMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<fb::IMessageMetadata*> getTriggerMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMessageMetadata*> getTriggerMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTriggerMetadataFinish(fb::IMessageMetadata* ret);
-	static MethodStart<std::string> getTriggerTableStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getTriggerTableStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTriggerTableFinish(std::string ret);
-	static MethodStart<unsigned> getTriggerTypeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getTriggerTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTriggerTypeFinish(unsigned ret);
 };
 
@@ -1615,13 +1615,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
 };
 
@@ -1642,11 +1642,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> handlerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> handlerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> handlerFinish(void* ret);
 };
 
@@ -1667,9 +1667,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> startStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> startFinish(void* ret);
-	static MethodStart<void*> stopStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> stopStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> stopFinish(void* ret);
 };
 
@@ -1690,7 +1690,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> callbackStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> callbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> callbackFinish(void* ret);
 };
 
@@ -1711,23 +1711,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> getFbVersionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> getFbVersionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getFbVersionFinish(void* ret);
-	static MethodStart<fb::IAttachment*> executeCreateDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IAttachment*> executeCreateDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> executeCreateDatabaseFinish(fb::IAttachment* ret);
-	static MethodStart<void*> decodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> decodeDateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> decodeDateFinish(void* ret);
-	static MethodStart<void*> decodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> decodeTimeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> decodeTimeFinish(void* ret);
-	static MethodStart<int> encodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> encodeDateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> encodeDateFinish(int ret);
-	static MethodStart<int> encodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> encodeTimeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> encodeTimeFinish(int ret);
-	static MethodStart<unsigned> getClientVersionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getClientVersionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getClientVersionFinish(unsigned ret);
-	static MethodStart<fb::IXpbBuilder*> getXpbBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IXpbBuilder*> getXpbBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getXpbBuilderFinish(fb::IXpbBuilder* ret);
-	static MethodStart<unsigned> setOffsetsStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> setOffsetsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOffsetsFinish(unsigned ret);
 };
 
@@ -1748,7 +1748,7 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> setOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOffsetFinish(void* ret);
 };
 
@@ -1769,47 +1769,47 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> clearStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> clearStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> clearFinish(void* ret);
-	static MethodStart<void*> removeCurrentStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> removeCurrentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> removeCurrentFinish(void* ret);
-	static MethodStart<void*> insertIntStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> insertIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> insertIntFinish(void* ret);
-	static MethodStart<void*> insertBigIntStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> insertBigIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> insertBigIntFinish(void* ret);
-	static MethodStart<void*> insertBytesStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> insertBytesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> insertBytesFinish(void* ret);
-	static MethodStart<void*> insertStringStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> insertStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> insertStringFinish(void* ret);
-	static MethodStart<void*> insertTagStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> insertTagStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> insertTagFinish(void* ret);
-	static MethodStart<FB_BOOLEAN> isEofStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> isEofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> isEofFinish(FB_BOOLEAN ret);
-	static MethodStart<void*> moveNextStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> moveNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> moveNextFinish(void* ret);
-	static MethodStart<void*> rewindStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> rewindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> rewindFinish(void* ret);
-	static MethodStart<FB_BOOLEAN> findFirstStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> findFirstStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> findFirstFinish(FB_BOOLEAN ret);
-	static MethodStart<FB_BOOLEAN> findNextStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<FB_BOOLEAN> findNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> findNextFinish(FB_BOOLEAN ret);
-	static MethodStart<unsigned char> getTagStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned char> getTagStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getTagFinish(unsigned char ret);
-	static MethodStart<unsigned> getLengthStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getLengthFinish(unsigned ret);
-	static MethodStart<int> getIntStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getIntFinish(int ret);
-	static MethodStart<int64_t> getBigIntStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int64_t> getBigIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBigIntFinish(int64_t ret);
-	static MethodStart<std::string> getStringStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getStringFinish(std::string ret);
-	static MethodStart<const unsigned char*> getBytesStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<const unsigned char*> getBytesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBytesFinish(const unsigned char* ret);
-	static MethodStart<unsigned> getBufferLengthStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getBufferLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBufferLengthFinish(unsigned ret);
-	static MethodStart<const unsigned char*> getBufferStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<const unsigned char*> getBufferStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getBufferFinish(const unsigned char* ret);
 };
 
@@ -1830,23 +1830,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<unsigned> getKindStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getKindFinish(unsigned ret);
-	static MethodStart<int> getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getProcessIDFinish(int ret);
-	static MethodStart<std::string> getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getUserNameFinish(std::string ret);
-	static MethodStart<std::string> getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRoleNameFinish(std::string ret);
-	static MethodStart<std::string> getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getCharSetFinish(std::string ret);
-	static MethodStart<std::string> getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProtocolFinish(std::string ret);
-	static MethodStart<std::string> getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteAddressFinish(std::string ret);
-	static MethodStart<int> getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessIDFinish(int ret);
-	static MethodStart<std::string> getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessNameFinish(std::string ret);
 };
 
@@ -1867,27 +1867,27 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<unsigned> getKindStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getKindFinish(unsigned ret);
-	static MethodStart<int> getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getProcessIDFinish(int ret);
-	static MethodStart<std::string> getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getUserNameFinish(std::string ret);
-	static MethodStart<std::string> getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRoleNameFinish(std::string ret);
-	static MethodStart<std::string> getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getCharSetFinish(std::string ret);
-	static MethodStart<std::string> getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProtocolFinish(std::string ret);
-	static MethodStart<std::string> getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteAddressFinish(std::string ret);
-	static MethodStart<int> getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessIDFinish(int ret);
-	static MethodStart<std::string> getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessNameFinish(std::string ret);
-	static MethodStart<int64_t> getConnectionIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int64_t> getConnectionIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getConnectionIDFinish(int64_t ret);
-	static MethodStart<std::string> getDatabaseNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getDatabaseNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getDatabaseNameFinish(std::string ret);
 };
 
@@ -2098,23 +2098,23 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<unsigned> getKindStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<unsigned> getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getKindFinish(unsigned ret);
-	static MethodStart<int> getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getProcessIDFinish(int ret);
-	static MethodStart<std::string> getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getUserNameFinish(std::string ret);
-	static MethodStart<std::string> getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRoleNameFinish(std::string ret);
-	static MethodStart<std::string> getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getCharSetFinish(std::string ret);
-	static MethodStart<std::string> getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProtocolFinish(std::string ret);
-	static MethodStart<std::string> getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteAddressFinish(std::string ret);
-	static MethodStart<int> getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessIDFinish(int ret);
-	static MethodStart<std::string> getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<std::string> getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getRemoteProcessNameFinish(std::string ret);
 };
 
@@ -2173,9 +2173,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
 };
 
@@ -2215,9 +2215,9 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
 };
 
@@ -2238,13 +2238,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> addRefStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> addRefFinish(void* ret);
-	static MethodStart<int> releaseStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<int> releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> releaseFinish(int ret);
-	static MethodStart<void*> setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setOwnerFinish(void* ret);
-	static MethodStart<fb::IReferenceCounted*> getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getOwnerFinish(fb::IReferenceCounted* ret);
 };
 
@@ -2265,11 +2265,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> setupStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setupFinish(void* ret);
-	static MethodStart<fb::IExternalFunction*> newItemStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IExternalFunction*> newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> newItemFinish(fb::IExternalFunction* ret);
 };
 
@@ -2290,11 +2290,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> setupStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setupFinish(void* ret);
-	static MethodStart<fb::IExternalProcedure*> newItemStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IExternalProcedure*> newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> newItemFinish(fb::IExternalProcedure* ret);
 };
 
@@ -2315,11 +2315,11 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<void*> disposeStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> disposeFinish(void* ret);
-	static MethodStart<void*> setupStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> setupFinish(void* ret);
-	static MethodStart<fb::IExternalTrigger*> newItemStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IExternalTrigger*> newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> newItemFinish(fb::IExternalTrigger* ret);
 };
 
@@ -2340,13 +2340,13 @@ private:
 	static void InitPrototype(v8::Local<v8::FunctionTemplate>& tpl);
 
 private:
-	static MethodStart<fb::IMaster*> getMasterStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<fb::IMaster*> getMasterStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> getMasterFinish(fb::IMaster* ret);
-	static MethodStart<void*> registerFunctionStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> registerFunctionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerFunctionFinish(void* ret);
-	static MethodStart<void*> registerProcedureStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> registerProcedureStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerProcedureFinish(void* ret);
-	static MethodStart<void*> registerTriggerStart(Nan::NAN_METHOD_ARGS_TYPE info);
+	static MethodStart<void*> registerTriggerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info);
 	static v8::Local<v8::Value> registerTriggerFinish(void* ret);
 };
 
@@ -2361,7 +2361,7 @@ void ReferenceCounted::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, releaseStart, releaseFinish>(tpl, "release");
 }
 
-MethodStart<void*> ReferenceCounted::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ReferenceCounted::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ReferenceCounted>(info.This());
 
@@ -2376,7 +2376,7 @@ v8::Local<v8::Value> ReferenceCounted::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> ReferenceCounted::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ReferenceCounted::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ReferenceCounted>(info.This());
 
@@ -2395,7 +2395,7 @@ void Disposable::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, disposeStart, disposeFinish>(tpl, "dispose");
 }
 
-MethodStart<void*> Disposable::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Disposable::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Disposable>(info.This());
 
@@ -2418,7 +2418,7 @@ void Status::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IStatus*, cloneStart, cloneFinish>(tpl, "clone");
 }
 
-MethodStart<void*> Status::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Status::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Status>(info.This());
 
@@ -2433,7 +2433,7 @@ v8::Local<v8::Value> Status::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Status::initStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Status::initStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Status>(info.This());
 
@@ -2448,7 +2448,7 @@ v8::Local<v8::Value> Status::initFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<unsigned> Status::getStateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> Status::getStateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Status>(info.This());
 
@@ -2462,7 +2462,7 @@ v8::Local<v8::Value> Status::getStateFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IStatus*> Status::cloneStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IStatus*> Status::cloneStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Status>(info.This());
 
@@ -2492,7 +2492,7 @@ void Master::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<FB_BOOLEAN, getProcessExitingStart, getProcessExitingFinish>(tpl, "getProcessExiting");
 }
 
-MethodStart<fb::IStatus*> Master::getStatusStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IStatus*> Master::getStatusStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2506,7 +2506,7 @@ v8::Local<v8::Value> Master::getStatusFinish(fb::IStatus* ret)
 	return Status::NewInstance(ret);
 }
 
-MethodStart<fb::IProvider*> Master::getDispatcherStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IProvider*> Master::getDispatcherStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2520,7 +2520,7 @@ v8::Local<v8::Value> Master::getDispatcherFinish(fb::IProvider* ret)
 	return Provider::NewInstance(ret);
 }
 
-MethodStart<fb::IPluginManager*> Master::getPluginManagerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IPluginManager*> Master::getPluginManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2534,7 +2534,7 @@ v8::Local<v8::Value> Master::getPluginManagerFinish(fb::IPluginManager* ret)
 	return PluginManager::NewInstance(ret);
 }
 
-MethodStart<fb::ITimerControl*> Master::getTimerControlStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITimerControl*> Master::getTimerControlStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2548,7 +2548,7 @@ v8::Local<v8::Value> Master::getTimerControlFinish(fb::ITimerControl* ret)
 	return TimerControl::NewInstance(ret);
 }
 
-MethodStart<fb::IDtc*> Master::getDtcStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IDtc*> Master::getDtcStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2562,7 +2562,7 @@ v8::Local<v8::Value> Master::getDtcFinish(fb::IDtc* ret)
 	return Dtc::NewInstance(ret);
 }
 
-MethodStart<fb::IAttachment*> Master::registerAttachmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IAttachment*> Master::registerAttachmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 	auto* provider = Provider::CheckedUnwrap(info[0], "provider argument", true);
@@ -2578,7 +2578,7 @@ v8::Local<v8::Value> Master::registerAttachmentFinish(fb::IAttachment* ret)
 	return Attachment::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Master::registerTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Master::registerTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 	auto* attachment = Attachment::CheckedUnwrap(info[0], "attachment argument", true);
@@ -2594,7 +2594,7 @@ v8::Local<v8::Value> Master::registerTransactionFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::IMetadataBuilder*> Master::getMetadataBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMetadataBuilder*> Master::getMetadataBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -2611,7 +2611,7 @@ v8::Local<v8::Value> Master::getMetadataBuilderFinish(fb::IMetadataBuilder* ret)
 	return MetadataBuilder::NewInstance(ret);
 }
 
-MethodStart<int> Master::serverModeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Master::serverModeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 	int mode = (int) info[0]->NumberValue();
@@ -2626,7 +2626,7 @@ v8::Local<v8::Value> Master::serverModeFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IUtil*> Master::getUtilInterfaceStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IUtil*> Master::getUtilInterfaceStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2640,7 +2640,7 @@ v8::Local<v8::Value> Master::getUtilInterfaceFinish(fb::IUtil* ret)
 	return Util::NewInstance(ret);
 }
 
-MethodStart<fb::IConfigManager*> Master::getConfigManagerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfigManager*> Master::getConfigManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2654,7 +2654,7 @@ v8::Local<v8::Value> Master::getConfigManagerFinish(fb::IConfigManager* ret)
 	return ConfigManager::NewInstance(ret);
 }
 
-MethodStart<FB_BOOLEAN> Master::getProcessExitingStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> Master::getProcessExitingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Master>(info.This());
 
@@ -2676,7 +2676,7 @@ void PluginBase::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IReferenceCounted*, getOwnerStart, getOwnerFinish>(tpl, "getOwner");
 }
 
-MethodStart<void*> PluginBase::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginBase::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginBase>(info.This());
 
@@ -2691,7 +2691,7 @@ v8::Local<v8::Value> PluginBase::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> PluginBase::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> PluginBase::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginBase>(info.This());
 
@@ -2705,7 +2705,7 @@ v8::Local<v8::Value> PluginBase::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> PluginBase::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginBase::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginBase>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -2721,7 +2721,7 @@ v8::Local<v8::Value> PluginBase::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> PluginBase::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> PluginBase::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginBase>(info.This());
 
@@ -2746,7 +2746,7 @@ void PluginSet::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setStart, setFinish>(tpl, "set");
 }
 
-MethodStart<void*> PluginSet::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginSet::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 
@@ -2761,7 +2761,7 @@ v8::Local<v8::Value> PluginSet::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> PluginSet::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> PluginSet::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 
@@ -2775,7 +2775,7 @@ v8::Local<v8::Value> PluginSet::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> PluginSet::getNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> PluginSet::getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 
@@ -2789,7 +2789,7 @@ v8::Local<v8::Value> PluginSet::getNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> PluginSet::getModuleNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> PluginSet::getModuleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 
@@ -2803,7 +2803,7 @@ v8::Local<v8::Value> PluginSet::getModuleNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<fb::IPluginBase*> PluginSet::getPluginStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IPluginBase*> PluginSet::getPluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -2819,7 +2819,7 @@ v8::Local<v8::Value> PluginSet::getPluginFinish(fb::IPluginBase* ret)
 	return PluginBase::NewInstance(ret);
 }
 
-MethodStart<void*> PluginSet::nextStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginSet::nextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -2836,7 +2836,7 @@ v8::Local<v8::Value> PluginSet::nextFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> PluginSet::setStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginSet::setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -2865,7 +2865,7 @@ void ConfigEntry::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IConfig*, getSubConfigStart, getSubConfigFinish>(tpl, "getSubConfig");
 }
 
-MethodStart<void*> ConfigEntry::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ConfigEntry::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2880,7 +2880,7 @@ v8::Local<v8::Value> ConfigEntry::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> ConfigEntry::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ConfigEntry::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2894,7 +2894,7 @@ v8::Local<v8::Value> ConfigEntry::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> ConfigEntry::getNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ConfigEntry::getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2908,7 +2908,7 @@ v8::Local<v8::Value> ConfigEntry::getNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> ConfigEntry::getValueStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ConfigEntry::getValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2922,7 +2922,7 @@ v8::Local<v8::Value> ConfigEntry::getValueFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<int64_t> ConfigEntry::getIntValueStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int64_t> ConfigEntry::getIntValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2936,7 +2936,7 @@ v8::Local<v8::Value> ConfigEntry::getIntValueFinish(int64_t ret)
 	return Nan::New((double) ret);
 }
 
-MethodStart<FB_BOOLEAN> ConfigEntry::getBoolValueStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> ConfigEntry::getBoolValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 
@@ -2950,7 +2950,7 @@ v8::Local<v8::Value> ConfigEntry::getBoolValueFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<fb::IConfig*> ConfigEntry::getSubConfigStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfig*> ConfigEntry::getSubConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigEntry>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -2975,7 +2975,7 @@ void Config::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IConfigEntry*, findPosStart, findPosFinish>(tpl, "findPos");
 }
 
-MethodStart<void*> Config::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Config::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 
@@ -2990,7 +2990,7 @@ v8::Local<v8::Value> Config::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Config::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Config::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 
@@ -3004,7 +3004,7 @@ v8::Local<v8::Value> Config::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IConfigEntry*> Config::findStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfigEntry*> Config::findStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3021,7 +3021,7 @@ v8::Local<v8::Value> Config::findFinish(fb::IConfigEntry* ret)
 	return ConfigEntry::NewInstance(ret);
 }
 
-MethodStart<fb::IConfigEntry*> Config::findValueStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfigEntry*> Config::findValueStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3039,7 +3039,7 @@ v8::Local<v8::Value> Config::findValueFinish(fb::IConfigEntry* ret)
 	return ConfigEntry::NewInstance(ret);
 }
 
-MethodStart<fb::IConfigEntry*> Config::findPosStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfigEntry*> Config::findPosStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Config>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3067,7 +3067,7 @@ void FirebirdConf::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<FB_BOOLEAN, asBooleanStart, asBooleanFinish>(tpl, "asBoolean");
 }
 
-MethodStart<void*> FirebirdConf::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> FirebirdConf::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 
@@ -3082,7 +3082,7 @@ v8::Local<v8::Value> FirebirdConf::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> FirebirdConf::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> FirebirdConf::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 
@@ -3096,7 +3096,7 @@ v8::Local<v8::Value> FirebirdConf::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> FirebirdConf::getKeyStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> FirebirdConf::getKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 	std::string name = *v8::String::Utf8Value(info[0]->ToString());
@@ -3111,7 +3111,7 @@ v8::Local<v8::Value> FirebirdConf::getKeyFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int64_t> FirebirdConf::asIntegerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int64_t> FirebirdConf::asIntegerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 	unsigned key = (unsigned) info[0]->NumberValue();
@@ -3126,7 +3126,7 @@ v8::Local<v8::Value> FirebirdConf::asIntegerFinish(int64_t ret)
 	return Nan::New((double) ret);
 }
 
-MethodStart<std::string> FirebirdConf::asStringStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> FirebirdConf::asStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 	unsigned key = (unsigned) info[0]->NumberValue();
@@ -3141,7 +3141,7 @@ v8::Local<v8::Value> FirebirdConf::asStringFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<FB_BOOLEAN> FirebirdConf::asBooleanStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> FirebirdConf::asBooleanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<FirebirdConf>(info.This());
 	unsigned key = (unsigned) info[0]->NumberValue();
@@ -3166,7 +3166,7 @@ void PluginConfig::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setReleaseDelayStart, setReleaseDelayFinish>(tpl, "setReleaseDelay");
 }
 
-MethodStart<void*> PluginConfig::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginConfig::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 
@@ -3181,7 +3181,7 @@ v8::Local<v8::Value> PluginConfig::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> PluginConfig::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> PluginConfig::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 
@@ -3195,7 +3195,7 @@ v8::Local<v8::Value> PluginConfig::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> PluginConfig::getConfigFileNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> PluginConfig::getConfigFileNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 
@@ -3209,7 +3209,7 @@ v8::Local<v8::Value> PluginConfig::getConfigFileNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<fb::IConfig*> PluginConfig::getDefaultConfigStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfig*> PluginConfig::getDefaultConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3225,7 +3225,7 @@ v8::Local<v8::Value> PluginConfig::getDefaultConfigFinish(fb::IConfig* ret)
 	return Config::NewInstance(ret);
 }
 
-MethodStart<fb::IFirebirdConf*> PluginConfig::getFirebirdConfStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IFirebirdConf*> PluginConfig::getFirebirdConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3241,7 +3241,7 @@ v8::Local<v8::Value> PluginConfig::getFirebirdConfFinish(fb::IFirebirdConf* ret)
 	return FirebirdConf::NewInstance(ret);
 }
 
-MethodStart<void*> PluginConfig::setReleaseDelayStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginConfig::setReleaseDelayStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginConfig>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3264,7 +3264,7 @@ void PluginFactory::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IPluginBase*, createPluginStart, createPluginFinish>(tpl, "createPlugin");
 }
 
-MethodStart<fb::IPluginBase*> PluginFactory::createPluginStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IPluginBase*> PluginFactory::createPluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3286,7 +3286,7 @@ void PluginModule::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, doCleanStart, doCleanFinish>(tpl, "doClean");
 }
 
-MethodStart<void*> PluginModule::doCleanStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginModule::doCleanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginModule>(info.This());
 
@@ -3311,7 +3311,7 @@ void PluginManager::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, releasePluginStart, releasePluginFinish>(tpl, "releasePlugin");
 }
 
-MethodStart<void*> PluginManager::registerPluginFactoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginManager::registerPluginFactoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	unsigned pluginType = (unsigned) info[0]->NumberValue();
@@ -3329,7 +3329,7 @@ v8::Local<v8::Value> PluginManager::registerPluginFactoryFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> PluginManager::registerModuleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginManager::registerModuleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* cleanup = PluginModule::CheckedUnwrap(info[0], "cleanup argument", true);
@@ -3345,7 +3345,7 @@ v8::Local<v8::Value> PluginManager::registerModuleFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> PluginManager::unregisterModuleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginManager::unregisterModuleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* cleanup = PluginModule::CheckedUnwrap(info[0], "cleanup argument", true);
@@ -3361,7 +3361,7 @@ v8::Local<v8::Value> PluginManager::unregisterModuleFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IPluginSet*> PluginManager::getPluginsStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IPluginSet*> PluginManager::getPluginsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3380,7 +3380,7 @@ v8::Local<v8::Value> PluginManager::getPluginsFinish(fb::IPluginSet* ret)
 	return PluginSet::NewInstance(ret);
 }
 
-MethodStart<fb::IConfig*> PluginManager::getConfigStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfig*> PluginManager::getConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3397,7 +3397,7 @@ v8::Local<v8::Value> PluginManager::getConfigFinish(fb::IConfig* ret)
 	return Config::NewInstance(ret);
 }
 
-MethodStart<void*> PluginManager::releasePluginStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> PluginManager::releasePluginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<PluginManager>(info.This());
 	auto* plugin = PluginBase::CheckedUnwrap(info[0], "plugin argument", true);
@@ -3427,7 +3427,7 @@ void ConfigManager::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<std::string, getRootDirectoryStart, getRootDirectoryFinish>(tpl, "getRootDirectory");
 }
 
-MethodStart<std::string> ConfigManager::getDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ConfigManager::getDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 	unsigned code = (unsigned) info[0]->NumberValue();
@@ -3442,7 +3442,7 @@ v8::Local<v8::Value> ConfigManager::getDirectoryFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<fb::IFirebirdConf*> ConfigManager::getFirebirdConfStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IFirebirdConf*> ConfigManager::getFirebirdConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 
@@ -3456,7 +3456,7 @@ v8::Local<v8::Value> ConfigManager::getFirebirdConfFinish(fb::IFirebirdConf* ret
 	return FirebirdConf::NewInstance(ret);
 }
 
-MethodStart<fb::IFirebirdConf*> ConfigManager::getDatabaseConfStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IFirebirdConf*> ConfigManager::getDatabaseConfStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 	std::string dbName = *v8::String::Utf8Value(info[0]->ToString());
@@ -3471,7 +3471,7 @@ v8::Local<v8::Value> ConfigManager::getDatabaseConfFinish(fb::IFirebirdConf* ret
 	return FirebirdConf::NewInstance(ret);
 }
 
-MethodStart<fb::IConfig*> ConfigManager::getPluginConfigStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IConfig*> ConfigManager::getPluginConfigStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 	std::string configuredPlugin = *v8::String::Utf8Value(info[0]->ToString());
@@ -3486,7 +3486,7 @@ v8::Local<v8::Value> ConfigManager::getPluginConfigFinish(fb::IConfig* ret)
 	return Config::NewInstance(ret);
 }
 
-MethodStart<std::string> ConfigManager::getInstallDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ConfigManager::getInstallDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 
@@ -3500,7 +3500,7 @@ v8::Local<v8::Value> ConfigManager::getInstallDirectoryFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> ConfigManager::getRootDirectoryStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ConfigManager::getRootDirectoryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ConfigManager>(info.This());
 
@@ -3521,7 +3521,7 @@ void EventCallback::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, eventCallbackFunctionStart, eventCallbackFunctionFinish>(tpl, "eventCallbackFunction");
 }
 
-MethodStart<void*> EventCallback::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> EventCallback::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<EventCallback>(info.This());
 
@@ -3536,7 +3536,7 @@ v8::Local<v8::Value> EventCallback::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> EventCallback::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> EventCallback::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<EventCallback>(info.This());
 
@@ -3550,13 +3550,19 @@ v8::Local<v8::Value> EventCallback::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> EventCallback::eventCallbackFunctionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> EventCallback::eventCallbackFunctionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<EventCallback>(info.This());
 	unsigned length = (unsigned) info[0]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> eventsPersistent;
 	auto* events = getAddress<unsigned char>(info[1]);
 
-	return [obj, length, events]() {
+	if (async)
+	{
+		eventsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+	}
+
+	return [obj, length, events, eventsPersistent]() {
 		obj->interface->eventCallbackFunction(length, events);
 		return nullptr;
 	};
@@ -3579,7 +3585,7 @@ void Blob::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, seekStart, seekFinish>(tpl, "seek");
 }
 
-MethodStart<void*> Blob::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Blob::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 
@@ -3594,7 +3600,7 @@ v8::Local<v8::Value> Blob::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Blob::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Blob::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 
@@ -3608,16 +3614,24 @@ v8::Local<v8::Value> Blob::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Blob::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Blob::getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned itemsLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> itemsPersistent;
 	auto* items = getAddress<unsigned char>(info[2]);
 	unsigned bufferLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, itemsLength, items, bufferLength, buffer]() {
+	if (async)
+	{
+		itemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
 		return nullptr;
@@ -3629,15 +3643,23 @@ v8::Local<v8::Value> Blob::getInfoFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Blob::getSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Blob::getSegmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned bufferLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[2]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> segmentLengthPersistent;
 	auto* segmentLength = getAddress<unsigned>(info[3]);
 
-	return [obj, status, bufferLength, buffer, segmentLength]() {
+	if (async)
+	{
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		segmentLengthPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, bufferLength, buffer, bufferPersistent, segmentLength, segmentLengthPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->getSegment(&statusWrapper, bufferLength, buffer, segmentLength);
 	};
@@ -3648,14 +3670,20 @@ v8::Local<v8::Value> Blob::getSegmentFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Blob::putSegmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Blob::putSegmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, length, buffer]() {
+	if (async)
+	{
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, length, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->putSegment(&statusWrapper, length, buffer);
 		return nullptr;
@@ -3667,7 +3695,7 @@ v8::Local<v8::Value> Blob::putSegmentFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Blob::cancelStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Blob::cancelStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3684,7 +3712,7 @@ v8::Local<v8::Value> Blob::cancelFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Blob::closeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Blob::closeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3701,7 +3729,7 @@ v8::Local<v8::Value> Blob::closeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Blob::seekStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Blob::seekStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Blob>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3735,7 +3763,7 @@ void Transaction::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ITransaction*, enterDtcStart, enterDtcFinish>(tpl, "enterDtc");
 }
 
-MethodStart<void*> Transaction::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 
@@ -3750,7 +3778,7 @@ v8::Local<v8::Value> Transaction::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Transaction::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Transaction::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 
@@ -3764,16 +3792,24 @@ v8::Local<v8::Value> Transaction::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Transaction::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned itemsLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> itemsPersistent;
 	auto* items = getAddress<unsigned char>(info[2]);
 	unsigned bufferLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, itemsLength, items, bufferLength, buffer]() {
+	if (async)
+	{
+		itemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
 		return nullptr;
@@ -3785,14 +3821,20 @@ v8::Local<v8::Value> Transaction::getInfoFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::prepareStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::prepareStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned msgLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, msgLength, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, msgLength, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->prepare(&statusWrapper, msgLength, message);
 		return nullptr;
@@ -3804,7 +3846,7 @@ v8::Local<v8::Value> Transaction::prepareFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::commitStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::commitStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3821,7 +3863,7 @@ v8::Local<v8::Value> Transaction::commitFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::commitRetainingStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::commitRetainingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3838,7 +3880,7 @@ v8::Local<v8::Value> Transaction::commitRetainingFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::rollbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::rollbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3855,7 +3897,7 @@ v8::Local<v8::Value> Transaction::rollbackFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::rollbackRetainingStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::rollbackRetainingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3872,7 +3914,7 @@ v8::Local<v8::Value> Transaction::rollbackRetainingFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Transaction::disconnectStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Transaction::disconnectStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3889,7 +3931,7 @@ v8::Local<v8::Value> Transaction::disconnectFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::ITransaction*> Transaction::joinStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Transaction::joinStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3906,7 +3948,7 @@ v8::Local<v8::Value> Transaction::joinFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Transaction::validateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Transaction::validateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3923,7 +3965,7 @@ v8::Local<v8::Value> Transaction::validateFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Transaction::enterDtcStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Transaction::enterDtcStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Transaction>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -3960,7 +4002,7 @@ void MessageMetadata::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<unsigned, getMessageLengthStart, getMessageLengthFinish>(tpl, "getMessageLength");
 }
 
-MethodStart<void*> MessageMetadata::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MessageMetadata::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 
@@ -3975,7 +4017,7 @@ v8::Local<v8::Value> MessageMetadata::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> MessageMetadata::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> MessageMetadata::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 
@@ -3989,7 +4031,7 @@ v8::Local<v8::Value> MessageMetadata::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getCountStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getCountStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4005,7 +4047,7 @@ v8::Local<v8::Value> MessageMetadata::getCountFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> MessageMetadata::getFieldStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> MessageMetadata::getFieldStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4022,7 +4064,7 @@ v8::Local<v8::Value> MessageMetadata::getFieldFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> MessageMetadata::getRelationStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> MessageMetadata::getRelationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4039,7 +4081,7 @@ v8::Local<v8::Value> MessageMetadata::getRelationFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> MessageMetadata::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> MessageMetadata::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4056,7 +4098,7 @@ v8::Local<v8::Value> MessageMetadata::getOwnerFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> MessageMetadata::getAliasStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> MessageMetadata::getAliasStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4073,7 +4115,7 @@ v8::Local<v8::Value> MessageMetadata::getAliasFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<unsigned> MessageMetadata::getTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4090,7 +4132,7 @@ v8::Local<v8::Value> MessageMetadata::getTypeFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<FB_BOOLEAN> MessageMetadata::isNullableStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> MessageMetadata::isNullableStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4107,7 +4149,7 @@ v8::Local<v8::Value> MessageMetadata::isNullableFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<int> MessageMetadata::getSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> MessageMetadata::getSubTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4124,7 +4166,7 @@ v8::Local<v8::Value> MessageMetadata::getSubTypeFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getLengthStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4141,7 +4183,7 @@ v8::Local<v8::Value> MessageMetadata::getLengthFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> MessageMetadata::getScaleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> MessageMetadata::getScaleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4158,7 +4200,7 @@ v8::Local<v8::Value> MessageMetadata::getScaleFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4175,7 +4217,7 @@ v8::Local<v8::Value> MessageMetadata::getCharSetFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4192,7 +4234,7 @@ v8::Local<v8::Value> MessageMetadata::getOffsetFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getNullOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getNullOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4209,7 +4251,7 @@ v8::Local<v8::Value> MessageMetadata::getNullOffsetFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IMetadataBuilder*> MessageMetadata::getBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMetadataBuilder*> MessageMetadata::getBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4225,7 +4267,7 @@ v8::Local<v8::Value> MessageMetadata::getBuilderFinish(fb::IMetadataBuilder* ret
 	return MetadataBuilder::NewInstance(ret);
 }
 
-MethodStart<unsigned> MessageMetadata::getMessageLengthStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MessageMetadata::getMessageLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MessageMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4257,7 +4299,7 @@ void MetadataBuilder::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IMessageMetadata*, getMetadataStart, getMetadataFinish>(tpl, "getMetadata");
 }
 
-MethodStart<void*> MetadataBuilder::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 
@@ -4272,7 +4314,7 @@ v8::Local<v8::Value> MetadataBuilder::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> MetadataBuilder::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> MetadataBuilder::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 
@@ -4286,7 +4328,7 @@ v8::Local<v8::Value> MetadataBuilder::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> MetadataBuilder::setTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::setTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4305,7 +4347,7 @@ v8::Local<v8::Value> MetadataBuilder::setTypeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::setSubTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::setSubTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4324,7 +4366,7 @@ v8::Local<v8::Value> MetadataBuilder::setSubTypeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::setLengthStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::setLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4343,7 +4385,7 @@ v8::Local<v8::Value> MetadataBuilder::setLengthFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::setCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::setCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4362,7 +4404,7 @@ v8::Local<v8::Value> MetadataBuilder::setCharSetFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::setScaleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::setScaleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4381,7 +4423,7 @@ v8::Local<v8::Value> MetadataBuilder::setScaleFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::truncateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::truncateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4399,7 +4441,7 @@ v8::Local<v8::Value> MetadataBuilder::truncateFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::moveNameToIndexStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::moveNameToIndexStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4418,7 +4460,7 @@ v8::Local<v8::Value> MetadataBuilder::moveNameToIndexFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> MetadataBuilder::removeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> MetadataBuilder::removeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4436,7 +4478,7 @@ v8::Local<v8::Value> MetadataBuilder::removeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<unsigned> MetadataBuilder::addFieldStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> MetadataBuilder::addFieldStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4452,7 +4494,7 @@ v8::Local<v8::Value> MetadataBuilder::addFieldFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IMessageMetadata*> MetadataBuilder::getMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> MetadataBuilder::getMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<MetadataBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4485,7 +4527,7 @@ void ResultSet::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setDelayedOutputFormatStart, setDelayedOutputFormatFinish>(tpl, "setDelayedOutputFormat");
 }
 
-MethodStart<void*> ResultSet::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ResultSet::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 
@@ -4500,7 +4542,7 @@ v8::Local<v8::Value> ResultSet::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> ResultSet::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 
@@ -4514,13 +4556,19 @@ v8::Local<v8::Value> ResultSet::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchNextStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[1]);
 
-	return [obj, status, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+	}
+
+	return [obj, status, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchNext(&statusWrapper, message);
 	};
@@ -4531,13 +4579,19 @@ v8::Local<v8::Value> ResultSet::fetchNextFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchPriorStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchPriorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[1]);
 
-	return [obj, status, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+	}
+
+	return [obj, status, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchPrior(&statusWrapper, message);
 	};
@@ -4548,13 +4602,19 @@ v8::Local<v8::Value> ResultSet::fetchPriorFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchFirstStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchFirstStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[1]);
 
-	return [obj, status, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+	}
+
+	return [obj, status, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchFirst(&statusWrapper, message);
 	};
@@ -4565,13 +4625,19 @@ v8::Local<v8::Value> ResultSet::fetchFirstFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchLastStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchLastStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[1]);
 
-	return [obj, status, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+	}
+
+	return [obj, status, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchLast(&statusWrapper, message);
 	};
@@ -4582,14 +4648,20 @@ v8::Local<v8::Value> ResultSet::fetchLastFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchAbsoluteStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchAbsoluteStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	int position = (int) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, position, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, position, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchAbsolute(&statusWrapper, position, message);
 	};
@@ -4600,14 +4672,20 @@ v8::Local<v8::Value> ResultSet::fetchAbsoluteFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> ResultSet::fetchRelativeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ResultSet::fetchRelativeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	int offset = (int) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, offset, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, offset, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->fetchRelative(&statusWrapper, offset, message);
 	};
@@ -4618,7 +4696,7 @@ v8::Local<v8::Value> ResultSet::fetchRelativeFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<FB_BOOLEAN> ResultSet::isEofStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> ResultSet::isEofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4634,7 +4712,7 @@ v8::Local<v8::Value> ResultSet::isEofFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<FB_BOOLEAN> ResultSet::isBofStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> ResultSet::isBofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4650,7 +4728,7 @@ v8::Local<v8::Value> ResultSet::isBofFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<fb::IMessageMetadata*> ResultSet::getMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> ResultSet::getMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4666,7 +4744,7 @@ v8::Local<v8::Value> ResultSet::getMetadataFinish(fb::IMessageMetadata* ret)
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<void*> ResultSet::closeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ResultSet::closeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4683,7 +4761,7 @@ v8::Local<v8::Value> ResultSet::closeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> ResultSet::setDelayedOutputFormatStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ResultSet::setDelayedOutputFormatStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4718,7 +4796,7 @@ void Statement::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<unsigned, getFlagsStart, getFlagsFinish>(tpl, "getFlags");
 }
 
-MethodStart<void*> Statement::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Statement::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 
@@ -4733,7 +4811,7 @@ v8::Local<v8::Value> Statement::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Statement::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Statement::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 
@@ -4747,16 +4825,24 @@ v8::Local<v8::Value> Statement::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Statement::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Statement::getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned itemsLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> itemsPersistent;
 	auto* items = getAddress<unsigned char>(info[2]);
 	unsigned bufferLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, itemsLength, items, bufferLength, buffer]() {
+	if (async)
+	{
+		itemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
 		return nullptr;
@@ -4768,7 +4854,7 @@ v8::Local<v8::Value> Statement::getInfoFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<unsigned> Statement::getTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> Statement::getTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4784,7 +4870,7 @@ v8::Local<v8::Value> Statement::getTypeFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> Statement::getPlanStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> Statement::getPlanStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4801,7 +4887,7 @@ v8::Local<v8::Value> Statement::getPlanFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<uint64_t> Statement::getAffectedRecordsStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<uint64_t> Statement::getAffectedRecordsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4817,7 +4903,7 @@ v8::Local<v8::Value> Statement::getAffectedRecordsFinish(uint64_t ret)
 	return Nan::New((double) ret);
 }
 
-MethodStart<fb::IMessageMetadata*> Statement::getInputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> Statement::getInputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4833,7 +4919,7 @@ v8::Local<v8::Value> Statement::getInputMetadataFinish(fb::IMessageMetadata* ret
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<fb::IMessageMetadata*> Statement::getOutputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> Statement::getOutputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4849,17 +4935,25 @@ v8::Local<v8::Value> Statement::getOutputMetadataFinish(fb::IMessageMetadata* re
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Statement::executeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Statement::executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[2], "inMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> inBufferPersistent;
 	auto* inBuffer = getAddress<unsigned char>(info[3]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[4], "outMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> outBufferPersistent;
 	auto* outBuffer = getAddress<unsigned char>(info[5]);
 
-	return [obj, status, transaction, inMetadata, inBuffer, outMetadata, outBuffer]() {
+	if (async)
+	{
+		inBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+		outBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[5]);
+	}
+
+	return [obj, status, transaction, inMetadata, inBuffer, inBufferPersistent, outMetadata, outBuffer, outBufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->execute(&statusWrapper, (transaction ? transaction->interface : nullptr), (inMetadata ? inMetadata->interface : nullptr), inBuffer, (outMetadata ? outMetadata->interface : nullptr), outBuffer);
 	};
@@ -4870,17 +4964,23 @@ v8::Local<v8::Value> Statement::executeFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::IResultSet*> Statement::openCursorStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IResultSet*> Statement::openCursorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[2], "inMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> inBufferPersistent;
 	auto* inBuffer = getAddress<unsigned char>(info[3]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[4], "outMetadata argument", true);
 	unsigned flags = (unsigned) info[5]->NumberValue();
 
-	return [obj, status, transaction, inMetadata, inBuffer, outMetadata, flags]() {
+	if (async)
+	{
+		inBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, transaction, inMetadata, inBuffer, inBufferPersistent, outMetadata, flags]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->openCursor(&statusWrapper, (transaction ? transaction->interface : nullptr), (inMetadata ? inMetadata->interface : nullptr), inBuffer, (outMetadata ? outMetadata->interface : nullptr), flags);
 	};
@@ -4891,7 +4991,7 @@ v8::Local<v8::Value> Statement::openCursorFinish(fb::IResultSet* ret)
 	return ResultSet::NewInstance(ret);
 }
 
-MethodStart<void*> Statement::setCursorNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Statement::setCursorNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4909,7 +5009,7 @@ v8::Local<v8::Value> Statement::setCursorNameFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Statement::freeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Statement::freeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4926,7 +5026,7 @@ v8::Local<v8::Value> Statement::freeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<unsigned> Statement::getFlagsStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> Statement::getFlagsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Statement>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -4955,7 +5055,7 @@ void Request::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, freeStart, freeFinish>(tpl, "free");
 }
 
-MethodStart<void*> Request::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 
@@ -4970,7 +5070,7 @@ v8::Local<v8::Value> Request::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Request::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Request::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 
@@ -4984,16 +5084,22 @@ v8::Local<v8::Value> Request::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Request::receiveStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::receiveStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	int level = (int) info[1]->NumberValue();
 	unsigned msgType = (unsigned) info[2]->NumberValue();
 	unsigned length = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, level, msgType, length, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, level, msgType, length, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->receive(&statusWrapper, level, msgType, length, message);
 		return nullptr;
@@ -5005,16 +5111,22 @@ v8::Local<v8::Value> Request::receiveFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::sendStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::sendStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	int level = (int) info[1]->NumberValue();
 	unsigned msgType = (unsigned) info[2]->NumberValue();
 	unsigned length = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, level, msgType, length, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, level, msgType, length, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->send(&statusWrapper, level, msgType, length, message);
 		return nullptr;
@@ -5026,17 +5138,25 @@ v8::Local<v8::Value> Request::sendFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	int level = (int) info[1]->NumberValue();
 	unsigned itemsLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> itemsPersistent;
 	auto* items = getAddress<unsigned char>(info[3]);
 	unsigned bufferLength = (unsigned) info[4]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[5]);
 
-	return [obj, status, level, itemsLength, items, bufferLength, buffer]() {
+	if (async)
+	{
+		itemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[5]);
+	}
+
+	return [obj, status, level, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->getInfo(&statusWrapper, level, itemsLength, items, bufferLength, buffer);
 		return nullptr;
@@ -5048,7 +5168,7 @@ v8::Local<v8::Value> Request::getInfoFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5067,7 +5187,7 @@ v8::Local<v8::Value> Request::startFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::startAndSendStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::startAndSendStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5075,9 +5195,15 @@ MethodStart<void*> Request::startAndSendStart(Nan::NAN_METHOD_ARGS_TYPE info)
 	int level = (int) info[2]->NumberValue();
 	unsigned msgType = (unsigned) info[3]->NumberValue();
 	unsigned length = (unsigned) info[4]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> messagePersistent;
 	auto* message = getAddress<unsigned char>(info[5]);
 
-	return [obj, status, tra, level, msgType, length, message]() {
+	if (async)
+	{
+		messagePersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[5]);
+	}
+
+	return [obj, status, tra, level, msgType, length, message, messagePersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->startAndSend(&statusWrapper, (tra ? tra->interface : nullptr), level, msgType, length, message);
 		return nullptr;
@@ -5089,7 +5215,7 @@ v8::Local<v8::Value> Request::startAndSendFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::unwindStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::unwindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5107,7 +5233,7 @@ v8::Local<v8::Value> Request::unwindFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Request::freeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Request::freeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Request>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5131,7 +5257,7 @@ void Events::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, cancelStart, cancelFinish>(tpl, "cancel");
 }
 
-MethodStart<void*> Events::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Events::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Events>(info.This());
 
@@ -5146,7 +5272,7 @@ v8::Local<v8::Value> Events::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Events::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Events::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Events>(info.This());
 
@@ -5160,7 +5286,7 @@ v8::Local<v8::Value> Events::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Events::cancelStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Events::cancelStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Events>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5199,7 +5325,7 @@ void Attachment::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, dropDatabaseStart, dropDatabaseFinish>(tpl, "dropDatabase");
 }
 
-MethodStart<void*> Attachment::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 
@@ -5214,7 +5340,7 @@ v8::Local<v8::Value> Attachment::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Attachment::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Attachment::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 
@@ -5228,16 +5354,24 @@ v8::Local<v8::Value> Attachment::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Attachment::getInfoStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::getInfoStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned itemsLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> itemsPersistent;
 	auto* items = getAddress<unsigned char>(info[2]);
 	unsigned bufferLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, itemsLength, items, bufferLength, buffer]() {
+	if (async)
+	{
+		itemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
 		return nullptr;
@@ -5249,14 +5383,20 @@ v8::Local<v8::Value> Attachment::getInfoFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::ITransaction*> Attachment::startTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Attachment::startTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned tpbLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> tpbPersistent;
 	auto* tpb = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, tpbLength, tpb]() {
+	if (async)
+	{
+		tpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, tpbLength, tpb, tpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->startTransaction(&statusWrapper, tpbLength, tpb);
 	};
@@ -5267,14 +5407,20 @@ v8::Local<v8::Value> Attachment::startTransactionFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Attachment::reconnectTransactionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Attachment::reconnectTransactionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> idPersistent;
 	auto* id = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, length, id]() {
+	if (async)
+	{
+		idPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, length, id, idPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->reconnectTransaction(&statusWrapper, length, id);
 	};
@@ -5285,14 +5431,20 @@ v8::Local<v8::Value> Attachment::reconnectTransactionFinish(fb::ITransaction* re
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::IRequest*> Attachment::compileRequestStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IRequest*> Attachment::compileRequestStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned blrLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> blrPersistent;
 	auto* blr = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, blrLength, blr]() {
+	if (async)
+	{
+		blrPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, blrLength, blr, blrPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->compileRequest(&statusWrapper, blrLength, blr);
 	};
@@ -5303,19 +5455,29 @@ v8::Local<v8::Value> Attachment::compileRequestFinish(fb::IRequest* ret)
 	return Request::NewInstance(ret);
 }
 
-MethodStart<void*> Attachment::transactRequestStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::transactRequestStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	unsigned blrLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> blrPersistent;
 	auto* blr = getAddress<unsigned char>(info[3]);
 	unsigned inMsgLength = (unsigned) info[4]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> inMsgPersistent;
 	auto* inMsg = getAddress<unsigned char>(info[5]);
 	unsigned outMsgLength = (unsigned) info[6]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> outMsgPersistent;
 	auto* outMsg = getAddress<unsigned char>(info[7]);
 
-	return [obj, status, transaction, blrLength, blr, inMsgLength, inMsg, outMsgLength, outMsg]() {
+	if (async)
+	{
+		blrPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+		inMsgPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[5]);
+		outMsgPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[7]);
+	}
+
+	return [obj, status, transaction, blrLength, blr, blrPersistent, inMsgLength, inMsg, inMsgPersistent, outMsgLength, outMsg, outMsgPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->transactRequest(&statusWrapper, (transaction ? transaction->interface : nullptr), blrLength, blr, inMsgLength, inMsg, outMsgLength, outMsg);
 		return nullptr;
@@ -5327,16 +5489,24 @@ v8::Local<v8::Value> Attachment::transactRequestFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IBlob*> Attachment::createBlobStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IBlob*> Attachment::createBlobStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> idPersistent;
 	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
 	unsigned bpbLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bpbPersistent;
 	auto* bpb = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, transaction, id, bpbLength, bpb]() {
+	if (async)
+	{
+		idPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, transaction, id, idPersistent, bpbLength, bpb, bpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->createBlob(&statusWrapper, (transaction ? transaction->interface : nullptr), id, bpbLength, bpb);
 	};
@@ -5347,16 +5517,24 @@ v8::Local<v8::Value> Attachment::createBlobFinish(fb::IBlob* ret)
 	return Blob::NewInstance(ret);
 }
 
-MethodStart<fb::IBlob*> Attachment::openBlobStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IBlob*> Attachment::openBlobStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> idPersistent;
 	auto* id = (ISC_QUAD*) getAddress<unsigned char>(info[2]);
 	unsigned bpbLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bpbPersistent;
 	auto* bpb = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, transaction, id, bpbLength, bpb]() {
+	if (async)
+	{
+		idPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		bpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, transaction, id, idPersistent, bpbLength, bpb, bpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->openBlob(&statusWrapper, (transaction ? transaction->interface : nullptr), id, bpbLength, bpb);
 	};
@@ -5367,15 +5545,21 @@ v8::Local<v8::Value> Attachment::openBlobFinish(fb::IBlob* ret)
 	return Blob::NewInstance(ret);
 }
 
-MethodStart<void*> Attachment::executeDynStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::executeDynStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* transaction = Transaction::CheckedUnwrap(info[1], "transaction argument", true);
 	unsigned length = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dynPersistent;
 	auto* dyn = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, transaction, length, dyn]() {
+	if (async)
+	{
+		dynPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, transaction, length, dyn, dynPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->executeDyn(&statusWrapper, (transaction ? transaction->interface : nullptr), length, dyn);
 		return nullptr;
@@ -5387,7 +5571,7 @@ v8::Local<v8::Value> Attachment::executeDynFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IStatement*> Attachment::prepareStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IStatement*> Attachment::prepareStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5408,7 +5592,7 @@ v8::Local<v8::Value> Attachment::prepareFinish(fb::IStatement* ret)
 	return Statement::NewInstance(ret);
 }
 
-MethodStart<fb::ITransaction*> Attachment::executeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Attachment::executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5417,11 +5601,19 @@ MethodStart<fb::ITransaction*> Attachment::executeStart(Nan::NAN_METHOD_ARGS_TYP
 	std::string sqlStmt = *v8::String::Utf8Value(info[3]->ToString());
 	unsigned dialect = (unsigned) info[4]->NumberValue();
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[5], "inMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> inBufferPersistent;
 	auto* inBuffer = getAddress<unsigned char>(info[6]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[7], "outMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> outBufferPersistent;
 	auto* outBuffer = getAddress<unsigned char>(info[8]);
 
-	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, inBuffer, outMetadata, outBuffer]() {
+	if (async)
+	{
+		inBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[6]);
+		outBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[8]);
+	}
+
+	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, inBuffer, inBufferPersistent, outMetadata, outBuffer, outBufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->execute(&statusWrapper, (transaction ? transaction->interface : nullptr), stmtLength, sqlStmt.c_str(), dialect, (inMetadata ? inMetadata->interface : nullptr), inBuffer, (outMetadata ? outMetadata->interface : nullptr), outBuffer);
 	};
@@ -5432,7 +5624,7 @@ v8::Local<v8::Value> Attachment::executeFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::IResultSet*> Attachment::openCursorStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IResultSet*> Attachment::openCursorStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5441,12 +5633,18 @@ MethodStart<fb::IResultSet*> Attachment::openCursorStart(Nan::NAN_METHOD_ARGS_TY
 	std::string sqlStmt = *v8::String::Utf8Value(info[3]->ToString());
 	unsigned dialect = (unsigned) info[4]->NumberValue();
 	auto* inMetadata = MessageMetadata::CheckedUnwrap(info[5], "inMetadata argument", true);
+	std::shared_ptr<Nan::Persistent<v8::Value>> inBufferPersistent;
 	auto* inBuffer = getAddress<unsigned char>(info[6]);
 	auto* outMetadata = MessageMetadata::CheckedUnwrap(info[7], "outMetadata argument", true);
 	std::string cursorName = *v8::String::Utf8Value(info[8]->ToString());
 	unsigned cursorFlags = (unsigned) info[9]->NumberValue();
 
-	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, inBuffer, outMetadata, cursorName, cursorFlags]() {
+	if (async)
+	{
+		inBufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[6]);
+	}
+
+	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, inBuffer, inBufferPersistent, outMetadata, cursorName, cursorFlags]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->openCursor(&statusWrapper, (transaction ? transaction->interface : nullptr), stmtLength, sqlStmt.c_str(), dialect, (inMetadata ? inMetadata->interface : nullptr), inBuffer, (outMetadata ? outMetadata->interface : nullptr), cursorName.c_str(), cursorFlags);
 	};
@@ -5457,15 +5655,21 @@ v8::Local<v8::Value> Attachment::openCursorFinish(fb::IResultSet* ret)
 	return ResultSet::NewInstance(ret);
 }
 
-MethodStart<fb::IEvents*> Attachment::queEventsStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IEvents*> Attachment::queEventsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* callback = EventCallback::CheckedUnwrap(info[1], "callback argument", true);
 	unsigned length = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> eventsPersistent;
 	auto* events = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, callback, length, events]() {
+	if (async)
+	{
+		eventsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, callback, length, events, eventsPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->queEvents(&statusWrapper, (callback ? callback->interface : nullptr), length, events);
 	};
@@ -5476,7 +5680,7 @@ v8::Local<v8::Value> Attachment::queEventsFinish(fb::IEvents* ret)
 	return Events::NewInstance(ret);
 }
 
-MethodStart<void*> Attachment::cancelOperationStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::cancelOperationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5494,7 +5698,7 @@ v8::Local<v8::Value> Attachment::cancelOperationFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Attachment::pingStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::pingStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5511,7 +5715,7 @@ v8::Local<v8::Value> Attachment::pingFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Attachment::detachStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::detachStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5528,7 +5732,7 @@ v8::Local<v8::Value> Attachment::detachFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Attachment::dropDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Attachment::dropDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Attachment>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5554,7 +5758,7 @@ void Service::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, startStart, startFinish>(tpl, "start");
 }
 
-MethodStart<void*> Service::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Service::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 
@@ -5569,7 +5773,7 @@ v8::Local<v8::Value> Service::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Service::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Service::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 
@@ -5583,7 +5787,7 @@ v8::Local<v8::Value> Service::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Service::detachStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Service::detachStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5600,18 +5804,28 @@ v8::Local<v8::Value> Service::detachFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Service::queryStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Service::queryStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned sendLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> sendItemsPersistent;
 	auto* sendItems = getAddress<unsigned char>(info[2]);
 	unsigned receiveLength = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> receiveItemsPersistent;
 	auto* receiveItems = getAddress<unsigned char>(info[4]);
 	unsigned bufferLength = (unsigned) info[5]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[6]);
 
-	return [obj, status, sendLength, sendItems, receiveLength, receiveItems, bufferLength, buffer]() {
+	if (async)
+	{
+		sendItemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		receiveItemsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[6]);
+	}
+
+	return [obj, status, sendLength, sendItems, sendItemsPersistent, receiveLength, receiveItems, receiveItemsPersistent, bufferLength, buffer, bufferPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->query(&statusWrapper, sendLength, sendItems, receiveLength, receiveItems, bufferLength, buffer);
 		return nullptr;
@@ -5623,14 +5837,20 @@ v8::Local<v8::Value> Service::queryFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Service::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Service::startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Service>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned spbLength = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> spbPersistent;
 	auto* spb = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, spbLength, spb]() {
+	if (async)
+	{
+		spbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, spbLength, spb, spbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->start(&statusWrapper, spbLength, spb);
 		return nullptr;
@@ -5655,7 +5875,7 @@ void Provider::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setDbCryptCallbackStart, setDbCryptCallbackFinish>(tpl, "setDbCryptCallback");
 }
 
-MethodStart<void*> Provider::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Provider::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 
@@ -5670,7 +5890,7 @@ v8::Local<v8::Value> Provider::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Provider::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Provider::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 
@@ -5684,7 +5904,7 @@ v8::Local<v8::Value> Provider::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Provider::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Provider::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -5700,7 +5920,7 @@ v8::Local<v8::Value> Provider::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> Provider::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> Provider::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 
@@ -5714,15 +5934,21 @@ v8::Local<v8::Value> Provider::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<fb::IAttachment*> Provider::attachDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IAttachment*> Provider::attachDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string fileName = *v8::String::Utf8Value(info[1]->ToString());
 	unsigned dpbLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dpbPersistent;
 	auto* dpb = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, fileName, dpbLength, dpb]() {
+	if (async)
+	{
+		dpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, fileName, dpbLength, dpb, dpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->attachDatabase(&statusWrapper, fileName.c_str(), dpbLength, dpb);
 	};
@@ -5733,15 +5959,21 @@ v8::Local<v8::Value> Provider::attachDatabaseFinish(fb::IAttachment* ret)
 	return Attachment::NewInstance(ret);
 }
 
-MethodStart<fb::IAttachment*> Provider::createDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IAttachment*> Provider::createDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string fileName = *v8::String::Utf8Value(info[1]->ToString());
 	unsigned dpbLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dpbPersistent;
 	auto* dpb = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, fileName, dpbLength, dpb]() {
+	if (async)
+	{
+		dpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, fileName, dpbLength, dpb, dpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->createDatabase(&statusWrapper, fileName.c_str(), dpbLength, dpb);
 	};
@@ -5752,15 +5984,21 @@ v8::Local<v8::Value> Provider::createDatabaseFinish(fb::IAttachment* ret)
 	return Attachment::NewInstance(ret);
 }
 
-MethodStart<fb::IService*> Provider::attachServiceManagerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IService*> Provider::attachServiceManagerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	std::string service = *v8::String::Utf8Value(info[1]->ToString());
 	unsigned spbLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> spbPersistent;
 	auto* spb = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, service, spbLength, spb]() {
+	if (async)
+	{
+		spbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, service, spbLength, spb, spbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->attachServiceManager(&statusWrapper, service.c_str(), spbLength, spb);
 	};
@@ -5771,7 +6009,7 @@ v8::Local<v8::Value> Provider::attachServiceManagerFinish(fb::IService* ret)
 	return Service::NewInstance(ret);
 }
 
-MethodStart<void*> Provider::shutdownStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Provider::shutdownStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5790,7 +6028,7 @@ v8::Local<v8::Value> Provider::shutdownFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Provider::setDbCryptCallbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Provider::setDbCryptCallbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Provider>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5816,7 +6054,7 @@ void DtcStart::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ITransaction*, startStart, startFinish>(tpl, "start");
 }
 
-MethodStart<void*> DtcStart::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> DtcStart::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DtcStart>(info.This());
 
@@ -5831,7 +6069,7 @@ v8::Local<v8::Value> DtcStart::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> DtcStart::addAttachmentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> DtcStart::addAttachmentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DtcStart>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5849,15 +6087,21 @@ v8::Local<v8::Value> DtcStart::addAttachmentFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> DtcStart::addWithTpbStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> DtcStart::addWithTpbStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DtcStart>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	auto* att = Attachment::CheckedUnwrap(info[1], "att argument", true);
 	unsigned length = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> tpbPersistent;
 	auto* tpb = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, att, length, tpb]() {
+	if (async)
+	{
+		tpbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, att, length, tpb, tpbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->addWithTpb(&statusWrapper, (att ? att->interface : nullptr), length, tpb);
 		return nullptr;
@@ -5869,7 +6113,7 @@ v8::Local<v8::Value> DtcStart::addWithTpbFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::ITransaction*> DtcStart::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> DtcStart::startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DtcStart>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5891,7 +6135,7 @@ void Dtc::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IDtcStart*, startBuilderStart, startBuilderFinish>(tpl, "startBuilder");
 }
 
-MethodStart<fb::ITransaction*> Dtc::joinStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ITransaction*> Dtc::joinStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Dtc>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5909,7 +6153,7 @@ v8::Local<v8::Value> Dtc::joinFinish(fb::ITransaction* ret)
 	return Transaction::NewInstance(ret);
 }
 
-MethodStart<fb::IDtcStart*> Dtc::startBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IDtcStart*> Dtc::startBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Dtc>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -5933,7 +6177,7 @@ void Auth::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IReferenceCounted*, getOwnerStart, getOwnerFinish>(tpl, "getOwner");
 }
 
-MethodStart<void*> Auth::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Auth::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Auth>(info.This());
 
@@ -5948,7 +6192,7 @@ v8::Local<v8::Value> Auth::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Auth::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Auth::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Auth>(info.This());
 
@@ -5962,7 +6206,7 @@ v8::Local<v8::Value> Auth::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Auth::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Auth::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Auth>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -5978,7 +6222,7 @@ v8::Local<v8::Value> Auth::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> Auth::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> Auth::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Auth>(info.This());
 
@@ -6000,7 +6244,7 @@ void Writer::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setDbStart, setDbFinish>(tpl, "setDb");
 }
 
-MethodStart<void*> Writer::resetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Writer::resetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Writer>(info.This());
 
@@ -6015,7 +6259,7 @@ v8::Local<v8::Value> Writer::resetFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Writer::addStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Writer::addStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Writer>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6033,7 +6277,7 @@ v8::Local<v8::Value> Writer::addFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Writer::setTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Writer::setTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Writer>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6051,7 +6295,7 @@ v8::Local<v8::Value> Writer::setTypeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Writer::setDbStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Writer::setDbStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Writer>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6077,7 +6321,7 @@ void ServerBlock::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ICryptKey*, newKeyStart, newKeyFinish>(tpl, "newKey");
 }
 
-MethodStart<std::string> ServerBlock::getLoginStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ServerBlock::getLoginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ServerBlock>(info.This());
 
@@ -6091,12 +6335,18 @@ v8::Local<v8::Value> ServerBlock::getLoginFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<const unsigned char*> ServerBlock::getDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<const unsigned char*> ServerBlock::getDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ServerBlock>(info.This());
+	std::shared_ptr<Nan::Persistent<v8::Value>> lengthPersistent;
 	auto* length = getAddress<unsigned>(info[0]);
 
-	return [obj, length]() {
+	if (async)
+	{
+		lengthPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[0]);
+	}
+
+	return [obj, length, lengthPersistent]() {
 		return obj->interface->getData(length);
 	};
 }
@@ -6106,14 +6356,20 @@ v8::Local<v8::Value> ServerBlock::getDataFinish(const unsigned char* ret)
 	return Pointer::NewInstance(ret);
 }
 
-MethodStart<void*> ServerBlock::putDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ServerBlock::putDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ServerBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dataPersistent;
 	auto* data = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, length, data]() {
+	if (async)
+	{
+		dataPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, length, data, dataPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->putData(&statusWrapper, length, data);
 		return nullptr;
@@ -6125,7 +6381,7 @@ v8::Local<v8::Value> ServerBlock::putDataFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::ICryptKey*> ServerBlock::newKeyStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICryptKey*> ServerBlock::newKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ServerBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6152,7 +6408,7 @@ void ClientBlock::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ICryptKey*, newKeyStart, newKeyFinish>(tpl, "newKey");
 }
 
-MethodStart<void*> ClientBlock::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ClientBlock::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 
@@ -6167,7 +6423,7 @@ v8::Local<v8::Value> ClientBlock::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> ClientBlock::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ClientBlock::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 
@@ -6181,7 +6437,7 @@ v8::Local<v8::Value> ClientBlock::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> ClientBlock::getLoginStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ClientBlock::getLoginStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 
@@ -6195,7 +6451,7 @@ v8::Local<v8::Value> ClientBlock::getLoginFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> ClientBlock::getPasswordStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> ClientBlock::getPasswordStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 
@@ -6209,12 +6465,18 @@ v8::Local<v8::Value> ClientBlock::getPasswordFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<const unsigned char*> ClientBlock::getDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<const unsigned char*> ClientBlock::getDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
+	std::shared_ptr<Nan::Persistent<v8::Value>> lengthPersistent;
 	auto* length = getAddress<unsigned>(info[0]);
 
-	return [obj, length]() {
+	if (async)
+	{
+		lengthPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[0]);
+	}
+
+	return [obj, length, lengthPersistent]() {
 		return obj->interface->getData(length);
 	};
 }
@@ -6224,14 +6486,20 @@ v8::Local<v8::Value> ClientBlock::getDataFinish(const unsigned char* ret)
 	return Pointer::NewInstance(ret);
 }
 
-MethodStart<void*> ClientBlock::putDataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ClientBlock::putDataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dataPersistent;
 	auto* data = getAddress<unsigned char>(info[2]);
 
-	return [obj, status, length, data]() {
+	if (async)
+	{
+		dataPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, length, data, dataPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->putData(&statusWrapper, length, data);
 		return nullptr;
@@ -6243,7 +6511,7 @@ v8::Local<v8::Value> ClientBlock::putDataFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::ICryptKey*> ClientBlock::newKeyStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICryptKey*> ClientBlock::newKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ClientBlock>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6268,7 +6536,7 @@ void Server::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, authenticateStart, authenticateFinish>(tpl, "authenticate");
 }
 
-MethodStart<void*> Server::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Server::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Server>(info.This());
 
@@ -6283,7 +6551,7 @@ v8::Local<v8::Value> Server::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Server::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Server::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Server>(info.This());
 
@@ -6297,7 +6565,7 @@ v8::Local<v8::Value> Server::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Server::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Server::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Server>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -6313,7 +6581,7 @@ v8::Local<v8::Value> Server::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> Server::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> Server::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Server>(info.This());
 
@@ -6327,7 +6595,7 @@ v8::Local<v8::Value> Server::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<int> Server::authenticateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Server::authenticateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Server>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6354,7 +6622,7 @@ void Client::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, authenticateStart, authenticateFinish>(tpl, "authenticate");
 }
 
-MethodStart<void*> Client::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Client::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Client>(info.This());
 
@@ -6369,7 +6637,7 @@ v8::Local<v8::Value> Client::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Client::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Client::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Client>(info.This());
 
@@ -6383,7 +6651,7 @@ v8::Local<v8::Value> Client::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Client::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Client::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Client>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -6399,7 +6667,7 @@ v8::Local<v8::Value> Client::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> Client::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> Client::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Client>(info.This());
 
@@ -6413,7 +6681,7 @@ v8::Local<v8::Value> Client::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<int> Client::authenticateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Client::authenticateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Client>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6437,7 +6705,7 @@ void UserField::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setEnteredStart, setEnteredFinish>(tpl, "setEntered");
 }
 
-MethodStart<int> UserField::enteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> UserField::enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UserField>(info.This());
 
@@ -6451,7 +6719,7 @@ v8::Local<v8::Value> UserField::enteredFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> UserField::specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> UserField::specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UserField>(info.This());
 
@@ -6465,7 +6733,7 @@ v8::Local<v8::Value> UserField::specifiedFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> UserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UserField::setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6492,7 +6760,7 @@ void CharUserField::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setStart, setFinish>(tpl, "set");
 }
 
-MethodStart<int> CharUserField::enteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> CharUserField::enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 
@@ -6506,7 +6774,7 @@ v8::Local<v8::Value> CharUserField::enteredFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> CharUserField::specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> CharUserField::specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 
@@ -6520,7 +6788,7 @@ v8::Local<v8::Value> CharUserField::specifiedFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> CharUserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> CharUserField::setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6538,7 +6806,7 @@ v8::Local<v8::Value> CharUserField::setEnteredFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<std::string> CharUserField::getStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> CharUserField::getStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 
@@ -6552,7 +6820,7 @@ v8::Local<v8::Value> CharUserField::getFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<void*> CharUserField::setStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> CharUserField::setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CharUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6579,7 +6847,7 @@ void IntUserField::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setStart, setFinish>(tpl, "set");
 }
 
-MethodStart<int> IntUserField::enteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> IntUserField::enteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 
@@ -6593,7 +6861,7 @@ v8::Local<v8::Value> IntUserField::enteredFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> IntUserField::specifiedStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> IntUserField::specifiedStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 
@@ -6607,7 +6875,7 @@ v8::Local<v8::Value> IntUserField::specifiedFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> IntUserField::setEnteredStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> IntUserField::setEnteredStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6625,7 +6893,7 @@ v8::Local<v8::Value> IntUserField::setEnteredFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> IntUserField::getStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> IntUserField::getStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 
@@ -6639,7 +6907,7 @@ v8::Local<v8::Value> IntUserField::getFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> IntUserField::setStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> IntUserField::setStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<IntUserField>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6672,7 +6940,7 @@ void User::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, clearStart, clearFinish>(tpl, "clear");
 }
 
-MethodStart<unsigned> User::operationStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> User::operationStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6686,7 +6954,7 @@ v8::Local<v8::Value> User::operationFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::userNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::userNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6700,7 +6968,7 @@ v8::Local<v8::Value> User::userNameFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::passwordStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::passwordStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6714,7 +6982,7 @@ v8::Local<v8::Value> User::passwordFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::firstNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::firstNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6728,7 +6996,7 @@ v8::Local<v8::Value> User::firstNameFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::lastNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::lastNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6742,7 +7010,7 @@ v8::Local<v8::Value> User::lastNameFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::middleNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::middleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6756,7 +7024,7 @@ v8::Local<v8::Value> User::middleNameFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::commentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::commentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6770,7 +7038,7 @@ v8::Local<v8::Value> User::commentFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::ICharUserField*> User::attributesStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICharUserField*> User::attributesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6784,7 +7052,7 @@ v8::Local<v8::Value> User::attributesFinish(fb::ICharUserField* ret)
 	return CharUserField::NewInstance(ret);
 }
 
-MethodStart<fb::IIntUserField*> User::activeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IIntUserField*> User::activeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6798,7 +7066,7 @@ v8::Local<v8::Value> User::activeFinish(fb::IIntUserField* ret)
 	return IntUserField::NewInstance(ret);
 }
 
-MethodStart<fb::IIntUserField*> User::adminStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IIntUserField*> User::adminStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 
@@ -6812,7 +7080,7 @@ v8::Local<v8::Value> User::adminFinish(fb::IIntUserField* ret)
 	return IntUserField::NewInstance(ret);
 }
 
-MethodStart<void*> User::clearStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> User::clearStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<User>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6834,7 +7102,7 @@ void ListUsers::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, listStart, listFinish>(tpl, "list");
 }
 
-MethodStart<void*> ListUsers::listStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ListUsers::listStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ListUsers>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -6861,7 +7129,7 @@ void LogonInfo::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<const unsigned char*, authBlockStart, authBlockFinish>(tpl, "authBlock");
 }
 
-MethodStart<std::string> LogonInfo::nameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> LogonInfo::nameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<LogonInfo>(info.This());
 
@@ -6875,7 +7143,7 @@ v8::Local<v8::Value> LogonInfo::nameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> LogonInfo::roleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> LogonInfo::roleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<LogonInfo>(info.This());
 
@@ -6889,7 +7157,7 @@ v8::Local<v8::Value> LogonInfo::roleFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> LogonInfo::networkProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> LogonInfo::networkProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<LogonInfo>(info.This());
 
@@ -6903,7 +7171,7 @@ v8::Local<v8::Value> LogonInfo::networkProtocolFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> LogonInfo::remoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> LogonInfo::remoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<LogonInfo>(info.This());
 
@@ -6917,12 +7185,18 @@ v8::Local<v8::Value> LogonInfo::remoteAddressFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<const unsigned char*> LogonInfo::authBlockStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<const unsigned char*> LogonInfo::authBlockStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<LogonInfo>(info.This());
+	std::shared_ptr<Nan::Persistent<v8::Value>> lengthPersistent;
 	auto* length = getAddress<unsigned>(info[0]);
 
-	return [obj, length]() {
+	if (async)
+	{
+		lengthPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[0]);
+	}
+
+	return [obj, length, lengthPersistent]() {
 		return obj->interface->authBlock(length);
 	};
 }
@@ -6944,7 +7218,7 @@ void Management::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, rollbackStart, rollbackFinish>(tpl, "rollback");
 }
 
-MethodStart<void*> Management::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Management::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 
@@ -6959,7 +7233,7 @@ v8::Local<v8::Value> Management::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Management::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Management::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 
@@ -6973,7 +7247,7 @@ v8::Local<v8::Value> Management::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Management::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Management::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -6989,7 +7263,7 @@ v8::Local<v8::Value> Management::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> Management::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> Management::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 
@@ -7003,7 +7277,7 @@ v8::Local<v8::Value> Management::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<void*> Management::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Management::startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7021,7 +7295,7 @@ v8::Local<v8::Value> Management::startFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Management::executeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Management::executeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7039,7 +7313,7 @@ v8::Local<v8::Value> Management::executeFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Management::commitStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Management::commitStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7056,7 +7330,7 @@ v8::Local<v8::Value> Management::commitFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Management::rollbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Management::rollbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Management>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7085,7 +7359,7 @@ void WireCryptPlugin::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, decryptStart, decryptFinish>(tpl, "decrypt");
 }
 
-MethodStart<void*> WireCryptPlugin::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> WireCryptPlugin::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 
@@ -7100,7 +7374,7 @@ v8::Local<v8::Value> WireCryptPlugin::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> WireCryptPlugin::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> WireCryptPlugin::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 
@@ -7114,7 +7388,7 @@ v8::Local<v8::Value> WireCryptPlugin::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> WireCryptPlugin::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> WireCryptPlugin::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -7130,7 +7404,7 @@ v8::Local<v8::Value> WireCryptPlugin::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> WireCryptPlugin::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> WireCryptPlugin::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 
@@ -7144,7 +7418,7 @@ v8::Local<v8::Value> WireCryptPlugin::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<std::string> WireCryptPlugin::getKnownTypesStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> WireCryptPlugin::getKnownTypesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7160,7 +7434,7 @@ v8::Local<v8::Value> WireCryptPlugin::getKnownTypesFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<void*> WireCryptPlugin::setKeyStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> WireCryptPlugin::setKeyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7178,15 +7452,23 @@ v8::Local<v8::Value> WireCryptPlugin::setKeyFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> WireCryptPlugin::encryptStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> WireCryptPlugin::encryptStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> fromPersistent;
 	auto* from = getAddress<unsigned char>(info[2]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> toPersistent;
 	auto* to = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, length, from, to]() {
+	if (async)
+	{
+		fromPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		toPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, length, from, fromPersistent, to, toPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->encrypt(&statusWrapper, length, from, to);
 		return nullptr;
@@ -7198,15 +7480,23 @@ v8::Local<v8::Value> WireCryptPlugin::encryptFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> WireCryptPlugin::decryptStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> WireCryptPlugin::decryptStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<WireCryptPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned length = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> fromPersistent;
 	auto* from = getAddress<unsigned char>(info[2]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> toPersistent;
 	auto* to = getAddress<unsigned char>(info[3]);
 
-	return [obj, status, length, from, to]() {
+	if (async)
+	{
+		fromPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		toPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, status, length, from, fromPersistent, to, toPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->decrypt(&statusWrapper, length, from, to);
 		return nullptr;
@@ -7223,15 +7513,23 @@ void CryptKeyCallback::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<unsigned, callbackStart, callbackFinish>(tpl, "callback");
 }
 
-MethodStart<unsigned> CryptKeyCallback::callbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> CryptKeyCallback::callbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<CryptKeyCallback>(info.This());
 	unsigned dataLength = (unsigned) info[0]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> dataPersistent;
 	auto* data = getAddress<unsigned char>(info[1]);
 	unsigned bufferLength = (unsigned) info[2]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufferPersistent;
 	auto* buffer = getAddress<unsigned char>(info[3]);
 
-	return [obj, dataLength, data, bufferLength, buffer]() {
+	if (async)
+	{
+		dataPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+		bufferPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, dataLength, data, dataPersistent, bufferLength, buffer, bufferPersistent]() {
 		return obj->interface->callback(dataLength, data, bufferLength, buffer);
 	};
 }
@@ -7251,7 +7549,7 @@ void KeyHolderPlugin::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::ICryptKeyCallback*, keyHandleStart, keyHandleFinish>(tpl, "keyHandle");
 }
 
-MethodStart<void*> KeyHolderPlugin::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> KeyHolderPlugin::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 
@@ -7266,7 +7564,7 @@ v8::Local<v8::Value> KeyHolderPlugin::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> KeyHolderPlugin::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> KeyHolderPlugin::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 
@@ -7280,7 +7578,7 @@ v8::Local<v8::Value> KeyHolderPlugin::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> KeyHolderPlugin::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> KeyHolderPlugin::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -7296,7 +7594,7 @@ v8::Local<v8::Value> KeyHolderPlugin::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> KeyHolderPlugin::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> KeyHolderPlugin::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 
@@ -7310,7 +7608,7 @@ v8::Local<v8::Value> KeyHolderPlugin::getOwnerFinish(fb::IReferenceCounted* ret)
 	return ReferenceCounted::NewInstance(ret);
 }
 
-MethodStart<int> KeyHolderPlugin::keyCallbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> KeyHolderPlugin::keyCallbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7327,7 +7625,7 @@ v8::Local<v8::Value> KeyHolderPlugin::keyCallbackFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::ICryptKeyCallback*> KeyHolderPlugin::keyHandleStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::ICryptKeyCallback*> KeyHolderPlugin::keyHandleStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<KeyHolderPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7352,7 +7650,7 @@ void DbCryptPlugin::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IReferenceCounted*, getOwnerStart, getOwnerFinish>(tpl, "getOwner");
 }
 
-MethodStart<void*> DbCryptPlugin::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> DbCryptPlugin::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DbCryptPlugin>(info.This());
 
@@ -7367,7 +7665,7 @@ v8::Local<v8::Value> DbCryptPlugin::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> DbCryptPlugin::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> DbCryptPlugin::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DbCryptPlugin>(info.This());
 
@@ -7381,7 +7679,7 @@ v8::Local<v8::Value> DbCryptPlugin::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> DbCryptPlugin::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> DbCryptPlugin::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DbCryptPlugin>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -7397,7 +7695,7 @@ v8::Local<v8::Value> DbCryptPlugin::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> DbCryptPlugin::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> DbCryptPlugin::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<DbCryptPlugin>(info.This());
 
@@ -7421,7 +7719,7 @@ void ExternalResultSet::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<FB_BOOLEAN, fetchStart, fetchFinish>(tpl, "fetch");
 }
 
-MethodStart<void*> ExternalResultSet::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalResultSet::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalResultSet>(info.This());
 
@@ -7436,7 +7734,7 @@ v8::Local<v8::Value> ExternalResultSet::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<FB_BOOLEAN> ExternalResultSet::fetchStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> ExternalResultSet::fetchStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalResultSet>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7457,7 +7755,7 @@ void ExternalFunction::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, disposeStart, disposeFinish>(tpl, "dispose");
 }
 
-MethodStart<void*> ExternalFunction::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalFunction::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalFunction>(info.This());
 
@@ -7477,7 +7775,7 @@ void ExternalProcedure::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, disposeStart, disposeFinish>(tpl, "dispose");
 }
 
-MethodStart<void*> ExternalProcedure::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalProcedure::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalProcedure>(info.This());
 
@@ -7497,7 +7795,7 @@ void ExternalTrigger::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, disposeStart, disposeFinish>(tpl, "dispose");
 }
 
-MethodStart<void*> ExternalTrigger::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalTrigger::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalTrigger>(info.This());
 
@@ -7525,7 +7823,7 @@ void RoutineMetadata::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<unsigned, getTriggerTypeStart, getTriggerTypeFinish>(tpl, "getTriggerType");
 }
 
-MethodStart<std::string> RoutineMetadata::getPackageStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> RoutineMetadata::getPackageStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7541,7 +7839,7 @@ v8::Local<v8::Value> RoutineMetadata::getPackageFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> RoutineMetadata::getNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> RoutineMetadata::getNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7557,7 +7855,7 @@ v8::Local<v8::Value> RoutineMetadata::getNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> RoutineMetadata::getEntryPointStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> RoutineMetadata::getEntryPointStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7573,7 +7871,7 @@ v8::Local<v8::Value> RoutineMetadata::getEntryPointFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> RoutineMetadata::getBodyStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> RoutineMetadata::getBodyStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7589,7 +7887,7 @@ v8::Local<v8::Value> RoutineMetadata::getBodyFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<fb::IMessageMetadata*> RoutineMetadata::getInputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> RoutineMetadata::getInputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7605,7 +7903,7 @@ v8::Local<v8::Value> RoutineMetadata::getInputMetadataFinish(fb::IMessageMetadat
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<fb::IMessageMetadata*> RoutineMetadata::getOutputMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> RoutineMetadata::getOutputMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7621,7 +7919,7 @@ v8::Local<v8::Value> RoutineMetadata::getOutputMetadataFinish(fb::IMessageMetada
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<fb::IMessageMetadata*> RoutineMetadata::getTriggerMetadataStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMessageMetadata*> RoutineMetadata::getTriggerMetadataStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7637,7 +7935,7 @@ v8::Local<v8::Value> RoutineMetadata::getTriggerMetadataFinish(fb::IMessageMetad
 	return MessageMetadata::NewInstance(ret);
 }
 
-MethodStart<std::string> RoutineMetadata::getTriggerTableStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> RoutineMetadata::getTriggerTableStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7653,7 +7951,7 @@ v8::Local<v8::Value> RoutineMetadata::getTriggerTableFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<unsigned> RoutineMetadata::getTriggerTypeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> RoutineMetadata::getTriggerTypeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<RoutineMetadata>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7677,7 +7975,7 @@ void ExternalEngine::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IReferenceCounted*, getOwnerStart, getOwnerFinish>(tpl, "getOwner");
 }
 
-MethodStart<void*> ExternalEngine::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalEngine::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalEngine>(info.This());
 
@@ -7692,7 +7990,7 @@ v8::Local<v8::Value> ExternalEngine::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> ExternalEngine::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> ExternalEngine::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalEngine>(info.This());
 
@@ -7706,7 +8004,7 @@ v8::Local<v8::Value> ExternalEngine::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> ExternalEngine::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> ExternalEngine::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalEngine>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -7722,7 +8020,7 @@ v8::Local<v8::Value> ExternalEngine::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> ExternalEngine::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> ExternalEngine::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<ExternalEngine>(info.This());
 
@@ -7743,7 +8041,7 @@ void Timer::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, handlerStart, handlerFinish>(tpl, "handler");
 }
 
-MethodStart<void*> Timer::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Timer::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Timer>(info.This());
 
@@ -7758,7 +8056,7 @@ v8::Local<v8::Value> Timer::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Timer::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Timer::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Timer>(info.This());
 
@@ -7772,7 +8070,7 @@ v8::Local<v8::Value> Timer::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> Timer::handlerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Timer::handlerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Timer>(info.This());
 
@@ -7793,7 +8091,7 @@ void TimerControl::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, stopStart, stopFinish>(tpl, "stop");
 }
 
-MethodStart<void*> TimerControl::startStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TimerControl::startStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TimerControl>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7812,7 +8110,7 @@ v8::Local<v8::Value> TimerControl::startFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> TimerControl::stopStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TimerControl::stopStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TimerControl>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7835,7 +8133,7 @@ void VersionCallback::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, callbackStart, callbackFinish>(tpl, "callback");
 }
 
-MethodStart<void*> VersionCallback::callbackStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> VersionCallback::callbackStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<VersionCallback>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7866,7 +8164,7 @@ void Util::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<unsigned, setOffsetsStart, setOffsetsFinish>(tpl, "setOffsets");
 }
 
-MethodStart<void*> Util::getFbVersionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Util::getFbVersionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -7885,16 +8183,22 @@ v8::Local<v8::Value> Util::getFbVersionFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IAttachment*> Util::executeCreateDatabaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IAttachment*> Util::executeCreateDatabaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned stmtLength = (unsigned) info[1]->NumberValue();
 	std::string creatDBstatement = *v8::String::Utf8Value(info[2]->ToString());
 	unsigned dialect = (unsigned) info[3]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> stmtIsCreateDbPersistent;
 	auto* stmtIsCreateDb = getAddress<unsigned char>(info[4]);
 
-	return [obj, status, stmtLength, creatDBstatement, dialect, stmtIsCreateDb]() {
+	if (async)
+	{
+		stmtIsCreateDbPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, status, stmtLength, creatDBstatement, dialect, stmtIsCreateDb, stmtIsCreateDbPersistent]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->executeCreateDatabase(&statusWrapper, stmtLength, creatDBstatement.c_str(), dialect, stmtIsCreateDb);
 	};
@@ -7905,15 +8209,25 @@ v8::Local<v8::Value> Util::executeCreateDatabaseFinish(fb::IAttachment* ret)
 	return Attachment::NewInstance(ret);
 }
 
-MethodStart<void*> Util::decodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Util::decodeDateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	int date = (int) info[0]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> yearPersistent;
 	auto* year = getAddress<unsigned>(info[1]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> monthPersistent;
 	auto* month = getAddress<unsigned>(info[2]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> dayPersistent;
 	auto* day = getAddress<unsigned>(info[3]);
 
-	return [obj, date, year, month, day]() {
+	if (async)
+	{
+		yearPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+		monthPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		dayPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+	}
+
+	return [obj, date, year, yearPersistent, month, monthPersistent, day, dayPersistent]() {
 		obj->interface->decodeDate(date, year, month, day);
 		return nullptr;
 	};
@@ -7924,16 +8238,28 @@ v8::Local<v8::Value> Util::decodeDateFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> Util::decodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> Util::decodeTimeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	int time = (int) info[0]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> hoursPersistent;
 	auto* hours = getAddress<unsigned>(info[1]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> minutesPersistent;
 	auto* minutes = getAddress<unsigned>(info[2]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> secondsPersistent;
 	auto* seconds = getAddress<unsigned>(info[3]);
+	std::shared_ptr<Nan::Persistent<v8::Value>> fractionsPersistent;
 	auto* fractions = getAddress<unsigned>(info[4]);
 
-	return [obj, time, hours, minutes, seconds, fractions]() {
+	if (async)
+	{
+		hoursPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[1]);
+		minutesPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+		secondsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[3]);
+		fractionsPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[4]);
+	}
+
+	return [obj, time, hours, hoursPersistent, minutes, minutesPersistent, seconds, secondsPersistent, fractions, fractionsPersistent]() {
 		obj->interface->decodeTime(time, hours, minutes, seconds, fractions);
 		return nullptr;
 	};
@@ -7944,7 +8270,7 @@ v8::Local<v8::Value> Util::decodeTimeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> Util::encodeDateStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Util::encodeDateStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	unsigned year = (unsigned) info[0]->NumberValue();
@@ -7961,7 +8287,7 @@ v8::Local<v8::Value> Util::encodeDateFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> Util::encodeTimeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> Util::encodeTimeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	unsigned hours = (unsigned) info[0]->NumberValue();
@@ -7979,7 +8305,7 @@ v8::Local<v8::Value> Util::encodeTimeFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> Util::getClientVersionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> Util::getClientVersionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 
@@ -7993,15 +8319,21 @@ v8::Local<v8::Value> Util::getClientVersionFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<fb::IXpbBuilder*> Util::getXpbBuilderStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IXpbBuilder*> Util::getXpbBuilderStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned kind = (unsigned) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bufPersistent;
 	auto* buf = getAddress<unsigned char>(info[2]);
 	unsigned len = (unsigned) info[3]->NumberValue();
 
-	return [obj, status, kind, buf, len]() {
+	if (async)
+	{
+		bufPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, kind, buf, bufPersistent, len]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		return obj->interface->getXpbBuilder(&statusWrapper, kind, buf, len);
 	};
@@ -8012,7 +8344,7 @@ v8::Local<v8::Value> Util::getXpbBuilderFinish(fb::IXpbBuilder* ret)
 	return XpbBuilder::NewInstance(ret);
 }
 
-MethodStart<unsigned> Util::setOffsetsStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> Util::setOffsetsStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<Util>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8035,7 +8367,7 @@ void OffsetsCallback::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, setOffsetStart, setOffsetFinish>(tpl, "setOffset");
 }
 
-MethodStart<void*> OffsetsCallback::setOffsetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> OffsetsCallback::setOffsetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<OffsetsCallback>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8080,7 +8412,7 @@ void XpbBuilder::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<const unsigned char*, getBufferStart, getBufferFinish>(tpl, "getBuffer");
 }
 
-MethodStart<void*> XpbBuilder::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 
@@ -8095,7 +8427,7 @@ v8::Local<v8::Value> XpbBuilder::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::clearStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::clearStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8112,7 +8444,7 @@ v8::Local<v8::Value> XpbBuilder::clearFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::removeCurrentStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::removeCurrentStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8129,7 +8461,7 @@ v8::Local<v8::Value> XpbBuilder::removeCurrentFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::insertIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::insertIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8148,7 +8480,7 @@ v8::Local<v8::Value> XpbBuilder::insertIntFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::insertBigIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::insertBigIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8167,15 +8499,21 @@ v8::Local<v8::Value> XpbBuilder::insertBigIntFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::insertBytesStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::insertBytesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
 	unsigned char tag = (unsigned char) info[1]->NumberValue();
+	std::shared_ptr<Nan::Persistent<v8::Value>> bytesPersistent;
 	auto* bytes = getAddress<unsigned char>(info[2]);
 	unsigned length = (unsigned) info[3]->NumberValue();
 
-	return [obj, status, tag, bytes, length]() {
+	if (async)
+	{
+		bytesPersistent = std::make_shared<Nan::Persistent<v8::Value>>(info[2]);
+	}
+
+	return [obj, status, tag, bytes, bytesPersistent, length]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
 		obj->interface->insertBytes(&statusWrapper, tag, bytes, length);
 		return nullptr;
@@ -8187,7 +8525,7 @@ v8::Local<v8::Value> XpbBuilder::insertBytesFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::insertStringStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::insertStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8206,7 +8544,7 @@ v8::Local<v8::Value> XpbBuilder::insertStringFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::insertTagStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::insertTagStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8224,7 +8562,7 @@ v8::Local<v8::Value> XpbBuilder::insertTagFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<FB_BOOLEAN> XpbBuilder::isEofStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> XpbBuilder::isEofStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8240,7 +8578,7 @@ v8::Local<v8::Value> XpbBuilder::isEofFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<void*> XpbBuilder::moveNextStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::moveNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8257,7 +8595,7 @@ v8::Local<v8::Value> XpbBuilder::moveNextFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> XpbBuilder::rewindStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> XpbBuilder::rewindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8274,7 +8612,7 @@ v8::Local<v8::Value> XpbBuilder::rewindFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<FB_BOOLEAN> XpbBuilder::findFirstStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> XpbBuilder::findFirstStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8291,7 +8629,7 @@ v8::Local<v8::Value> XpbBuilder::findFirstFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<FB_BOOLEAN> XpbBuilder::findNextStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<FB_BOOLEAN> XpbBuilder::findNextStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8307,7 +8645,7 @@ v8::Local<v8::Value> XpbBuilder::findNextFinish(FB_BOOLEAN ret)
 	return Nan::New((bool) ret);
 }
 
-MethodStart<unsigned char> XpbBuilder::getTagStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned char> XpbBuilder::getTagStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8323,7 +8661,7 @@ v8::Local<v8::Value> XpbBuilder::getTagFinish(unsigned char ret)
 	return Nan::New(ret);
 }
 
-MethodStart<unsigned> XpbBuilder::getLengthStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> XpbBuilder::getLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8339,7 +8677,7 @@ v8::Local<v8::Value> XpbBuilder::getLengthFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> XpbBuilder::getIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> XpbBuilder::getIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8355,7 +8693,7 @@ v8::Local<v8::Value> XpbBuilder::getIntFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int64_t> XpbBuilder::getBigIntStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int64_t> XpbBuilder::getBigIntStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8371,7 +8709,7 @@ v8::Local<v8::Value> XpbBuilder::getBigIntFinish(int64_t ret)
 	return Nan::New((double) ret);
 }
 
-MethodStart<std::string> XpbBuilder::getStringStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> XpbBuilder::getStringStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8387,7 +8725,7 @@ v8::Local<v8::Value> XpbBuilder::getStringFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<const unsigned char*> XpbBuilder::getBytesStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<const unsigned char*> XpbBuilder::getBytesStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8403,7 +8741,7 @@ v8::Local<v8::Value> XpbBuilder::getBytesFinish(const unsigned char* ret)
 	return Pointer::NewInstance(ret);
 }
 
-MethodStart<unsigned> XpbBuilder::getBufferLengthStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> XpbBuilder::getBufferLengthStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8419,7 +8757,7 @@ v8::Local<v8::Value> XpbBuilder::getBufferLengthFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<const unsigned char*> XpbBuilder::getBufferStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<const unsigned char*> XpbBuilder::getBufferStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<XpbBuilder>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -8448,7 +8786,7 @@ void TraceConnection::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<std::string, getRemoteProcessNameStart, getRemoteProcessNameFinish>(tpl, "getRemoteProcessName");
 }
 
-MethodStart<unsigned> TraceConnection::getKindStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> TraceConnection::getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8462,7 +8800,7 @@ v8::Local<v8::Value> TraceConnection::getKindFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> TraceConnection::getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceConnection::getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8476,7 +8814,7 @@ v8::Local<v8::Value> TraceConnection::getProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceConnection::getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8490,7 +8828,7 @@ v8::Local<v8::Value> TraceConnection::getUserNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceConnection::getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8504,7 +8842,7 @@ v8::Local<v8::Value> TraceConnection::getRoleNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceConnection::getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8518,7 +8856,7 @@ v8::Local<v8::Value> TraceConnection::getCharSetFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceConnection::getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8532,7 +8870,7 @@ v8::Local<v8::Value> TraceConnection::getRemoteProtocolFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceConnection::getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8546,7 +8884,7 @@ v8::Local<v8::Value> TraceConnection::getRemoteAddressFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<int> TraceConnection::getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceConnection::getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8560,7 +8898,7 @@ v8::Local<v8::Value> TraceConnection::getRemoteProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceConnection::getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceConnection::getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceConnection>(info.This());
 
@@ -8589,7 +8927,7 @@ void TraceDatabaseConnection::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl
 	DefineAsyncMethod<std::string, getDatabaseNameStart, getDatabaseNameFinish>(tpl, "getDatabaseName");
 }
 
-MethodStart<unsigned> TraceDatabaseConnection::getKindStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> TraceDatabaseConnection::getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8603,7 +8941,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getKindFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> TraceDatabaseConnection::getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceDatabaseConnection::getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8617,7 +8955,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8631,7 +8969,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getUserNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8645,7 +8983,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getRoleNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8659,7 +8997,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getCharSetFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8673,7 +9011,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getRemoteProtocolFinish(std::strin
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8687,7 +9025,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getRemoteAddressFinish(std::string
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<int> TraceDatabaseConnection::getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceDatabaseConnection::getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8701,7 +9039,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getRemoteProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8715,7 +9053,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getRemoteProcessNameFinish(std::st
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<int64_t> TraceDatabaseConnection::getConnectionIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int64_t> TraceDatabaseConnection::getConnectionIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8729,7 +9067,7 @@ v8::Local<v8::Value> TraceDatabaseConnection::getConnectionIDFinish(int64_t ret)
 	return Nan::New((double) ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getDatabaseNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceDatabaseConnection::getDatabaseNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceDatabaseConnection>(info.This());
 
@@ -8796,7 +9134,7 @@ void TraceServiceConnection::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<std::string, getRemoteProcessNameStart, getRemoteProcessNameFinish>(tpl, "getRemoteProcessName");
 }
 
-MethodStart<unsigned> TraceServiceConnection::getKindStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<unsigned> TraceServiceConnection::getKindStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8810,7 +9148,7 @@ v8::Local<v8::Value> TraceServiceConnection::getKindFinish(unsigned ret)
 	return Nan::New(ret);
 }
 
-MethodStart<int> TraceServiceConnection::getProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceServiceConnection::getProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8824,7 +9162,7 @@ v8::Local<v8::Value> TraceServiceConnection::getProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceServiceConnection::getUserNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getUserNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8838,7 +9176,7 @@ v8::Local<v8::Value> TraceServiceConnection::getUserNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceServiceConnection::getRoleNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getRoleNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8852,7 +9190,7 @@ v8::Local<v8::Value> TraceServiceConnection::getRoleNameFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceServiceConnection::getCharSetStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getCharSetStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8866,7 +9204,7 @@ v8::Local<v8::Value> TraceServiceConnection::getCharSetFinish(std::string ret)
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteProtocolStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getRemoteProtocolStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8880,7 +9218,7 @@ v8::Local<v8::Value> TraceServiceConnection::getRemoteProtocolFinish(std::string
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteAddressStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getRemoteAddressStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8894,7 +9232,7 @@ v8::Local<v8::Value> TraceServiceConnection::getRemoteAddressFinish(std::string 
 	return Nan::New(ret).ToLocalChecked();
 }
 
-MethodStart<int> TraceServiceConnection::getRemoteProcessIDStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceServiceConnection::getRemoteProcessIDStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8908,7 +9246,7 @@ v8::Local<v8::Value> TraceServiceConnection::getRemoteProcessIDFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteProcessNameStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<std::string> TraceServiceConnection::getRemoteProcessNameStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceServiceConnection>(info.This());
 
@@ -8936,7 +9274,7 @@ void TraceLogWriter::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, releaseStart, releaseFinish>(tpl, "release");
 }
 
-MethodStart<void*> TraceLogWriter::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TraceLogWriter::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceLogWriter>(info.This());
 
@@ -8951,7 +9289,7 @@ v8::Local<v8::Value> TraceLogWriter::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> TraceLogWriter::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceLogWriter::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceLogWriter>(info.This());
 
@@ -8975,7 +9313,7 @@ void TracePlugin::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<int, releaseStart, releaseFinish>(tpl, "release");
 }
 
-MethodStart<void*> TracePlugin::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TracePlugin::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TracePlugin>(info.This());
 
@@ -8990,7 +9328,7 @@ v8::Local<v8::Value> TracePlugin::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> TracePlugin::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TracePlugin::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TracePlugin>(info.This());
 
@@ -9012,7 +9350,7 @@ void TraceFactory::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IReferenceCounted*, getOwnerStart, getOwnerFinish>(tpl, "getOwner");
 }
 
-MethodStart<void*> TraceFactory::addRefStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TraceFactory::addRefStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceFactory>(info.This());
 
@@ -9027,7 +9365,7 @@ v8::Local<v8::Value> TraceFactory::addRefFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<int> TraceFactory::releaseStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<int> TraceFactory::releaseStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceFactory>(info.This());
 
@@ -9041,7 +9379,7 @@ v8::Local<v8::Value> TraceFactory::releaseFinish(int ret)
 	return Nan::New(ret);
 }
 
-MethodStart<void*> TraceFactory::setOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> TraceFactory::setOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceFactory>(info.This());
 	auto* r = ReferenceCounted::CheckedUnwrap(info[0], "r argument", true);
@@ -9057,7 +9395,7 @@ v8::Local<v8::Value> TraceFactory::setOwnerFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IReferenceCounted*> TraceFactory::getOwnerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IReferenceCounted*> TraceFactory::getOwnerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<TraceFactory>(info.This());
 
@@ -9078,7 +9416,7 @@ void UdrFunctionFactory::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IExternalFunction*, newItemStart, newItemFinish>(tpl, "newItem");
 }
 
-MethodStart<void*> UdrFunctionFactory::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrFunctionFactory::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrFunctionFactory>(info.This());
 
@@ -9093,7 +9431,7 @@ v8::Local<v8::Value> UdrFunctionFactory::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> UdrFunctionFactory::setupStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrFunctionFactory::setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrFunctionFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9114,7 +9452,7 @@ v8::Local<v8::Value> UdrFunctionFactory::setupFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IExternalFunction*> UdrFunctionFactory::newItemStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IExternalFunction*> UdrFunctionFactory::newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrFunctionFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9139,7 +9477,7 @@ void UdrProcedureFactory::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IExternalProcedure*, newItemStart, newItemFinish>(tpl, "newItem");
 }
 
-MethodStart<void*> UdrProcedureFactory::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrProcedureFactory::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrProcedureFactory>(info.This());
 
@@ -9154,7 +9492,7 @@ v8::Local<v8::Value> UdrProcedureFactory::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> UdrProcedureFactory::setupStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrProcedureFactory::setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrProcedureFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9175,7 +9513,7 @@ v8::Local<v8::Value> UdrProcedureFactory::setupFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IExternalProcedure*> UdrProcedureFactory::newItemStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IExternalProcedure*> UdrProcedureFactory::newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrProcedureFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9200,7 +9538,7 @@ void UdrTriggerFactory::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<fb::IExternalTrigger*, newItemStart, newItemFinish>(tpl, "newItem");
 }
 
-MethodStart<void*> UdrTriggerFactory::disposeStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrTriggerFactory::disposeStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrTriggerFactory>(info.This());
 
@@ -9215,7 +9553,7 @@ v8::Local<v8::Value> UdrTriggerFactory::disposeFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> UdrTriggerFactory::setupStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrTriggerFactory::setupStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrTriggerFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9235,7 +9573,7 @@ v8::Local<v8::Value> UdrTriggerFactory::setupFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<fb::IExternalTrigger*> UdrTriggerFactory::newItemStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IExternalTrigger*> UdrTriggerFactory::newItemStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrTriggerFactory>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9261,7 +9599,7 @@ void UdrPlugin::InitPrototype(v8::Local<v8::FunctionTemplate>& tpl)
 	DefineAsyncMethod<void*, registerTriggerStart, registerTriggerFinish>(tpl, "registerTrigger");
 }
 
-MethodStart<fb::IMaster*> UdrPlugin::getMasterStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<fb::IMaster*> UdrPlugin::getMasterStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrPlugin>(info.This());
 
@@ -9275,7 +9613,7 @@ v8::Local<v8::Value> UdrPlugin::getMasterFinish(fb::IMaster* ret)
 	return Master::NewInstance(ret);
 }
 
-MethodStart<void*> UdrPlugin::registerFunctionStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrPlugin::registerFunctionStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9294,7 +9632,7 @@ v8::Local<v8::Value> UdrPlugin::registerFunctionFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> UdrPlugin::registerProcedureStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrPlugin::registerProcedureStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);
@@ -9313,7 +9651,7 @@ v8::Local<v8::Value> UdrPlugin::registerProcedureFinish(void* ret)
 	return v8::Local<v8::Value>(Nan::Undefined());
 }
 
-MethodStart<void*> UdrPlugin::registerTriggerStart(Nan::NAN_METHOD_ARGS_TYPE info)
+MethodStart<void*> UdrPlugin::registerTriggerStart(bool async, Nan::NAN_METHOD_ARGS_TYPE info)
 {
 	auto* obj = ObjectWrap::Unwrap<UdrPlugin>(info.This());
 	auto* status = Status::CheckedUnwrap(info[0], "status argument", true);

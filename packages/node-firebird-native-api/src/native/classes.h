@@ -195,7 +195,7 @@ protected:
 
 	template <
 		typename T,
-		MethodStart<T> (*ptr1)(Nan::NAN_METHOD_ARGS_TYPE),
+		MethodStart<T> (*ptr1)(bool async, Nan::NAN_METHOD_ARGS_TYPE),
 		v8::Local<v8::Value> (*ptr2)(T)
 	>
 	static void DefineAsyncMethod(v8::Local<v8::FunctionTemplate>& tpl, const char* name)
@@ -203,7 +203,7 @@ protected:
 		void (*syncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
 			try
 			{
-				auto ret = ptr1(info)();
+				auto ret = ptr1(false, info)();
 				info.GetReturnValue().Set(ptr2(ret));
 			}
 			catch (const fb::FbException& e)
@@ -220,7 +220,7 @@ protected:
 		void (*asyncWrapper)(Nan::NAN_METHOD_ARGS_TYPE) = [](Nan::NAN_METHOD_ARGS_TYPE info) {
 			try
 			{
-				auto ret = ptr1(info);
+				auto ret = ptr1(true, info);
 				PromiseWorker<T>::Run(info, ret, ptr2);
 			}
 			catch (const fb::FbException& e)

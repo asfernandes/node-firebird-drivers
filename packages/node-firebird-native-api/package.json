@@ -59,6 +59,6 @@
     "node-gyp": "^3.6.2"
   },
   "devDependencies": {
-    "node-cloop-gen": "0.0.1-beta.2"
+    "node-cloop-gen": "0.0.1"
   }
 }
