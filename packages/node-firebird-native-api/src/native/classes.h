@@ -72,10 +72,11 @@ public:
 		auto context = v8::Isolate::GetCurrent()->GetCurrentContext();
 		auto res = GetFromPersistent("resolver").template As<v8::Promise::Resolver>();
 
-		if (!error)
-			res->Resolve(context, returnLambda(ret));
-		else
+		auto resRet = !error ?
+			res->Resolve(context, returnLambda(ret)) :
 			res->Reject(context, Nan::Error(errorMsg.c_str()));
+
+		(void) resRet;	// avoid warning
 
 		v8::Isolate::GetCurrent()->RunMicrotasks();
 	}
