@@ -7,6 +7,9 @@ import * as fb from 'node-firebird-native-api';
 import { TransactionImpl } from './transaction';
 
 
+const MAX_SEGMENT_SIZE = 65535;
+
+
 /** BlobStream implementation. */
 export class BlobStreamImpl extends AbstractBlobStream {
 	// Override declarations.
@@ -64,8 +67,9 @@ export class BlobStreamImpl extends AbstractBlobStream {
 
 	protected async internalRead(buffer: Buffer): Promise<number> {
 		return await this.attachment.client.statusAction(async status => {
+			const readingBytes = Math.min(buffer.length, MAX_SEGMENT_SIZE);
 			const segLength = new Uint32Array(1);
-			const result = await this.blobHandle!.getSegmentAsync(status, buffer.length, buffer, segLength);
+			const result = await this.blobHandle!.getSegmentAsync(status, readingBytes, buffer, segLength);
 
 			if (result == fb.Status.RESULT_NO_DATA)
 				return -1;
@@ -75,6 +79,12 @@ export class BlobStreamImpl extends AbstractBlobStream {
 	}
 
 	protected async internalWrite(buffer: Buffer): Promise<void> {
-		await this.attachment.client.statusAction(status => this.blobHandle!.putSegmentAsync(status, buffer.length, buffer));
+		await this.attachment.client.statusAction(async status => {
+			while (buffer.length > 0) {
+				const writingBytes = Math.min(buffer.length, MAX_SEGMENT_SIZE);
+				await this.blobHandle!.putSegmentAsync(status, writingBytes, buffer);
+				buffer = buffer.slice(writingBytes);
+			}
+		});
 	}
 }

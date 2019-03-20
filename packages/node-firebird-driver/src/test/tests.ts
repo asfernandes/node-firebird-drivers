@@ -462,6 +462,41 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			test('#fetch() with large blob', async () => {
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch-with-large-blob.fdb'));
+				let transaction = await attachment.startTransaction();
+				await attachment.execute(transaction, `create table t1 (x_blob blob)`);
+
+				await transaction.commit();
+				transaction = await attachment.startTransaction();
+				const buffer = Buffer.from('123'.repeat(60000));
+
+				await attachment.execute(transaction, `insert into t1 (x_blob) values (?)`, [buffer]);
+
+				await transaction.commit();
+				transaction = await attachment.startTransaction();
+
+				const resultSet = await attachment.executeQuery(transaction, `select x_blob from t1`);
+				const result = await resultSet.fetch();
+				const readStream = await attachment.openBlob(transaction, result[0][0]);
+
+				const blobLength = await readStream.length;
+				const resultBuffer = Buffer.alloc(blobLength);
+
+				let size = 0;
+				let n: number;
+				while (size < blobLength && (n = await readStream.read(resultBuffer.slice(size))) > 0)
+					size += n;
+
+				await readStream.close();
+				expect(resultBuffer.toString().length).toEqual(buffer.toString().length);
+				expect(resultBuffer.toString()).toEqual(buffer.toString());
+
+				await resultSet.close();
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 	});
 }

@@ -233,7 +233,10 @@ export abstract class BlobStream {
 	/** Cancels the blob's creation. */
 	abstract cancel(): Promise<void>;
 
-	/** Reads data from the blob. */
+	/**
+	 * Reads data from the blob and return the number of bytes read or -1 for end-of-stream.
+	 * The number of bytes read may be less than the buffer' size while more data to be read exists.
+	 */
 	abstract read(buffer: Buffer): Promise<number>;
 
 	/** Writes data to the blob. */
