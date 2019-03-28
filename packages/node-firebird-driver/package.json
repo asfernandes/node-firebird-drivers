@@ -29,6 +29,6 @@
   "homepage": "https://github.com/asfernandes/node-firebird-drivers#readme",
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
-    "@types/node": "^8.10.19"
+    "@types/node": "^10.14.4"
   }
 }

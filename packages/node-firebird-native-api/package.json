@@ -53,10 +53,10 @@
     ]
   },
   "dependencies": {
-    "@types/node": "^8.10.19",
-    "bindings": "^1.2.1",
+    "@types/node": "^10.14.4",
+    "bindings": "^1.5.0",
     "node-addon-api": "^1.6.2",
-    "node-gyp": "^3.6.2"
+    "node-gyp": "^3.8.0"
   },
   "devDependencies": {
     "node-cloop-gen": "1.0.0"
