@@ -2,6 +2,7 @@ import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
 import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util } from '../lib';
+import { XpbBuilder } from '../lib';
 
 
 describe('node-firebird-native-api', () => {
@@ -127,6 +128,26 @@ describe('node-firebird-native-api', () => {
 				await attachment.dropDatabaseAsync(status);
 			}
 			finally {
+				status.disposeSync();
+			}
+		});
+
+		test('#createDatabaseAsync() with XpbBuilder buffer', async () => {
+			const util = master.getUtilInterfaceSync();
+
+			const status = master.getStatusSync()!;
+			const dpbBuilder = (util!.getXpbBuilderSync(status, XpbBuilder.DPB, undefined, 0))!;
+			try {
+				dpbBuilder.insertTagSync(status, 1);
+
+				const buffer = dpbBuilder.getBufferSync(status)!;
+				const length = dpbBuilder.getBufferLengthSync(status);
+
+				return await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase-xpb.fdb'),
+					length, buffer);
+			}
+			finally {
+				dpbBuilder.disposeSync();
 				status.disposeSync();
 			}
 		});
