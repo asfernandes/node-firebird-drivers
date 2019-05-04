@@ -18,7 +18,8 @@
 					'OS == "win"', {
 						"msvs_settings": {
 							"VCCLCompilerTool": {
-								"ExceptionHandling": 1
+								"ExceptionHandling": 1,
+								"AdditionalOptions": ["/bigobj"]
 							}
 						}
 					},
