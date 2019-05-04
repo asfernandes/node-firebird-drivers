@@ -1,31 +1,29 @@
 language: node_js
 
-node_js:
-  - '6'
-  - '8'
-  - '10'
-  - '11'
-  - '12'
-
-dist: trusty
-sudo: required
-
-env:
-  - CXX=g++-5
-
 matrix:
   fast_finish: true
+  include:
+    - os: windows
+      dist: 1803-containers
+    - os: linux
+      dist: trusty
+      sudo: required
+      env:
+        - CXX=g++-5
+
+node_js:
+  - '12'
+  - '11'
+  - '10'
+  - '8'
+  - '6'
 
 install:
-  - wget -O Firebird-3.0.3.32900-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_3/Firebird-3.0.3.32900-0.amd64.tar.gz"
-  - tar xzvf Firebird-3.0.3.32900-0.amd64.tar.gz
-  - (cd Firebird-3.0.3.32900-0.amd64; sudo ./install.sh -silent)
-  - sudo usermod -a -G firebird travis
+  - if [[ "$TRAVIS_OS_NAME" != 'windows' ]]; then ./.ci/travis-install.sh; fi
 
 script:
-  - sg firebird -c "yarn"
-  - sg firebird -c "yarn bootstrap"
-  - sg firebird -c "yarn test"
+  - if [[ "$TRAVIS_OS_NAME" != 'windows' ]]; then sg firebird ./.ci/travis-build.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" = 'windows' ]]; then ./.ci/travis-build.sh; fi
 
 cache:
   directories:
