@@ -10,6 +10,14 @@ matrix:
       sudo: required
       env:
         - CXX=g++-5
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-5
+            - g++-5
+            - libtommath0
 
 node_js:
   - '12'
@@ -31,12 +39,3 @@ cache:
 
 git:
   depth: 1
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-5
-      - g++-5
-      - libtommath0
