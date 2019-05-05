@@ -21,7 +21,10 @@
 								"ExceptionHandling": 1,
 								"AdditionalOptions": ["/bigobj"]
 							}
-						}
+						},
+						"defines": [
+							"_HAS_EXCEPTIONS=1"
+						]
 					},
 					'OS == "mac"', {
 						"xcode_settings": {
