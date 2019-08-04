@@ -14,16 +14,16 @@
     "test": "lerna run test"
   },
   "devDependencies": {
-    "@types/fs-extra-promise": "^1.0.7",
-    "@types/jest": "^24.0.11",
+    "@types/fs-extra-promise": "^1.0.8",
+    "@types/jest": "^24.0.16",
     "@types/temp-fs": "^0.9.28",
     "fs-extra-promise": "^1.0.1",
-    "jest": "^24.5.0",
-    "lerna": "^3.13.1",
+    "jest": "^24.8.0",
+    "lerna": "^3.16.4",
     "rimraf": "^2.6.3",
     "temp-fs": "^0.9.9",
-    "ts-jest": "^24.0.0",
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.4000"
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }
