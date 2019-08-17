@@ -24,6 +24,10 @@
     "include": [
         "./src/**/*"
     ],
+    "references": [
+        { "path": "../node-firebird-driver" },
+        { "path": "../node-firebird-native-api" }
+    ],
     "exclude": [
         "node_modules",
         "dist",

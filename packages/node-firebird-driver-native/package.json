@@ -4,9 +4,9 @@
   "description": "Firebird Native Driver for Node.js",
   "main": "dist/lib/index.js",
   "scripts": {
-    "build": "yarn run clean && yarn run lint && tsc",
-    "build:w": "yarn run clean && tsc -w",
-    "clean": "rimraf dist",
+    "build": "yarn run clean && yarn run lint && tsc --build",
+    "build:w": "yarn run clean && tsc --build -w",
+    "clean": "tsc --build --clean && rimraf dist",
     "lint": "tslint --project .",
     "prepublishOnly": "yarn run build && yarn test",
     "test": "jest"

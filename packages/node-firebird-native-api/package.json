@@ -5,9 +5,9 @@
   "gypfile": true,
   "main": "dist/lib/index.js",
   "scripts": {
-    "build": "yarn run clean && yarn run lint && tsc",
-    "build:w": "yarn run clean && tsc -w",
-    "clean": "rimraf dist",
+    "build": "yarn run clean && yarn run lint && tsc --build",
+    "build:w": "yarn run clean && tsc --build -w",
+    "clean": "tsc --build --clean && rimraf dist",
     "lint": "tslint --project .",
     "generate": "node dist/generate-files",
     "gyp:clean": "rimraf build",
