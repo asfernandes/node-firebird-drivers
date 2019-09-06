@@ -360,6 +360,9 @@ describe('node-firebird-native-api', () => {
 							finally {
 								outputMetadata2.releaseSync();
 							}
+
+							const plan = statement2.getPlanSync(status, false);
+							expect(plan).toBeTruthy();
 						}
 						finally {
 							statement2.freeSync(status);
@@ -411,6 +414,9 @@ describe('node-firebird-native-api', () => {
 							finally {
 								outputMetadata2.releaseSync();
 							}
+
+							const plan = await statement2.getPlanAsync(status, false);
+							expect(plan).toBeTruthy();
 						}
 						finally {
 							await statement2.freeAsync(status);
