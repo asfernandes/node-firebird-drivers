@@ -6,6 +6,7 @@
         "outDir": "./dist",
         "sourceMap": true,
         "composite": true,
+        "incremental": false,
         "declaration": true,
         "experimentalDecorators": true,
         "lib": [
