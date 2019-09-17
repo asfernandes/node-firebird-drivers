@@ -670,12 +670,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getNameStart(true, info),
 			&PluginSet::getNameFinish);
 	}
@@ -693,12 +693,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getModuleNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getModuleNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getModuleNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getModuleNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getModuleNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getModuleNameStart(true, info),
 			&PluginSet::getModuleNameFinish);
 	}
@@ -845,12 +845,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getNameStart(true, info),
 			&ConfigEntry::getNameFinish);
 	}
@@ -868,12 +868,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getValueStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getValueFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getValueStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getValueFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getValueAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getValueStart(true, info),
 			&ConfigEntry::getValueFinish);
 	}
@@ -1195,12 +1195,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> asStringStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value asStringFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> asStringStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value asStringFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value asStringAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			asStringStart(true, info),
 			&FirebirdConf::asStringFinish);
 	}
@@ -1301,12 +1301,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getConfigFileNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getConfigFileNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getConfigFileNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getConfigFileNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getConfigFileNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getConfigFileNameStart(true, info),
 			&PluginConfig::getConfigFileNameFinish);
 	}
@@ -1647,12 +1647,12 @@ private:
 	static void InitPrototype(std::vector<Napi::ObjectWrap<ConfigManager>::PropertyDescriptor>& properties);
 
 private:
-	static MethodStart<std::string> getDirectoryStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getDirectoryFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getDirectoryStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDirectoryFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getDirectoryAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getDirectoryStart(true, info),
 			&ConfigManager::getDirectoryFinish);
 	}
@@ -1739,12 +1739,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getInstallDirectoryStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getInstallDirectoryFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getInstallDirectoryStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getInstallDirectoryFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getInstallDirectoryAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getInstallDirectoryStart(true, info),
 			&ConfigManager::getInstallDirectoryFinish);
 	}
@@ -1762,12 +1762,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRootDirectoryStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRootDirectoryFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRootDirectoryStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRootDirectoryFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRootDirectoryAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRootDirectoryStart(true, info),
 			&ConfigManager::getRootDirectoryFinish);
 	}
@@ -2439,12 +2439,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getFieldStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getFieldFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getFieldStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getFieldFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getFieldAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getFieldStart(true, info),
 			&MessageMetadata::getFieldFinish);
 	}
@@ -2462,12 +2462,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRelationStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRelationFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRelationStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRelationFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRelationAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRelationStart(true, info),
 			&MessageMetadata::getRelationFinish);
 	}
@@ -2485,12 +2485,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getOwnerStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getOwnerFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getOwnerFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getOwnerAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getOwnerStart(true, info),
 			&MessageMetadata::getOwnerFinish);
 	}
@@ -2508,12 +2508,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getAliasStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getAliasFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getAliasStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getAliasFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getAliasAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getAliasStart(true, info),
 			&MessageMetadata::getAliasFinish);
 	}
@@ -3470,12 +3470,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getPlanStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getPlanFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getPlanStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getPlanFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getPlanAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getPlanStart(true, info),
 			&Statement::getPlanFinish);
 	}
@@ -5151,12 +5151,12 @@ private:
 	static void InitPrototype(std::vector<Napi::ObjectWrap<ServerBlock>::PropertyDescriptor>& properties);
 
 private:
-	static MethodStart<std::string> getLoginStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getLoginFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getLoginStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getLoginFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getLoginAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getLoginStart(true, info),
 			&ServerBlock::getLoginFinish);
 	}
@@ -5303,12 +5303,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getLoginStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getLoginFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getLoginStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getLoginFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getLoginAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getLoginStart(true, info),
 			&ClientBlock::getLoginFinish);
 	}
@@ -5326,12 +5326,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getPasswordStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getPasswordFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getPasswordStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getPasswordFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getPasswordAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getPasswordStart(true, info),
 			&ClientBlock::getPasswordFinish);
 	}
@@ -5842,12 +5842,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getStart(true, info),
 			&CharUserField::getFinish);
 	}
@@ -6335,12 +6335,12 @@ private:
 	static void InitPrototype(std::vector<Napi::ObjectWrap<LogonInfo>::PropertyDescriptor>& properties);
 
 private:
-	static MethodStart<std::string> nameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value nameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> nameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value nameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value nameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			nameStart(true, info),
 			&LogonInfo::nameFinish);
 	}
@@ -6358,12 +6358,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> roleStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value roleFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> roleStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value roleFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value roleAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			roleStart(true, info),
 			&LogonInfo::roleFinish);
 	}
@@ -6381,12 +6381,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> networkProtocolStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value networkProtocolFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> networkProtocolStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value networkProtocolFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value networkProtocolAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			networkProtocolStart(true, info),
 			&LogonInfo::networkProtocolFinish);
 	}
@@ -6404,12 +6404,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> remoteAddressStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value remoteAddressFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> remoteAddressStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value remoteAddressFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value remoteAddressAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			remoteAddressStart(true, info),
 			&LogonInfo::remoteAddressFinish);
 	}
@@ -6754,12 +6754,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getKnownTypesStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getKnownTypesFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getKnownTypesStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getKnownTypesFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getKnownTypesAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getKnownTypesStart(true, info),
 			&WireCryptPlugin::getKnownTypesFinish);
 	}
@@ -7340,12 +7340,12 @@ private:
 	static void InitPrototype(std::vector<Napi::ObjectWrap<RoutineMetadata>::PropertyDescriptor>& properties);
 
 private:
-	static MethodStart<std::string> getPackageStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getPackageFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getPackageStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getPackageFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getPackageAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getPackageStart(true, info),
 			&RoutineMetadata::getPackageFinish);
 	}
@@ -7363,12 +7363,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getNameStart(true, info),
 			&RoutineMetadata::getNameFinish);
 	}
@@ -7386,12 +7386,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getEntryPointStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getEntryPointFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getEntryPointStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getEntryPointFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getEntryPointAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getEntryPointStart(true, info),
 			&RoutineMetadata::getEntryPointFinish);
 	}
@@ -7409,12 +7409,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getBodyStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getBodyFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getBodyStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getBodyFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getBodyAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getBodyStart(true, info),
 			&RoutineMetadata::getBodyFinish);
 	}
@@ -7501,12 +7501,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getTriggerTableStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getTriggerTableFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getTriggerTableStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getTriggerTableFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getTriggerTableAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getTriggerTableStart(true, info),
 			&RoutineMetadata::getTriggerTableFinish);
 	}
@@ -8496,12 +8496,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getStringStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getStringFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getStringStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getStringFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getStringAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getStringStart(true, info),
 			&XpbBuilder::getStringFinish);
 	}
@@ -8648,12 +8648,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getUserNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getUserNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getUserNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getUserNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getUserNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getUserNameStart(true, info),
 			&TraceConnection::getUserNameFinish);
 	}
@@ -8671,12 +8671,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRoleNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRoleNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRoleNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRoleNameStart(true, info),
 			&TraceConnection::getRoleNameFinish);
 	}
@@ -8694,12 +8694,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getCharSetStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getCharSetFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getCharSetStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getCharSetFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getCharSetAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getCharSetStart(true, info),
 			&TraceConnection::getCharSetFinish);
 	}
@@ -8717,12 +8717,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProtocolAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProtocolStart(true, info),
 			&TraceConnection::getRemoteProtocolFinish);
 	}
@@ -8740,12 +8740,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteAddressFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteAddressFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteAddressAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteAddressStart(true, info),
 			&TraceConnection::getRemoteAddressFinish);
 	}
@@ -8786,12 +8786,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProcessNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProcessNameStart(true, info),
 			&TraceConnection::getRemoteProcessNameFinish);
 	}
@@ -8869,12 +8869,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getUserNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getUserNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getUserNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getUserNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getUserNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getUserNameStart(true, info),
 			&TraceDatabaseConnection::getUserNameFinish);
 	}
@@ -8892,12 +8892,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRoleNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRoleNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRoleNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRoleNameStart(true, info),
 			&TraceDatabaseConnection::getRoleNameFinish);
 	}
@@ -8915,12 +8915,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getCharSetStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getCharSetFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getCharSetStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getCharSetFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getCharSetAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getCharSetStart(true, info),
 			&TraceDatabaseConnection::getCharSetFinish);
 	}
@@ -8938,12 +8938,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProtocolAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProtocolStart(true, info),
 			&TraceDatabaseConnection::getRemoteProtocolFinish);
 	}
@@ -8961,12 +8961,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteAddressFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteAddressFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteAddressAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteAddressStart(true, info),
 			&TraceDatabaseConnection::getRemoteAddressFinish);
 	}
@@ -9007,12 +9007,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProcessNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProcessNameStart(true, info),
 			&TraceDatabaseConnection::getRemoteProcessNameFinish);
 	}
@@ -9053,12 +9053,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getDatabaseNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getDatabaseNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getDatabaseNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDatabaseNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getDatabaseNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getDatabaseNameStart(true, info),
 			&TraceDatabaseConnection::getDatabaseNameFinish);
 	}
@@ -9276,12 +9276,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getUserNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getUserNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getUserNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getUserNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getUserNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getUserNameStart(true, info),
 			&TraceServiceConnection::getUserNameFinish);
 	}
@@ -9299,12 +9299,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRoleNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRoleNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRoleNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRoleNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRoleNameStart(true, info),
 			&TraceServiceConnection::getRoleNameFinish);
 	}
@@ -9322,12 +9322,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getCharSetStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getCharSetFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getCharSetStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getCharSetFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getCharSetAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getCharSetStart(true, info),
 			&TraceServiceConnection::getCharSetFinish);
 	}
@@ -9345,12 +9345,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProtocolFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProtocolAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProtocolStart(true, info),
 			&TraceServiceConnection::getRemoteProtocolFinish);
 	}
@@ -9368,12 +9368,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteAddressFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteAddressStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteAddressFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteAddressAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteAddressStart(true, info),
 			&TraceServiceConnection::getRemoteAddressFinish);
 	}
@@ -9414,12 +9414,12 @@ private:
 		}
 	}
 
-	static MethodStart<std::string> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, std::string ret);
+	static MethodStart<OptString> getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRemoteProcessNameFinish(const Napi::Env env, OptString ret);
 
 	Napi::Value getRemoteProcessNameAsync(const Napi::CallbackInfo& info)
 	{
-		return PromiseWorker<std::string>::Run(info.Env(),
+		return PromiseWorker<OptString>::Run(info.Env(),
 			getRemoteProcessNameStart(true, info),
 			&TraceServiceConnection::getRemoteProcessNameFinish);
 	}
@@ -10517,7 +10517,7 @@ Napi::Value PluginSet::releaseFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> PluginSet::getNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> PluginSet::getNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<PluginSet>::Unwrap(info.This().ToObject());
 
@@ -10526,12 +10526,12 @@ MethodStart<std::string> PluginSet::getNameStart(bool async, const Napi::Callbac
 	};
 }
 
-Napi::Value PluginSet::getNameFinish(const Napi::Env env, std::string ret)
+Napi::Value PluginSet::getNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> PluginSet::getModuleNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> PluginSet::getModuleNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<PluginSet>::Unwrap(info.This().ToObject());
 
@@ -10540,9 +10540,9 @@ MethodStart<std::string> PluginSet::getModuleNameStart(bool async, const Napi::C
 	};
 }
 
-Napi::Value PluginSet::getModuleNameFinish(const Napi::Env env, std::string ret)
+Napi::Value PluginSet::getModuleNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<fb::IPluginBase*> PluginSet::getPluginStart(bool async, const Napi::CallbackInfo& info)
@@ -10643,7 +10643,7 @@ Napi::Value ConfigEntry::releaseFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> ConfigEntry::getNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ConfigEntry::getNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ConfigEntry>::Unwrap(info.This().ToObject());
 
@@ -10652,12 +10652,12 @@ MethodStart<std::string> ConfigEntry::getNameStart(bool async, const Napi::Callb
 	};
 }
 
-Napi::Value ConfigEntry::getNameFinish(const Napi::Env env, std::string ret)
+Napi::Value ConfigEntry::getNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> ConfigEntry::getValueStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ConfigEntry::getValueStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ConfigEntry>::Unwrap(info.This().ToObject());
 
@@ -10666,9 +10666,9 @@ MethodStart<std::string> ConfigEntry::getValueStart(bool async, const Napi::Call
 	};
 }
 
-Napi::Value ConfigEntry::getValueFinish(const Napi::Env env, std::string ret)
+Napi::Value ConfigEntry::getValueFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<int64_t> ConfigEntry::getIntValueStart(bool async, const Napi::CallbackInfo& info)
@@ -10886,7 +10886,7 @@ Napi::Value FirebirdConf::asIntegerFinish(const Napi::Env env, int64_t ret)
 	return Napi::Value::From(env, (double) ret);
 }
 
-MethodStart<std::string> FirebirdConf::asStringStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> FirebirdConf::asStringStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<FirebirdConf>::Unwrap(info.This().ToObject());
 	unsigned key = (unsigned) info[0].ToNumber();
@@ -10896,9 +10896,9 @@ MethodStart<std::string> FirebirdConf::asStringStart(bool async, const Napi::Cal
 	};
 }
 
-Napi::Value FirebirdConf::asStringFinish(const Napi::Env env, std::string ret)
+Napi::Value FirebirdConf::asStringFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<FB_BOOLEAN> FirebirdConf::asBooleanStart(bool async, const Napi::CallbackInfo& info)
@@ -10961,7 +10961,7 @@ Napi::Value PluginConfig::releaseFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> PluginConfig::getConfigFileNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> PluginConfig::getConfigFileNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<PluginConfig>::Unwrap(info.This().ToObject());
 
@@ -10970,9 +10970,9 @@ MethodStart<std::string> PluginConfig::getConfigFileNameStart(bool async, const 
 	};
 }
 
-Napi::Value PluginConfig::getConfigFileNameFinish(const Napi::Env env, std::string ret)
+Napi::Value PluginConfig::getConfigFileNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<fb::IConfig*> PluginConfig::getDefaultConfigStart(bool async, const Napi::CallbackInfo& info)
@@ -11207,7 +11207,7 @@ void ConfigManager::InitPrototype(std::vector<Napi::ObjectWrap<ConfigManager>::P
 	properties.push_back(InstanceMethod("getRootDirectoryAsync", &ConfigManager::getRootDirectoryAsync));
 }
 
-MethodStart<std::string> ConfigManager::getDirectoryStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ConfigManager::getDirectoryStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ConfigManager>::Unwrap(info.This().ToObject());
 	unsigned code = (unsigned) info[0].ToNumber();
@@ -11217,9 +11217,9 @@ MethodStart<std::string> ConfigManager::getDirectoryStart(bool async, const Napi
 	};
 }
 
-Napi::Value ConfigManager::getDirectoryFinish(const Napi::Env env, std::string ret)
+Napi::Value ConfigManager::getDirectoryFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<fb::IFirebirdConf*> ConfigManager::getFirebirdConfStart(bool async, const Napi::CallbackInfo& info)
@@ -11266,7 +11266,7 @@ Napi::Value ConfigManager::getPluginConfigFinish(const Napi::Env env, fb::IConfi
 	return Config::NewInstance(env, ret);
 }
 
-MethodStart<std::string> ConfigManager::getInstallDirectoryStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ConfigManager::getInstallDirectoryStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ConfigManager>::Unwrap(info.This().ToObject());
 
@@ -11275,12 +11275,12 @@ MethodStart<std::string> ConfigManager::getInstallDirectoryStart(bool async, con
 	};
 }
 
-Napi::Value ConfigManager::getInstallDirectoryFinish(const Napi::Env env, std::string ret)
+Napi::Value ConfigManager::getInstallDirectoryFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> ConfigManager::getRootDirectoryStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ConfigManager::getRootDirectoryStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ConfigManager>::Unwrap(info.This().ToObject());
 
@@ -11289,9 +11289,9 @@ MethodStart<std::string> ConfigManager::getRootDirectoryStart(bool async, const 
 	};
 }
 
-Napi::Value ConfigManager::getRootDirectoryFinish(const Napi::Env env, std::string ret)
+Napi::Value ConfigManager::getRootDirectoryFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 void EventCallback::InitPrototype(std::vector<Napi::ObjectWrap<EventCallback>::PropertyDescriptor>& properties)
@@ -11834,7 +11834,7 @@ Napi::Value MessageMetadata::getCountFinish(const Napi::Env env, unsigned ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> MessageMetadata::getFieldStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> MessageMetadata::getFieldStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -11846,12 +11846,12 @@ MethodStart<std::string> MessageMetadata::getFieldStart(bool async, const Napi::
 	};
 }
 
-Napi::Value MessageMetadata::getFieldFinish(const Napi::Env env, std::string ret)
+Napi::Value MessageMetadata::getFieldFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> MessageMetadata::getRelationStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> MessageMetadata::getRelationStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -11863,12 +11863,12 @@ MethodStart<std::string> MessageMetadata::getRelationStart(bool async, const Nap
 	};
 }
 
-Napi::Value MessageMetadata::getRelationFinish(const Napi::Env env, std::string ret)
+Napi::Value MessageMetadata::getRelationFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> MessageMetadata::getOwnerStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> MessageMetadata::getOwnerStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -11880,12 +11880,12 @@ MethodStart<std::string> MessageMetadata::getOwnerStart(bool async, const Napi::
 	};
 }
 
-Napi::Value MessageMetadata::getOwnerFinish(const Napi::Env env, std::string ret)
+Napi::Value MessageMetadata::getOwnerFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> MessageMetadata::getAliasStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> MessageMetadata::getAliasStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -11897,9 +11897,9 @@ MethodStart<std::string> MessageMetadata::getAliasStart(bool async, const Napi::
 	};
 }
 
-Napi::Value MessageMetadata::getAliasFinish(const Napi::Env env, std::string ret)
+Napi::Value MessageMetadata::getAliasFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<unsigned> MessageMetadata::getTypeStart(bool async, const Napi::CallbackInfo& info)
@@ -12659,7 +12659,7 @@ Napi::Value Statement::getTypeFinish(const Napi::Env env, unsigned ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> Statement::getPlanStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> Statement::getPlanStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -12671,9 +12671,9 @@ MethodStart<std::string> Statement::getPlanStart(bool async, const Napi::Callbac
 	};
 }
 
-Napi::Value Statement::getPlanFinish(const Napi::Env env, std::string ret)
+Napi::Value Statement::getPlanFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<uint64_t> Statement::getAffectedRecordsStart(bool async, const Napi::CallbackInfo& info)
@@ -14047,7 +14047,7 @@ void ServerBlock::InitPrototype(std::vector<Napi::ObjectWrap<ServerBlock>::Prope
 	properties.push_back(InstanceMethod("newKeyAsync", &ServerBlock::newKeyAsync));
 }
 
-MethodStart<std::string> ServerBlock::getLoginStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ServerBlock::getLoginStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ServerBlock>::Unwrap(info.This().ToObject());
 
@@ -14056,9 +14056,9 @@ MethodStart<std::string> ServerBlock::getLoginStart(bool async, const Napi::Call
 	};
 }
 
-Napi::Value ServerBlock::getLoginFinish(const Napi::Env env, std::string ret)
+Napi::Value ServerBlock::getLoginFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<const unsigned char*> ServerBlock::getDataStart(bool async, const Napi::CallbackInfo& info)
@@ -14160,7 +14160,7 @@ Napi::Value ClientBlock::releaseFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> ClientBlock::getLoginStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ClientBlock::getLoginStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ClientBlock>::Unwrap(info.This().ToObject());
 
@@ -14169,12 +14169,12 @@ MethodStart<std::string> ClientBlock::getLoginStart(bool async, const Napi::Call
 	};
 }
 
-Napi::Value ClientBlock::getLoginFinish(const Napi::Env env, std::string ret)
+Napi::Value ClientBlock::getLoginFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> ClientBlock::getPasswordStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> ClientBlock::getPasswordStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ClientBlock>::Unwrap(info.This().ToObject());
 
@@ -14183,9 +14183,9 @@ MethodStart<std::string> ClientBlock::getPasswordStart(bool async, const Napi::C
 	};
 }
 
-Napi::Value ClientBlock::getPasswordFinish(const Napi::Env env, std::string ret)
+Napi::Value ClientBlock::getPasswordFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<const unsigned char*> ClientBlock::getDataStart(bool async, const Napi::CallbackInfo& info)
@@ -14537,7 +14537,7 @@ Napi::Value CharUserField::setEnteredFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<std::string> CharUserField::getStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> CharUserField::getStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<CharUserField>::Unwrap(info.This().ToObject());
 
@@ -14546,9 +14546,9 @@ MethodStart<std::string> CharUserField::getStart(bool async, const Napi::Callbac
 	};
 }
 
-Napi::Value CharUserField::getFinish(const Napi::Env env, std::string ret)
+Napi::Value CharUserField::getFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<void*> CharUserField::setStart(bool async, const Napi::CallbackInfo& info)
@@ -14882,7 +14882,7 @@ void LogonInfo::InitPrototype(std::vector<Napi::ObjectWrap<LogonInfo>::PropertyD
 	properties.push_back(InstanceMethod("authBlockAsync", &LogonInfo::authBlockAsync));
 }
 
-MethodStart<std::string> LogonInfo::nameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> LogonInfo::nameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
 
@@ -14891,12 +14891,12 @@ MethodStart<std::string> LogonInfo::nameStart(bool async, const Napi::CallbackIn
 	};
 }
 
-Napi::Value LogonInfo::nameFinish(const Napi::Env env, std::string ret)
+Napi::Value LogonInfo::nameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> LogonInfo::roleStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> LogonInfo::roleStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
 
@@ -14905,12 +14905,12 @@ MethodStart<std::string> LogonInfo::roleStart(bool async, const Napi::CallbackIn
 	};
 }
 
-Napi::Value LogonInfo::roleFinish(const Napi::Env env, std::string ret)
+Napi::Value LogonInfo::roleFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> LogonInfo::networkProtocolStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> LogonInfo::networkProtocolStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
 
@@ -14919,12 +14919,12 @@ MethodStart<std::string> LogonInfo::networkProtocolStart(bool async, const Napi:
 	};
 }
 
-Napi::Value LogonInfo::networkProtocolFinish(const Napi::Env env, std::string ret)
+Napi::Value LogonInfo::networkProtocolFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> LogonInfo::remoteAddressStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> LogonInfo::remoteAddressStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
 
@@ -14933,9 +14933,9 @@ MethodStart<std::string> LogonInfo::remoteAddressStart(bool async, const Napi::C
 	};
 }
 
-Napi::Value LogonInfo::remoteAddressFinish(const Napi::Env env, std::string ret)
+Napi::Value LogonInfo::remoteAddressFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<const unsigned char*> LogonInfo::authBlockStart(bool async, const Napi::CallbackInfo& info)
@@ -15182,7 +15182,7 @@ Napi::Value WireCryptPlugin::getOwnerFinish(const Napi::Env env, fb::IReferenceC
 	return ReferenceCounted::NewInstance(env, ret);
 }
 
-MethodStart<std::string> WireCryptPlugin::getKnownTypesStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> WireCryptPlugin::getKnownTypesStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<WireCryptPlugin>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15193,9 +15193,9 @@ MethodStart<std::string> WireCryptPlugin::getKnownTypesStart(bool async, const N
 	};
 }
 
-Napi::Value WireCryptPlugin::getKnownTypesFinish(const Napi::Env env, std::string ret)
+Napi::Value WireCryptPlugin::getKnownTypesFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<void*> WireCryptPlugin::setKeyStart(bool async, const Napi::CallbackInfo& info)
@@ -15594,7 +15594,7 @@ void RoutineMetadata::InitPrototype(std::vector<Napi::ObjectWrap<RoutineMetadata
 	properties.push_back(InstanceMethod("getTriggerTypeAsync", &RoutineMetadata::getTriggerTypeAsync));
 }
 
-MethodStart<std::string> RoutineMetadata::getPackageStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> RoutineMetadata::getPackageStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<RoutineMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15605,12 +15605,12 @@ MethodStart<std::string> RoutineMetadata::getPackageStart(bool async, const Napi
 	};
 }
 
-Napi::Value RoutineMetadata::getPackageFinish(const Napi::Env env, std::string ret)
+Napi::Value RoutineMetadata::getPackageFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> RoutineMetadata::getNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> RoutineMetadata::getNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<RoutineMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15621,12 +15621,12 @@ MethodStart<std::string> RoutineMetadata::getNameStart(bool async, const Napi::C
 	};
 }
 
-Napi::Value RoutineMetadata::getNameFinish(const Napi::Env env, std::string ret)
+Napi::Value RoutineMetadata::getNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> RoutineMetadata::getEntryPointStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> RoutineMetadata::getEntryPointStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<RoutineMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15637,12 +15637,12 @@ MethodStart<std::string> RoutineMetadata::getEntryPointStart(bool async, const N
 	};
 }
 
-Napi::Value RoutineMetadata::getEntryPointFinish(const Napi::Env env, std::string ret)
+Napi::Value RoutineMetadata::getEntryPointFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> RoutineMetadata::getBodyStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> RoutineMetadata::getBodyStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<RoutineMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15653,9 +15653,9 @@ MethodStart<std::string> RoutineMetadata::getBodyStart(bool async, const Napi::C
 	};
 }
 
-Napi::Value RoutineMetadata::getBodyFinish(const Napi::Env env, std::string ret)
+Napi::Value RoutineMetadata::getBodyFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<fb::IMessageMetadata*> RoutineMetadata::getInputMetadataStart(bool async, const Napi::CallbackInfo& info)
@@ -15706,7 +15706,7 @@ Napi::Value RoutineMetadata::getTriggerMetadataFinish(const Napi::Env env, fb::I
 	return MessageMetadata::NewInstance(env, ret);
 }
 
-MethodStart<std::string> RoutineMetadata::getTriggerTableStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> RoutineMetadata::getTriggerTableStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<RoutineMetadata>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -15717,9 +15717,9 @@ MethodStart<std::string> RoutineMetadata::getTriggerTableStart(bool async, const
 	};
 }
 
-Napi::Value RoutineMetadata::getTriggerTableFinish(const Napi::Env env, std::string ret)
+Napi::Value RoutineMetadata::getTriggerTableFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<unsigned> RoutineMetadata::getTriggerTypeStart(bool async, const Napi::CallbackInfo& info)
@@ -16491,7 +16491,7 @@ Napi::Value XpbBuilder::getBigIntFinish(const Napi::Env env, int64_t ret)
 	return Napi::Value::From(env, (double) ret);
 }
 
-MethodStart<std::string> XpbBuilder::getStringStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> XpbBuilder::getStringStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<XpbBuilder>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
@@ -16502,9 +16502,9 @@ MethodStart<std::string> XpbBuilder::getStringStart(bool async, const Napi::Call
 	};
 }
 
-Napi::Value XpbBuilder::getStringFinish(const Napi::Env env, std::string ret)
+Napi::Value XpbBuilder::getStringFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<const unsigned char*> XpbBuilder::getBytesStart(bool async, const Napi::CallbackInfo& info)
@@ -16605,7 +16605,7 @@ Napi::Value TraceConnection::getProcessIDFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16614,12 +16614,12 @@ MethodStart<std::string> TraceConnection::getUserNameStart(bool async, const Nap
 	};
 }
 
-Napi::Value TraceConnection::getUserNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getUserNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16628,12 +16628,12 @@ MethodStart<std::string> TraceConnection::getRoleNameStart(bool async, const Nap
 	};
 }
 
-Napi::Value TraceConnection::getRoleNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getRoleNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16642,12 +16642,12 @@ MethodStart<std::string> TraceConnection::getCharSetStart(bool async, const Napi
 	};
 }
 
-Napi::Value TraceConnection::getCharSetFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getCharSetFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16656,12 +16656,12 @@ MethodStart<std::string> TraceConnection::getRemoteProtocolStart(bool async, con
 	};
 }
 
-Napi::Value TraceConnection::getRemoteProtocolFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getRemoteProtocolFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16670,9 +16670,9 @@ MethodStart<std::string> TraceConnection::getRemoteAddressStart(bool async, cons
 	};
 }
 
-Napi::Value TraceConnection::getRemoteAddressFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getRemoteAddressFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<int> TraceConnection::getRemoteProcessIDStart(bool async, const Napi::CallbackInfo& info)
@@ -16689,7 +16689,7 @@ Napi::Value TraceConnection::getRemoteProcessIDFinish(const Napi::Env env, int r
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceConnection>::Unwrap(info.This().ToObject());
 
@@ -16698,9 +16698,9 @@ MethodStart<std::string> TraceConnection::getRemoteProcessNameStart(bool async, 
 	};
 }
 
-Napi::Value TraceConnection::getRemoteProcessNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceConnection::getRemoteProcessNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 void TraceDatabaseConnection::InitPrototype(std::vector<Napi::ObjectWrap<TraceDatabaseConnection>::PropertyDescriptor>& properties)
@@ -16757,7 +16757,7 @@ Napi::Value TraceDatabaseConnection::getProcessIDFinish(const Napi::Env env, int
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16766,12 +16766,12 @@ MethodStart<std::string> TraceDatabaseConnection::getUserNameStart(bool async, c
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getUserNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getUserNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16780,12 +16780,12 @@ MethodStart<std::string> TraceDatabaseConnection::getRoleNameStart(bool async, c
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getRoleNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getRoleNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16794,12 +16794,12 @@ MethodStart<std::string> TraceDatabaseConnection::getCharSetStart(bool async, co
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getCharSetFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getCharSetFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16808,12 +16808,12 @@ MethodStart<std::string> TraceDatabaseConnection::getRemoteProtocolStart(bool as
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getRemoteProtocolFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getRemoteProtocolFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16822,9 +16822,9 @@ MethodStart<std::string> TraceDatabaseConnection::getRemoteAddressStart(bool asy
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getRemoteAddressFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getRemoteAddressFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<int> TraceDatabaseConnection::getRemoteProcessIDStart(bool async, const Napi::CallbackInfo& info)
@@ -16841,7 +16841,7 @@ Napi::Value TraceDatabaseConnection::getRemoteProcessIDFinish(const Napi::Env en
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16850,9 +16850,9 @@ MethodStart<std::string> TraceDatabaseConnection::getRemoteProcessNameStart(bool
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getRemoteProcessNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getRemoteProcessNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<int64_t> TraceDatabaseConnection::getConnectionIDStart(bool async, const Napi::CallbackInfo& info)
@@ -16869,7 +16869,7 @@ Napi::Value TraceDatabaseConnection::getConnectionIDFinish(const Napi::Env env, 
 	return Napi::Value::From(env, (double) ret);
 }
 
-MethodStart<std::string> TraceDatabaseConnection::getDatabaseNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceDatabaseConnection::getDatabaseNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceDatabaseConnection>::Unwrap(info.This().ToObject());
 
@@ -16878,9 +16878,9 @@ MethodStart<std::string> TraceDatabaseConnection::getDatabaseNameStart(bool asyn
 	};
 }
 
-Napi::Value TraceDatabaseConnection::getDatabaseNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceDatabaseConnection::getDatabaseNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 void TraceTransaction::InitPrototype(std::vector<Napi::ObjectWrap<TraceTransaction>::PropertyDescriptor>& properties)
@@ -16973,7 +16973,7 @@ Napi::Value TraceServiceConnection::getProcessIDFinish(const Napi::Env env, int 
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceServiceConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getUserNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -16982,12 +16982,12 @@ MethodStart<std::string> TraceServiceConnection::getUserNameStart(bool async, co
 	};
 }
 
-Napi::Value TraceServiceConnection::getUserNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getUserNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceServiceConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getRoleNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -16996,12 +16996,12 @@ MethodStart<std::string> TraceServiceConnection::getRoleNameStart(bool async, co
 	};
 }
 
-Napi::Value TraceServiceConnection::getRoleNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getRoleNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceServiceConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getCharSetStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -17010,12 +17010,12 @@ MethodStart<std::string> TraceServiceConnection::getCharSetStart(bool async, con
 	};
 }
 
-Napi::Value TraceServiceConnection::getCharSetFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getCharSetFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getRemoteProtocolStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -17024,12 +17024,12 @@ MethodStart<std::string> TraceServiceConnection::getRemoteProtocolStart(bool asy
 	};
 }
 
-Napi::Value TraceServiceConnection::getRemoteProtocolFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getRemoteProtocolFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getRemoteAddressStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -17038,9 +17038,9 @@ MethodStart<std::string> TraceServiceConnection::getRemoteAddressStart(bool asyn
 	};
 }
 
-Napi::Value TraceServiceConnection::getRemoteAddressFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getRemoteAddressFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 MethodStart<int> TraceServiceConnection::getRemoteProcessIDStart(bool async, const Napi::CallbackInfo& info)
@@ -17057,7 +17057,7 @@ Napi::Value TraceServiceConnection::getRemoteProcessIDFinish(const Napi::Env env
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<std::string> TraceServiceConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<OptString> TraceServiceConnection::getRemoteProcessNameStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<TraceServiceConnection>::Unwrap(info.This().ToObject());
 
@@ -17066,9 +17066,9 @@ MethodStart<std::string> TraceServiceConnection::getRemoteProcessNameStart(bool 
 	};
 }
 
-Napi::Value TraceServiceConnection::getRemoteProcessNameFinish(const Napi::Env env, std::string ret)
+Napi::Value TraceServiceConnection::getRemoteProcessNameFinish(const Napi::Env env, OptString ret)
 {
-	return Napi::Value::From(env, ret);
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 void TraceStatusVector::InitPrototype(std::vector<Napi::ObjectWrap<TraceStatusVector>::PropertyDescriptor>& properties)
