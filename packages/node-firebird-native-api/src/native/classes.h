@@ -173,6 +173,33 @@ std::string formatStatus(fb::IStatus* status);
 void rethrowException(const Napi::Env env);
 
 
+class OptString
+{
+public:
+	OptString(const char* s)
+		: null(s == nullptr)
+	{
+		if (s)
+			str = s;
+	}
+
+public:
+	bool isNull() const
+	{
+		return null;
+	}
+
+	const std::string& string() const
+	{
+		return str;
+	}
+
+private:
+	std::string str;
+	bool null;
+};
+
+
 template <typename T>
 using MethodStart = std::function<T ()>;
 
