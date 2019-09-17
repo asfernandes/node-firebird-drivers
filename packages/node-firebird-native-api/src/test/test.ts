@@ -403,7 +403,7 @@ describe('node-firebird-native-api', () => {
 								inputMetadata2.releaseSync();
 							}
 
-							const outputMetadata2 = (await statement2.getOutputMetadataSync(status))!;
+							const outputMetadata2 = (await statement2.getOutputMetadataAsync(status))!;
 							try {
 								expect(outputMetadata2.getCountSync(status)).toBe(0);
 								expect(outputMetadata2.getMessageLengthSync(status)).toBe(0);
@@ -422,6 +422,94 @@ describe('node-firebird-native-api', () => {
 				}
 				finally {
 					await attachment.dropDatabaseAsync(status);
+				}
+			}
+			finally {
+				status.disposeSync();
+			}
+		});
+	});
+
+	describe('Statement', () => {
+		test('#getPlanSync()', () => {
+			const status = master.getStatusSync()!;
+			try {
+				const attachment = dispatcher.createDatabaseSync(status, getTempFile('Statement-getPlanSync.fdb'), 0, undefined)!;
+				try
+				{
+					const transaction = attachment.startTransactionSync(status, 0, undefined)!;
+					try {
+						const stmt1 = `create table t (n integer)`;
+
+						const statement1 = attachment.prepareSync(status, transaction, 0, stmt1, 3, 0)!;
+						try {
+							const plan = statement1.getPlanSync(status, false);
+							expect(plan).toBeNull();
+						}
+						finally {
+							statement1.freeSync(status);
+						}
+
+						const stmt2 = `select rdb$relation_id from rdb$database`;
+
+						const statement2 = attachment.prepareSync(status, transaction, 0, stmt2, 3, 0)!;
+						try {
+							const plan = statement2.getPlanSync(status, false);
+							expect(plan!.trim()).toBe('PLAN (RDB$DATABASE NATURAL)');
+						}
+						finally {
+							statement2.freeSync(status);
+						}
+					}
+					finally {
+						transaction.commitSync(status);
+					}
+				}
+				finally {
+					attachment.dropDatabaseSync(status);
+				}
+			}
+			finally {
+				status.disposeSync();
+			}
+		});
+
+		test('#getPlanASync()', async () => {
+			const status = master.getStatusSync()!;
+			try {
+				const attachment = await dispatcher.createDatabaseAsync(status, getTempFile('Statement-getPlanAsync.fdb'), 0, undefined)!;
+				try
+				{
+					const transaction = await attachment!.startTransactionAsync(status, 0, undefined)!;
+					try {
+						const stmt1 = `create table t (n integer)`;
+
+						const statement1 = await attachment!.prepareAsync(status, transaction, 0, stmt1, 3, 0)!;
+						try {
+							const plan = await statement1!.getPlanAsync(status, false);
+							expect(plan).toBeNull();
+						}
+						finally {
+							await statement1!.freeAsync(status);
+						}
+
+						const stmt2 = `select rdb$relation_id from rdb$database`;
+
+						const statement2 = await attachment!.prepareAsync(status, transaction, 0, stmt2, 3, 0)!;
+						try {
+							const plan = await statement2!.getPlanAsync(status, false);
+							expect(plan!.trim()).toBe('PLAN (RDB$DATABASE NATURAL)');
+						}
+						finally {
+							await statement2!.freeAsync(status);
+						}
+					}
+					finally {
+						await transaction!.commitAsync(status);
+					}
+				}
+				finally {
+					await attachment!.dropDatabaseAsync(status);
 				}
 			}
 			finally {
