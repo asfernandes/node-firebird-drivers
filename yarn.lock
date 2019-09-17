@@ -4429,10 +4429,10 @@ node-addon-api@^1.7.1:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.1.tgz#cf813cd69bb8d9100f6bdca6755fc268f54ac492"
   integrity sha512-2+DuKodWvwRTrCfKOeR24KIc5unKjOh8mz17NCzVnHWfjAdDqbfbjqh7gUT+BkXBRQM52+xCHciKWonJ3CbJMQ==
 
-node-cloop-gen@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-1.0.0.tgz#9a8158d216ae24f0d8457dc1a7d0ab1c3bdc2d64"
-  integrity sha512-zKdCGmf85A2aUIAI77BsW7x4/WPANe6o2QL4UuBsKwVvPn0Mp1MHF2Ch8IHemmtEa1zOtXq5x61kZ7qsc5Vk8g==
+node-cloop-gen@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/node-cloop-gen/-/node-cloop-gen-1.0.1.tgz#fa6cc802e1c8287e2e5c37536397f137a59b063a"
+  integrity sha512-eGDdfP5TNSwxzUJcDdfM9LZZ+PewXj04j+HO9YteavN9rO/A7B6x/d8Elp6lTVhhaCQdgC9Ws9AgBUF6IGWQVA==
   dependencies:
     "@types/node" "^8.10.19"
 
