@@ -1,6 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "driver",
+			"path": "packages/node-firebird-driver"
+		},
+		{
+			"name": "driver-native",
+			"path": "packages/node-firebird-driver-native"
+		},
+		{
+			"name": "native-api",
+			"path": "packages/node-firebird-native-api"
+		},
+		{
+			"name": "root",
 			"path": "."
 		}
 	],
@@ -16,6 +29,8 @@
 			"**/dist/": true
 		},
 
-		"typescript.tsdk": "node_modules/typescript/lib"
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"tslint.packageManager": "yarn",
+		"npm.packageManager": "yarn"
 	}
 }
