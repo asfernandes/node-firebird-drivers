@@ -2,6 +2,7 @@ import { BlobStreamImpl } from './blob';
 import { ClientImpl } from './client';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
+import { EventsImpl } from './events';
 import { createDpb } from './fb-util';
 
 import {
@@ -72,5 +73,11 @@ export class AttachmentImpl extends AbstractAttachment {
 	/** Prepares a query. */
 	protected async internalPrepare(transaction: TransactionImpl, sqlStmt: string, options?: PrepareOptions): Promise<StatementImpl> {
 		return await StatementImpl.prepare(this, transaction, sqlStmt, options);
+	}
+
+	protected async internalQueueEvents(
+		names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<EventsImpl>
+	{
+		return await EventsImpl.queue(this, names, callBack);
 	}
 }

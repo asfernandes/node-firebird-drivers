@@ -131,6 +131,8 @@ export interface Attachment {
 			executeOptions?: ExecuteQueryOptions
 		}): Promise<ResultSet>;
 
+	queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events>;
+
 	/** Default transaction options. */
 	defaultTransactionOptions?: TransactionOptions;
 
@@ -199,6 +201,10 @@ export interface ResultSet {
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
+}
+
+export interface Events {
+	cancel(): Promise<void>;
 }
 
 /** Blob class. */

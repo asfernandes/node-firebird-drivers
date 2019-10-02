@@ -1,4 +1,4 @@
-import { Master } from './cloop-gen';
+import { EventCallback, Master } from './cloop-gen';
 
 import * as os from 'os';
 
@@ -19,5 +19,6 @@ const native = require('bindings')('addon');
 
 export const getMaster: (library: string) => Master = native.getMaster;
 export const disposeMaster: (master: Master) => boolean = native.disposeMaster;
+export const newEventCallback: (func: (buffer: ArrayBuffer) => void) => EventCallback = native.newEventCallback;
 
 export * from './cloop-gen';

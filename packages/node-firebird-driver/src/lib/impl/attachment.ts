@@ -3,12 +3,14 @@ import { AbstractClient } from './client';
 import { AbstractResultSet } from './resultset';
 import { AbstractStatement } from './statement';
 import { AbstractTransaction } from './transaction';
+import { AbstractEvents } from './events';
 
 import {
 	Attachment,
 	Blob,
 	ExecuteOptions,
 	ExecuteQueryOptions,
+	Events,
 	FetchOptions,
 	PrepareOptions,
 	TransactionOptions
@@ -17,6 +19,7 @@ import {
 
 /** AbstractAttachment implementation. */
 export abstract class AbstractAttachment implements Attachment {
+	events = new Set<Events>();
 	statements = new Set<AbstractStatement>();
 	transactions = new Set<AbstractTransaction>();
 
@@ -128,6 +131,14 @@ export abstract class AbstractAttachment implements Attachment {
 		}
 	}
 
+	async queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events> {
+		this.check();
+
+		const events = await this.internalQueueEvents(names, callBack);
+		this.events.add(events);
+		return events;
+	}
+
 	async createBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream> {
 		return await this.internalCreateBlob(transaction);
 	}
@@ -163,6 +174,7 @@ export abstract class AbstractAttachment implements Attachment {
 
 	private async preDispose() {
 		try {
+			await Promise.all(Array.from(this.events).map(events => events.cancel()));
 			await Promise.all(Array.from(this.statements).map(statement => statement.dispose()));
 			await Promise.all(Array.from(this.transactions).map(transaction => transaction.rollback()));
 		}
@@ -184,4 +196,6 @@ export abstract class AbstractAttachment implements Attachment {
 	protected abstract async internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
 		Promise<AbstractStatement>;
 	protected abstract async internalStartTransaction(options?: TransactionOptions): Promise<AbstractTransaction>;
+	protected abstract internalQueueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>):
+		Promise<AbstractEvents>;
 }
