@@ -5,7 +5,7 @@
   "main": "dist/lib/index.js",
   "scripts": {
     "build": "yarn run clean && yarn run lint && tsc --build",
-    "build:w": "yarn run clean && tsc --build -w",
+    "build:w": "tsc --build -w",
     "clean": "tsc --build --clean && rimraf dist",
     "lint": "tslint --project .",
     "prepublishOnly": "yarn run build && yarn test",
