@@ -146,6 +146,80 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			test('#queueEvents()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-queueEvents.fdb'));
+
+				const eventNames: [string, number][] = [
+					['EVENT1', 16],
+					['EVENT2', 8]
+				];
+
+				const eventsObj = eventNames.map(([name, expected]) => {
+					let resolver: () => void = undefined!;
+
+					const obj = {
+						name,
+						expected,
+						count: 0,
+						promise: new Promise<void>(resolve => resolver = resolve)
+					};
+
+					return { ...obj, resolver };
+				});
+				const eventsMap = new Map(eventsObj.map(ev => [ev.name, ev]));
+
+				const eventHandler = async (counters: [string, number][]) => {
+					counters.forEach(([name, count]) => {
+						const obj = eventsMap.get(name)!;
+						const newCount = obj.count + count;
+						obj.count = newCount;
+
+						if (newCount >= obj.expected)
+							obj.resolver();
+					});
+
+					if (Array.from(eventsMap.values()).every(obj => obj.count >= obj.expected)) {
+						await events.cancel();
+						events = null!;
+					}
+				};
+
+				let events = await attachment.queueEvents(Array.from(eventsMap.keys()), eventHandler);
+
+				const transaction = await attachment.startTransaction();
+				try {
+					// Iterate more times than the neccessary so that
+					// eventHandler may have a chance to cancel the events.
+					for (let i = 0; i < 20; ++i) {
+						await attachment.execute(transaction,
+							`execute block as
+							begin
+							    post_event 'EVENT1';
+							    post_event 'EVENT1';
+							    post_event 'EVENT2';
+							    post_event 'EVENT3';
+							end`
+						);
+
+						// Commit retaining to test internal event rescheduling
+						// after each handler dispatch.
+						await transaction.commitRetaining();
+					}
+				}
+				finally {
+					await transaction.commit();
+				}
+
+				await Promise.all(eventsObj.map(ev => ev.promise));
+
+				if (events)
+					await events.cancel();
+
+				eventsObj.forEach(ev => expect(ev.count).toBe(ev.expected));
+
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('Transaction', () => {

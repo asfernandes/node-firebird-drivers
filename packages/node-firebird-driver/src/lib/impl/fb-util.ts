@@ -70,6 +70,13 @@ export namespace tpb {
 	/* tslint:enable */
 }
 
+/** EPB constants. */
+export namespace epb {
+	/* tslint:disable */
+	export const version1 = 1;
+	/* tslint:enable */
+}
+
 /** Blob info. */
 export namespace blobInfo {
 	export const totalLength = 6;

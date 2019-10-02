@@ -1,6 +1,8 @@
+#include <atomic>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 #include <napi.h>
 
 #include "./classes.h"
@@ -13,8 +15,10 @@
 #include <dlfcn.h>
 #endif
 
+using std::atomic;
 using std::map;
 using std::string;
+using std::vector;
 
 #ifdef _WIN32
 typedef HMODULE Handle;
@@ -203,6 +207,103 @@ static Napi::Boolean disposeMaster(const Napi::CallbackInfo& info)
 }
 
 
+//----------------------------------------------------------------------------
+
+
+namespace
+{
+	class EventWorker : public Napi::CustomAsyncWorker
+	{
+	public:
+		EventWorker(const Napi::Env env, Napi::Function& callBack)
+			: CustomAsyncWorker(env)
+		{
+			callBackRef.Reset(callBack);
+		}
+
+	protected:
+		void Execute() override
+		{
+		}
+
+		void OnOK(Napi::Env env) override
+		{
+			Napi::HandleScope scope(env);
+
+			auto buffer = Napi::ArrayBuffer::New(env, data.size());
+			memcpy(buffer.Data(), &data[0], data.size());
+			callBackRef.Call({buffer});
+		}
+
+		void OnError(Napi::Env env, const Napi::Error& e) override
+		{
+		}
+
+	public:
+		vector<ISC_UCHAR> data;
+
+	private:
+		Napi::FunctionReference callBackRef;
+	};
+
+	class EventCallBackImpl : public fb::IEventCallbackImpl<EventCallBackImpl, fb::ThrowStatusWrapper>
+	{
+	public:
+		EventCallBackImpl(Napi::Env env, Napi::Function& callBack)
+			: refCounter(0),
+			  worker(new EventWorker(env, callBack))
+		{
+		}
+
+	private:
+		~EventCallBackImpl()
+		{
+		}
+
+	public:
+		virtual void addRef()
+		{
+			++refCounter;
+		}
+
+		virtual int release()
+		{
+			if (--refCounter == 0)
+			{
+				delete this;
+				return 0;
+			}
+			else
+				return 1;
+		}
+
+	public:
+		void eventCallbackFunction(unsigned int length, const ISC_UCHAR* data)
+		{
+			auto scheduledWorker = worker.release();
+			scheduledWorker->data.clear();
+			scheduledWorker->data.insert(scheduledWorker->data.end(), data, data + length);
+			scheduledWorker->Queue();
+		}
+
+	private:
+		atomic<int> refCounter;
+		std::unique_ptr<EventWorker> worker;
+	};
+}
+
+static Napi::Value newEventCallback(const Napi::CallbackInfo& info)
+{
+	auto callBack = info[0].As<Napi::Function>();
+
+	auto* eventCallback = new EventCallBackImpl(info.Env(), callBack);
+	return EventCallback::NewInstance(info.Env(), eventCallback);
+}
+
+
+//----------------------------------------------------------------------------
+
+
 static Napi::Object initAll(Napi::Env env, Napi::Object exports)
 {
 	exports.Set(Napi::String::New(env, "getMaster"), Napi::Function::New(env, getMaster));
@@ -216,6 +317,9 @@ static Napi::Object initAll(Napi::Env env, Napi::Object exports)
 
 	Napi::Function disposeMasterFunction = Napi::Function::New(env, disposeMaster, "disposeMaster");
 	exports.Set("disposeMaster", disposeMasterFunction);
+
+	Napi::Function newEventCallbackFunction = Napi::Function::New(env, newEventCallback, "newEventCallback");
+	exports.Set("newEventCallback", newEventCallbackFunction);
 
 	Pointer::Init(env, exports, "Pointer");
 
