@@ -23,6 +23,9 @@ describe('node-firebird-native-api', () => {
 		dispatcher = master.getDispatcherSync()!;
 		tmpDir = tmp.mkdirSync().path.toString();
 
+		// Important for MacOS tests with non-embedded server.
+		fs.chmodSync(tmpDir, 0o777);
+
 		// Test premature shutdown prevention. 'master' variable should still be usable.
 		expect(disposeMaster(tempMaster)).toBe(true);
 	});

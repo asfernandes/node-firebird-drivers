@@ -30,6 +30,9 @@ export function runCommonTests(client: Client) {
 		beforeAll(() => {
 			tmpDir = tmp.mkdirSync().path.toString();
 
+			// Important for MacOS tests with non-embedded server.
+			fs.chmodSync(tmpDir, 0o777);
+
 			client.defaultCreateDatabaseOptions = {
 				forcedWrite: false
 			};
