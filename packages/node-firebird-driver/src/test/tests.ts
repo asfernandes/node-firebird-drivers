@@ -25,7 +25,7 @@ export function runCommonTests(client: Client) {
 			return `${tmpDir}/${name}`;
 		}
 
-		jest.setTimeout(5000);
+		jest.setTimeout(10000);
 
 		beforeAll(() => {
 			tmpDir = tmp.mkdirSync().path.toString();
