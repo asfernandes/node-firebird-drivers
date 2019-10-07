@@ -14,7 +14,7 @@ describe('node-firebird-native-api', () => {
 		return `${tmpDir}/${name}`;
 	}
 
-	jest.setTimeout(5000);
+	jest.setTimeout(10000);
 
 	beforeAll(() => {
 		const tempMaster = getMaster(getDefaultLibraryFilename());
