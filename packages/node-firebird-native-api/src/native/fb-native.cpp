@@ -281,9 +281,13 @@ namespace
 		void eventCallbackFunction(unsigned int length, const ISC_UCHAR* data)
 		{
 			auto scheduledWorker = worker.release();
-			scheduledWorker->data.clear();
-			scheduledWorker->data.insert(scheduledWorker->data.end(), data, data + length);
-			scheduledWorker->Queue();
+
+			if (scheduledWorker && length)
+			{
+				scheduledWorker->data.clear();
+				scheduledWorker->data.insert(scheduledWorker->data.end(), data, data + length);
+				scheduledWorker->Queue();
+			}
 		}
 
 	private:
