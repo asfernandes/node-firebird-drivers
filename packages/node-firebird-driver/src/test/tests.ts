@@ -195,15 +195,15 @@ export function runCommonTests(client: Client) {
 					// Iterate more times than the neccessary so that
 					// eventHandler may have a chance to cancel the events.
 					for (let i = 0; i < 20; ++i) {
-						await attachment.execute(transaction,
-							`execute block as
+						await attachment.execute(transaction, `
+							execute block as
 							begin
 							    post_event 'EVENT1';
 							    post_event 'EVENT1';
 							    post_event 'EVENT2';
 							    post_event 'EVENT3';
-							end`
-						);
+							end
+						`);
 
 						// Commit retaining to test internal event rescheduling
 						// after each handler dispatch.
@@ -219,7 +219,7 @@ export function runCommonTests(client: Client) {
 				if (events)
 					await events.cancel();
 
-				eventsObj.forEach(ev => expect(ev.count).toBe(ev.expected));
+				eventsObj.forEach(ev => expect(ev.count).toBeGreaterThanOrEqual(ev.expected));
 
 				await attachment.dropDatabase();
 			});
