@@ -183,8 +183,10 @@ export function runCommonTests(client: Client) {
 					});
 
 					if (Array.from(eventsMap.values()).every(obj => obj.count >= obj.expected)) {
-						await events.cancel();
-						events = null!;
+						if (events) {
+							await events.cancel();
+							events = null!;
+						}
 					}
 				};
 

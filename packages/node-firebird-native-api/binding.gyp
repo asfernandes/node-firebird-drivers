@@ -11,7 +11,8 @@
 			"cflags!": [ "-fno-exceptions" ],
 			"cflags_cc!": [ "-fno-exceptions" ],
 			"defines": [
-				'NAPI_VERSION=1'
+				'NAPI_VERSION=4',
+				'NAPI_EXPERIMENTAL'
 			],
 			'conditions': [
 				[

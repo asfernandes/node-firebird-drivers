@@ -1,7 +1,10 @@
 #include <atomic>
+#include <functional>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <napi.h>
 
@@ -16,8 +19,12 @@
 #endif
 
 using std::atomic;
+using std::function;
 using std::map;
+using std::mutex;
 using std::string;
+using std::unique_ptr;
+using std::unordered_map;
 using std::vector;
 
 #ifdef _WIN32
@@ -212,52 +219,90 @@ static Napi::Boolean disposeMaster(const Napi::CallbackInfo& info)
 
 namespace
 {
-	class EventWorker : public Napi::CustomAsyncWorker
+	class EventCallbackImpl : public fb::IEventCallbackImpl<EventCallbackImpl, fb::ThrowStatusWrapper>
 	{
 	public:
-		EventWorker(const Napi::Env env, Napi::Function& callBack)
-			: CustomAsyncWorker(env)
+		EventCallbackImpl(Napi::Env env, fb::IMaster* master, fb::IAttachment* attachment,
+				Napi::Function& callBack)
+			: master(master),
+			  attachment(attachment)
 		{
-			callBackRef.Reset(callBack);
-		}
-
-	protected:
-		void Execute() override
-		{
-		}
-
-		void OnOK(Napi::Env env) override
-		{
-			Napi::HandleScope scope(env);
-
-			auto buffer = Napi::ArrayBuffer::New(env, data.size());
-			memcpy(buffer.Data(), &data[0], data.size());
-			callBackRef.Call({buffer});
-		}
-
-		void OnError(Napi::Env env, const Napi::Error& e) override
-		{
+			napi_status napiStatus = napi_create_threadsafe_function(env, callBack, Napi::Object(),
+				Napi::Value::From(env, ""), 0, 1,
+				nullptr, nullptr, nullptr, callJs, &ntsf);
+			NAPI_THROW_IF_FAILED(env, napiStatus, napi_create_threadsafe_function);
 		}
 
 	public:
-		vector<ISC_UCHAR> data;
-
-	private:
-		Napi::FunctionReference callBackRef;
-	};
-
-	class EventCallBackImpl : public fb::IEventCallbackImpl<EventCallBackImpl, fb::ThrowStatusWrapper>
-	{
-	public:
-		EventCallBackImpl(Napi::Env env, Napi::Function& callBack)
-			: refCounter(0),
-			  worker(new EventWorker(env, callBack))
+		void queue(const vector<string>& names)
 		{
+			vector<uint8_t> epb{1};
+
+			for (const auto& name : names)
+			{
+				epb.push_back(name.length());
+				epb.insert(epb.end(), (const uint8_t*) name.c_str(), (const uint8_t*) name.c_str() + name.length());
+				epb.insert(epb.end(), {1, 0, 0, 0});
+
+				map[name] = 1;
+			}
+
+			mtx.lock();
+
+			auto* status = master->getStatus();
+			try
+			{
+				fb::ThrowStatusWrapper statusWrapper(status);
+				events = attachment->queEvents(&statusWrapper, this, epb.size(), &epb[0]);
+			}
+			catch (...)
+			{
+				status->dispose();
+				throw;
+			}
+			status->dispose();
+
+			mtx.unlock();
 		}
 
-	private:
-		~EventCallBackImpl()
+		void cancel()
 		{
+			mtx.lock();
+			try
+			{
+				if (events)
+				{
+					auto* status = master->getStatus();
+					try
+					{
+						fb::ThrowStatusWrapper statusWrapper(status);
+						auto eventsCancelling = events;
+						events = nullptr;
+						eventsCancelling->cancel(&statusWrapper);
+					}
+					catch (...)
+					{
+						status->dispose();
+						throw;
+					}
+					status->dispose();
+				}
+			}
+			catch (...)
+			{
+				mtx.unlock();
+				throw;
+			}
+
+			mtx.unlock();
+		}
+
+		void destroy(Napi::Env env)
+		{
+			auto napiStatus = napi_unref_threadsafe_function(env, ntsf);
+			NAPI_THROW_IF_FAILED(env, napiStatus, napi_unref_threadsafe_function);
+
+			release();
 		}
 
 	public:
@@ -268,6 +313,8 @@ namespace
 
 		virtual int release()
 		{
+			assert(refCounter > 0);
+
 			if (--refCounter == 0)
 			{
 				delete this;
@@ -277,33 +324,192 @@ namespace
 				return 1;
 		}
 
-	public:
-		void eventCallbackFunction(unsigned int length, const ISC_UCHAR* data)
+		void eventCallbackFunction(unsigned int length, const ISC_UCHAR* data) override
 		{
-			auto scheduledWorker = worker.release();
+			assert(refCounter > 0);
 
-			if (scheduledWorker && length)
+			if (!data || length == 0)
+				return;
+
+			mtx.lock();
+			try
 			{
-				scheduledWorker->data.clear();
-				scheduledWorker->data.insert(scheduledWorker->data.end(), data, data + length);
-				scheduledWorker->Queue();
+				if (events)
+				{
+					auto* status = master->getStatus();
+					try
+					{
+						fb::ThrowStatusWrapper statusWrapper(status);
+						events->cancel(&statusWrapper);
+						events = nullptr;
+						events = attachment->queEvents(&statusWrapper, this, length, data);
+					}
+					catch (...)
+					{
+						status->dispose();
+						throw;
+					}
+					status->dispose();
+
+					addRef();
+					resultBuffer.clear();
+					resultBuffer.insert(resultBuffer.end(), data, data + length);
+
+					auto wrapper = [this](Napi::Env env, Napi::Function jsCallback) {
+						handler(env, jsCallback, this);
+					};
+					auto callbackWrapper = new CallbackWrapper(wrapper);
+
+					auto napiStatus = napi_call_threadsafe_function(ntsf, callbackWrapper, napi_tsfn_blocking);
+
+					if (napiStatus != napi_ok)
+					{
+						delete callbackWrapper;
+						release();
+					}
+				}
 			}
+			catch (...)
+			{
+				mtx.unlock();
+				throw;
+			}
+
+			mtx.unlock();
 		}
 
 	private:
-		atomic<int> refCounter;
-		std::unique_ptr<EventWorker> worker;
+		using CallbackWrapper = function<void(Napi::Env, Napi::Function)>;
+
+		static void callJs(napi_env env, napi_value jsCallback, void* /*context*/, void* data)
+		{
+			if (!env && !jsCallback)
+				return;
+
+			if (data)
+			{
+				auto* callbackWrapper = static_cast<CallbackWrapper*>(data);
+				(*callbackWrapper)(env, Napi::Function(env, jsCallback));
+				delete callbackWrapper;
+			}
+			else if (jsCallback)
+				Napi::Function(env, jsCallback).Call({});
+		}
+
+		static void handler(Napi::Env env, Napi::Function jsFunc, EventCallbackImpl* self)
+		{
+			try
+			{
+				Napi::HandleScope scope(env);
+
+				auto counters = Napi::Array::New(env);
+				auto index = 0u;
+
+				auto i = self->resultBuffer.begin();
+				assert(self->resultBuffer.size() > 0 && *i == 1);	// version
+				++i;
+
+				while (i < self->resultBuffer.end())
+				{
+					const auto nameLen = *i++;
+					const auto name = string((const char*) &i[0], (const char*) &i[nameLen]);
+					i += nameLen;
+					const auto count = i[0] | (i[1] << 8) | (i[2] << 16) | (i[3] << 24);
+					i += 4;
+
+					auto item = Napi::Array::New(env, 2);
+					item[0u] = Napi::String::New(env, name.c_str());
+					item[1u] = Napi::Number::New(env, count - self->map[name]);
+					counters[index++] = item;
+
+					self->map[name] = count;
+				}
+
+				jsFunc.Call({counters});
+			}
+			catch (...)
+			{
+				self->release();
+				throw;
+			}
+
+			self->release();
+		}
+
+	private:
+		fb::IMaster* master;
+		fb::IAttachment* attachment;
+		fb::IEvents* events = nullptr;
+		atomic<int> refCounter{1};
+		mutex mtx;
+		unordered_map<string, unsigned> map;
+		napi_threadsafe_function ntsf;
+		vector<ISC_UCHAR> resultBuffer;
+	};
+}	// namespace
+
+
+static MethodStart<fb::IEventCallback*> queueEventStart(bool /*async*/, const Napi::CallbackInfo& info)
+{
+	auto* master = Master::CheckedUnwrap(info.Env(), info[0], "master argument", false);
+	auto* attachment = Attachment::CheckedUnwrap(info.Env(), info[1], "attachment argument", false);
+	auto names = info[2].As<Napi::Array>();
+	auto callBack = info[3].As<Napi::Function>();
+
+	vector<string> namesVector;
+
+	auto namesLen = names.Length();
+	for (unsigned i = 0; i < namesLen; ++i)
+	{
+		Napi::Value name = names[i];
+		namesVector.push_back(name.As<Napi::String>().Utf8Value());
+	}
+
+	auto* eventCallback = new EventCallbackImpl(info.Env(), master->interface, attachment->interface, callBack);
+
+	return [eventCallback, namesVector]() {
+		auto eventCallbackPtr = unique_ptr<EventCallbackImpl>(eventCallback);
+		eventCallbackPtr->queue(namesVector);
+		return eventCallbackPtr.release();
 	};
 }
 
-static Napi::Value newEventCallback(const Napi::CallbackInfo& info)
+static Napi::Value queueEventFinish(const Napi::Env env, fb::IEventCallback* ret)
 {
-	auto callBack = info[0].As<Napi::Function>();
-
-	auto* eventCallback = new EventCallBackImpl(info.Env(), callBack);
-	return EventCallback::NewInstance(info.Env(), eventCallback);
+	return EventCallback::NewInstance(env, ret);
 }
 
+static Napi::Value queueEvent(const Napi::CallbackInfo& info)
+{
+	return PromiseWorker<fb::IEventCallback*>::Run(info.Env(),
+		queueEventStart(true, info),
+		queueEventFinish);
+}
+
+
+static MethodStart<EventCallbackImpl*> cancelEventStart(bool /*async*/, const Napi::CallbackInfo& info)
+{
+	auto* eventCallback = EventCallback::CheckedUnwrap(info.Env(), info[0], "eventCallback argument", false);
+
+	return [eventCallback]() {
+		auto eventCallbackImpl = static_cast<EventCallbackImpl*>(eventCallback->interface);
+		eventCallbackImpl->cancel();
+		return eventCallbackImpl;
+	};
+}
+
+static Napi::Value cancelEventFinish(const Napi::Env env, EventCallbackImpl* ret)
+{
+	ret->destroy(env);
+	return env.Undefined();
+}
+
+static Napi::Value cancelEvent(const Napi::CallbackInfo& info)
+{
+	return PromiseWorker<EventCallbackImpl*>::Run(info.Env(),
+		cancelEventStart(true, info),
+		cancelEventFinish);
+}
 
 //----------------------------------------------------------------------------
 
@@ -322,8 +528,11 @@ static Napi::Object initAll(Napi::Env env, Napi::Object exports)
 	Napi::Function disposeMasterFunction = Napi::Function::New(env, disposeMaster, "disposeMaster");
 	exports.Set("disposeMaster", disposeMasterFunction);
 
-	Napi::Function newEventCallbackFunction = Napi::Function::New(env, newEventCallback, "newEventCallback");
-	exports.Set("newEventCallback", newEventCallbackFunction);
+	Napi::Function queueEventFunction = Napi::Function::New(env, queueEvent, "queueEvent");
+	exports.Set("queueEvent", queueEventFunction);
+
+	Napi::Function cancelEventFunction = Napi::Function::New(env, cancelEvent, "cancelEvent");
+	exports.Set("cancelEvent", cancelEventFunction);
 
 	Pointer::Init(env, exports, "Pointer");
 

@@ -134,8 +134,18 @@ export abstract class AbstractAttachment implements Attachment {
 	async queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events> {
 		this.check();
 
-		const events = await this.internalQueueEvents(names, callBack);
+		const trimmedNames = names.map(name => {
+			const trimmedName = name.trimRight();
+
+			if (Buffer.from(trimmedName).byteLength > 255)
+					throw new Error(`Invalid event name: ${name}.`);
+
+			return trimmedName;
+		});
+
+		const events = await this.internalQueueEvents(trimmedNames, callBack);
 		this.events.add(events);
+
 		return events;
 	}
 
