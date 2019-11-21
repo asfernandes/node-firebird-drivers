@@ -59,11 +59,11 @@ jobs:
     - name: Test (MacOS)
       if: matrix.os == 'macOS-latest'
       run: |
-        sudo mkdir /tmp-node-fb
-        sudo chmod 777 /tmp-node-fb
+        sudo mkdir `pwd`/tmp-node-fb
+        sudo chmod 777 `pwd`/tmp-node-fb
         export ISC_USER=sysdba
         export ISC_PASSWORD=masterkey
-        export TMPDIR=/tmp-node-fb
+        export TMPDIR=`pwd`/tmp-node-fb
         yarn test
 
     - name: Test (Windows)
