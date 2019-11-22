@@ -189,6 +189,7 @@ export abstract class AbstractAttachment implements Attachment {
 			await Promise.all(Array.from(this.transactions).map(transaction => transaction.rollback()));
 		}
 		finally {
+			this.events.clear();
 			this.statements.clear();
 			this.transactions.clear();
 		}
