@@ -386,7 +386,15 @@ T* getAddress(const Napi::Env env, bool async, const Napi::Value& from,
 	T* address = nullptr;
 
 	if (from.IsTypedArray())
+	{
 		address = Napi::TypedArrayOf<T>(env, from).Data();
+
+		if (!address)
+		{
+			static T EMPTY[0] = {};
+			address = EMPTY;
+		}
+	}
 
 	if (address)
 	{
