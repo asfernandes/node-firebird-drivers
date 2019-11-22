@@ -13,7 +13,7 @@
 
 ### native-api
 
-Fix [#29](https://github.com/asfernandes/node-firebird-drivers/issues/29) - Document problem in MacOS and possible solution.
-Fix [#31](https://github.com/asfernandes/node-firebird-drivers/issues/31) - Command failed with exit code 3221225477.
+* Fix [#29](https://github.com/asfernandes/node-firebird-drivers/issues/29) - Document problem in MacOS and possible solution.
+* Fix [#31](https://github.com/asfernandes/node-firebird-drivers/issues/31) - Command failed with exit code 3221225477.
 
 ## 1.0.0 (August 4, 2019)
