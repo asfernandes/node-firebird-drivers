@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 #include "./include/firebird/Interface.h"
 
 #ifdef _WIN32
@@ -389,10 +390,11 @@ T* getAddress(const Napi::Env env, bool async, const Napi::Value& from,
 	{
 		address = Napi::TypedArrayOf<T>(env, from).Data();
 
+		// Node v13 returns nullptr for empty TypedArray, but we need an address.
 		if (!address)
 		{
-			static T EMPTY[0] = {};
-			address = EMPTY;
+			static double DUMMY = 0;
+			address = reinterpret_cast<T*>(&DUMMY);
 		}
 	}
 
