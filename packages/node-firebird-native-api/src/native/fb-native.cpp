@@ -20,6 +20,7 @@
 
 using std::atomic;
 using std::function;
+using std::lock_guard;
 using std::map;
 using std::mutex;
 using std::string;
@@ -247,7 +248,7 @@ namespace
 				map[name] = 1;
 			}
 
-			mtx.lock();
+			lock_guard<mutex> lockGuard(mtx);
 
 			auto* status = master->getStatus();
 			try
@@ -261,40 +262,29 @@ namespace
 				throw;
 			}
 			status->dispose();
-
-			mtx.unlock();
 		}
 
 		void cancel()
 		{
-			mtx.lock();
-			try
-			{
-				if (events)
-				{
-					auto* status = master->getStatus();
-					try
-					{
-						fb::ThrowStatusWrapper statusWrapper(status);
-						auto eventsCancelling = events;
-						events = nullptr;
-						eventsCancelling->cancel(&statusWrapper);
-					}
-					catch (...)
-					{
-						status->dispose();
-						throw;
-					}
-					status->dispose();
-				}
-			}
-			catch (...)
-			{
-				mtx.unlock();
-				throw;
-			}
+			lock_guard<mutex> lockGuard(mtx);
 
-			mtx.unlock();
+			if (events)
+			{
+				auto* status = master->getStatus();
+				try
+				{
+					fb::ThrowStatusWrapper statusWrapper(status);
+					auto eventsCancelling = events;
+					events = nullptr;
+					eventsCancelling->cancel(&statusWrapper);
+				}
+				catch (...)
+				{
+					status->dispose();
+					throw;
+				}
+				status->dispose();
+			}
 		}
 
 		void destroy(Napi::Env env)
@@ -331,51 +321,42 @@ namespace
 			if (!data || length == 0)
 				return;
 
-			mtx.lock();
-			try
+			lock_guard<mutex> lockGuard(mtx);
+
+			if (events)
 			{
-				if (events)
+				auto* status = master->getStatus();
+				try
 				{
-					auto* status = master->getStatus();
-					try
-					{
-						fb::ThrowStatusWrapper statusWrapper(status);
-						events->cancel(&statusWrapper);
-						events = nullptr;
-						events = attachment->queEvents(&statusWrapper, this, length, data);
-					}
-					catch (...)
-					{
-						status->dispose();
-						throw;
-					}
+					fb::ThrowStatusWrapper statusWrapper(status);
+					events->cancel(&statusWrapper);
+					events = nullptr;
+					events = attachment->queEvents(&statusWrapper, this, length, data);
+				}
+				catch (...)
+				{
 					status->dispose();
+					throw;
+				}
+				status->dispose();
 
-					addRef();
-					resultBuffer.clear();
-					resultBuffer.insert(resultBuffer.end(), data, data + length);
+				addRef();
+				resultBuffer.clear();
+				resultBuffer.insert(resultBuffer.end(), data, data + length);
 
-					auto wrapper = [this](Napi::Env env, Napi::Function jsCallback) {
-						handler(env, jsCallback, this);
-					};
-					auto callbackWrapper = new CallbackWrapper(wrapper);
+				auto wrapper = [this](Napi::Env env, Napi::Function jsCallback) {
+					handler(env, jsCallback, this);
+				};
+				auto callbackWrapper = new CallbackWrapper(wrapper);
 
-					auto napiStatus = napi_call_threadsafe_function(ntsf, callbackWrapper, napi_tsfn_blocking);
+				auto napiStatus = napi_call_threadsafe_function(ntsf, callbackWrapper, napi_tsfn_blocking);
 
-					if (napiStatus != napi_ok)
-					{
-						delete callbackWrapper;
-						release();
-					}
+				if (napiStatus != napi_ok)
+				{
+					delete callbackWrapper;
+					release();
 				}
 			}
-			catch (...)
-			{
-				mtx.unlock();
-				throw;
-			}
-
-			mtx.unlock();
 		}
 
 	private:
@@ -405,7 +386,7 @@ namespace
 				auto counters = Napi::Array::New(env);
 				auto index = 0u;
 
-				auto i = self->resultBuffer.begin();
+				auto i = self->resultBuffer.cbegin();
 				assert(self->resultBuffer.size() > 0 && *i == 1);	// version
 				++i;
 
