@@ -2,6 +2,7 @@
 
 ### native-api
 
+* Minimal node version is 10.6.0.
 * Feature [#34](https://github.com/asfernandes/node-firebird-drivers/issues/34) - Support for Firebird events.
 * Fix [#41](https://github.com/asfernandes/node-firebird-drivers/issues/41) - Error: pointer argument must be an instance of Pointer class or null with node v13.
 
