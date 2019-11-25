@@ -38,6 +38,9 @@ export interface ConnectOptions {
 
 	/** User password. */
 	password?: string;
+
+	/** User role. */
+	role?: string;
 }
 
 /** CreateDatabaseOptions interface. */
