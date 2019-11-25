@@ -47,6 +47,7 @@ export namespace dpb {
 	export const force_write = 24;
 	export const user_name = 28;
 	export const password = 29;
+	export const sql_role_name = 60;
 	/* tslint:enable */
 }
 
@@ -101,6 +102,9 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 
 	if (options.password)
 		ret += `${code(dpb.password)}${code(options.password.length)}${options.password}`;
+
+	if (options.role)
+		ret += `${code(dpb.sql_role_name)}${code(options.role.length)}${options.role}`;
 
 	const createOptions = options as CreateDatabaseOptions;
 
