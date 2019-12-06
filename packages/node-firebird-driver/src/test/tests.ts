@@ -320,6 +320,24 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			test('#columnLabels()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Statement-columnLabels.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				const statement1 = await attachment.prepare(transaction, 'create table t1 (n1 integer)');
+				expect(await statement1.columnLabels).toStrictEqual([]);
+				await statement1.execute(transaction);
+				await statement1.dispose();
+				await transaction.commitRetaining();
+
+				const statement2 = await attachment.prepare(transaction, 'select n1, n1 x from t1');
+				expect(await statement2.columnLabels).toStrictEqual(['N1', 'X']);
+				await statement2.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('ResultSet', () => {

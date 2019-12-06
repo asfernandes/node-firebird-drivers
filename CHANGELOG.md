@@ -1,3 +1,9 @@
+## next
+
+### driver
+
+* Feature [#43](https://github.com/asfernandes/node-firebird-drivers/issues/43) - Add Statement.columnLabels property.
+
 ## 2.0.0 (December, 06, 2019)
 
 ### driver

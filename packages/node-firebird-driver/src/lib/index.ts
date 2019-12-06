@@ -184,6 +184,9 @@ export interface Statement {
 	/** Executes a prepared statement that has result set. */
 	executeQuery(transaction: Transaction, parameters?: Array<any>, options?: ExecuteQueryOptions): Promise<ResultSet>;
 
+	/** Gets the query's result columns labels. Returns empty array for queries without result. */
+	readonly columnLabels: Promise<string[]>;
+
 	/** Default query's execute options. */
 	defaultExecuteOptions?: ExecuteOptions;
 

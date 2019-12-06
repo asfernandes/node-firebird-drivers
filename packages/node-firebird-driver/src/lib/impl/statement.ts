@@ -14,6 +14,9 @@ import {
 export abstract class AbstractStatement implements Statement {
 	resultSet?: AbstractResultSet;
 
+	/** Gets the query's result columns labels. Returns empty array for queries without result. */
+	readonly columnLabels: Promise<string[]>;
+
 	/** Default query's execute options. */
 	defaultExecuteOptions: ExecuteOptions;
 
