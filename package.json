@@ -24,6 +24,6 @@
     "temp-fs": "^0.9.9",
     "ts-jest": "^24.2.0",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   }
 }
