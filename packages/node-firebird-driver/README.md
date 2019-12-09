@@ -18,6 +18,29 @@ There is also plan to create a socket-based (pure Node.js) driver.
 
 yarn add node-firebird-driver
 
+## Contributing
+- Clone this repo
+- `lerna bootstrap` (lerna must installed globally)
+- `lerna link` (to link dependecies)
+- `lerna run build` (to build all packages)
+
+## Testing
+- `yarn run test`
+(default user and password will be used during tests)
+
+You can control tests environment settings by adding a configuration file to the root of this project.
+
+```
+{
+	"user": "sysdba",
+	"pw": "masterkey",
+	"role": "",
+	"tmpDir": ""
+}
+```
+
+
+
 # Donation
 
 If this project help you reduce time to develop, you can show your appreciation with a donation.

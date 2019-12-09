@@ -86,6 +86,9 @@ export interface FetchOptions {
 	/** Number of rows to fetch. */
 	fetchSize?: number;
 }
+export interface FetchOptionsAs extends FetchOptions{
+	json?: boolean;
+}
 
 /** Attachment interface. */
 export interface Attachment {
@@ -203,6 +206,7 @@ export interface ResultSet {
 	close(): Promise<void>;
 
 	/** Fetchs data from this result set. */
+	fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: Array<string> }>;
 	fetch(options?: FetchOptions): Promise<Array<Array<any>>>;
 
 	/** Default result set's fetch options. */

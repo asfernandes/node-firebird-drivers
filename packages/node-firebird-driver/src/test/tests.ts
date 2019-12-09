@@ -1,8 +1,41 @@
-import { Blob, Client, TransactionIsolation } from '../lib';
+import {Blob, Client, TransactionIsolation} from '../lib';
 
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
+let getTestConfig: () => { user: string, pw: string, role: string; baseTmpDir: string; };
+let baseTmpDir = ''; // For remote server;
+let host: string; // The server. Defaults to 127.0.0.1 if this is undefined
+
+{
+	let user: string;
+	let pw: string;
+	let role: string;
+	try {
+		const d = fs.readFileSync('./../../test-cfg.json', {encoding: 'utf8'});
+		const conf = JSON.parse(d);
+		if (conf) {
+			user = conf.user;
+			pw = conf.pw;
+			role = conf.role;
+			baseTmpDir = conf.baseTmpDir;
+			host = conf.host;
+		}
+		// tslint:disable-next-line:no-console
+		// console.log('READ OUTPUT', conf);
+	} catch (err) {
+		// Don't worry. We'll use default connection values
+	} finally {
+		getTestConfig = () => {
+			return {
+				user,
+				pw,
+				role,
+				baseTmpDir
+			};
+		};
+	}
+}
 
 export function runCommonTests(client: Client) {
 	function dateToString(d: Date) {
@@ -22,10 +55,11 @@ export function runCommonTests(client: Client) {
 		let tmpDir: string;
 
 		function getTempFile(name: string): string {
-			return `${tmpDir}/${name}`;
+			return `${host || '127.0.0.1'}:${baseTmpDir || tmpDir}/${name}`;
 		}
 
 		jest.setTimeout(10000);
+		const testCfg = getTestConfig();
 
 		beforeAll(() => {
 			tmpDir = tmp.mkdirSync().path.toString();
@@ -34,7 +68,15 @@ export function runCommonTests(client: Client) {
 			fs.chmodSync(tmpDir, 0o777);
 
 			client.defaultCreateDatabaseOptions = {
-				forcedWrite: false
+				forcedWrite: false,
+				password: testCfg.pw,
+				role: testCfg.role,
+				username: testCfg.user
+			};
+			client.defaultConnectOptions = {
+				password: testCfg.pw,
+				role: testCfg.role,
+				username: testCfg.user
 			};
 		});
 
@@ -488,6 +530,14 @@ export function runCommonTests(client: Client) {
 
 				await resultSet3.close();
 				await statement3.dispose();
+
+
+				const resultSet4 = await attachment.executeQuery(transaction, 'SELECT 1 AS C, 2 AS B FROM RDB$DATABASE');
+				const rows4 = await resultSet4.fetchAs<{ A: number; B: number; }>();
+				expect(rows4.rows.length).toBe(1);
+				expect(rows4.rows[0].A).toBe(1);
+				expect(rows4.rows[0].B).toBe(1);
+				await resultSet4.close();
 
 				await transaction.commit();
 				await attachment.dropDatabase();
