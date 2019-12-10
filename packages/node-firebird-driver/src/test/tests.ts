@@ -18,7 +18,7 @@ let host: string; // The server. Defaults to 127.0.0.1 if this is undefined
 			user = conf.user;
 			pw = conf.pw;
 			role = conf.role;
-			baseTmpDir = conf.baseTmpDir;
+			baseTmpDir = conf.tmpDir;
 			host = conf.host;
 		}
 		// tslint:disable-next-line:no-console
@@ -55,7 +55,8 @@ export function runCommonTests(client: Client) {
 		let tmpDir: string;
 
 		function getTempFile(name: string): string {
-			return `${host || '127.0.0.1'}:${baseTmpDir || tmpDir}/${name}`;
+			const p = `${(baseTmpDir || tmpDir)}/${name}`;
+			return `${host || '127.0.0.1'}:${p}`;
 		}
 
 		jest.setTimeout(10000);
@@ -532,8 +533,8 @@ export function runCommonTests(client: Client) {
 				await statement3.dispose();
 
 
-				const resultSet4 = await attachment.executeQuery(transaction, 'SELECT 1 AS C, 2 AS B FROM RDB$DATABASE');
-				const rows4 = await resultSet4.fetchAs<{ A: number; B: number; }>();
+				const resultSet4 = await attachment.executeQuery(transaction, 'SELECT 1 AS A, 2 AS B FROM RDB$DATABASE');
+				const rows4 = await resultSet4.fetchAs<{ A: number; B: number; }>({json: true});
 				expect(rows4.rows.length).toBe(1);
 				expect(rows4.rows[0].A).toBe(1);
 				expect(rows4.rows[0].B).toBe(2);

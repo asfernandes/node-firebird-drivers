@@ -28,14 +28,16 @@ yarn add node-firebird-driver
 - `yarn run test`
 (default user and password will be used during tests)
 
-You can control tests environment settings by adding a configuration file to the root of this project.
+You can control test environment by adding a configuration file to the root of this project named (test-cfg.json).
 
 ```
+// node-firebird-drivers/test-cfg.json
 {
 	"user": "sysdba",
 	"pw": "masterkey",
 	"role": "",
-	"tmpDir": ""
+	"tmpDir": "",
+	"host": "127.0.0.1/3050"
 }
 ```
 
