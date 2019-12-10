@@ -536,7 +536,8 @@ export function runCommonTests(client: Client) {
 				const rows4 = await resultSet4.fetchAs<{ A: number; B: number; }>();
 				expect(rows4.rows.length).toBe(1);
 				expect(rows4.rows[0].A).toBe(1);
-				expect(rows4.rows[0].B).toBe(1);
+				expect(rows4.rows[0].B).toBe(2);
+				expect(rows4.columns.length).toBe(2);
 				await resultSet4.close();
 
 				await transaction.commit();

@@ -66,9 +66,9 @@ export abstract class AbstractResultSet implements ResultSet {
 		if (fetchRet.finished)
 			this.finished = true;
 
-		let output;
-		if (fetchRet.rows && this.statement?.columnLabels) {
-			output = fetchRet.rows.map(row => {
+		let rowsObj;
+		if (options?.json && cols.length) {
+			rowsObj = fetchRet.rows.map(row => {
 				const obj: any = {};
 				// Loop on row column value
 				row.forEach((v: any, idx: number) => {
@@ -79,7 +79,7 @@ export abstract class AbstractResultSet implements ResultSet {
 			});
 		}
 		return {
-			rows: output as any[],
+			rows: rowsObj as any[] || fetchRet.rows,
 			columns: cols as string[]
 		};
 	}

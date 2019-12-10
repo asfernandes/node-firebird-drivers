@@ -100,11 +100,33 @@ export abstract class AbstractAttachment implements Attachment {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
 			}): Promise<Array<any>> {
+		return (await this.executeReturningAs<Array<any>>(transaction, sqlStmt, parameters, {
+			...options, json: false
+		})).row;
+	}
+
+	async executeReturningAs<T>(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+						   options?: {
+							   prepareOptions?: PrepareOptions,
+							   executeOptions?: ExecuteOptions,
+							   json?: boolean
+						   }): Promise<{ row: T, cols: Array<string> }> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, options?.prepareOptions);
+
 		try {
-			return await statement.executeReturning(transaction, parameters, options && options.executeOptions);
+			const cols = (await statement?.columnLabels) || [];
+			const rowColVal = await statement.executeReturning(transaction, parameters, options?.executeOptions);
+			let rowObj: any;
+			if (options?.json) {
+				rowObj = {} as any;
+				rowColVal.forEach((v, idx) => rowObj[cols[idx]] = v);
+			}
+			return {
+				cols,
+				row: rowObj || rowColVal
+			};
 		}
 		finally {
 			await statement.dispose();
