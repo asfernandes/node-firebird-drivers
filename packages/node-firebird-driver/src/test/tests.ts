@@ -8,8 +8,8 @@ let baseTmpDir = ''; // For remote server;
 let host: string; // The server. Defaults to 127.0.0.1 if this is undefined
 
 {
-	let user: string;
-	let pw: string;
+	let user: string = '';
+	let pw: string = '';
 	let role: string;
 	try {
 		const d = fs.readFileSync('./../../test-cfg.json', {encoding: 'utf8'});
@@ -26,6 +26,8 @@ let host: string; // The server. Defaults to 127.0.0.1 if this is undefined
 	} catch (err) {
 		// Don't worry. We'll use default connection values
 	} finally {
+		pw = pw || 'masterkey';
+		user = user || 'sysdba';
 		getTestConfig = () => {
 			return {
 				user,
