@@ -20,28 +20,32 @@ yarn add node-firebird-driver
 
 ## Contributing
 - Clone this repo
-- `lerna bootstrap` (lerna must installed globally)
-- `lerna link` (to link dependecies)
-- `lerna run build` (to build all packages)
+- yarn
+- yarn bootstrap
+- yarn test
 
 ## Testing
 - `yarn run test`
 (default user and password will be used during tests)
 
-You can control test environment by adding a configuration file to the root of this project named (test-cfg.json).
+`user` and `password` can be specified through environment variables `ISC_USER` and `ISC_PASSWORD`
+
+You can also use a configuration file if you prefer (test-cfg.json).
 
 ```
-// node-firebird-drivers/test-cfg.json
+// node-firebird-drivers/test-cfg.json (Sample)
 {
 	"user": "sysdba",
 	"pw": "masterkey",
 	"role": "",
-	"tmpDir": "",
+	"remoteDir": "",
 	"host": "127.0.0.1/3050"
 }
 ```
 
+If user and pw are empty or omitted, environment values will be used. Otherwise, remote values will be used.
 
+**Note:** If have to run your tests on remote server, make sure you specify `remoteDir` in your configuration file.
 
 # Donation
 
