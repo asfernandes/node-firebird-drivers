@@ -10,6 +10,38 @@ The sub projects are there:
 - [node-firebird-native-api - Low-level Firebird client directly mapped from fbclient interfaces](packages/node-firebird-native-api/README.md)
 - [node-firebird-driver - Interface files for the high-level driver(s)](packages/node-firebird-driver/README.md)
 
+## Contributing
+
+Clone this repo then run:
+- yarn
+- yarn bootstrap
+- yarn test
+
+## Testing
+- `yarn run test`
+(default user and password will be used during tests)
+
+`user` and `password` can be specified through environment variables `ISC_USER` and `ISC_PASSWORD`
+
+You can also use a configuration file if you prefer (test-cfg.json).
+
+```
+// node-firebird-drivers/test-cfg.json (Sample)
+{
+	"user": "sysdba",
+	"pw": "masterkey",
+	"role": "",
+	"remoteDir": "",
+	"host": "127.0.0.1/3050"
+}
+```
+
+If user and pw are empty or omitted, environment values will be used. Otherwise, remote values will be used.
+
+**Note:** If have to run your tests on remote server, make sure you specify `remoteDir` in your configuration file.
+
+
+
 # MacOS
 
 If the error `Cannot load Firebird client library: 'libfbclient.dylib'` appears in MacOS, you may fix it creating a symlink with `sudo ln -s /Library/Frameworks/Firebird.framework/Versions/A/Firebird /usr/local/lib/libfbclient.dylib`.

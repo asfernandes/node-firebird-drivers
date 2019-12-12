@@ -32,19 +32,26 @@ export abstract class AbstractResultSet implements ResultSet {
 	}
 
 	/**
-	 * Fetchs data from this result set in it's basic raw mode.
+	 * Fetchs data from this result set as Array<Array<[col1, col2, ..., colN]>>
 	 */
 	async fetch(options?: FetchOptions): Promise<Array<Array<any>>> {
-		options = options || {};
-		return (await this.fetchAs<any>({...options, json: false})).rows as Array<Array<any>>;
+		options = options || this.defaultFetchOptions || {};
+		return (await this.fetchAs<any>({...options, asObject: false})).rows as any; // Array<Array<any>>;
 	}
 
 	/**
-	 * Fetchs data from this result set and results some useful properties such as column labels.
-	 *
-	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
-	 *
-	 * If result set has no more rows, returns an empty array.
+	 * Fetchs data from this result set as Array<T>
+	 * Where <T> represents your object interface.
+	 */
+	async fetchObject<T>(options?: FetchOptions): Promise<T> {
+		options = options || this.defaultFetchOptions || {};
+		return (await this.fetchAs<any>({...options, asObject: true})).rows as any; // Array<T>;
+	}
+
+	/**
+	 * Fetchs data from this result set.
+	 * Returns object with columns and rows.
+	 * <T> represents the row entry
 	 */
 	async fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: string[]; }> {
 		this.check();
@@ -67,7 +74,7 @@ export abstract class AbstractResultSet implements ResultSet {
 			this.finished = true;
 
 		let rowsObj;
-		if (options?.json && cols.length) {
+		if (options?.asObject && cols.length) {
 			rowsObj = fetchRet.rows.map(row => {
 				const obj: any = {};
 				// Loop on row column value

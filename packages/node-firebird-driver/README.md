@@ -18,35 +18,6 @@ There is also plan to create a socket-based (pure Node.js) driver.
 
 yarn add node-firebird-driver
 
-## Contributing
-- Clone this repo
-- yarn
-- yarn bootstrap
-- yarn test
-
-## Testing
-- `yarn run test`
-(default user and password will be used during tests)
-
-`user` and `password` can be specified through environment variables `ISC_USER` and `ISC_PASSWORD`
-
-You can also use a configuration file if you prefer (test-cfg.json).
-
-```
-// node-firebird-drivers/test-cfg.json (Sample)
-{
-	"user": "sysdba",
-	"pw": "masterkey",
-	"role": "",
-	"remoteDir": "",
-	"host": "127.0.0.1/3050"
-}
-```
-
-If user and pw are empty or omitted, environment values will be used. Otherwise, remote values will be used.
-
-**Note:** If have to run your tests on remote server, make sure you specify `remoteDir` in your configuration file.
-
 # Donation
 
 If this project help you reduce time to develop, you can show your appreciation with a donation.

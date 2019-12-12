@@ -87,7 +87,7 @@ export interface FetchOptions {
 	fetchSize?: number;
 }
 export interface FetchOptionsAs extends FetchOptions{
-	json?: boolean;
+	asObject?: boolean;
 }
 
 /** Attachment interface. */
@@ -123,12 +123,27 @@ export interface Attachment {
 			executeOptions?: ExecuteOptions
 		}): Promise<void>;
 
-	/** Executes a statement that returns a single record. */
+	/** Executes a statement that returns a single record as an array. */
 	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<Array<any>>;
+
+	/** Executes a statement that returns a single record as an object */
+	executeReturningObject<T>(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions
+		}): Promise<T>;
+
+	/** Executes a statement that returns both record. */
+	executeReturningAs<T>(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions,
+			asObject?: boolean
+		}): Promise<{ row: T, columns: Array<string> }>;
 
 	/** Executes a statement that has result set. */
 	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
@@ -205,9 +220,22 @@ export interface ResultSet {
 	/** Closes this result set. */
 	close(): Promise<void>;
 
-	/** Fetchs data from this result set. */
-	fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: Array<string> }>;
+
+	/**
+	 * Fetchs data from this result set as Array<Array<[col1, col2, ..., colN]>>
+	 */
 	fetch(options?: FetchOptions): Promise<Array<Array<any>>>;
+	/**
+	 * Fetchs data from this result set.
+	 * Returns object with columns and rows.
+	 * <T> represents the row entry
+	 */
+	fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: Array<string> }>;
+	/**
+	 * Fetchs data from this result set as Array<T>
+	 * Where <T> represents your object interface.
+	 */
+	fetchObject<T>(options?: FetchOptionsAs): Promise<T>;
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;

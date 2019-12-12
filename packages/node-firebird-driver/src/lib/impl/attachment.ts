@@ -101,7 +101,18 @@ export abstract class AbstractAttachment implements Attachment {
 				executeOptions?: ExecuteOptions
 			}): Promise<Array<any>> {
 		return (await this.executeReturningAs<Array<any>>(transaction, sqlStmt, parameters, {
-			...options, json: false
+			...options, asObject: false
+		})).row;
+	}
+
+	/** Executes a statement that returns a single record in object form. */
+	async executeReturningObject<T>(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+						   options?: {
+							   prepareOptions?: PrepareOptions,
+							   executeOptions?: ExecuteOptions
+						   }): Promise<T> {
+		return (await this.executeReturningAs<T>(transaction, sqlStmt, parameters, {
+			...options, asObject: true
 		})).row;
 	}
 
@@ -109,23 +120,23 @@ export abstract class AbstractAttachment implements Attachment {
 						   options?: {
 							   prepareOptions?: PrepareOptions,
 							   executeOptions?: ExecuteOptions,
-							   json?: boolean
-						   }): Promise<{ row: T, cols: Array<string> }> {
+							   asObject?: boolean
+						   }): Promise<{ row: T, columns: Array<string> }> {
 		this.check();
 
 		const statement = await this.prepare(transaction, sqlStmt, options?.prepareOptions);
 
 		try {
 			const cols = (await statement?.columnLabels) || [];
-			const rowColVal = await statement.executeReturning(transaction, parameters, options?.executeOptions);
+			const row = await statement.executeReturning(transaction, parameters, options?.executeOptions);
 			let rowObj: any;
-			if (options?.json) {
+			if (options?.asObject) {
 				rowObj = {} as any;
-				rowColVal.forEach((v, idx) => rowObj[cols[idx]] = v);
+				row.forEach((v, idx) => rowObj[cols[idx]] = v);
 			}
 			return {
-				cols,
-				row: rowObj || rowColVal
+				columns: cols,
+				row: rowObj || row
 			};
 		}
 		finally {
