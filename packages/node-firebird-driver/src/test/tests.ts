@@ -58,7 +58,7 @@ export function runCommonTests(client: Client) {
 
 		function getTempFile(name: string): string {
 			const p = `${(baseTmpDir || tmpDir)}/${name}`;
-			return `${host || '127.0.0.1'}:${p}`;
+			return `${host ? `${host}:` : ''}${p}`;
 		}
 
 		jest.setTimeout(10000);
