@@ -52,7 +52,6 @@ See more examples in `src/test` directory.
 
 ## TODO
 
-- Events
 - Verify usage of node-pre-gyp
 
 # Donation
