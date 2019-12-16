@@ -50,10 +50,6 @@ test().then(() => console.log('Finish...'));
 
 See more examples in `src/test` directory.
 
-## TODO
-
-- Verify usage of node-pre-gyp
-
 # Donation
 
 If this project help you reduce time to develop, you can show your appreciation with a donation.
