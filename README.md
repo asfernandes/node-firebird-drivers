@@ -21,26 +21,25 @@ Clone this repo then run:
 - `yarn run test`
 (default user and password will be used during tests)
 
-`user` and `password` can be specified through environment variables `ISC_USER` and `ISC_PASSWORD`
-
-You can also use a configuration file if you prefer (test-cfg.json).
+You can put test configuration in `.env` file in the project root directory, like the following example:
 
 ```
-// node-firebird-drivers/test-cfg.json (Sample)
-{
-	"user": "sysdba",
-	"pw": "masterkey",
-	"role": "",
-	"remoteDir": "",
-	"host": "127.0.0.1/3050"
-}
+ISC_USER=sysdba
+ISC_PASSWORD=masterkey
+NODE_FB_TEST_HOST=localhost
+NODE_FB_TEST_PORT=3050
+NODE_FB_TEST_TMP_DIR=/tmp/node-fb-tmp
 ```
 
-If user and pw are empty or omitted, environment values will be used. Otherwise, remote values will be used.
+You can also set environment variables externally. For `node-firebird-native-api`, `ISC_USER` and `ISC_PASSWORD` could not be set in the `.env` file currently. It should be set externally.
 
-**Note:** If have to run your tests on remote server, make sure you specify `remoteDir` in your configuration file.
+If `NODE_FB_TEST_HOST` is ommited, embedded server will be used.
 
+`NODE_FB_TEST_PORT` defaults to 3050.
 
+For remote server make sure to specify `NODE_FB_TEST_TMP_DIR`.
+
+For local server or embedded, if `NODE_FB_TEST_TMP_DIR` is ommited a temporary directory will be created.
 
 # MacOS
 

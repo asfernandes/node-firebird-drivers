@@ -4,4 +4,4 @@ dist/
 lerna-debug.log
 yarn-error.log
 tsconfig.tsbuildinfo
-test-cfg*.json
+.env

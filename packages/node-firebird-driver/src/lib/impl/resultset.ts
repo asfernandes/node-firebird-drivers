@@ -1,7 +1,7 @@
 import { AbstractStatement } from './statement';
 import { AbstractTransaction } from './transaction';
 
-import { FetchOptions, FetchOptionsAs, ResultSet } from '..';
+import { FetchOptions, ResultSet } from '..';
 
 
 /** AbstractResultSet implementation. */
@@ -32,63 +32,51 @@ export abstract class AbstractResultSet implements ResultSet {
 	}
 
 	/**
-	 * Fetchs data from this result set as Array<Array<[col1, col2, ..., colN]>>
+	 * Fetchs data from this result set as [col1, col2, ..., colN][].
+	 *
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 *
+	 * If result set has no more rows, returns an empty array.
 	 */
-	async fetch(options?: FetchOptions): Promise<Array<Array<any>>> {
-		options = options || this.defaultFetchOptions || {};
-		return (await this.fetchAs<any>({...options, asObject: false})).rows as any; // Array<Array<any>>;
-	}
-
-	/**
-	 * Fetchs data from this result set as Array<T>
-	 * Where <T> represents your object interface.
-	 */
-	async fetchObject<T>(options?: FetchOptions): Promise<T> {
-		options = options || this.defaultFetchOptions || {};
-		return (await this.fetchAs<any>({...options, asObject: true})).rows as any; // Array<T>;
-	}
-
-	/**
-	 * Fetchs data from this result set.
-	 * Returns object with columns and rows.
-	 * <T> represents the row entry
-	 */
-	async fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: string[]; }> {
+	async fetch(options?: FetchOptions): Promise<any[][]> {
 		this.check();
-		const cols = (await this.statement?.columnLabels) || [];
+
 		if (this.finished)
-			return {
-				rows: [],
-				columns: cols
-			};
+			return [];
 
 		const fetchRet = await this.internalFetch(
-			options
-			|| this.defaultFetchOptions
-			|| this.statement!.defaultFetchOptions
-			|| this.statement!.attachment!.defaultFetchOptions
-			|| this.statement!.attachment!.client!.defaultFetchOptions
-		);
+			options || this.defaultFetchOptions || this.statement!.defaultFetchOptions || this.statement!.attachment!.defaultFetchOptions ||
+				this.statement!.attachment!.client!.defaultFetchOptions);
 
 		if (fetchRet.finished)
 			this.finished = true;
 
-		let rowsObj;
-		if (options?.asObject && cols.length) {
-			rowsObj = fetchRet.rows.map(row => {
-				const obj: any = {};
-				// Loop on row column value
-				row.forEach((v: any, idx: number) => {
-					const col = cols[idx];
-					obj[col] = v;
-				});
-				return obj;
+		return fetchRet.rows;
+	}
+
+	/**
+	 * Fetchs data from this result set as T[].
+	 * Where <T> represents your object interface.
+	 *
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 *
+	 * If result set has no more rows, returns an empty array.
+	 */
+	async fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]> {
+		const array = await this.fetch(options);
+		const cols = (await this.statement?.columnLabels) || [];
+
+		return array.map(row => {
+			const obj = {} as T;
+
+			// Loop on row column value.
+			row.forEach((v: any, idx: number) => {
+				const col = cols[idx];
+				(obj as any)[col] = v;
 			});
-		}
-		return {
-			rows: rowsObj as any[] || fetchRet.rows,
-			columns: cols as string[]
-		};
+
+			return obj;
+		});
 	}
 
 	private check() {
@@ -98,5 +86,5 @@ export abstract class AbstractResultSet implements ResultSet {
 
 	protected abstract async internalClose(): Promise<void>;
 
-	protected abstract async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<any> }>;
+	protected abstract async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: any[][] }>;
 }

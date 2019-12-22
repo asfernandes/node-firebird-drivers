@@ -63,7 +63,7 @@ jobs:
         sudo chmod 777 `pwd`/tmp-node-fb
         export ISC_USER=sysdba
         export ISC_PASSWORD=masterkey
-        export TMPDIR=`pwd`/tmp-node-fb
+        export NODE_FB_TEST_TMP_DIR=`pwd`/tmp-node-fb
         yarn test
 
     - name: Test (Windows)

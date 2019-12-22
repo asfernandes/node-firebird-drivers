@@ -17,6 +17,7 @@
     "@types/fs-extra-promise": "^1.0.8",
     "@types/jest": "^24.0.23",
     "@types/temp-fs": "^0.9.28",
+    "dotenv": "^8.2.0",
     "fs-extra-promise": "^1.0.1",
     "jest": "^24.9.0",
     "lerna": "^3.19.0",

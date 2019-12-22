@@ -86,9 +86,6 @@ export interface FetchOptions {
 	/** Number of rows to fetch. */
 	fetchSize?: number;
 }
-export interface FetchOptionsAs extends FetchOptions{
-	asObject?: boolean;
-}
 
 /** Attachment interface. */
 export interface Attachment {
@@ -117,36 +114,28 @@ export interface Attachment {
 		}): Promise<Transaction>;
 
 	/** Executes a statement that has no result set. */
-	execute(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+	execute(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<void>;
 
-	/** Executes a statement that returns a single record as an array. */
-	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
+	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
-		}): Promise<Array<any>>;
+		}): Promise<any[]>;
 
-	/** Executes a statement that returns a single record as an object */
-	executeReturningObject<T>(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+	/** Executes a statement that returns a single record as an object. */
+	executeReturningAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<T>;
 
-	/** Executes a statement that returns both record. */
-	executeReturningAs<T>(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
-		options?: {
-			prepareOptions?: PrepareOptions,
-			executeOptions?: ExecuteOptions,
-			asObject?: boolean
-		}): Promise<{ row: T, columns: Array<string> }>;
-
 	/** Executes a statement that has result set. */
-	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Array<any>,
+	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteQueryOptions
@@ -194,13 +183,17 @@ export interface Statement {
 	executeTransaction(transaction: Transaction): Promise<Transaction>;
 
 	/** Executes a prepared statement that has no result set. */
-	execute(transaction: Transaction, parameters?: Array<any>, options?: ExecuteOptions): Promise<void>;
+	execute(transaction: Transaction, parameters?: any[], options?: ExecuteOptions): Promise<void>;
 
-	/** Executes a statement that returns a single record. */
-	executeReturning(transaction: Transaction, parameters?: Array<any>, executeOptions?: ExecuteOptions): Promise<Array<any>>;
+	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
+	executeReturning(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+
+	/** Executes a statement that returns a single record as an object. */
+	executeReturningAsObject<T extends object>(transaction: Transaction, parameters?: any[],
+		options?: ExecuteOptions): Promise<T>;
 
 	/** Executes a prepared statement that has result set. */
-	executeQuery(transaction: Transaction, parameters?: Array<any>, options?: ExecuteQueryOptions): Promise<ResultSet>;
+	executeQuery(transaction: Transaction, parameters?: any[], options?: ExecuteQueryOptions): Promise<ResultSet>;
 
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
@@ -220,22 +213,24 @@ export interface ResultSet {
 	/** Closes this result set. */
 	close(): Promise<void>;
 
+	/**
+	 * Fetchs data from this result set as [col1, col2, ..., colN][].
+	 *
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 *
+	 * If result set has no more rows, returns an empty array.
+	 */
+	fetch(options?: FetchOptions): Promise<any[][]>;
 
 	/**
-	 * Fetchs data from this result set as Array<Array<[col1, col2, ..., colN]>>
-	 */
-	fetch(options?: FetchOptions): Promise<Array<Array<any>>>;
-	/**
-	 * Fetchs data from this result set.
-	 * Returns object with columns and rows.
-	 * <T> represents the row entry
-	 */
-	fetchAs<T>(options?: FetchOptionsAs): Promise<{ rows: Array<T>, columns: Array<string> }>;
-	/**
-	 * Fetchs data from this result set as Array<T>
+	 * Fetchs data from this result set as T[].
 	 * Where <T> represents your object interface.
+	 *
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 *
+	 * If result set has no more rows, returns an empty array.
 	 */
-	fetchObject<T>(options?: FetchOptionsAs): Promise<T>;
+	fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]>;
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;

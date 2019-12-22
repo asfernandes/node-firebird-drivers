@@ -3,39 +3,9 @@ import { Blob, Client, TransactionIsolation } from '../lib';
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
-let getTestConfig: () => { user: string, pw: string, role: string; remoteDir: string; };
-let remoteDir = ''; // For remote server;
-let host: string; // The server. Defaults to 127.0.0.1 if this is undefined
 
-{
-	let user: string = '';
-	let pw: string = '';
-	let role: string;
-	try {
-		const d = fs.readFileSync('./../../test-cfg.json', {encoding: 'utf8'});
-		const conf = JSON.parse(d);
-		if (conf) {
-			user = conf.user;
-			pw = conf.pw;
-			role = conf.role;
-			remoteDir = conf.remoteDir;
-			host = conf.host;
-		}
-	} catch (err) {
-		// Don't worry. We'll use default connection values
-	} finally {
-		pw = pw || 'masterkey';
-		user = user || 'sysdba';
-		getTestConfig = () => {
-			return {
-				user,
-				pw,
-				role,
-				remoteDir
-			};
-		};
-	}
-}
+require('dotenv').config({ path: '../../.env' });
+
 
 export function runCommonTests(client: Client) {
 	function dateToString(d: Date) {
@@ -52,38 +22,60 @@ export function runCommonTests(client: Client) {
 
 
 	describe('node-firebird-driver', () => {
-		let tmpDir: string;
+		const testConfig = {
+			username: process.env.ISC_USER,
+			password: process.env.ISC_PASSWORD,
+			host: process.env.NODE_FB_TEST_HOST,
+			port: process.env.NODE_FB_TEST_PORT,
+			tmpDir: process.env.NODE_FB_TEST_TMP_DIR
+		};
 
-		function getTempFile(name: string): string {
-			const p = `${(remoteDir || tmpDir)}/${name}`;
-			return `${host ? `${host}:` : ''}${p}`;
+		function isLocal(): boolean {
+			return testConfig.host == undefined ||
+				testConfig.host == 'localhost' ||
+				testConfig.host == '127.0.0.1';
 		}
 
+		function getTempFile(name: string): string {
+			const database = `${testConfig.tmpDir}/${name}`;
+			return (testConfig.host ?? '') +
+				(testConfig.host && testConfig.port ? `/${testConfig.port}` : '') +
+				(testConfig.host ? ':' : '') +
+				database;
+		}
+
+
 		jest.setTimeout(10000);
-		const testCfg = getTestConfig();
+
 
 		beforeAll(() => {
-			tmpDir = tmp.mkdirSync().path.toString();
+			if (isLocal() && !testConfig.tmpDir) {
+				testConfig.tmpDir = tmp.mkdirSync().path.toString();
 
-			// Important for MacOS tests with non-embedded server.
-			fs.chmodSync(tmpDir, 0o777);
+				// Important for MacOS tests with non-embedded server.
+				fs.chmodSync(testConfig.tmpDir, 0o777);
+			}
+
+			const defaultOptions = {
+				password: testConfig.password,
+				username: testConfig.username
+			};
 
 			client.defaultCreateDatabaseOptions = {
 				forcedWrite: false,
-				password: testCfg.pw,
-				role: testCfg.role,
-				username: testCfg.user
+				...defaultOptions
 			};
+
 			client.defaultConnectOptions = {
-				password: testCfg.pw,
-				role: testCfg.role,
-				username: testCfg.user
+				...defaultOptions
 			};
 		});
 
 		afterAll(async () => {
 			await client.dispose();
-			fs.rmdirSync(tmpDir);
+
+			if (isLocal())
+				fs.rmdirSync(testConfig.tmpDir!);
 		});
 
 		describe('Client', () => {
@@ -193,31 +185,16 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			test('#executeReturningObject()', async () => {
-				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturningObject.fdb'));
+			test('#executeReturningAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturningAsObject.fdb'));
 				const transaction = await attachment.startTransaction();
 
 				await attachment.execute(transaction, 'create table t1 (n1 integer)');
 				await transaction.commitRetaining();
 
-				const output = await attachment.executeReturningObject<{ N1: number }>(transaction, 'insert into t1 values (11) returning n1');
-				expect(output).toHaveProperty('N1');
-
-				await transaction.commit();
-				await attachment.dropDatabase();
-			});
-
-			test('#executeReturningAs()', async () => {
-				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturning.fdb'));
-				const transaction = await attachment.startTransaction();
-
-				await attachment.execute(transaction, 'create table t1 (n1 integer)');
-				await transaction.commitRetaining();
-				const result = await attachment.executeReturningAs<{ N1: string }>(transaction,
-					'insert into t1 values (11) returning n1', [], {asObject: true});
-				expect(result.columns).toHaveLength(1);
-				expect(result.row).toHaveProperty('N1');
-				expect(result.row.N1).toBe(11);
+				const output = await attachment.executeReturningAsObject<{ N1: number }>(transaction,
+					'insert into t1 values (11) returning n1');
+				expect(output.N1).toBe(11);
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -566,31 +543,13 @@ export function runCommonTests(client: Client) {
 				await attachment.dropDatabase();
 			});
 
-			test('#fetchObject()', async () => {
-				const attachment = await client.createDatabase(getTempFile('ResultSet-fetchObject.fdb'));
+			test('#fetchAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetchAsObject.fdb'));
 				const transaction = await attachment.startTransaction();
-				const resultSet = await attachment.executeQuery(transaction, 'SELECT 1 AS A, 2 AS B FROM RDB$DATABASE');
-				const output = await resultSet.fetchObject<Array<{ A: number; B: number; }>>({asObject: true});
+				const resultSet = await attachment.executeQuery(transaction, 'select 1 as a, 2 as b from rdb$database');
+				const output = await resultSet.fetchAsObject<{ A: number; B: number }>();
 				expect(output[0].A).toBe(1);
 				expect(output[0].B).toBe(2);
-				await resultSet.close();
-
-				await transaction.commit();
-				await attachment.dropDatabase();
-			});
-
-			test('#fetchAs()', async () => {
-				const attachment = await client.createDatabase(getTempFile('ResultSetAs-fetchAs.fdb'));
-				const transaction = await attachment.startTransaction();
-				const resultSet = await attachment.executeQuery(transaction, 'SELECT 1 AS A, 2 AS B FROM RDB$DATABASE');
-				const output = await resultSet.fetchAs<{ A: number; B: number; }>({asObject: true});
-				expect(output.rows).toHaveLength(1);
-				expect(output.columns).toHaveLength(2);
-				expect(output.columns[0]).toBe('A');
-				expect(output.rows[0]).toHaveProperty('A');
-				expect(output.rows[0]).toHaveProperty('B');
-				expect(output.rows[0].A).toBe(1);
-				expect(output.rows[0].B).toBe(2);
 				await resultSet.close();
 
 				await transaction.commit();

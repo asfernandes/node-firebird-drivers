@@ -5,26 +5,51 @@ import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, 
 import { XpbBuilder } from '../lib';
 
 
+require('dotenv').config({ path: '../../.env' });
+
+
 describe('node-firebird-native-api', () => {
+	const testConfig = {
+		username: process.env.ISC_USER,
+		password: process.env.ISC_PASSWORD,
+		host: process.env.NODE_FB_TEST_HOST,
+		port: process.env.NODE_FB_TEST_PORT,
+		tmpDir: process.env.NODE_FB_TEST_TMP_DIR
+	};
+
 	let master: Master;
 	let dispatcher: Provider;
-	let tmpDir: string;
+
+	function isLocal(): boolean {
+		return testConfig.host == undefined ||
+			testConfig.host == 'localhost' ||
+			testConfig.host == '127.0.0.1';
+	}
 
 	function getTempFile(name: string): string {
-		return `${tmpDir}/${name}`;
+		const database = `${testConfig.tmpDir}/${name}`;
+		return (testConfig.host ?? '') +
+			(testConfig.host && testConfig.port ? `/${testConfig.port}` : '') +
+			(testConfig.host ? ':' : '') +
+			database;
 	}
+
 
 	jest.setTimeout(10000);
 
+
 	beforeAll(() => {
+		if (isLocal() && !testConfig.tmpDir) {
+			testConfig.tmpDir = tmp.mkdirSync().path.toString();
+
+			// Important for MacOS tests with non-embedded server.
+			fs.chmodSync(testConfig.tmpDir, 0o777);
+		}
+
 		const tempMaster = getMaster(getDefaultLibraryFilename());
 
 		master = getMaster(getDefaultLibraryFilename());
 		dispatcher = master.getDispatcherSync()!;
-		tmpDir = tmp.mkdirSync().path.toString();
-
-		// Important for MacOS tests with non-embedded server.
-		fs.chmodSync(tmpDir, 0o777);
 
 		// Test premature shutdown prevention. 'master' variable should still be usable.
 		expect(disposeMaster(tempMaster)).toBe(true);
@@ -41,7 +66,10 @@ describe('node-firebird-native-api', () => {
 		status.disposeSync();
 
 		dispatcher.releaseSync();
-		fs.rmdirSync(tmpDir);
+
+		if (isLocal())
+			fs.rmdirSync(testConfig.tmpDir!);
+
 		expect(disposeMaster(master)).toBe(true);
 		expect(disposeMaster(master)).toBe(false);
 	});
