@@ -4,6 +4,9 @@ import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
 
+require('dotenv').config({ path: '../../.env' });
+
+
 export function runCommonTests(client: Client) {
 	function dateToString(d: Date) {
 		return d && `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
@@ -19,28 +22,60 @@ export function runCommonTests(client: Client) {
 
 
 	describe('node-firebird-driver', () => {
-		let tmpDir: string;
+		const testConfig = {
+			username: process.env.ISC_USER,
+			password: process.env.ISC_PASSWORD,
+			host: process.env.NODE_FB_TEST_HOST,
+			port: process.env.NODE_FB_TEST_PORT,
+			tmpDir: process.env.NODE_FB_TEST_TMP_DIR
+		};
+
+		function isLocal(): boolean {
+			return testConfig.host == undefined ||
+				testConfig.host == 'localhost' ||
+				testConfig.host == '127.0.0.1';
+		}
 
 		function getTempFile(name: string): string {
-			return `${tmpDir}/${name}`;
+			const database = `${testConfig.tmpDir}/${name}`;
+			return (testConfig.host ?? '') +
+				(testConfig.host && testConfig.port ? `/${testConfig.port}` : '') +
+				(testConfig.host ? ':' : '') +
+				database;
 		}
+
 
 		jest.setTimeout(10000);
 
-		beforeAll(() => {
-			tmpDir = tmp.mkdirSync().path.toString();
 
-			// Important for MacOS tests with non-embedded server.
-			fs.chmodSync(tmpDir, 0o777);
+		beforeAll(() => {
+			if (isLocal() && !testConfig.tmpDir) {
+				testConfig.tmpDir = tmp.mkdirSync().path.toString();
+
+				// Important for MacOS tests with non-embedded server.
+				fs.chmodSync(testConfig.tmpDir, 0o777);
+			}
+
+			const defaultOptions = {
+				password: testConfig.password,
+				username: testConfig.username
+			};
 
 			client.defaultCreateDatabaseOptions = {
-				forcedWrite: false
+				forcedWrite: false,
+				...defaultOptions
+			};
+
+			client.defaultConnectOptions = {
+				...defaultOptions
 			};
 		});
 
 		afterAll(async () => {
 			await client.dispose();
-			fs.rmdirSync(tmpDir);
+
+			if (isLocal())
+				fs.rmdirSync(testConfig.tmpDir!);
 		});
 
 		describe('Client', () => {
@@ -145,6 +180,21 @@ export function runCommonTests(client: Client) {
 				const result = await attachment.executeReturning(transaction, 'insert into t1 values (11) returning n1');
 				expect(result.length).toBe(1);
 				expect(result[0]).toBe(11);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeReturningAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeReturningAsObject.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const output = await attachment.executeReturningAsObject<{ N1: number }>(transaction,
+					'insert into t1 values (11) returning n1');
+				expect(output.N1).toBe(11);
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -488,6 +538,19 @@ export function runCommonTests(client: Client) {
 
 				await resultSet3.close();
 				await statement3.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#fetchAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('ResultSet-fetchAsObject.fdb'));
+				const transaction = await attachment.startTransaction();
+				const resultSet = await attachment.executeQuery(transaction, 'select 1 as a, 2 as b from rdb$database');
+				const output = await resultSet.fetchAsObject<{ A: number; B: number }>();
+				expect(output[0].A).toBe(1);
+				expect(output[0].B).toBe(2);
+				await resultSet.close();
 
 				await transaction.commit();
 				await attachment.dropDatabase();

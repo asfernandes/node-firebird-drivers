@@ -78,7 +78,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that has no result set. */
-	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
@@ -111,8 +111,25 @@ export abstract class AbstractAttachment implements Attachment {
 		}
 	}
 
+	/** Executes a statement that returns a single record in object form. */
+	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteOptions
+			}): Promise<T> {
+		this.check();
+
+		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		try {
+			return await statement.executeReturningAsObject(transaction, parameters, options && options.executeOptions);
+		}
+		finally {
+			await statement.dispose();
+		}
+	}
+
 	/** Executes a statement that has result set. */
-	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteQueryOptions

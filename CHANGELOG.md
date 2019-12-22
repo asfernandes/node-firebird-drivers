@@ -2,6 +2,7 @@
 
 ### driver
 
+* Feature [#30](https://github.com/asfernandes/node-firebird-drivers/issues/30) - Result set rows header.
 * Feature [#43](https://github.com/asfernandes/node-firebird-drivers/issues/43) - Add Statement.columnLabels property.
 
 ## 2.0.0 (December, 06, 2019)

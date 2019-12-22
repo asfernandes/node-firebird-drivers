@@ -42,7 +42,7 @@ export class ResultSetImpl extends AbstractResultSet {
 	}
 
 	/** Fetchs data from this result set. */
-	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: Array<Array<any>> }> {
+	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: any[][] }> {
 		return await this.statement.attachment.client.statusAction(async status => {
 			if (this.delayedError) {
 				const error = this.delayedError;
