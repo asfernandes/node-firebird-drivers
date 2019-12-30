@@ -216,7 +216,7 @@ export interface ResultSet {
 	/**
 	 * Fetchs data from this result set as [col1, col2, ..., colN][].
 	 *
-	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, its throw is delayed for the next fetch call.
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
@@ -226,7 +226,7 @@ export interface ResultSet {
 	 * Fetchs data from this result set as T[].
 	 * Where <T> represents your object interface.
 	 *
-	 * If an exception is found after fetching a row but before reaching options.fetchSize, it's throw is delayed for the next fetch call.
+	 * If an exception is found after fetching a row but before reaching options.fetchSize, its throw is delayed for the next fetch call.
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
