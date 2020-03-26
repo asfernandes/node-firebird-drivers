@@ -115,8 +115,10 @@ export class StatementImpl extends AbstractStatement {
 				const count = metaData.getCountSync(status);
 				const array: string[] = [];
 
+				let s: String
 				for (let i = 0; i < count; ++i)
-					array.push(metaData.getAliasSync(status, i)!);
+					s = metaData.getAliasSync(status, i)!
+					array.push(s!.toLowerCase());
 
 				return array;
 			});
