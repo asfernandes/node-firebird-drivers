@@ -1,7 +1,7 @@
 {
   "name": "node-firebird-drivers",
   "description": "node-firebird-drivers",
-  "private": true,
+  "private": false,
   "author": "Adriano dos Santos Fernandes",
   "license": "MIT",
   "workspaces": [
