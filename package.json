@@ -6,6 +6,7 @@
   "workspaces": [
     "packages/*"
   ],
+  "private": true,
   "publishConfig": {
     "access": "public"
   },
@@ -17,16 +18,16 @@
   },
   "devDependencies": {
     "@types/fs-extra-promise": "^1.0.8",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^25.1.4",
     "@types/temp-fs": "^0.9.28",
     "dotenv": "^8.2.0",
     "fs-extra-promise": "^1.0.1",
-    "jest": "^24.9.0",
-    "lerna": "^3.19.0",
-    "rimraf": "^3.0.0",
+    "jest": "^25.2.3",
+    "lerna": "^3.20.2",
+    "rimraf": "^3.0.2",
     "temp-fs": "^0.9.9",
-    "ts-jest": "^24.2.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3"
+    "ts-jest": "^25.2.1",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
   }
 }
