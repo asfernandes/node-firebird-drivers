@@ -6,6 +6,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna run build && lerna run gyp:configure && lerna run gyp:build",
     "clean": "lerna run clean",
