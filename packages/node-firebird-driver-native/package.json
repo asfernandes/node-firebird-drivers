@@ -1,6 +1,6 @@
 {
   "name": "node-firebird-driver-native",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Firebird Native Driver for Node.js",
   "main": "dist/lib/index.js",
   "scripts": {
@@ -49,8 +49,8 @@
   },
   "dependencies": {
     "@types/node": "^12.12.12",
-    "node-firebird-driver": "^2.1.2",
-    "node-firebird-native-api": "^2.1.2"
+    "node-firebird-driver": "^2.1.4",
+    "node-firebird-native-api": "^2.1.4"
   },
   "gitHead": "eeccf2266fd4bf0157d4847fe6b3ba409e060330"
 }
