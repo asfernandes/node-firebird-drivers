@@ -8,7 +8,8 @@
     "build:w": "tsc --build -w",
     "clean": "tsc --build --clean && rimraf dist",
     "lint": "tslint --project .",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "publish-npm": "npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,5 @@
   "dependencies": {
     "@types/node": "^12.12.12"
   },
-  "gitHead": "09978b4b3dd2c27e1a3d47c91c56147285d4f406"
+  "gitHead": "cf6a5cbb3e2d5142d6b0cda0340c7e41fcec8523"
 }

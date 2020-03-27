@@ -17,7 +17,8 @@
     "gyp:build": "node-gyp build",
     "gyp:configure": "node-gyp configure",
     "prepublishOnly": "yarn run build && yarn run gyp:clean && yarn run gyp:configure && yarn run gyp:build",
-    "test": "echo 1"
+    "test": "echo 1",
+    "publish-npm": "npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -64,5 +65,5 @@
   "devDependencies": {
     "node-cloop-gen": "1.0.1"
   },
-  "gitHead": "09978b4b3dd2c27e1a3d47c91c56147285d4f406"
+  "gitHead": "cf6a5cbb3e2d5142d6b0cda0340c7e41fcec8523"
 }
