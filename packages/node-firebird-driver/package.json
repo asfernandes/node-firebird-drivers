@@ -1,6 +1,6 @@
 {
   "name": "@knagyorg/node-firebird-driver",
-  "version": "2.1.13",
+  "version": "2.1.14",
   "description": "Firebird Driver Interfaces for Node.js",
   "main": "dist/lib/index.js",
   "scripts": {
