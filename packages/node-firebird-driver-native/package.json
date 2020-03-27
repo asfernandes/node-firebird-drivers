@@ -52,5 +52,5 @@
     "node-firebird-driver": "^2.1.7",
     "node-firebird-native-api": "^2.1.7"
   },
-  "gitHead": "26609ca9d4989400f2a1634b76a78db2091ecdcc"
+  "gitHead": "b41b585bdcd40bfa8e453a860df52ceb7a5cedef"
 }
