@@ -1,5 +1,5 @@
 {
-  "name": "node-firebird-native-api",
+  "name": "@knagyorg/node-firebird-native-api",
   "version": "2.1.8",
   "description": "Firebird native API for Node.js",
   "gypfile": true,
@@ -64,5 +64,5 @@
   "devDependencies": {
     "node-cloop-gen": "1.0.1"
   },
-  "gitHead": "b41b585bdcd40bfa8e453a860df52ceb7a5cedef"
+  "gitHead": "c9ddd5b7ce1251da5ec590a14c29725638ecbbd2"
 }

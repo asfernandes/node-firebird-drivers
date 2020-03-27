@@ -1,5 +1,5 @@
 {
-  "name": "node-firebird-driver",
+  "name": "@knagyorg/node-firebird-driver",
   "version": "2.1.8",
   "description": "Firebird Driver Interfaces for Node.js",
   "main": "dist/lib/index.js",
@@ -31,5 +31,5 @@
   "dependencies": {
     "@types/node": "^12.12.12"
   },
-  "gitHead": "b41b585bdcd40bfa8e453a860df52ceb7a5cedef"
+  "gitHead": "c9ddd5b7ce1251da5ec590a14c29725638ecbbd2"
 }
