@@ -25,24 +25,24 @@ jobs:
       if: matrix.os == 'ubuntu-16.04'
       run: |
         sudo apt-get install libtommath0
-        wget -nv -O Firebird-3.0.4.33054-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_4/Firebird-3.0.4.33054-0.amd64.tar.gz"
-        tar xzvf Firebird-3.0.4.33054-0.amd64.tar.gz
-        (cd Firebird-3.0.4.33054-0.amd64; sudo ./install.sh -silent)
+        wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
+        tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
+        (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
 
     - name: Firebird install (MacOS)
       if: matrix.os == 'macOS-latest'
       run: |
-        wget -nv -O Firebird-3.0.4-33054-lipo-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_4/Firebird-3.0.4-33054-lipo-x86_64.pkg"
-        sudo installer -verbose -pkg "Firebird-3.0.4-33054-lipo-x86_64.pkg" -target /
+        wget -nv -O Firebird-3.0.5-33220-lipo-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5-33220-lipo-x86_64.pkg"
+        sudo installer -verbose -pkg "Firebird-3.0.5-33220-lipo-x86_64.pkg" -target /
         sudo ln -s /Library/Frameworks/Firebird.framework/Versions/A/Firebird /usr/local/lib/libfbclient.dylib
 
     - name: Firebird install (Windows)
       if: matrix.os == 'windows-latest'
       shell: cmd
       run: |
-        set FB_ZIP=Firebird-3.0.4.33054-0_x64.zip
-        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_4/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
+        set FB_ZIP=Firebird-3.0.5.33220-0_x64.zip
+        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
         7z x -oC:\Firebird %FB_ZIP%
 
     - name: Build
