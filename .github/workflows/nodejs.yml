@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Firebird install (Linux)
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get install libtommath0
         wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
@@ -52,7 +52,7 @@ jobs:
         yarn bootstrap
 
     - name: Test (Linux)
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-latest'
       run: |
         sg firebird -c "yarn test"
 
