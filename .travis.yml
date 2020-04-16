@@ -33,10 +33,6 @@ git:
   depth: 1
 
 addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
+  apt:    
     packages:
-      - gcc-5
-      - g++-5
       - libtommath0
