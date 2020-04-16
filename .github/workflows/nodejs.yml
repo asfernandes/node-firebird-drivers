@@ -22,13 +22,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Firebird install (Linux)
-      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-16.04'
       run: |
         sudo apt-get install libtommath0
         wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
         tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
         (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get install libtommath1
+        wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
+        tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
+        (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
+        sudo usermod -a -G firebird `whoami`
+   
 
     - name: Firebird install (MacOS)
       if: matrix.os == 'macOS-latest'
