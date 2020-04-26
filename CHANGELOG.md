@@ -1,3 +1,9 @@
+## next
+
+### driver-native
+
+* Feature [#63](https://github.com/asfernandes/node-firebird-drivers/issues/63) - Make getMaster return OS error when failing to load the client library.
+
 ## 2.1.0 (December, 29, 2019)
 
 ### driver

@@ -147,7 +147,14 @@ static Napi::Value getMaster(const Napi::CallbackInfo& info)
 		}
 	}
 	else
+	{
+		const char* errorMsg = dlerror();
+
 		errorMessage = string("Cannot load Firebird client library: '") + str + "'.";
+
+		if (errorMsg)
+			errorMessage += string("\n- ") + errorMsg;
+	}
 #endif
 
 	if (!errorMessage.empty())
