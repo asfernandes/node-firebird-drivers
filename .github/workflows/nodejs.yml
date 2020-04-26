@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-16.04, ubuntu-18.04, windows-2019, macos-10.15]
         node-version: [10.x, 12.x, 13.x]
 
     steps:
@@ -22,23 +22,32 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Firebird install (Linux)
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-18.04'
       run: |
-        sudo apt-get install libtommath0
+        if [ `lsb_release -rs` = '16.04' ]
+        then
+            sudo apt-get install libtommath0
+        else
+            sudo apt-get install libtommath1
+            sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
+        fi
         wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
         tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
         (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
 
     - name: Firebird install (MacOS)
-      if: matrix.os == 'macOS-latest'
+      if: matrix.os == 'macos-10.15'
       run: |
-        wget -nv -O Firebird-3.0.5-33220-lipo-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5-33220-lipo-x86_64.pkg"
-        sudo installer -verbose -pkg "Firebird-3.0.5-33220-lipo-x86_64.pkg" -target /
-        sudo ln -s /Library/Frameworks/Firebird.framework/Versions/A/Firebird /usr/local/lib/libfbclient.dylib
+        # Until official build does not work (hope 3.0.6 will) use a snapshot built
+        # in the main's Firebird repository github-actions and stored in asfernandes/firebird.
+        #wget -nv -O Firebird-3.0.5-33220-lipo-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5-33220-lipo-x86_64.pkg"
+        #sudo installer -verbose -pkg "Firebird-3.0.5-33220-lipo-x86_64.pkg" -target /
+        wget -nv -O Firebird-3.0.6-33289-x86_64.pkg "https://github.com/asfernandes/firebird/releases/download/R3_0_0/Firebird-3.0.6-33289-x86_64.pkg"
+        sudo installer -verbose -pkg "Firebird-3.0.6-33289-x86_64.pkg" -target /
 
     - name: Firebird install (Windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       shell: cmd
       run: |
         set FB_ZIP=Firebird-3.0.5.33220-0_x64.zip
@@ -52,12 +61,12 @@ jobs:
         yarn bootstrap
 
     - name: Test (Linux)
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-18.04'
       run: |
         sg firebird -c "yarn test"
 
     - name: Test (MacOS)
-      if: matrix.os == 'macOS-latest'
+      if: matrix.os == 'macos-10.15'
       run: |
         sudo mkdir `pwd`/tmp-node-fb
         sudo chmod 777 `pwd`/tmp-node-fb
@@ -67,7 +76,7 @@ jobs:
         yarn test
 
     - name: Test (Windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       shell: cmd
       run: |
         set PATH=C:\Firebird;%PATH%
