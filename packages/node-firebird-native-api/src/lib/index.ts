@@ -9,7 +9,7 @@ export function getDefaultLibraryFilename(): string {
 		case 'win32':
 			return 'fbclient.dll';
 		case 'darwin':
-			return 'libfbclient.dylib';
+			return '/Library/Frameworks/Firebird.framework/Libraries/libfbclient.dylib';
 		default:
 			return 'libfbclient.so';
 	}

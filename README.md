@@ -41,10 +41,6 @@ For remote server make sure to specify `NODE_FB_TEST_TMP_DIR`.
 
 For local server or embedded, if `NODE_FB_TEST_TMP_DIR` is ommited a temporary directory will be created.
 
-# MacOS
-
-If the error `Cannot load Firebird client library: 'libfbclient.dylib'` appears in MacOS, you may fix it creating a symlink with `sudo ln -s /Library/Frameworks/Firebird.framework/Versions/A/Firebird /usr/local/lib/libfbclient.dylib`.
-
 # Donation
 
 If this project help you reduce time to develop, you can show your appreciation with a donation.
