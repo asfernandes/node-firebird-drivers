@@ -83,19 +83,19 @@ jobs:
         call yarn test
 
     - name: Upload native-api-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@main
       with:
         name: native-api-${{ matrix.os }}-${{ matrix.node-version }}
         path: packages/node-firebird-native-api
 
     - name: Upload driver-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@main
       with:
         name: driver-${{ matrix.os }}-${{ matrix.node-version }}
         path: packages/node-firebird-driver
 
     - name: Upload driver-native-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@main
       with:
         name: driver-native-${{ matrix.os }}-${{ matrix.node-version }}
         path: packages/node-firebird-driver-native
