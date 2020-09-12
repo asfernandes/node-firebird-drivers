@@ -273,7 +273,10 @@ template <typename This, typename Interface>
 class BaseClass : public Napi::ObjectWrap<This>
 {
 public:
-	using Napi::ObjectWrap<This>::ObjectWrap;
+	BaseClass(const Napi::CallbackInfo& callbackInfo)
+		: Napi::ObjectWrap<This>(callbackInfo)
+	{
+	}
 
 public:
 	static void Init(Napi::Env env, Napi::Object& exports, const char* name)
