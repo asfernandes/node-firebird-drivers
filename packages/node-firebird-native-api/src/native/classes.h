@@ -269,14 +269,11 @@ private:
 };
 
 
-template <typename This, typename Interface>
-class BaseClass : public Napi::ObjectWrap<This>
+template <typename ThisType, typename Interface>
+class BaseClass : public Napi::ObjectWrap<ThisType>
 {
 public:
-	BaseClass(const Napi::CallbackInfo& callbackInfo)
-		: Napi::ObjectWrap<This>(callbackInfo)
-	{
-	}
+	using Napi::ObjectWrap<ThisType>::ObjectWrap;
 
 public:
 	static void Init(Napi::Env env, Napi::Object& exports, const char* name)
@@ -286,10 +283,10 @@ public:
 		className() = name;
 
 		// Prototype
-		std::vector<typename Napi::ObjectWrap<This>::PropertyDescriptor> properties;
-		This::InitPrototype(properties);
+		std::vector<typename Napi::ObjectWrap<ThisType>::PropertyDescriptor> properties;
+		ThisType::InitPrototype(properties);
 
-		Napi::Function function = Napi::ObjectWrap<This>::DefineClass(env, name, properties);
+		Napi::Function function = Napi::ObjectWrap<ThisType>::DefineClass(env, name, properties);
 
 		constructor().Reset(function);
 		constructor().SuppressDestruct();
@@ -303,13 +300,13 @@ public:
 
 		auto instance = constructor().Value().New({});
 
-		This* obj = Napi::ObjectWrap<This>::Unwrap(instance);
+		ThisType* obj = Napi::ObjectWrap<ThisType>::Unwrap(instance);
 		obj->interface = interface;
 
 		return scope.Escape(instance).ToObject();
 	}
 
-	static This* CheckedUnwrap(const Napi::Env env, const Napi::Value& value, const char* description,
+	static ThisType* CheckedUnwrap(const Napi::Env env, const Napi::Value& value, const char* description,
 		bool allowNull = false)
 	{
 		const auto type = value.Type();
@@ -331,7 +328,7 @@ public:
 			throw Napi::Error::New(env, msg);
 		}
 
-		return Napi::ObjectWrap<This>::Unwrap(object);
+		return Napi::ObjectWrap<ThisType>::Unwrap(object);
 	}
 
 protected:
@@ -352,8 +349,8 @@ public:
 };
 
 
-template <typename This, template<typename...> class T>
-class BaseImpl : public T<This, fb::ThrowStatusWrapper>
+template <typename ThisType, template<typename...> class T>
+class BaseImpl : public T<ThisType, fb::ThrowStatusWrapper>
 {
 };
 
