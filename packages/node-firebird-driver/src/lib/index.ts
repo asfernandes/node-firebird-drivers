@@ -260,7 +260,7 @@ export abstract class BlobStream {
 	readonly blob: Blob;
 
 	/** Gets the blob's stream length in bytes.  */
-	readonly length: Promise<number>;
+	abstract get length(): Promise<number>;
 
 	protected constructor(blob: Blob) {
 		this.blob = blob;

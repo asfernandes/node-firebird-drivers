@@ -48,7 +48,7 @@
     ]
   },
   "dependencies": {
-    "@types/node": "^12.12.12",
+    "@types/node": "^14.10.1",
     "node-firebird-driver": "^2.1.0",
     "node-firebird-native-api": "^2.1.0"
   }
