@@ -2,6 +2,14 @@ node_modules/
 dist/
 
 lerna-debug.log
+
 yarn-error.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 tsconfig.tsbuildinfo
 .env

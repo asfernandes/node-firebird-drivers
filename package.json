@@ -8,23 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap && lerna run build && lerna run gyp:configure && lerna run gyp:build",
-    "clean": "lerna run clean",
-    "publish": "lerna publish",
-    "test": "lerna run test"
-  },
-  "devDependencies": {
-    "@types/fs-extra-promise": "^1.0.9",
-    "@types/jest": "^26.0.13",
-    "@types/temp-fs": "^0.9.29",
-    "dotenv": "^8.2.0",
-    "fs-extra-promise": "^1.0.1",
-    "jest": "^26.4.2",
-    "lerna": "^3.22.1",
-    "rimraf": "^3.0.2",
-    "temp-fs": "^0.9.9",
-    "ts-jest": "^26.3.0",
-    "tslint": "^6.1.3",
-    "typescript": "^4.0.2"
+    "bootstrap": "yarn workspaces foreach run build && yarn workspaces foreach run gyp:configure && yarn workspaces foreach run gyp:build",
+    "clean": "yarn workspaces foreach run clean",
+    "publish": "yarn workspaces foreach run publish",
+    "test": "yarn workspaces foreach run test"
   }
 }

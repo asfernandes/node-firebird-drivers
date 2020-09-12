@@ -5,5 +5,10 @@
   ],
   "version": "independent",
   "npmClient": "yarn",
+  "command": {
+    "run": {
+      "npmClient": "yarn"
+    }
+  },
   "useWorkspaces": true
 }
