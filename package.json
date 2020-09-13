@@ -8,9 +8,15 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "yarn workspaces foreach run build && yarn workspaces foreach run gyp:configure && yarn workspaces foreach run gyp:build",
-    "clean": "yarn workspaces foreach run clean",
-    "publish": "yarn workspaces foreach run publish",
-    "test": "yarn workspaces foreach run test"
+    "bootstrap": "yarn workspaces foreach -t run build && yarn workspaces foreach -t run gyp:configure && yarn workspaces foreach -t run gyp:build",
+    "clean": "yarn workspaces foreach -t run clean",
+    "publish": "yarn workspaces foreach -t run publish",
+    "test": "yarn workspaces foreach -t run test"
+  },
+  "dependencies": {
+    "@yarnpkg/pnpify": "^2.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.2"
   }
 }

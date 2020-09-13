@@ -10,7 +10,7 @@
 		"dist/": true
 	},
 
-	"typescript.tsdk": "../../node_modules/typescript/lib",
+	"typescript.tsdk": "../../.yarn/sdks/typescript/lib",
 	"npm.packageManager": "yarn",
 	"tslint.packageManager": "yarn"
 }

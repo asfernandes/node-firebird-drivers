@@ -17,6 +17,13 @@
 			"path": "."
 		}
 	],
+	"extensions": {
+		"recommendations": [
+			"EditorConfig.EditorConfig",
+			"arcanis.vscode-zipfs",
+			"eg2.tslint"
+		]
+	},
 	"settings": {
 		"editor.tabSize": 4,
 		"editor.insertSpaces": false,
@@ -25,11 +32,14 @@
 		"files.trimTrailingWhitespace": true,
 
 		"files.exclude": {
-			"**/node_modules/": true,
+			"**/.yarn": true,
+			"**/.pnp.*": true,
 			"**/dist/": true
 		},
 
-		"typescript.tsdk": "root/node_modules/typescript/lib",
+		"typescript.tsdk": "root/.yarn/sdks/typescript/lib",
+		"typescript.enablePromptUseWorkspaceTsdk": true,
+
 		"tslint.packageManager": "yarn",
 		"npm.packageManager": "yarn"
 	}
