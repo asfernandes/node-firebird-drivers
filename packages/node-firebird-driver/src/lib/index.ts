@@ -114,28 +114,28 @@ export interface Attachment {
 		}): Promise<Transaction>;
 
 	/** Executes a statement that has no result set. */
-	execute(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	execute(transaction: Transaction, sqlStmt: string, parameters?: unknown[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: unknown[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
-		}): Promise<any[]>;
+		}): Promise<unknown[]>;
 
 	/** Executes a statement that returns a single record as an object. */
-	executeReturningAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeReturningAsObject<T extends Record<string, unknown>>(transaction: Transaction, sqlStmt: string, parameters?: unknown[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<T>;
 
 	/** Executes a statement that has result set. */
-	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: unknown[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteQueryOptions
@@ -183,17 +183,17 @@ export interface Statement {
 	executeTransaction(transaction: Transaction): Promise<Transaction>;
 
 	/** Executes a prepared statement that has no result set. */
-	execute(transaction: Transaction, parameters?: any[], options?: ExecuteOptions): Promise<void>;
+	execute(transaction: Transaction, parameters?: unknown[], options?: ExecuteOptions): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeReturning(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+	executeReturning(transaction: Transaction, parameters?: unknown[], executeOptions?: ExecuteOptions): Promise<unknown[]>;
 
 	/** Executes a statement that returns a single record as an object. */
-	executeReturningAsObject<T extends object>(transaction: Transaction, parameters?: any[],
+	executeReturningAsObject<T extends Record<string, unknown>>(transaction: Transaction, parameters?: unknown[],
 		options?: ExecuteOptions): Promise<T>;
 
 	/** Executes a prepared statement that has result set. */
-	executeQuery(transaction: Transaction, parameters?: any[], options?: ExecuteQueryOptions): Promise<ResultSet>;
+	executeQuery(transaction: Transaction, parameters?: unknown[], options?: ExecuteQueryOptions): Promise<ResultSet>;
 
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
@@ -220,7 +220,7 @@ export interface ResultSet {
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
-	fetch(options?: FetchOptions): Promise<any[][]>;
+	fetch(options?: FetchOptions): Promise<unknown[][]>;
 
 	/**
 	 * Fetchs data from this result set as T[].
@@ -230,7 +230,7 @@ export interface ResultSet {
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
-	fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]>;
+	fetchAsObject<T extends Record<string, unknown>>(options?: FetchOptions): Promise<T[]>;
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;

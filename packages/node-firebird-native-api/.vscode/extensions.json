@@ -4,6 +4,6 @@
 	"recommendations": [
 		"EditorConfig.EditorConfig",
 		"arcanis.vscode-zipfs",
-		"eg2.tslint"
+		"dbaeumer.vscode-eslint"
 	]
 }

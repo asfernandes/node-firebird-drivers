@@ -1,11 +1,12 @@
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
+import * as dotenv from 'dotenv';
 
-import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util } from '../lib';
+import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Status, Util } from '../lib';
 import { XpbBuilder } from '../lib';
 
 
-require('dotenv').config({ path: '../../.env' });
+dotenv.config({ path: '../../.env' });
 
 
 describe('node-firebird-native-api', () => {
@@ -27,7 +28,7 @@ describe('node-firebird-native-api', () => {
 	}
 
 	function getTempFile(name: string): string {
-		const database = `${testConfig.tmpDir}/${name}`;
+		const database = `${testConfig.tmpDir ?? ''}/${name}`;
 		return (testConfig.host ?? '') +
 			(testConfig.host && testConfig.port ? `/${testConfig.port}` : '') +
 			(testConfig.host ? ':' : '') +
@@ -60,7 +61,6 @@ describe('node-firebird-native-api', () => {
 			return;
 
 		const status = master.getStatusSync()!;
-		// tslint:disable-next-line:variable-name
 		const fb_shutrsn_app_stopped = -3;
 		dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
 		status.disposeSync();
@@ -136,7 +136,7 @@ describe('node-firebird-native-api', () => {
 	describe('Provider', () => {
 		test('wrong status class', () => {
 			expect(() =>
-				dispatcher.createDatabaseSync(master as any, getTempFile('wrong-class.fdb'), 0, undefined)
+				dispatcher.createDatabaseSync(master as unknown as Status, getTempFile('wrong-class.fdb'), 0, undefined)
 			).toThrow();
 		});
 

@@ -1,6 +1,7 @@
 // Auto-generated file. Do not edit!
 
 /* tslint:disable:max-line-length */
+/* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-inferrable-types */
 
 export interface Pointer {
 }

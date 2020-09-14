@@ -19,7 +19,7 @@ export class TransactionImpl extends AbstractTransaction {
 
 		return await attachment.client.statusAction(async status => {
 			const tpb = createTpb(options);
-			transaction.transactionHandle = await attachment!.attachmentHandle!.startTransactionAsync(status, tpb.length, tpb);
+			transaction.transactionHandle = await attachment.attachmentHandle!.startTransactionAsync(status, tpb.length, tpb);
 			return transaction;
 		});
 	}

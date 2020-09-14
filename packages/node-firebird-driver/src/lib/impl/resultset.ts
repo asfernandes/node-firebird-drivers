@@ -38,7 +38,7 @@ export abstract class AbstractResultSet implements ResultSet {
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
-	async fetch(options?: FetchOptions): Promise<any[][]> {
+	async fetch(options?: FetchOptions): Promise<unknown[][]> {
 		this.check();
 
 		if (this.finished)
@@ -62,20 +62,20 @@ export abstract class AbstractResultSet implements ResultSet {
 	 *
 	 * If result set has no more rows, returns an empty array.
 	 */
-	async fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]> {
+	async fetchAsObject<T extends Record<string, unknown>>(options?: FetchOptions): Promise<T[]> {
 		const array = await this.fetch(options);
 		const cols = (await this.statement?.columnLabels) || [];
 
 		return array.map(row => {
-			const obj = {} as T;
+			const obj = {} as Record<string, unknown>;
 
 			// Loop on row column value.
-			row.forEach((v: any, idx: number) => {
+			row.forEach((v: unknown, idx: number) => {
 				const col = cols[idx];
-				(obj as any)[col] = v;
+				obj[col] = v;
 			});
 
-			return obj;
+			return obj as T;
 		});
 	}
 
@@ -86,5 +86,5 @@ export abstract class AbstractResultSet implements ResultSet {
 
 	protected abstract async internalClose(): Promise<void>;
 
-	protected abstract async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: any[][] }>;
+	protected abstract async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: unknown[][] }>;
 }

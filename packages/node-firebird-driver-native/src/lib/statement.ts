@@ -41,7 +41,7 @@ export class StatementImpl extends AbstractStatement {
 
 		return await attachment.client.statusAction(async status => {
 			//// FIXME: options/flags, dialect
-			statement.statementHandle = await attachment!.attachmentHandle!.prepareAsync(status, transaction.transactionHandle,
+			statement.statementHandle = await attachment.attachmentHandle!.prepareAsync(status, transaction.transactionHandle,
 				0, sqlStmt, 3, fb.Statement.PREPARE_PREFETCH_ALL);
 
 			statement.inMetadata = fixMetadata(status, await statement.statementHandle!.getInputMetadataAsync(status));
@@ -79,12 +79,16 @@ export class StatementImpl extends AbstractStatement {
 	}
 
 	/** Executes a prepared statement that uses the SET TRANSACTION command. Returns the new transaction. */
+	// eslint-disable-next-line @typescript-eslint/require-await
 	protected async internalExecuteTransaction(transaction: TransactionImpl): Promise<TransactionImpl> {
 		throw new Error('Uninplemented method: executeTransaction.');
 	}
 
 	/** Executes a prepared statement that has no result set. */
-	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<Array<any>> {
+	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<unknown>, options?: ExecuteOptions):
+			Promise<Array<unknown>> {
+		void options;	//// FIXME:
+
 		return await this.attachment.client.statusAction(async status => {
 			await this.dataWriter(this.attachment, transaction, this.inBuffer, parameters);
 
@@ -100,9 +104,9 @@ export class StatementImpl extends AbstractStatement {
 	}
 
 	/** Executes a prepared statement that has result set. */
-	protected async internalExecuteQuery(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteQueryOptions):
+	protected async internalExecuteQuery(transaction: TransactionImpl, parameters?: Array<unknown>, options?: ExecuteQueryOptions):
 			Promise<ResultSetImpl> {
-		return await ResultSetImpl.open(this, transaction as TransactionImpl, parameters, options);
+		return await ResultSetImpl.open(this, transaction, parameters, options);
 	}
 
 	get columnLabels(): Promise<string[]> {
@@ -110,7 +114,7 @@ export class StatementImpl extends AbstractStatement {
 			if (!this.outMetadata)
 				return [];
 
-			return await this.attachment.client.statusAction(async status => {
+			return this.attachment.client.statusAction(status => {
 				const metaData = this.outMetadata!;
 				const count = metaData.getCountSync(status);
 				const array: string[] = [];
@@ -118,7 +122,7 @@ export class StatementImpl extends AbstractStatement {
 				for (let i = 0; i < count; ++i)
 					array.push(metaData.getAliasSync(status, i)!);
 
-				return array;
+				return Promise.resolve(array);
 			});
 		};
 

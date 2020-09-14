@@ -191,7 +191,7 @@ const interfaceConfig: InterfaceConfig = {
 };
 
 
-export function patch(library: Library) {
+export function patch(library: Library): void {
 	for (const intfName in interfaceConfig) {
 		if (!interfaceConfig.hasOwnProperty(intfName))
 			continue;

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+
 import { Attachment, EventCallback, Master } from './cloop-gen';
 
 import * as os from 'os';
@@ -15,7 +17,9 @@ export function getDefaultLibraryFilename(): string {
 	}
 }
 
-const native = require('bindings')('addon');
+import nativeModule = require('bindings');
+const native = nativeModule('addon') as Record<string, any>;
+
 
 export const getMaster: (library: string) => Master = native.getMaster;
 export const disposeMaster: (master: Master) => boolean = native.disposeMaster;

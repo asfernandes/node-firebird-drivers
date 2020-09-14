@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // These functions was adapted from https://github.com/nakagami/firebirdsql
 
 /** Decode a date. */
-export function decodeDate(date: number) {
+export function decodeDate(date: number): { year: number, month: number, day: number } {
 	let nday = date + 678882;
 	const century = Math.trunc((4 * nday - 1) / 146097);
 	nday = 4 * nday - 1 - 146097 * century;
@@ -62,7 +62,7 @@ export function encodeDate(year: number, month: number, day: number): number {
 }
 
 /** Descode a time. */
-export function decodeTime(time: number) {
+export function decodeTime(time: number): { hours: number, minutes: number, seconds: number, fractions: number } {
 	let seconds = Math.trunc(time / 10000);
 	let minutes = Math.trunc(seconds / 60);
 	const hours = Math.trunc(minutes / 60);

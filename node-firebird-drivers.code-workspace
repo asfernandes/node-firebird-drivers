@@ -21,7 +21,7 @@
 		"recommendations": [
 			"EditorConfig.EditorConfig",
 			"arcanis.vscode-zipfs",
-			"eg2.tslint"
+			"dbaeumer.vscode-eslint"
 		]
 	},
 	"settings": {
@@ -40,7 +40,9 @@
 		"typescript.tsdk": "root/.yarn/sdks/typescript/lib",
 		"typescript.enablePromptUseWorkspaceTsdk": true,
 
-		"tslint.packageManager": "yarn",
+		"eslint.nodePath": ".yarn/sdks",
+		"eslint.packageManager": "yarn",
+
 		"npm.packageManager": "yarn"
 	}
 }

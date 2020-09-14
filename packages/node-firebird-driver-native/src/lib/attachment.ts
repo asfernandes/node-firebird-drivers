@@ -30,7 +30,7 @@ export class AttachmentImpl extends AbstractAttachment {
 
 		return await client.statusAction(async status => {
 			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client!.dispatcher!.attachDatabaseAsync(status, uri, dpb.length, dpb);
+			attachment.attachmentHandle = await client.dispatcher!.attachDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}
@@ -40,7 +40,7 @@ export class AttachmentImpl extends AbstractAttachment {
 
 		return await client.statusAction(async status => {
 			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
+			attachment.attachmentHandle = await client.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
 			return attachment;
 		});
 	}

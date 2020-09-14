@@ -10,6 +10,8 @@
   "scripts": {
     "bootstrap": "yarn workspaces foreach -t run build && yarn workspaces foreach -t run gyp:configure && yarn workspaces foreach -t run gyp:build",
     "clean": "yarn workspaces foreach -t run clean",
+    "build": "yarn workspaces foreach -t run build",
+    "lint": "yarn workspaces foreach -pt run lint",
     "publish": "yarn workspaces foreach -t run publish",
     "test": "yarn workspaces foreach -t run test"
   },
@@ -17,6 +19,12 @@
     "@yarnpkg/pnpify": "^2.2.1"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.9.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsdoc": "^30.4.2",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
     "typescript": "^4.0.2"
   }
 }

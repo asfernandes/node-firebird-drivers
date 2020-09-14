@@ -54,6 +54,7 @@ export class ClientImpl extends AbstractClient {
 	}
 
 	/** Disposes this client's resources. */
+	// eslint-disable-next-line @typescript-eslint/require-await
 	protected async internalDispose(): Promise<void> {
 		this.dispatcher!.releaseSync();
 		fb.disposeMaster(this.master!);

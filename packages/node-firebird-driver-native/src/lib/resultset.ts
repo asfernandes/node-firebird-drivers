@@ -14,9 +14,9 @@ export class ResultSetImpl extends AbstractResultSet {
 	transaction: TransactionImpl;
 
 	resultSetHandle?: fb.ResultSet;
-	delayedError: any;
+	delayedError: unknown;
 
-	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
+	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<unknown>,
 			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
 		const resultSet = new ResultSetImpl(statement, transaction);
 
@@ -42,7 +42,7 @@ export class ResultSetImpl extends AbstractResultSet {
 	}
 
 	/** Fetchs data from this result set. */
-	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: any[][] }> {
+	protected async internalFetch(options?: FetchOptions): Promise<{ finished: boolean; rows: unknown[][] }> {
 		return await this.statement.attachment.client.statusAction(async status => {
 			if (this.delayedError) {
 				const error = this.delayedError;

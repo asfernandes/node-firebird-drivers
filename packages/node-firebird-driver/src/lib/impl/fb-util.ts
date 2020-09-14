@@ -20,67 +20,61 @@ import {
 
 
 /** SQL_* type constants */
-export namespace sqlTypes {
-	export const SQL_TEXT = 452;
-	export const SQL_VARYING = 448;
-	export const SQL_SHORT = 500;
-	export const SQL_LONG = 496;
-	export const SQL_FLOAT = 482;
-	export const SQL_DOUBLE = 480;
-	//export const SQL_D_FLOAT = 530;
-	export const SQL_TIMESTAMP = 510;
-	export const SQL_BLOB = 520;
-	//export const SQL_ARRAY = 540;
-	//export const SQL_QUAD = 550;
-	export const SQL_TYPE_TIME = 560;
-	export const SQL_TYPE_DATE = 570;
-	export const SQL_INT64 = 580;
-	export const SQL_BOOLEAN = 32764;
-	export const SQL_NULL = 32766;
+export enum sqlTypes {
+	SQL_TEXT = 452,
+	SQL_VARYING = 448,
+	SQL_SHORT = 500,
+	SQL_LONG = 496,
+	SQL_FLOAT = 482,
+	SQL_DOUBLE = 480,
+	//SQL_D_FLOAT = 530,
+	SQL_TIMESTAMP = 510,
+	SQL_BLOB = 520,
+	//SQL_ARRAY = 540,
+	//SQL_QUAD = 550,
+	SQL_TYPE_TIME = 560,
+	SQL_TYPE_DATE = 570,
+	SQL_INT64 = 580,
+	SQL_BOOLEAN = 32764,
+	SQL_NULL = 32766
 }
 
 /** DPB constants. */
-export namespace dpb {
-	/* tslint:disable */
-	export const version1 = 1;
-	export const lc_ctype = 48;
-	export const force_write = 24;
-	export const user_name = 28;
-	export const password = 29;
-	export const sql_role_name = 60;
-	/* tslint:enable */
+export enum dpb {
+	version1 = 1,
+	lc_ctype = 48,
+	force_write = 24,
+	user_name = 28,
+	password = 29,
+	sql_role_name = 60
 }
 
 /** TPB constants. */
-export namespace tpb {
-	/* tslint:disable */
-	export const version1 = 1;
-	export const consistency = 1;
-	export const concurrency = 2;
-	export const wait = 6;
-	export const nowait = 7;
-	export const read = 8;
-	export const write = 9;
-	export const ignore_limbo = 14;
-	export const read_committed = 15;
-	export const autocommit = 16;
-	export const rec_version = 17;
-	export const no_rec_version = 18;
-	export const restart_requests = 19;
-	export const no_auto_undo = 20;
-	/* tslint:enable */
+export enum tpb {
+	version1 = 1,
+	consistency = 1,
+	concurrency = 2,
+	wait = 6,
+	nowait = 7,
+	read = 8,
+	write = 9,
+	ignore_limbo = 14,
+	read_committed = 15,
+	autocommit = 16,
+	rec_version = 17,
+	no_rec_version = 18,
+	restart_requests = 19,
+	no_auto_undo = 20
 }
 
 /** EPB constants. */
-export namespace epb {
-	/* tslint:disable */
-	export const version1 = 1;
-	/* tslint:enable */
+export enum epb {
+	version1 = 1
 }
 
 /** Blob info. */
-export namespace blobInfo {
-	export const totalLength = 6;
+export enum blobInfo {
+	totalLength = 6
 }
 
 export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {
@@ -188,7 +182,7 @@ export function changeScale(value: number, inputScale: number, outputScale: numb
 ***/
 
 /** Emulate Firebird isc_portable_integer. */
-export function getPortableInteger(buffer: Uint8Array, length: number) {
+export function getPortableInteger(buffer: Uint8Array, length: number): number {
 	if (!buffer || length <= 0 || length > 8)
 		return 0;
 
@@ -213,8 +207,8 @@ export interface Descriptor {
 }
 
 
-export type DataReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any[]>;
-export type ItemReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any>;
+export type DataReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<unknown[]>;
+export type ItemReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => unknown;
 
 /** Creates a data reader. */
 export function createDataReader(descriptors: Descriptor[]): DataReader {
@@ -223,7 +217,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 	for (let i = 0; i < descriptors.length; ++i) {
 		const descriptor = descriptors[i];
 
-		mappers[i] = async (attachment: AbstractAttachment, transaction: AbstractTransaction, buffer: Uint8Array): Promise<any> => {
+		mappers[i] = (attachment: AbstractAttachment, transaction: AbstractTransaction, buffer: Uint8Array): unknown => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (dataView.getInt16(descriptor.nullOffset, littleEndian) == -1)
@@ -289,15 +283,15 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 		};
 	}
 
-	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array): Promise<any[]> => {
+	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array): Promise<unknown[]> => {
 		return await Promise.all(mappers.map(mapper => mapper(attachment, transaction, buffer)));
 	};
 }
 
 
 export type DataWriter = (attachment: Attachment, transaction: Transaction,
-	buffer: Uint8Array, values: Array<any> | undefined) => Promise<void>;
-export type ItemWriter = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: any) => Promise<void>;
+	buffer: Uint8Array, values: Array<unknown> | undefined) => Promise<void>;
+export type ItemWriter = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: unknown) => Promise<void>;
 
 /** Creates a data writer. */
 export function createDataWriter(descriptors: Descriptor[]): DataWriter {
@@ -306,7 +300,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 	for (let i = 0; i < descriptors.length; ++i) {
 		const descriptor = descriptors[i];
 
-		mappers[i] = async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, value: any): Promise<void> => {
+		mappers[i] = async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, value: unknown): Promise<void> => {
 			const dataView = new DataView(buffer.buffer);
 
 			if (value == null) {
@@ -353,7 +347,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 				***/
 
 				case sqlTypes.SQL_DOUBLE:
-					dataView.setFloat64(descriptor.offset, value, littleEndian);
+					dataView.setFloat64(descriptor.offset, value as number, littleEndian);
 					break;
 
 				case sqlTypes.SQL_TYPE_TIME: {
@@ -429,7 +423,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 		};
 	}
 
-	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: Array<any>): Promise<void> => {
+	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: Array<unknown>): Promise<void> => {
 		if ((values || []).length !== descriptors.length)
 			throw new Error(`Incorrect number of parameters: expected ${descriptors.length}, received ${(values || []).length}.`);
 

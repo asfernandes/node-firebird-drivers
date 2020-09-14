@@ -1,7 +1,10 @@
-require('source-map-support').install();
+import * as sourceMap from 'source-map-support';
 
 import { generate, load } from 'node-cloop-gen';
 import { patch } from './patch';
+
+
+sourceMap.install();
 
 
 const root = process.cwd();
