@@ -11,6 +11,7 @@
     "bootstrap": "yarn workspaces foreach -t run build && yarn workspaces foreach -t run gyp:configure && yarn workspaces foreach -t run gyp:build",
     "clean": "yarn workspaces foreach -t run clean",
     "build": "yarn workspaces foreach -t run build",
+    "build:w": "tsc --build -w",
     "lint": "yarn workspaces foreach -pt run lint",
     "publish": "yarn workspaces foreach -t run publish",
     "test": "yarn workspaces foreach -t run test"
