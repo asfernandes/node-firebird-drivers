@@ -25,14 +25,10 @@ script:
   - sg firebird -c "yarn bootstrap"
   - sg firebird -c "yarn test"
 
-cache:
-  directories:
-    - node_modules
-
 git:
   depth: 1
 
 addons:
-  apt:    
+  apt:
     packages:
       - libtommath0
