@@ -314,6 +314,8 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 				return;
 			}
 
+			dataView.setInt16(descriptor.nullOffset, 0, littleEndian);
+
 			switch (descriptor.type) {
 				// SQL_TEXT is handled changing its descriptor to SQL_VARYING with IMetadataBuilder.
 				case sqlTypes.SQL_VARYING: {

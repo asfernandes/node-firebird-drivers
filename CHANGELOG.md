@@ -1,9 +1,13 @@
-## next
+## 2.1.1 (November, 22, 2020)
 
 ### driver-native
 
 * Feature [#62](https://github.com/asfernandes/node-firebird-drivers/issues/62) - Change value of getDefaultLibraryFilename in MacOS.
 * Feature [#63](https://github.com/asfernandes/node-firebird-drivers/issues/63) - Make getMaster return OS error when failing to load the client library.
+
+### driver
+
+* Fix [#69](https://github.com/asfernandes/node-firebird-drivers/issues/69) - Subsequent use of Statement::execute* methods may send incorrect value of input parameters.
 
 ## 2.1.0 (December, 29, 2019)
 

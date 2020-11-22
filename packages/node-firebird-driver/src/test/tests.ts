@@ -325,9 +325,19 @@ export function runCommonTests(client: Client) {
 				await statement1.dispose();
 				await transaction.commitRetaining();
 
-				const statement2 = await attachment.prepare(transaction, 'insert into t1 (n1) values (1)');
-				await statement2.execute(transaction);
+				const statement2 = await attachment.prepare(transaction, 'insert into t1 (n1) values (?)');
+				await statement2.execute(transaction, [1]);
+				await statement2.execute(transaction, [null]);
+				await statement2.execute(transaction, [10]);
+				await statement2.execute(transaction, [100]);
 				await statement2.dispose();
+
+				const rs = await attachment.executeQuery(transaction,
+					`select sum(n1) || ', ' || count(n1) || ', ' || count(*) ret from t1`);
+				const ret = await rs.fetchAsObject<{ RET: string }>();
+				await rs.close();
+
+				expect(ret[0].RET).toStrictEqual('111, 3, 4');
 
 				await transaction.commit();
 				await attachment.dropDatabase();
