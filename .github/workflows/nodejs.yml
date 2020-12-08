@@ -31,27 +31,23 @@ jobs:
             sudo apt-get install libtommath1
             sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
         fi
-        wget -nv -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
-        tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
-        (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
+        wget -nv -O Firebird-3.0.7.33374-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7.33374-0.amd64.tar.gz"
+        tar xzvf Firebird-3.0.7.33374-0.amd64.tar.gz
+        (cd Firebird-3.0.7.33374-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
 
     - name: Firebird install (MacOS)
       if: matrix.os == 'macos-10.15'
       run: |
-        # Until official build does not work (hope 3.0.6 will) use a snapshot built
-        # in the main's Firebird repository github-actions and stored in asfernandes/firebird.
-        #wget -nv -O Firebird-3.0.5-33220-lipo-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5-33220-lipo-x86_64.pkg"
-        #sudo installer -verbose -pkg "Firebird-3.0.5-33220-lipo-x86_64.pkg" -target /
-        wget -nv -O Firebird-3.0.6-33289-x86_64.pkg "https://github.com/asfernandes/firebird/releases/download/R3_0_0/Firebird-3.0.6-33289-x86_64.pkg"
-        sudo installer -verbose -pkg "Firebird-3.0.6-33289-x86_64.pkg" -target /
-
+        wget -nv -O Firebird-3.0.7-33374-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7-33374-x86_64.pkg"
+        sudo installer -verbose -pkg "Firebird-3.0.7-33374-x86_64.pkg" -target /
+        
     - name: Firebird install (Windows)
       if: matrix.os == 'windows-2019'
       shell: cmd
       run: |
-        set FB_ZIP=Firebird-3.0.5.33220-0_x64.zip
-        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
+        set FB_ZIP=Firebird-3.0.7.33374-1_x64.zip
+        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
         7z x -oC:\Firebird %FB_ZIP%
 
     - name: Build
