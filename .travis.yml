@@ -15,9 +15,9 @@ matrix:
   fast_finish: true
 
 install:
-  - wget -O Firebird-3.0.5.33220-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_5/Firebird-3.0.5.33220-0.amd64.tar.gz"
-  - tar xzvf Firebird-3.0.5.33220-0.amd64.tar.gz
-  - (cd Firebird-3.0.5.33220-0.amd64; sudo ./install.sh -silent)
+  - wget -O Firebird-3.0.7.33374-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7.33374-0.amd64.tar.gz"
+  - tar xzvf Firebird-3.0.7.33374-0.amd64.tar.gz
+  - (cd Firebird-3.0.7.33374-0.amd64; sudo ./install.sh -silent)
   - sudo usermod -a -G firebird travis
 
 script:
