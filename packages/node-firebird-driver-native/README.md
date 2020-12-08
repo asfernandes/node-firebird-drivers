@@ -3,7 +3,7 @@
 
 # Firebird high-level native client for Node.js / TypeScript
 
-node-firebird-driver-native is a modern (Firebird 3+ client, Node.js 8+, TypeScript 2+) native client for Firebird based in the
+node-firebird-driver-native is a modern (Firebird 3+ client, Node.js 10+, TypeScript 2+) native client for Firebird based in the
 node-firebird-driver API.
 
 ## Installation
