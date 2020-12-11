@@ -48,7 +48,7 @@ async function test() {
 test().then(() => console.log('Finish...'));
 ```
 
-See more examples in `src/test` directory.
+See more examples in [packages/node-firebird-driver/src/test](https://github.com/asfernandes/node-firebird-drivers/tree/master/packages/node-firebird-driver/src/test) directory.
 
 # Donation
 
