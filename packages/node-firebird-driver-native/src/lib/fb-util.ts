@@ -1,4 +1,4 @@
-import { sqlTypes, Descriptor } from 'node-firebird-driver/dist/lib/impl';
+import { charSets, sqlTypes, Descriptor } from 'node-firebird-driver/dist/lib/impl';
 export * from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
@@ -28,6 +28,13 @@ export function fixMetadata(status: fb.Status, metadata?: fb.MessageMetadata): f
 					outBuilder.setTypeSync(status, i, sqlTypes.SQL_DOUBLE);
 					outBuilder.setLengthSync(status, i, 8);
 					outBuilder.setScaleSync(status, i, 0);
+					break;
+
+				// Transforms INT128 descriptors to VARCHAR.
+				case sqlTypes.SQL_INT128:
+					outBuilder.setTypeSync(status, i, sqlTypes.SQL_VARYING);
+					outBuilder.setLengthSync(status, i, 39);
+					outBuilder.setCharSetSync(status, i, charSets.ascii);
 					break;
 			}
 		}

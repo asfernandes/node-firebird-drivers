@@ -35,6 +35,7 @@ export namespace sqlTypes {
 	export const SQL_TYPE_TIME = 560;
 	export const SQL_TYPE_DATE = 570;
 	export const SQL_INT64 = 580;
+	export const SQL_INT128 = 32752;
 	export const SQL_BOOLEAN = 32764;
 	export const SQL_NULL = 32766;
 }
@@ -81,6 +82,10 @@ export namespace epb {
 /** Blob info. */
 export namespace blobInfo {
 	export const totalLength = 6;
+}
+
+export namespace charSets {
+	export const ascii = 2;
 }
 
 export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {

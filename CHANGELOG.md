@@ -1,3 +1,9 @@
+## next
+
+### driver-native
+
+* Feature [#87](https://github.com/asfernandes/node-firebird-drivers/issues/87) - Support Firebird 4 INT128 data type.
+
 ## 2.1.2 (May, 07, 2021)
 
 ### native-api
