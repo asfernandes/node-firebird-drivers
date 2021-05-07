@@ -8,7 +8,12 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04, windows-2019, macos-10.15]
+        os: [
+          ubuntu-18.04,
+          ubuntu-20.04,
+          windows-2019,
+          macos-10.15
+        ]
         node-version: [10.x, 12.x, 14.x, 15.x]
 
     steps:
@@ -41,7 +46,7 @@ jobs:
       run: |
         wget -nv -O Firebird-3.0.7-33374-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7-33374-x86_64.pkg"
         sudo installer -verbose -pkg "Firebird-3.0.7-33374-x86_64.pkg" -target /
-        
+
     - name: Firebird install (Windows)
       if: matrix.os == 'windows-2019'
       shell: cmd
