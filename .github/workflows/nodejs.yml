@@ -9,12 +9,18 @@ jobs:
     strategy:
       matrix:
         os: [
-          ubuntu-18.04,
+          #ubuntu-18.04,
           ubuntu-20.04,
           windows-2019
           #macos-10.15
         ]
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [
+          10.x,
+          12.x,
+          14.x,
+          15.x,
+          16.x
+        ]
 
     steps:
     - uses: actions/checkout@v1
@@ -29,13 +35,8 @@ jobs:
     - name: Firebird install (Linux)
       if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
       run: |
-        if [ `lsb_release -rs` = '16.04' ]
-        then
-            sudo apt-get install libtommath0
-        else
-            sudo apt-get install libtommath1
-            sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
-        fi
+        sudo apt-get install libtommath1 libtomcrypt1
+        sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
         wget -nv -O Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/T4_0_0_RC1/Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz"
         tar xzvf Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz
         (cd Firebird-4.0.0.2353-ReleaseCandidate1.amd64; sudo ./install.sh -silent)
@@ -64,7 +65,7 @@ jobs:
     - name: Test (Linux)
       if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
       run: |
-        sg firebird -c "yarn test"
+        sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 yarn test"
 
     - name: Test (MacOS)
       if: matrix.os == 'macos-10.15'
