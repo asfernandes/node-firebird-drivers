@@ -391,26 +391,34 @@ namespace
 				Napi::HandleScope scope(env);
 
 				auto counters = Napi::Array::New(env);
-				auto index = 0u;
 
-				auto i = self->resultBuffer.cbegin();
-				assert(self->resultBuffer.size() > 0 && *i == 1);	// version
-				++i;
+				{   // scope
+					lock_guard<mutex> lockGuard(self->mtx);
+					auto index = 0u;
 
-				while (i < self->resultBuffer.end())
-				{
-					const auto nameLen = *i++;
-					const auto name = string((const char*) &i[0], (const char*) &i[nameLen]);
-					i += nameLen;
-					const auto count = i[0] | (i[1] << 8) | (i[2] << 16) | (i[3] << 24);
-					i += 4;
+					auto i = self->resultBuffer.cbegin();
 
-					auto item = Napi::Array::New(env, 2);
-					item[0u] = Napi::String::New(env, name.c_str());
-					item[1u] = Napi::Number::New(env, count - self->map[name]);
-					counters[index++] = item;
+					// version
+					assert(self->resultBuffer.size() > 0);
+					assert(*i == 1);
 
-					self->map[name] = count;
+					++i;
+
+					while (i < self->resultBuffer.end())
+					{
+						const auto nameLen = *i++;
+						const auto name = string((const char*) &i[0], (const char*) &i[nameLen]);
+						i += nameLen;
+						const auto count = i[0] | (i[1] << 8) | (i[2] << 16) | (i[3] << 24);
+						i += 4;
+
+						auto item = Napi::Array::New(env, 2);
+						item[0u] = Napi::String::New(env, name.c_str());
+						item[1u] = Napi::Number::New(env, count - self->map[name]);
+						counters[index++] = item;
+
+						self->map[name] = count;
+					}
 				}
 
 				jsFunc.Call({counters});

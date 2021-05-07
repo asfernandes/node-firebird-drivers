@@ -1,3 +1,9 @@
+## next
+
+### native-api
+
+* Fix [#86](https://github.com/asfernandes/node-firebird-drivers/issues/86) - Race condition in events processing.
+
 ## 2.1.1 (November, 22, 2020)
 
 ### driver-native
