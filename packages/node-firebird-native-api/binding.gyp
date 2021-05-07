@@ -14,6 +14,13 @@
 				'NAPI_VERSION=4',
 				'NAPI_EXPERIMENTAL'
 			],
+			"configurations": {
+				"Release": {
+					"defines": [
+						"NDEBUG"
+					]
+				}
+			},
 			'conditions': [
 				[
 					'OS == "win"', {
