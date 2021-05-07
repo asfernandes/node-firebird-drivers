@@ -415,6 +415,8 @@ export function runCommonTests(client: Client) {
 					{ name: 'x_bigint_scale', type: 'numeric(15, 2)', valToStr: (v: any) => v },
 					{ name: 'x_int128', type: 'int128', valToStr: (v: any) => v },
 					{ name: 'x_int128_scale', type: 'numeric(20, 2)', valToStr: (v: any) => v },
+					{ name: 'x_dec16', type: 'decfloat(16)', valToStr: (v: any) => v },
+					{ name: 'x_dec34', type: 'decfloat(34)', valToStr: (v: any) => v },
 					{ name: 'x_double', type: 'double precision', valToStr: (v: any) => v },
 					{ name: 'x_date', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
 					{ name: 'x_time', type: 'time', valToStr: (v: any) => `time '${timeToString(v)}'` },
@@ -456,6 +458,8 @@ export function runCommonTests(client: Client) {
 						-3.45,
 						'-45699999999999999999999999999999999876',
 						'-45699999999999999999999999999999999.87',
+						'-456999999999876',
+						'-456999999999999999999999999999.87',
 						-4.567,
 						new Date(2017, 3 - 1, 26),
 						new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 56, 32, 123),
@@ -492,6 +496,8 @@ export function runCommonTests(client: Client) {
 							x_bigint_scale,
 							x_int128,
 							x_int128_scale,
+							x_dec16,
+							x_dec34,
 							x_double,
 							x_date,
 							x_time,
@@ -522,6 +528,8 @@ export function runCommonTests(client: Client) {
 					expect(columns[n++]).toBe(-3.45);
 					expect(columns[n++]).toBe('-45699999999999999999999999999999999876');
 					expect(columns[n++]).toBe('-45699999999999999999999999999999999.87');
+					expect(columns[n++]).toBe('-456999999999876');
+					expect(columns[n++]).toBe('-456999999999999999999999999999.87');
 					expect(columns[n++]).toBe(-4.567);
 					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 0:0:0.0');
 					expect(timeToString(columns[n++])).toBe('11:56:32.123');

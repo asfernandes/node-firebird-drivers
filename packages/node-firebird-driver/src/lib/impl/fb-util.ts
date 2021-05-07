@@ -36,6 +36,8 @@ export namespace sqlTypes {
 	export const SQL_TYPE_DATE = 570;
 	export const SQL_INT64 = 580;
 	export const SQL_INT128 = 32752;
+	export const SQL_DEC16 = 32760;
+	export const SQL_DEC34 = 32762;
 	export const SQL_BOOLEAN = 32764;
 	export const SQL_NULL = 32766;
 }

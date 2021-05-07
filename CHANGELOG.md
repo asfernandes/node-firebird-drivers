@@ -3,6 +3,7 @@
 ### driver-native
 
 * Feature [#87](https://github.com/asfernandes/node-firebird-drivers/issues/87) - Support Firebird 4 INT128 data type.
+* Feature [#88](https://github.com/asfernandes/node-firebird-drivers/issues/88) - Support Firebird 4 DECFLOAT(16) and DECFLOAT(34) data types.
 
 ## 2.1.2 (May, 07, 2021)
 
