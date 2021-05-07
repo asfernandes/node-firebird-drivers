@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Firebird install (Linux)
-      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-18.04'
+      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
       run: |
         if [ `lsb_release -rs` = '16.04' ]
         then
@@ -62,7 +62,7 @@ jobs:
         yarn bootstrap
 
     - name: Test (Linux)
-      if: matrix.os == 'ubuntu-16.04' || matrix.os == 'ubuntu-18.04'
+      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
       run: |
         sg firebird -c "yarn test"
 
