@@ -36,10 +36,9 @@ jobs:
       if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
       run: |
         sudo apt-get install libtommath1 libtomcrypt1
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
-        wget -nv -O Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/T4_0_0_RC1/Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz"
-        tar xzvf Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz
-        (cd Firebird-4.0.0.2353-ReleaseCandidate1.amd64; sudo ./install.sh -silent)
+        wget -nv -O Firebird-4.0.0.2496-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.0/Firebird-4.0.0.2496-0.amd64.tar.gz"
+        tar xzvf Firebird-4.0.0.2496-0.amd64.tar.gz
+        (cd Firebird-4.0.0.2496-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
 
     - name: Firebird install (MacOS)
@@ -52,8 +51,8 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: cmd
       run: |
-        set FB_ZIP=Firebird-4.0.0.2353-0-RC1-x64.zip
-        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/T4_0_0_RC1/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
+        set FB_ZIP=Firebird-4.0.0.2496-1-x64.zip
+        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.0/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
         7z x -oC:\Firebird %FB_ZIP%
 
     - name: Build

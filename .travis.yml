@@ -13,10 +13,9 @@ matrix:
   fast_finish: true
 
 install:
-  - sudo ln -s /usr/lib/x86_64-linux-gnu/libtommath.so.1 /usr/lib/x86_64-linux-gnu/libtommath.so.0
-  - wget -O Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/T4_0_0_RC1/Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz"
-  - tar xzvf Firebird-4.0.0.2353-ReleaseCandidate1.amd64.tar.gz
-  - (cd Firebird-4.0.0.2353-ReleaseCandidate1.amd64; sudo ./install.sh -silent)
+  - wget -O Firebird-4.0.0.2496-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.0/Firebird-4.0.0.2496-0.amd64.tar.gz"
+  - tar xzvf Firebird-4.0.0.2496-0.amd64.tar.gz
+  - (cd Firebird-4.0.0.2496-0.amd64; sudo ./install.sh -silent)
   - sudo usermod -a -G firebird travis
 
 script:
