@@ -26,7 +26,8 @@
 
 		"files.exclude": {
 			"**/node_modules/": true,
-			"**/dist/": true
+			"**/dist/": true,
+			"**/*.tsbuildinfo": true
 		},
 
 		"typescript.tsdk": "root/node_modules/typescript/lib",
