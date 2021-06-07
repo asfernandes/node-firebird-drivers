@@ -8,3 +8,4 @@ export * from './events';
 
 export * from './date-time';
 export * from './fb-util';
+export * from './time-zones';

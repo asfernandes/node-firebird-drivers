@@ -1,4 +1,4 @@
-import { Blob, Client, TransactionIsolation } from '../lib';
+import { Blob, Client, TransactionIsolation, ZonedDate } from '../lib';
 
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
@@ -16,8 +16,24 @@ export function runCommonTests(client: Client) {
 		return d && `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
 	}
 
+	function timeTzToString(zd: ZonedDate) {
+		return zd &&
+			`time '${zd.date.getUTCHours()}:${zd.date.getUTCMinutes()}:${zd.date.getUTCSeconds()}.${zd.date.getUTCMilliseconds()} GMT' ` +
+			`at time zone '${zd.timeZone}'`;
+	}
+
 	function dateTimeToString(d: Date) {
 		return d && `${dateToString(d)} ${timeToString(d)}`;
+	}
+
+	function dateTimeTzToString(zd: ZonedDate) {
+		if (!zd)
+			return null;
+
+		const d = zd.date;
+
+		return `timestamp '${(d.getUTCFullYear() + '').padStart(4, '0')}-${d.getUTCMonth() + 1}-${d.getUTCDate()} ` +
+			`${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()} GMT' at time zone '${zd.timeZone}'`;
 	}
 
 
@@ -422,9 +438,13 @@ export function runCommonTests(client: Client) {
 					{ name: 'x_date2', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
 					{ name: 'x_date3', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
 					{ name: 'x_time', type: 'time', valToStr: (v: any) => `time '${timeToString(v)}'` },
+					{ name: 'x_time_tz1', type: 'time with time zone', valToStr: (v: any) => timeTzToString(v) },
+					{ name: 'x_time_tz2', type: 'time with time zone', valToStr: (v: any) => timeTzToString(v) },
 					{ name: 'x_timestamp1', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
 					{ name: 'x_timestamp2', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
 					{ name: 'x_timestamp3', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp_tz1', type: 'timestamp with time zone', valToStr: (v: any) => dateTimeTzToString(v) },
+					{ name: 'x_timestamp_tz2', type: 'timestamp with time zone', valToStr: (v: any) => dateTimeTzToString(v) },
 					{ name: 'x_boolean', type: 'boolean', valToStr: (v: any) => v },
 					{ name: 'x_varchar', type: 'varchar(10) character set utf8', valToStr: (v: any) => `'${v}'` },
 					{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` },
@@ -469,9 +489,19 @@ export function runCommonTests(client: Client) {
 						new Date(new Date(2000, 3 - 1, 26).setFullYear(50)),
 						new Date(9999, 3 - 1, 26),
 						new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 56, 32, 123),
+						{
+							date: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 11, 56, 32, 123)),
+							timeZone: 'America/New_York'
+						} as ZonedDate,
+						{
+							date: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 11, 56, 32, 123)),
+							timeZone: 'America/Sao_Paulo'
+						} as ZonedDate,
 						new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
 						new Date(new Date(2000, 3 - 1, 26, 11, 56, 32, 123).setFullYear(50)),
 						new Date(9999, 3 - 1, 26, 11, 56, 32, 123),
+						{ date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)), timeZone: 'America/New_York' } as ZonedDate,
+						{ date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)), timeZone: 'America/Sao_Paulo' } as ZonedDate,
 						true,
 						'123áé4567',
 						'123áé4567',
@@ -511,9 +541,13 @@ export function runCommonTests(client: Client) {
 							x_date2,
 							x_date3,
 							x_time,
+							x_time_tz1,
+							x_time_tz2,
 							x_timestamp1,
 							x_timestamp2,
 							x_timestamp3,
+							x_timestamp_tz1,
+							x_timestamp_tz2,
 							x_boolean,
 							x_varchar,
 							char_length(x_varchar),
@@ -547,9 +581,13 @@ export function runCommonTests(client: Client) {
 					expect(dateTimeToString(columns[n++])).toBe('0050-3-26 0:0:0.0');
 					expect(dateTimeToString(columns[n++])).toBe('9999-3-26 0:0:0.0');
 					expect(timeToString(columns[n++])).toBe('11:56:32.123');
+					expect(timeTzToString(columns[n++])).toBe(`time '11:56:32.123 GMT' at time zone 'America/New_York'`);
+					expect(timeTzToString(columns[n++])).toBe(`time '11:56:32.123 GMT' at time zone 'America/Sao_Paulo'`);
 					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 11:56:32.123');
 					expect(dateTimeToString(columns[n++])).toBe('0050-3-26 11:56:32.123');
 					expect(dateTimeToString(columns[n++])).toBe('9999-3-26 11:56:32.123');
+					expect(dateTimeTzToString(columns[n++])).toBe(`timestamp '2021-6-7 11:56:32.123 GMT' at time zone 'America/New_York'`);
+					expect(dateTimeTzToString(columns[n++])).toBe(`timestamp '2021-6-7 11:56:32.123 GMT' at time zone 'America/Sao_Paulo'`);
 					expect(columns[n++]).toBe(true);
 					expect(columns[n++]).toBe('123áé4567');
 					expect(columns[n++]).toBe(9);

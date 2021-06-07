@@ -4,6 +4,7 @@
 
 * Feature [#87](https://github.com/asfernandes/node-firebird-drivers/issues/87) - Support Firebird 4 INT128 data type.
 * Feature [#88](https://github.com/asfernandes/node-firebird-drivers/issues/88) - Support Firebird 4 DECFLOAT(16) and DECFLOAT(34) data types.
+* Feature [#89](https://github.com/asfernandes/node-firebird-drivers/issues/89) - Support Firebird 4 TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE data types.
 * Fix [#94](https://github.com/asfernandes/node-firebird-drivers/issues/94) - Wrong year in date/timestamp when year < 100.
 
 ## 2.1.2 (May, 07, 2021)

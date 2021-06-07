@@ -281,3 +281,8 @@ export abstract class BlobStream {
 	/** Writes data to the blob. */
 	abstract write(buffer: Buffer): Promise<void>;
 }
+
+export interface ZonedDate {
+	date: Date;
+	timeZone: string;
+}
