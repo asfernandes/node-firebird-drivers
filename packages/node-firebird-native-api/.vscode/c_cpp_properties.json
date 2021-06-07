@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "DEBUG",
+            "includePath": [
+                "${workspaceFolder}/../../node_modules/node-addon-api"
+            ],
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+}
