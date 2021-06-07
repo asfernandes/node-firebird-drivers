@@ -9,7 +9,7 @@ require('dotenv').config({ path: '../../.env' });
 
 export function runCommonTests(client: Client) {
 	function dateToString(d: Date) {
-		return d && `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+		return d && `${(d.getFullYear() + '').padStart(4, '0')}-${d.getMonth() + 1}-${d.getDate()}`;
 	}
 
 	function timeToString(d: Date) {
@@ -418,9 +418,13 @@ export function runCommonTests(client: Client) {
 					{ name: 'x_dec16', type: 'decfloat(16)', valToStr: (v: any) => v },
 					{ name: 'x_dec34', type: 'decfloat(34)', valToStr: (v: any) => v },
 					{ name: 'x_double', type: 'double precision', valToStr: (v: any) => v },
-					{ name: 'x_date', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date1', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date2', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date3', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
 					{ name: 'x_time', type: 'time', valToStr: (v: any) => `time '${timeToString(v)}'` },
-					{ name: 'x_timestamp', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp1', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp2', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp3', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
 					{ name: 'x_boolean', type: 'boolean', valToStr: (v: any) => v },
 					{ name: 'x_varchar', type: 'varchar(10) character set utf8', valToStr: (v: any) => `'${v}'` },
 					{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` },
@@ -462,8 +466,12 @@ export function runCommonTests(client: Client) {
 						'-456999999999999999999999999999.87',
 						-4.567,
 						new Date(2017, 3 - 1, 26),
+						new Date(new Date(2000, 3 - 1, 26).setFullYear(50)),
+						new Date(9999, 3 - 1, 26),
 						new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 56, 32, 123),
 						new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
+						new Date(new Date(2000, 3 - 1, 26, 11, 56, 32, 123).setFullYear(50)),
+						new Date(9999, 3 - 1, 26, 11, 56, 32, 123),
 						true,
 						'123áé4567',
 						'123áé4567',
@@ -499,9 +507,13 @@ export function runCommonTests(client: Client) {
 							x_dec16,
 							x_dec34,
 							x_double,
-							x_date,
+							x_date1,
+							x_date2,
+							x_date3,
 							x_time,
-							x_timestamp,
+							x_timestamp1,
+							x_timestamp2,
+							x_timestamp3,
 							x_boolean,
 							x_varchar,
 							char_length(x_varchar),
@@ -532,8 +544,12 @@ export function runCommonTests(client: Client) {
 					expect(columns[n++]).toBe('-456999999999999999999999999999.87');
 					expect(columns[n++]).toBe(-4.567);
 					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 0:0:0.0');
+					expect(dateTimeToString(columns[n++])).toBe('0050-3-26 0:0:0.0');
+					expect(dateTimeToString(columns[n++])).toBe('9999-3-26 0:0:0.0');
 					expect(timeToString(columns[n++])).toBe('11:56:32.123');
 					expect(dateTimeToString(columns[n++])).toBe('2017-3-26 11:56:32.123');
+					expect(dateTimeToString(columns[n++])).toBe('0050-3-26 11:56:32.123');
+					expect(dateTimeToString(columns[n++])).toBe('9999-3-26 11:56:32.123');
 					expect(columns[n++]).toBe(true);
 					expect(columns[n++]).toBe('123áé4567');
 					expect(columns[n++]).toBe(9);

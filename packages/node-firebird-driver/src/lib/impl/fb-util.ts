@@ -271,14 +271,30 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 
 				case sqlTypes.SQL_TYPE_DATE: {
 					const decodedDate = decodeDate(dataView.getInt32(descriptor.offset, littleEndian));
-					return new Date(decodedDate.year, decodedDate.month - 1, decodedDate.day);
+
+					if (decodedDate.year >= 100)
+						return new Date(decodedDate.year, decodedDate.month - 1, decodedDate.day);
+					else {
+						const date = new Date(2000, decodedDate.month - 1, decodedDate.day);
+						date.setFullYear(decodedDate.year);
+						return date;
+					}
 				}
 
 				case sqlTypes.SQL_TIMESTAMP: {
 					const decodedDate = decodeDate(dataView.getInt32(descriptor.offset, littleEndian));
 					const decodedTime = decodeTime(dataView.getUint32(descriptor.offset + 4, littleEndian));
-					return new Date(decodedDate.year, decodedDate.month - 1, decodedDate.day,
-						decodedTime.hours, decodedTime.minutes, decodedTime.seconds, decodedTime.fractions / 10);
+
+					if (decodedDate.year >= 100) {
+						return new Date(decodedDate.year, decodedDate.month - 1, decodedDate.day,
+							decodedTime.hours, decodedTime.minutes, decodedTime.seconds, decodedTime.fractions / 10);
+					}
+					else {
+						const date = new Date(2000, decodedDate.month - 1, decodedDate.day,
+							decodedTime.hours, decodedTime.minutes, decodedTime.seconds, decodedTime.fractions / 10);
+						date.setFullYear(decodedDate.year);
+						return date;
+					}
 				}
 
 				case sqlTypes.SQL_BOOLEAN:
