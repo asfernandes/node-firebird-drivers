@@ -17,7 +17,8 @@ import {
 	Transaction,
 	TransactionIsolation,
 	TransactionOptions,
-	ZonedDate
+	ZonedDate,
+	ZonedDateEx
 } from '..';
 
 
@@ -275,18 +276,19 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 						decodedTime.hours, decodedTime.minutes, decodedTime.seconds, decodedTime.fractions / 10);
 				}
 
-				case sqlTypes.SQL_TIME_TZ:
 				case sqlTypes.SQL_TIME_TZ_EX: {
 					const now = new Date();
 					const decodedTime = decodeTime(dataView.getUint32(descriptor.offset, littleEndian));
 					const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
 						decodedTime.hours, decodedTime.minutes, decodedTime.seconds, decodedTime.fractions / 10));
 					const timeZone = tzIdToString(dataView.getUint16(descriptor.offset + 4, littleEndian));
+					const offset = dataView.getInt16(descriptor.offset + 6, littleEndian);
 
 					return {
 						date,
-						timeZone
-					} as ZonedDate;
+						timeZone,
+						offset
+					} as ZonedDateEx;
 				}
 
 				case sqlTypes.SQL_TYPE_DATE: {
@@ -317,11 +319,11 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 					}
 				}
 
-				case sqlTypes.SQL_TIMESTAMP_TZ:
 				case sqlTypes.SQL_TIMESTAMP_TZ_EX: {
 					const decodedDate = decodeDate(dataView.getInt32(descriptor.offset, littleEndian));
 					const decodedTime = decodeTime(dataView.getUint32(descriptor.offset + 4, littleEndian));
 					const timeZone = tzIdToString(dataView.getUint16(descriptor.offset + 8, littleEndian));
+					const offset = dataView.getInt16(descriptor.offset + 10, littleEndian);
 					let date: Date;
 
 					if (decodedDate.year >= 100) {
@@ -336,8 +338,9 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 
 					return {
 						date,
-						timeZone
-					} as ZonedDate;
+						timeZone,
+						offset
+					} as ZonedDateEx;
 				}
 
 				case sqlTypes.SQL_BOOLEAN:

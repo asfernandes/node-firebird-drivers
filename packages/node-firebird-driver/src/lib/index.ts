@@ -282,8 +282,13 @@ export abstract class BlobStream {
 	abstract write(buffer: Buffer): Promise<void>;
 }
 
-/** Type for TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE */
+/** TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE to be sent as parameter */
 export interface ZonedDate {
 	date: Date;
 	timeZone: string;
+}
+
+/** TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE returned by Firebird */
+export interface ZonedDateEx extends ZonedDate {
+	offset: number;
 }

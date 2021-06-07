@@ -30,6 +30,16 @@ export function fixMetadata(status: fb.Status, metadata?: fb.MessageMetadata): f
 					outBuilder.setScaleSync(status, i, 0);
 					break;
 
+				// Transform TIME_TZ to TIME_TZ_EX.
+				case sqlTypes.SQL_TIME_TZ:
+					outBuilder.setTypeSync(status, i, sqlTypes.SQL_TIME_TZ_EX);
+					break;
+
+				// Transform TIMESTAMP_TZ to TIMESTAMP_TZ_EX.
+				case sqlTypes.SQL_TIMESTAMP_TZ:
+					outBuilder.setTypeSync(status, i, sqlTypes.SQL_TIMESTAMP_TZ_EX);
+					break;
+
 				// Transform INT128, DEC16 and DEC34 descriptors to VARCHAR.
 				case sqlTypes.SQL_INT128:
 				case sqlTypes.SQL_DEC16:
