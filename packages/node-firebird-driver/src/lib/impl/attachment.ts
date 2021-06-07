@@ -217,13 +217,13 @@ export abstract class AbstractAttachment implements Attachment {
 		this.client = undefined;
 	}
 
-	protected abstract async internalDisconnect(): Promise<void>;
-	protected abstract async internalDropDatabase(): Promise<void>;
-	protected abstract async internalCreateBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream>;
-	protected abstract async internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
-	protected abstract async internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
+	protected abstract internalDisconnect(): Promise<void>;
+	protected abstract internalDropDatabase(): Promise<void>;
+	protected abstract internalCreateBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream>;
+	protected abstract internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
+	protected abstract internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
 		Promise<AbstractStatement>;
-	protected abstract async internalStartTransaction(options?: TransactionOptions): Promise<AbstractTransaction>;
+	protected abstract internalStartTransaction(options?: TransactionOptions): Promise<AbstractTransaction>;
 	protected abstract internalQueueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>):
 		Promise<AbstractEvents>;
 }

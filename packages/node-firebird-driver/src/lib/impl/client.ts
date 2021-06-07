@@ -77,7 +77,7 @@ export abstract class AbstractClient implements Client {
 			throw new Error('Client is already disposed.');
 	}
 
-	protected abstract async internalDispose(): Promise<void>;
-	protected abstract async internalConnect(uri: string, options?: ConnectOptions): Promise<AbstractAttachment>;
-	protected abstract async internalCreateDatabase(uri: string, options?: CreateDatabaseOptions): Promise<AbstractAttachment>;
+	protected abstract internalDispose(): Promise<void>;
+	protected abstract internalConnect(uri: string, options?: ConnectOptions): Promise<AbstractAttachment>;
+	protected abstract internalCreateDatabase(uri: string, options?: CreateDatabaseOptions): Promise<AbstractAttachment>;
 }

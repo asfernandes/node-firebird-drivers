@@ -104,10 +104,10 @@ export abstract class AbstractStatement implements Statement {
 			throw new Error('Statement is already disposed.');
 	}
 
-	protected abstract async internalDispose(): Promise<void>;
-	protected abstract async internalExecuteTransaction(transaction: AbstractTransaction): Promise<AbstractTransaction>;
-	protected abstract async internalExecute(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions):
+	protected abstract internalDispose(): Promise<void>;
+	protected abstract internalExecuteTransaction(transaction: AbstractTransaction): Promise<AbstractTransaction>;
+	protected abstract internalExecute(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions):
 		Promise<any[]>;
-	protected abstract async internalExecuteQuery(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteQueryOptions):
+	protected abstract internalExecuteQuery(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteQueryOptions):
 		Promise<AbstractResultSet>;
 }

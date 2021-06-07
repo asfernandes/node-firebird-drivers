@@ -23,5 +23,5 @@ export abstract class AbstractEvents implements Events {
 			throw new Error('Events are already cancelled.');
 	}
 
-	protected abstract async internalCancel(): Promise<void>;
+	protected abstract internalCancel(): Promise<void>;
 }

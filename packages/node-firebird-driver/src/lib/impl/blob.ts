@@ -29,9 +29,9 @@ export abstract class AbstractBlobStream extends BlobStream {
 		return await this.internalWrite(buffer);
 	}
 
-	protected abstract async internalGetLength(): Promise<number>;
-	protected abstract async internalClose(): Promise<void>;
-	protected abstract async internalCancel(): Promise<void>;
-	protected abstract async internalRead(buffer: Buffer): Promise<number>;
-	protected abstract async internalWrite(buffer: Buffer): Promise<void>;
+	protected abstract internalGetLength(): Promise<number>;
+	protected abstract internalClose(): Promise<void>;
+	protected abstract internalCancel(): Promise<void>;
+	protected abstract internalRead(buffer: Buffer): Promise<number>;
+	protected abstract internalWrite(buffer: Buffer): Promise<void>;
 }
