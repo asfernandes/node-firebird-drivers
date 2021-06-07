@@ -1,4 +1,4 @@
-## next
+## 2.2.0 (June, 07, 2021)
 
 ### driver-native
 
