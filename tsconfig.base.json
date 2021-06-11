@@ -18,6 +18,7 @@
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noFallthroughCasesInSwitch": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "noImplicitOverride": true
     }
 }

@@ -10,8 +10,8 @@ import * as fb from 'node-firebird-native-api';
 /** ResultSet implementation. */
 export class ResultSetImpl extends AbstractResultSet {
 	// Override declarations.
-	statement: StatementImpl;
-	transaction: TransactionImpl;
+	override statement: StatementImpl;
+	override transaction: TransactionImpl;
 
 	resultSetHandle?: fb.ResultSet;
 	delayedError: any;

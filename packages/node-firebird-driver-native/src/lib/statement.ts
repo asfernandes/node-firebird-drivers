@@ -25,7 +25,7 @@ import * as fb from 'node-firebird-native-api';
 /** Statement implementation. */
 export class StatementImpl extends AbstractStatement {
 	// Override declarations.
-	attachment: AttachmentImpl;
+	override attachment: AttachmentImpl;
 
 	statementHandle?: fb.Statement;
 	inMetadata?: fb.MessageMetadata;
