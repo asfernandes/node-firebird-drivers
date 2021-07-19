@@ -3,6 +3,7 @@
 ### driver
 
 * Feature [#101](https://github.com/asfernandes/node-firebird-drivers/issues/101) - Add property Statement.hasResultSet.
+* Feature [#102](https://github.com/asfernandes/node-firebird-drivers/issues/102) - Add method Statement.setCursorName.
 
 ## 2.2.0 (June, 07, 2021)
 

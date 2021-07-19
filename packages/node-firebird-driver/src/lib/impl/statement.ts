@@ -107,6 +107,8 @@ export abstract class AbstractStatement implements Statement {
 			throw new Error('Statement is already disposed.');
 	}
 
+	public abstract setCursorName(cursorName: string): Promise<void>;
+
 	protected abstract internalDispose(): Promise<void>;
 	protected abstract internalExecuteTransaction(transaction: AbstractTransaction): Promise<AbstractTransaction>;
 	protected abstract internalExecute(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions):

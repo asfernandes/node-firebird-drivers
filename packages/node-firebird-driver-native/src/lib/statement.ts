@@ -108,6 +108,12 @@ export class StatementImpl extends AbstractStatement {
 		return await ResultSetImpl.open(this, transaction as TransactionImpl, parameters, options);
 	}
 
+	async setCursorName(cursorName: string): Promise<void> {
+		return await this.attachment.client.statusAction(async status =>
+			await this.statementHandle!.setCursorNameAsync(status, cursorName)
+		);
+	}
+
 	get columnLabels(): Promise<string[]> {
 		const asyncFunc = async (): Promise<string[]> => {
 			if (!this.outMetadata)

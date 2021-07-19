@@ -195,6 +195,13 @@ export interface Statement {
 	/** Executes a prepared statement that has result set. */
 	executeQuery(transaction: Transaction, parameters?: any[], options?: ExecuteQueryOptions): Promise<ResultSet>;
 
+	/**
+	 * Set cursor name of a SELECT ... FOR UPDATE statement.
+	 *
+	 * Use with ResultSet.fetch({ fetchSize: 1 }) and other statement with WHERE CURRENT OF <cursorName>.
+	 */
+	setCursorName(cursorName: string): Promise<void>;
+
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
 
