@@ -26,6 +26,7 @@ import * as fb from 'node-firebird-native-api';
 export class StatementImpl extends AbstractStatement {
 	// Override declarations.
 	override attachment: AttachmentImpl;
+	override hasResultSet: boolean;
 
 	statementHandle?: fb.Statement;
 	inMetadata?: fb.MessageMetadata;
@@ -43,6 +44,8 @@ export class StatementImpl extends AbstractStatement {
 			//// FIXME: options/flags, dialect
 			statement.statementHandle = await attachment!.attachmentHandle!.prepareAsync(status, transaction.transactionHandle,
 				0, sqlStmt, 3, fb.Statement.PREPARE_PREFETCH_ALL);
+
+			statement.hasResultSet = (statement.statementHandle!.getFlagsSync(status) & fb.Statement.FLAG_HAS_CURSOR) != 0;
 
 			statement.inMetadata = fixMetadata(status, await statement.statementHandle!.getInputMetadataAsync(status));
 			statement.outMetadata = fixMetadata(status, await statement.statementHandle!.getOutputMetadataAsync(status));

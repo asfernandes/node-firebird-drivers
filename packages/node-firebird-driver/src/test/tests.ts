@@ -423,6 +423,45 @@ export function runCommonTests(client: Client) {
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});
+
+			test('#hasResultSet()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Statement-hasResultSet.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				const statement1 = await attachment.prepare(transaction, 'create table t1 (n1 integer)');
+				expect(statement1.hasResultSet).toBe(false);
+				await statement1.execute(transaction);
+				await statement1.dispose();
+
+				await transaction.commitRetaining();
+
+				const statement2 = await attachment.prepare(transaction, 'insert into t1 values (1)');
+				expect(statement2.hasResultSet).toBe(false);
+				await statement2.dispose();
+
+				const statement3 = await attachment.prepare(transaction, 'insert into t1 values (1) returning *');
+				expect(statement3.hasResultSet).toBe(false);
+				await statement3.dispose();
+
+				const statement4 = await attachment.prepare(transaction, 'execute block as begin end');
+				expect(statement4.hasResultSet).toBe(false);
+				await statement4.dispose();
+
+				const statement5 = await attachment.prepare(transaction, 'select * from t1');
+				expect(statement5.hasResultSet).toBe(true);
+				await statement5.dispose();
+
+				const statement6 = await attachment.prepare(transaction, 'execute block returns (n integer) as begin suspend; end');
+				expect(statement6.hasResultSet).toBe(true);
+				await statement6.dispose();
+
+				const statement7 = await attachment.prepare(transaction, 'execute block returns (n integer) as begin end');
+				expect(statement7.hasResultSet).toBe(true);
+				await statement7.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('ResultSet', () => {

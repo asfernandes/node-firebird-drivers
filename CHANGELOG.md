@@ -1,3 +1,9 @@
+## next
+
+### driver
+
+* Feature [#101](https://github.com/asfernandes/node-firebird-drivers/issues/101) - Add property Statement.hasResultSet.
+
 ## 2.2.0 (June, 07, 2021)
 
 ### driver-native
