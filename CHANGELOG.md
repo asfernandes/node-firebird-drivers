@@ -1,6 +1,6 @@
-## next
+## July, 20, 2021
 
-### driver
+### driver, driver-native - 2.3.0
 
 * Feature [#101](https://github.com/asfernandes/node-firebird-drivers/issues/101) - Add property Statement.hasResultSet.
 * Feature [#102](https://github.com/asfernandes/node-firebird-drivers/issues/102) - Add method Statement.setCursorName.
