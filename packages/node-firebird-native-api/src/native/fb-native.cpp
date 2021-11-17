@@ -1,6 +1,5 @@
 #include <atomic>
 #include <functional>
-#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -21,7 +20,6 @@
 using std::atomic;
 using std::function;
 using std::lock_guard;
-using std::map;
 using std::mutex;
 using std::string;
 using std::unique_ptr;
@@ -46,8 +44,8 @@ static Napi::Object initAll(Napi::Env env, Napi::Object exports);
 //----------------------------------------------------------------------------
 
 
-static map<Master*, Handle> masterHandles;
-static map<Handle, unsigned> handleCounters;
+static unordered_map<Master*, Handle> masterHandles;
+static unordered_map<Handle, unsigned> handleCounters;
 
 
 //----------------------------------------------------------------------------
