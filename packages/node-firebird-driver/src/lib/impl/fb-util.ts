@@ -93,6 +93,21 @@ export namespace blobInfo {
 	export const totalLength = 6;
 }
 
+/** Statement info. */
+export namespace statementInfo {
+	export const sqlExecPathBlrText = 32;
+}
+
+/** Common info. */
+export namespace commonInfo {
+	export const end = 1;
+	export const truncated = 2;
+	export const error = 3;
+	export const dataNotReady = 4;
+	export const length = 126;
+	export const flagEnd = 127;
+}
+
 export namespace charSets {
 	export const ascii = 2;
 }

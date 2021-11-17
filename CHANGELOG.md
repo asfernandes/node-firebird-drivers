@@ -1,5 +1,9 @@
 ## next
 
+### driver, driver-native
+
+* Feature [#115](https://github.com/asfernandes/node-firebird-drivers/issues/115) - Add method Statement.getExecPathText.
+
 ### native-api
 
 * Feature [#114](https://github.com/asfernandes/node-firebird-drivers/issues/114) - Add support for Visual Studio 2022 build.

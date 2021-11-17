@@ -14,6 +14,8 @@ import {
 export abstract class AbstractStatement implements Statement {
 	resultSet?: AbstractResultSet;
 
+	abstract getExecPathText(): Promise<string | undefined>;
+
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	abstract get columnLabels(): Promise<string[]>
 

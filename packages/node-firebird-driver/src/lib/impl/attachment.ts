@@ -155,7 +155,7 @@ export abstract class AbstractAttachment implements Attachment {
 			const trimmedName = name.trimRight();
 
 			if (Buffer.from(trimmedName).byteLength > 255)
-					throw new Error(`Invalid event name: ${name}.`);
+				throw new Error(`Invalid event name: ${name}.`);
 
 			return trimmedName;
 		});

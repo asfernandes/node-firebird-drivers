@@ -202,6 +202,8 @@ export interface Statement {
 	 */
 	setCursorName(cursorName: string): Promise<void>;
 
+	getExecPathText(): Promise<string | undefined>;
+
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
 

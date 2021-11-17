@@ -8,7 +8,7 @@ import {
 	PrepareOptions
 } from 'node-firebird-driver';
 
-import { AbstractStatement } from 'node-firebird-driver/dist/lib/impl';
+import { AbstractStatement, commonInfo, getPortableInteger, statementInfo } from 'node-firebird-driver/dist/lib/impl';
 
 import {
 	createDataReader,
@@ -20,6 +20,8 @@ import {
 } from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
+
+import { TextDecoder } from 'util';
 
 
 /** Statement implementation. */
@@ -42,7 +44,7 @@ export class StatementImpl extends AbstractStatement {
 
 		return await attachment.client.statusAction(async status => {
 			//// FIXME: options/flags, dialect
-			statement.statementHandle = await attachment!.attachmentHandle!.prepareAsync(status, transaction.transactionHandle,
+			statement.statementHandle = await attachment!.attachmentHandle!.prepareAsync(status, transaction?.transactionHandle,
 				0, sqlStmt, 3, fb.Statement.PREPARE_PREFETCH_ALL);
 
 			statement.hasResultSet = (statement.statementHandle!.getFlagsSync(status) & fb.Statement.FLAG_HAS_CURSOR) != 0;
@@ -91,10 +93,10 @@ export class StatementImpl extends AbstractStatement {
 		return await this.attachment.client.statusAction(async status => {
 			await this.dataWriter(this.attachment, transaction, this.inBuffer, parameters);
 
-			const newTransaction = await this.statementHandle!.executeAsync(status, transaction.transactionHandle,
+			const newTransaction = await this.statementHandle!.executeAsync(status, transaction?.transactionHandle,
 				this.inMetadata, this.inBuffer, this.outMetadata, this.outBuffer);
 
-			if (newTransaction && transaction.transactionHandle != newTransaction) {
+			if (newTransaction && transaction?.transactionHandle != newTransaction) {
 				//// FIXME: newTransaction.releaseSync();
 			}
 
@@ -112,6 +114,24 @@ export class StatementImpl extends AbstractStatement {
 		return await this.attachment.client.statusAction(async status =>
 			await this.statementHandle!.setCursorNameAsync(status, cursorName)
 		);
+	}
+
+	async getExecPathText(): Promise<string | undefined> {
+		return await this.attachment.client.statusAction(async status => {
+			const infoReq = new Uint8Array([statementInfo.sqlExecPathBlrText]);
+			const infoRet = new Uint8Array(65535);
+			await this.statementHandle!.getInfoAsync(status, infoReq.byteLength, infoReq, infoRet.byteLength, infoRet);
+
+			if (infoRet[0] == commonInfo.end)
+				return undefined;
+			else {
+				if (infoRet[0] != statementInfo.sqlExecPathBlrText)
+					throw new Error('Error retrieving statement execution path.');
+
+				const size = getPortableInteger(infoRet.subarray(1), 2);
+				return new TextDecoder().decode(infoRet.subarray(3, 3 + size));
+			}
+		});
 	}
 
 	get columnLabels(): Promise<string[]> {
