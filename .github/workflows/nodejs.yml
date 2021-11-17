@@ -8,19 +8,16 @@ jobs:
 
     strategy:
       matrix:
-        os: [
-          #ubuntu-18.04,
-          ubuntu-20.04,
-          windows-2019
-          #macos-10.15
-        ]
-        node-version: [
-          10.x,
-          12.x,
-          14.x,
-          15.x,
-          16.x
-        ]
+        os:
+          - ubuntu-20.04
+          - windows-2019
+          #- macos-10.15
+        node-version:
+          - 10.x
+          - 12.x
+          - 14.x
+          - 15.x
+          - 16.x
 
     steps:
     - uses: actions/checkout@v1
@@ -33,7 +30,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Firebird install (Linux)
-      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
+      if: startsWith(matrix.os, 'ubuntu-')
       run: |
         sudo apt-get install libtommath1 libtomcrypt1
         wget -nv -O Firebird-4.0.0.2496-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.0/Firebird-4.0.0.2496-0.amd64.tar.gz"
@@ -42,13 +39,13 @@ jobs:
         sudo usermod -a -G firebird `whoami`
 
     - name: Firebird install (MacOS)
-      if: matrix.os == 'macos-10.15'
+      if: startsWith(matrix.os, 'macos-')
       run: |
         wget -nv -O Firebird-3.0.7-33374-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7-33374-x86_64.pkg"
         sudo installer -verbose -pkg "Firebird-3.0.7-33374-x86_64.pkg" -target /
 
     - name: Firebird install (Windows)
-      if: matrix.os == 'windows-2019'
+      if: startsWith(matrix.os, 'windows-')
       shell: cmd
       run: |
         set FB_ZIP=Firebird-4.0.0.2496-1-x64.zip
@@ -62,12 +59,12 @@ jobs:
         yarn bootstrap
 
     - name: Test (Linux)
-      if: matrix.os == 'ubuntu-18.04' || matrix.os == 'ubuntu-20.04'
+      if: startsWith(matrix.os, 'ubuntu-')
       run: |
         sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 yarn test"
 
     - name: Test (MacOS)
-      if: matrix.os == 'macos-10.15'
+      if: startsWith(matrix.os, 'macos-')
       run: |
         sudo mkdir `pwd`/tmp-node-fb
         sudo chmod 777 `pwd`/tmp-node-fb
@@ -77,7 +74,7 @@ jobs:
         yarn test
 
     - name: Test (Windows)
-      if: matrix.os == 'windows-2019'
+      if: startsWith(matrix.os, 'windows-')
       shell: cmd
       run: |
         set PATH=C:\Firebird;%PATH%
