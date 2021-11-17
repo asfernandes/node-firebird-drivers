@@ -1,3 +1,9 @@
+## next
+
+### native-api
+
+* Feature [#114](https://github.com/asfernandes/node-firebird-drivers/issues/114) - Add support for Visual Studio 2022 build.
+
 ## July, 20, 2021
 
 ### driver, driver-native - 2.3.0
