@@ -172,6 +172,9 @@ export interface Transaction {
 
 	/** Rollbacks and maintains this transaction object for subsequent work. */
 	rollbackRetaining(): Promise<void>;
+
+  /** Returns true if current transaction active. The name follows name of the Delphi TIBTransaction class */
+  inTransaction(): boolean;
 }
 
 /** Statement interface. */

@@ -42,6 +42,10 @@ export abstract class AbstractTransaction implements Transaction {
 		return await this.internalRollbackRetaining();
 	}
 
+  inTransaction(): boolean {
+    return !!this.attachment;
+  }
+
 	private check() {
 		if (!this.attachment)
 			throw new Error('Transaction is already committed or rolled back.');
