@@ -72,8 +72,12 @@ export abstract class AbstractClient implements Client {
 		return attachment;
 	}
 
+	get isValid(): boolean {
+		return !!this.connected;
+	}
+
 	private check() {
-		if (!this.connected)
+		if (!this.isValid)
 			throw new Error('Client is already disposed.');
 	}
 

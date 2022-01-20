@@ -194,8 +194,12 @@ export abstract class AbstractAttachment implements Attachment {
 		return statement;
 	}
 
+	get isValid(): boolean {
+		return !!this.client;
+	}
+
 	private check() {
-		if (!this.client)
+		if (!this.isValid)
 			throw new Error('Attachment is already disconnected.');
 	}
 

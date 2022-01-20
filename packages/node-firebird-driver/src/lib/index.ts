@@ -9,6 +9,9 @@ export interface Client {
 	/** Creates a database. */
 	createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<Attachment>;
 
+	/** True if the client has not been disposed. */
+	readonly isValid: boolean;
+
 	/** Default connect options. */
 	defaultConnectOptions?: ConnectOptions;
 
@@ -143,6 +146,9 @@ export interface Attachment {
 
 	queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events>;
 
+	/** True if the attachment is connected. */
+	readonly isValid: boolean;
+
 	/** Default transaction options. */
 	defaultTransactionOptions?: TransactionOptions;
 
@@ -172,6 +178,9 @@ export interface Transaction {
 
 	/** Rollbacks and maintains this transaction object for subsequent work. */
 	rollbackRetaining(): Promise<void>;
+
+	/** True if the transaction is active. */
+	readonly isValid: boolean;
 }
 
 /** Statement interface. */
@@ -203,6 +212,9 @@ export interface Statement {
 	setCursorName(cursorName: string): Promise<void>;
 
 	getExecPathText(): Promise<string | undefined>;
+
+	/** True if the statement has not been disposed. */
+	readonly isValid: boolean;
 
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
@@ -244,12 +256,18 @@ export interface ResultSet {
 	 */
 	fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]>;
 
+	/** True if the ResultSet is open. */
+	readonly isValid: boolean;
+
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
 }
 
 export interface Events {
 	cancel(): Promise<void>;
+
+	/** True if the events' attachment is valid. */
+	readonly isValid: boolean;
 }
 
 /** Blob class. */
@@ -263,6 +281,11 @@ export class Blob {
 	constructor(attachment: Attachment, id: Uint8Array) {
 		this.attachment = attachment;
 		this.id.set(id);
+	}
+
+	/** True if the blob's attachment is valid. */
+	get isValid(): boolean {
+		return this.attachment.isValid;
 	}
 }
 
@@ -292,6 +315,9 @@ export abstract class BlobStream {
 
 	/** Writes data to the blob. */
 	abstract write(buffer: Buffer): Promise<void>;
+
+	/** True if the blob stream is open. */
+	abstract get isValid(): boolean;
 }
 
 /** TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE to be sent as parameter */

@@ -87,4 +87,8 @@ export class BlobStreamImpl extends AbstractBlobStream {
 			}
 		});
 	}
+
+	get isValid(): boolean {
+		return !!this.blobHandle && this.attachment.isValid;
+	}
 }

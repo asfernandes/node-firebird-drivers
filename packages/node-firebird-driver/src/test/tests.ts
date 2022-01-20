@@ -74,6 +74,8 @@ export function runCommonTests(client: Client) {
 
 
 		beforeAll(() => {
+			expect(client.isValid).toBeTruthy();
+
 			if (isLocal() && !testConfig.tmpDir) {
 				testConfig.tmpDir = tmp.mkdirSync().path.toString();
 
@@ -99,6 +101,8 @@ export function runCommonTests(client: Client) {
 		afterAll(async () => {
 			await client.dispose();
 
+			expect(client.isValid).toBeFalsy();
+
 			if (isLocal())
 				fs.rmdirSync(testConfig.tmpDir!);
 		});
@@ -114,8 +118,14 @@ export function runCommonTests(client: Client) {
 				const attachment1 = await client.createDatabase(filename);
 				const attachment2 = await client.connect(filename);
 
+				expect(attachment1.isValid).toBeTruthy();
+				expect(attachment2.isValid).toBeTruthy();
+
 				await attachment2.disconnect();
 				await attachment1.dropDatabase();
+
+				expect(attachment1.isValid).toBeFalsy();
+				expect(attachment2.isValid).toBeFalsy();
 			});
 		});
 
@@ -126,16 +136,22 @@ export function runCommonTests(client: Client) {
 				const isolationQuery = 'select rdb$get_context(\'SYSTEM\', \'ISOLATION_LEVEL\') from rdb$database';
 
 				const transaction1 = await attachment.startTransaction();
+				expect(transaction1.isValid).toBeTruthy()
 				expect((await attachment.executeReturning(transaction1, isolationQuery))[0]).toBe('SNAPSHOT');
 				await transaction1.commit();
+				expect(transaction1.isValid).toBeFalsy()
 
 				const transaction2 = await attachment.startTransaction({ isolation: TransactionIsolation.READ_COMMITTED });
+				expect(transaction2.isValid).toBeTruthy()
 				expect((await attachment.executeReturning(transaction2, isolationQuery))[0]).toBe('READ COMMITTED');
 				await transaction2.commit();
+				expect(transaction2.isValid).toBeFalsy()
 
 				const transaction3 = await attachment.startTransaction({ isolation: TransactionIsolation.CONSISTENCY });
+				expect(transaction3.isValid).toBeTruthy()
 				expect((await attachment.executeReturning(transaction3, isolationQuery))[0]).toBe('CONSISTENCY');
 				await transaction3.commit();
+				expect(transaction3.isValid).toBeFalsy()
 
 				await attachment.dropDatabase();
 			});
@@ -145,7 +161,9 @@ export function runCommonTests(client: Client) {
 				const transaction = await attachment.startTransaction();
 
 				const statement = await attachment.prepare(transaction, 'create table t1 (n1 integer)');
+				expect(statement.isValid).toBeTruthy();
 				await statement.dispose();
+				expect(statement.isValid).toBeFalsy();
 
 				let error: Error | undefined;
 				try {
@@ -189,7 +207,9 @@ export function runCommonTests(client: Client) {
 				await transaction.commitRetaining();
 
 				const resultSet = await attachment.executeQuery(transaction, 'select n1 from t1');
+				expect(resultSet.isValid).toBeTruthy();
 				await resultSet.close();
+				expect(resultSet.isValid).toBeFalsy();
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -260,6 +280,7 @@ export function runCommonTests(client: Client) {
 					if (Array.from(eventsMap.values()).every(obj => obj.count >= obj.expected)) {
 						if (events) {
 							await events.cancel();
+							expect(events.isValid).toBeFalsy();
 							events = null!;
 						}
 					}
@@ -285,10 +306,12 @@ export function runCommonTests(client: Client) {
 						// Commit retaining to test internal event rescheduling
 						// after each handler dispatch.
 						await transaction.commitRetaining();
+						expect(transaction.isValid).toBeTruthy();
 					}
 				}
 				finally {
 					await transaction.commit();
+					expect(transaction.isValid).toBeFalsy();
 				}
 
 				await Promise.all(eventsObj.map(ev => ev.promise));
@@ -355,7 +378,9 @@ export function runCommonTests(client: Client) {
 				await statement2.execute(transaction, [null]);
 				await statement2.execute(transaction, [10]);
 				await statement2.execute(transaction, [100]);
+				expect(statement2.isValid).toBeTruthy();
 				await statement2.dispose();
+				expect(statement2.isValid).toBeFalsy();
 
 				const rs = await attachment.executeQuery(transaction,
 					`select sum(n1) || ', ' || count(n1) || ', ' || count(*) ret from t1`);
@@ -467,6 +492,7 @@ export function runCommonTests(client: Client) {
 		describe('ResultSet', () => {
 			test('#fetch()', async () => {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
+
 				let transaction = await attachment.startTransaction();
 
 				const blobBuffer = Buffer.alloc(11, '12345678á9');
@@ -538,8 +564,11 @@ export function runCommonTests(client: Client) {
 					transaction = await attachment.startTransaction();
 
 					const blob = await attachment.createBlob(transaction);
+					expect(blob.isValid).toBeTruthy();
 					await blob.write(blobBuffer);
+					expect(blob.isValid).toBeTruthy();
 					await blob.close();
+					expect(blob.isValid).toBeFalsy();
 
 					parameters = [
 						-1,
@@ -667,6 +696,7 @@ export function runCommonTests(client: Client) {
 
 					for (const i = n + 2; n < i; ++n) {
 						const blob = columns[n] as Blob;
+						expect(blob.isValid).toBeTruthy();
 						const blobStream = await attachment.openBlob(transaction, blob);
 						const buffer = Buffer.alloc(await blobStream.length);
 						expect(await blobStream.read(buffer)).toBe(buffer.length);
