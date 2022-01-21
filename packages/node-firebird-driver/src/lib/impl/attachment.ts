@@ -194,7 +194,7 @@ export abstract class AbstractAttachment implements Attachment {
 		return statement;
 	}
 
-	isValid() {
+	isValid(): boolean {
 		return !!this.client;
 	}
 

@@ -18,7 +18,7 @@ export abstract class AbstractEvents implements Events {
 		this.attachment = undefined;
 	}
 
-	isValid() {
+	isValid(): boolean {
 		return !!this.attachment;
 	}
 

@@ -72,7 +72,7 @@ export abstract class AbstractClient implements Client {
 		return attachment;
 	}
 
-	isValid() {
+	isValid(): boolean {
 		return !!this.connected;
 	}
 
