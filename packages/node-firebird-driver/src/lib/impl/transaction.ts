@@ -47,7 +47,7 @@ export abstract class AbstractTransaction implements Transaction {
 	}
 
 	private check() {
-		if (!this.attachment)
+		if (!this.isValid())
 			throw new Error('Transaction is already committed or rolled back.');
 	}
 

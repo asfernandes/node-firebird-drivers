@@ -1,9 +1,5 @@
-interface WithIsValidFlag {
-  isValid(): boolean;
-}
-
 /** Client interface. */
-export interface Client extends WithIsValidFlag {
+export interface Client {
 	/** Disposes this client's resources. */
 	dispose(): Promise<void>;
 
@@ -12,6 +8,9 @@ export interface Client extends WithIsValidFlag {
 
 	/** Creates a database. */
 	createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<Attachment>;
+
+	/** True if the client has not been disposed */
+	isValid(): boolean;
 
 	/** Default connect options. */
 	defaultConnectOptions?: ConnectOptions;
@@ -92,7 +91,7 @@ export interface FetchOptions {
 }
 
 /** Attachment interface. */
-export interface Attachment extends WithIsValidFlag {
+export interface Attachment {
 	/** Disconnects this attachment. */
 	disconnect(): Promise<void>;
 
@@ -147,6 +146,9 @@ export interface Attachment extends WithIsValidFlag {
 
 	queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events>;
 
+	/** True if the attachment connected */
+	isValid(): boolean;
+
 	/** Default transaction options. */
 	defaultTransactionOptions?: TransactionOptions;
 
@@ -164,7 +166,7 @@ export interface Attachment extends WithIsValidFlag {
 }
 
 /** Transaction interface. */
-export interface Transaction extends WithIsValidFlag {
+export interface Transaction {
 	/** Commits and release this transaction object. */
 	commit(): Promise<void>;
 
@@ -176,10 +178,13 @@ export interface Transaction extends WithIsValidFlag {
 
 	/** Rollbacks and maintains this transaction object for subsequent work. */
 	rollbackRetaining(): Promise<void>;
+
+	/** True if the transaction active */
+	isValid(): boolean;
 }
 
 /** Statement interface. */
-export interface Statement extends WithIsValidFlag {
+export interface Statement {
 	/** Disposes this statement's resources. */
 	dispose(): Promise<void>;
 
@@ -208,6 +213,9 @@ export interface Statement extends WithIsValidFlag {
 
 	getExecPathText(): Promise<string | undefined>;
 
+	/** True if the statement has not been disposed */
+	isValid(): boolean;
+
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
 
@@ -225,7 +233,7 @@ export interface Statement extends WithIsValidFlag {
 }
 
 /** ResultSet interface. */
-export interface ResultSet extends WithIsValidFlag {
+export interface ResultSet {
 	/** Closes this result set. */
 	close(): Promise<void>;
 
@@ -248,12 +256,18 @@ export interface ResultSet extends WithIsValidFlag {
 	 */
 	fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]>;
 
+	/** True if the ResultSet open */
+	isValid(): boolean;
+
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
 }
 
 export interface Events {
 	cancel(): Promise<void>;
+
+	/** True if the events's attachment is valid */
+	isValid(): boolean;
 }
 
 /** Blob class. */
@@ -268,10 +282,15 @@ export class Blob {
 		this.attachment = attachment;
 		this.id.set(id);
 	}
+
+	/** True if the blob's attachment is valid */
+	isValid(): boolean {
+		return !!this.attachment.isValid();
+	}
 }
 
 /** BlobStream class. */
-export abstract class BlobStream implements WithIsValidFlag {
+export abstract class BlobStream {
 	/** Gets the blob's. */
 	readonly blob: Blob;
 
@@ -297,6 +316,7 @@ export abstract class BlobStream implements WithIsValidFlag {
 	/** Writes data to the blob. */
 	abstract write(buffer: Buffer): Promise<void>;
 
+	/** True if the blob stream is open */
 	abstract isValid(): boolean;
 }
 

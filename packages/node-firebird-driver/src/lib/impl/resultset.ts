@@ -84,7 +84,7 @@ export abstract class AbstractResultSet implements ResultSet {
 	}
 
 	private check() {
-		if (!this.statement)
+		if (!this.isValid())
 			throw new Error('ResultSet is already closed.');
 	}
 

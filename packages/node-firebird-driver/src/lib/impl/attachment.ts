@@ -199,7 +199,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	private check() {
-		if (!this.client)
+		if (!this.isValid())
 			throw new Error('Attachment is already disconnected.');
 	}
 

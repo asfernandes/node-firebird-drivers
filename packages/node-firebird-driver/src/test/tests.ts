@@ -289,6 +289,7 @@ export function runCommonTests(client: Client) {
 					if (Array.from(eventsMap.values()).every(obj => obj.count >= obj.expected)) {
 						if (events) {
 							await events.cancel();
+							expect(events.isValid()).toBeFalsy();
 							events = null!;
 						}
 					}
@@ -302,14 +303,14 @@ export function runCommonTests(client: Client) {
 					// eventHandler may have a chance to cancel the events.
 					for (let i = 0; i < 20; ++i) {
 						await attachment.execute(transaction, `
-							execute block as
-							begin
-									post_event 'EVENT1';
-									post_event 'EVENT1';
-									post_event 'EVENT2';
-									post_event 'EVENT3';
-							end
-						`);
+              execute block as
+              begin
+                post_event 'EVENT1';
+                post_event 'EVENT1';
+                post_event 'EVENT2';
+                post_event 'EVENT3';
+              end
+              `);
 
 						// Commit retaining to test internal event rescheduling
 						// after each handler dispatch.
@@ -710,6 +711,7 @@ export function runCommonTests(client: Client) {
 
 					for (const i = n + 2; n < i; ++n) {
 						const blob = columns[n] as Blob;
+						expect(blob.isValid()).toBeTruthy();
 						const blobStream = await attachment.openBlob(transaction, blob);
 						const buffer = Buffer.alloc(await blobStream.length);
 						expect(await blobStream.read(buffer)).toBe(buffer.length);
