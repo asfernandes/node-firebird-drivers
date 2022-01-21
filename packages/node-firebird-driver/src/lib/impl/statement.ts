@@ -104,6 +104,10 @@ export abstract class AbstractStatement implements Statement {
 		return resultSet;
 	}
 
+	isValid() {
+		return !!this.attachment;
+	}
+
 	private check() {
 		if (!this.attachment)
 			throw new Error('Statement is already disposed.');

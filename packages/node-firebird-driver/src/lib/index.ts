@@ -1,5 +1,9 @@
+interface WithIsValidFlag {
+  isValid(): boolean;
+}
+
 /** Client interface. */
-export interface Client {
+export interface Client extends WithIsValidFlag {
 	/** Disposes this client's resources. */
 	dispose(): Promise<void>;
 
@@ -88,7 +92,7 @@ export interface FetchOptions {
 }
 
 /** Attachment interface. */
-export interface Attachment {
+export interface Attachment extends WithIsValidFlag {
 	/** Disconnects this attachment. */
 	disconnect(): Promise<void>;
 
@@ -160,7 +164,7 @@ export interface Attachment {
 }
 
 /** Transaction interface. */
-export interface Transaction {
+export interface Transaction extends WithIsValidFlag {
 	/** Commits and release this transaction object. */
 	commit(): Promise<void>;
 
@@ -172,13 +176,10 @@ export interface Transaction {
 
 	/** Rollbacks and maintains this transaction object for subsequent work. */
 	rollbackRetaining(): Promise<void>;
-
-  /** Returns true if current transaction active. The name follows name of the Delphi TIBTransaction class */
-  inTransaction(): boolean;
 }
 
 /** Statement interface. */
-export interface Statement {
+export interface Statement extends WithIsValidFlag {
 	/** Disposes this statement's resources. */
 	dispose(): Promise<void>;
 
@@ -224,7 +225,7 @@ export interface Statement {
 }
 
 /** ResultSet interface. */
-export interface ResultSet {
+export interface ResultSet extends WithIsValidFlag {
 	/** Closes this result set. */
 	close(): Promise<void>;
 
@@ -270,7 +271,7 @@ export class Blob {
 }
 
 /** BlobStream class. */
-export abstract class BlobStream {
+export abstract class BlobStream implements WithIsValidFlag {
 	/** Gets the blob's. */
 	readonly blob: Blob;
 
@@ -295,6 +296,8 @@ export abstract class BlobStream {
 
 	/** Writes data to the blob. */
 	abstract write(buffer: Buffer): Promise<void>;
+
+	abstract isValid(): boolean;
 }
 
 /** TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE to be sent as parameter */
