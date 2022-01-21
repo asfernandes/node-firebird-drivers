@@ -293,14 +293,14 @@ export function runCommonTests(client: Client) {
 					// eventHandler may have a chance to cancel the events.
 					for (let i = 0; i < 20; ++i) {
 						await attachment.execute(transaction, `
-              execute block as
-              begin
-                post_event 'EVENT1';
-                post_event 'EVENT1';
-                post_event 'EVENT2';
-                post_event 'EVENT3';
-              end
-              `);
+							execute block as
+							begin
+							    post_event 'EVENT1';
+							    post_event 'EVENT1';
+							    post_event 'EVENT2';
+							    post_event 'EVENT3';
+							end
+						`);
 
 						// Commit retaining to test internal event rescheduling
 						// after each handler dispatch.
