@@ -1,5 +1,4 @@
 import {
-	Attachment,
 	Blob,
 	Client,
 	TransactionIsolation,
@@ -44,15 +43,6 @@ export function runCommonTests(client: Client) {
 
 		return `timestamp '${(d.getUTCFullYear() + '').padStart(4, '0')}-${d.getUTCMonth() + 1}-${d.getUTCDate()} ` +
 			`${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()} ${zd.timeZone}'`;
-	}
-
-	async function isFB4OrGreater(attachment: Attachment) {
-		const transaction = await attachment.startTransaction();
-		const resultSet = await attachment.executeQuery(transaction, 'select mon$ods_major from mon$database');
-		const output = await resultSet.fetchAsObject<{ MON$ODS_MAJOR: number }>();
-		await resultSet.close();
-		await transaction.commit();
-		return output[0].MON$ODS_MAJOR >= 13;
 	}
 
 	describe('node-firebird-driver', () => {
@@ -473,11 +463,9 @@ export function runCommonTests(client: Client) {
 				expect(statement2.hasResultSet).toBe(false);
 				await statement2.dispose();
 
-				if (await isFB4OrGreater(attachment)) {
-					const statement3 = await attachment.prepare(transaction, 'insert into t1 values (1) returning *');
-					expect(statement3.hasResultSet).toBe(false);
-					await statement3.dispose();
-				}
+				const statement3 = await attachment.prepare(transaction, 'insert into t1 values (1) returning *');
+				expect(statement3.hasResultSet).toBe(false);
+				await statement3.dispose();
 
 				const statement4 = await attachment.prepare(transaction, 'execute block as begin end');
 				expect(statement4.hasResultSet).toBe(false);
@@ -503,10 +491,6 @@ export function runCommonTests(client: Client) {
 		describe('ResultSet', () => {
 			test('#fetch()', async () => {
 				const attachment = await client.createDatabase(getTempFile('ResultSet-fetch.fdb'));
-
-				if (!(await isFB4OrGreater(attachment))) {
-					return;
-				}
 
 				let transaction = await attachment.startTransaction();
 
