@@ -10,7 +10,7 @@ export interface Client {
 	createDatabase(uri: string, options?: CreateDatabaseOptions): Promise<Attachment>;
 
 	/** True if the client has not been disposed */
-	isValid(): boolean;
+	readonly isValid: boolean;
 
 	/** Default connect options. */
 	defaultConnectOptions?: ConnectOptions;
@@ -147,7 +147,7 @@ export interface Attachment {
 	queueEvents(names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<Events>;
 
 	/** True if the attachment connected */
-	isValid(): boolean;
+	readonly isValid: boolean;
 
 	/** Default transaction options. */
 	defaultTransactionOptions?: TransactionOptions;
@@ -180,7 +180,7 @@ export interface Transaction {
 	rollbackRetaining(): Promise<void>;
 
 	/** True if the transaction active */
-	isValid(): boolean;
+	readonly isValid: boolean;
 }
 
 /** Statement interface. */
@@ -214,7 +214,7 @@ export interface Statement {
 	getExecPathText(): Promise<string | undefined>;
 
 	/** True if the statement has not been disposed */
-	isValid(): boolean;
+	readonly isValid: boolean;
 
 	/** Gets the query's result columns labels. Returns empty array for queries without result. */
 	readonly columnLabels: Promise<string[]>;
@@ -257,7 +257,7 @@ export interface ResultSet {
 	fetchAsObject<T extends object>(options?: FetchOptions): Promise<T[]>;
 
 	/** True if the ResultSet open */
-	isValid(): boolean;
+	readonly isValid: boolean;
 
 	/** Default result set's fetch options. */
 	defaultFetchOptions?: FetchOptions;
@@ -267,7 +267,7 @@ export interface Events {
 	cancel(): Promise<void>;
 
 	/** True if the events's attachment is valid */
-	isValid(): boolean;
+	readonly isValid: boolean;
 }
 
 /** Blob class. */
@@ -284,8 +284,8 @@ export class Blob {
 	}
 
 	/** True if the blob's attachment is valid */
-	isValid(): boolean {
-		return !!this.attachment.isValid();
+	get isValid(): boolean {
+		return !!this.attachment.isValid;
 	}
 }
 
@@ -317,7 +317,7 @@ export abstract class BlobStream {
 	abstract write(buffer: Buffer): Promise<void>;
 
 	/** True if the blob stream is open */
-	abstract isValid(): boolean;
+	abstract get isValid(): boolean;
 }
 
 /** TIME WITH TIME ZONE and TIMESTAMP WITH TIME ZONE to be sent as parameter */

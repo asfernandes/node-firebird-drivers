@@ -18,12 +18,12 @@ export abstract class AbstractEvents implements Events {
 		this.attachment = undefined;
 	}
 
-	isValid(): boolean {
+	get isValid(): boolean {
 		return !!this.attachment;
 	}
 
 	private check() {
-		if (!this.isValid())
+		if (!this.isValid)
 			throw new Error('Events are already cancelled.');
 	}
 
