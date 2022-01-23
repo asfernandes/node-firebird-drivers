@@ -4,6 +4,7 @@
 
 * Feature [#115](https://github.com/asfernandes/node-firebird-drivers/issues/115) - Add method Statement.getExecPathText.
 * Feature [#119](https://github.com/asfernandes/node-firebird-drivers/pull/119) - Implementation of isValid property.
+* Feature [#121](https://github.com/asfernandes/node-firebird-drivers/issues/121) - Deprecate methods executeReturning* replacing by executeSingleton*.
 
 ### native-api
 

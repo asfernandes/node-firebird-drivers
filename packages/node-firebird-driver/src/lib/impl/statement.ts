@@ -65,7 +65,7 @@ export abstract class AbstractStatement implements Statement {
 	}
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	async executeReturning(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<any[]> {
+	async executeSingleton(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<any[]> {
 		this.check();
 
 		//// TODO: check opened resultSet.
@@ -74,11 +74,11 @@ export abstract class AbstractStatement implements Statement {
 	}
 
 	/** Executes a statement that returns a single record as an object. */
-	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, parameters?: any[],
+	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, parameters?: any[],
 			options?: ExecuteOptions): Promise<T> {
 		this.check();
 
-		const row = await this.executeReturning(transaction, parameters, options);
+		const row = await this.executeSingleton(transaction, parameters, options);
 		const cols = (await this?.columnLabels) || [];
 
 		const obj = {} as T;
@@ -90,6 +90,17 @@ export abstract class AbstractStatement implements Statement {
 		});
 
 		return obj;
+	}
+
+	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
+	async executeReturning(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<any[]> {
+		return await this.executeSingleton(transaction, parameters, options);
+	}
+
+	/** Executes a statement that returns a single record as an object. */
+	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, parameters?: any[],
+			options?: ExecuteOptions): Promise<T> {
+		return await this.executeSingletonAsObject<T>(transaction, parameters, options);
 	}
 
 	/** Executes a prepared statement that has result set. */

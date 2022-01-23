@@ -95,7 +95,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record. */
-	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeSingleton(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
@@ -104,7 +104,7 @@ export abstract class AbstractAttachment implements Attachment {
 
 		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
-			return await statement.executeReturning(transaction, parameters, options && options.executeOptions);
+			return await statement.executeSingleton(transaction, parameters, options && options.executeOptions);
 		}
 		finally {
 			await statement.dispose();
@@ -112,7 +112,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record in object form. */
-	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
@@ -121,11 +121,29 @@ export abstract class AbstractAttachment implements Attachment {
 
 		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
 		try {
-			return await statement.executeReturningAsObject(transaction, parameters, options && options.executeOptions);
+			return await statement.executeSingletonAsObject(transaction, parameters, options && options.executeOptions);
 		}
 		finally {
 			await statement.dispose();
 		}
+	}
+
+	/** Executes a statement that returns a single record. */
+	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteOptions
+			}): Promise<Array<any>> {
+		return await this.executeSingleton(transaction, sqlStmt, parameters, options);
+	}
+
+	/** Executes a statement that returns a single record in object form. */
+	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+			options?: {
+				prepareOptions?: PrepareOptions,
+				executeOptions?: ExecuteOptions
+			}): Promise<T> {
+		return await this.executeSingletonAsObject<T>(transaction, sqlStmt, parameters, options);
 	}
 
 	/** Executes a statement that has result set. */

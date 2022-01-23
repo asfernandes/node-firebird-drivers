@@ -137,19 +137,19 @@ export function runCommonTests(client: Client) {
 
 				const transaction1 = await attachment.startTransaction();
 				expect(transaction1.isValid).toBeTruthy()
-				expect((await attachment.executeReturning(transaction1, isolationQuery))[0]).toBe('SNAPSHOT');
+				expect((await attachment.executeSingleton(transaction1, isolationQuery))[0]).toBe('SNAPSHOT');
 				await transaction1.commit();
 				expect(transaction1.isValid).toBeFalsy()
 
 				const transaction2 = await attachment.startTransaction({ isolation: TransactionIsolation.READ_COMMITTED });
 				expect(transaction2.isValid).toBeTruthy()
-				expect((await attachment.executeReturning(transaction2, isolationQuery))[0]).toBe('READ COMMITTED');
+				expect((await attachment.executeSingleton(transaction2, isolationQuery))[0]).toBe('READ COMMITTED');
 				await transaction2.commit();
 				expect(transaction2.isValid).toBeFalsy()
 
 				const transaction3 = await attachment.startTransaction({ isolation: TransactionIsolation.CONSISTENCY });
 				expect(transaction3.isValid).toBeTruthy()
-				expect((await attachment.executeReturning(transaction3, isolationQuery))[0]).toBe('CONSISTENCY');
+				expect((await attachment.executeSingleton(transaction3, isolationQuery))[0]).toBe('CONSISTENCY');
 				await transaction3.commit();
 				expect(transaction3.isValid).toBeFalsy()
 
@@ -210,6 +210,36 @@ export function runCommonTests(client: Client) {
 				expect(resultSet.isValid).toBeTruthy();
 				await resultSet.close();
 				expect(resultSet.isValid).toBeFalsy();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingleton()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingleton.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const result = await attachment.executeSingleton(transaction, 'insert into t1 values (11) returning n1');
+				expect(result.length).toBe(1);
+				expect(result[0]).toBe(11);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingletonAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingletonAsObject.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const output = await attachment.executeSingletonAsObject<{ N1: number }>(transaction,
+					'insert into t1 values (11) returning n1');
+				expect(output.N1).toBe(11);
 
 				await transaction.commit();
 				await attachment.dropDatabase();
@@ -406,6 +436,26 @@ export function runCommonTests(client: Client) {
 				const resultSet2 = await statement2.executeQuery(transaction);
 				await resultSet2.close();
 				await statement2.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingleton()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingleton.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const statement = await attachment.prepare(transaction, 'insert into t1 values (11) returning n1, n1 * 2');
+
+				const result = await statement.executeSingleton(transaction);
+				expect(result.length).toBe(2);
+				expect(result[0]).toBe(11);
+				expect(result[1]).toBe(11 * 2);
+
+				await statement.dispose();
 
 				await transaction.commit();
 				await attachment.dropDatabase();

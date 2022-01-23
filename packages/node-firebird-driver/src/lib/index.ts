@@ -124,13 +124,33 @@ export interface Attachment {
 		}): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeSingleton(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<any[]>;
 
 	/** Executes a statement that returns a single record as an object. */
+	executeSingletonAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions
+		}): Promise<T>;
+
+	/**
+	 * Executes a statement that returns a single record as [col1, col2, ..., colN].
+	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingleton.
+	 */
+	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: any[],
+		options?: {
+			prepareOptions?: PrepareOptions,
+			executeOptions?: ExecuteOptions
+		}): Promise<any[]>;
+
+	/**
+	 * Executes a statement that returns a single record as an object.
+	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingletonAsObject.
+	 */
 	executeReturningAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
 		options?: {
 			prepareOptions?: PrepareOptions,
@@ -195,9 +215,21 @@ export interface Statement {
 	execute(transaction: Transaction, parameters?: any[], options?: ExecuteOptions): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeReturning(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+	executeSingleton(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
 
 	/** Executes a statement that returns a single record as an object. */
+	executeSingletonAsObject<T extends object>(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<T>;
+
+	/**
+	 * Executes a statement that returns a single record as [col1, col2, ..., colN].
+	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingleton.
+	 */
+	executeReturning(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+
+	/**
+	 * Executes a statement that returns a single record as an object.
+	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingletonAsObject.
+	 */
 	executeReturningAsObject<T extends object>(transaction: Transaction, parameters?: any[],
 		options?: ExecuteOptions): Promise<T>;
 
