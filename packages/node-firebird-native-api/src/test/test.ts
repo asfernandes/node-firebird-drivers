@@ -174,8 +174,9 @@ describe('node-firebird-native-api', () => {
 				const buffer = dpbBuilder.getBufferSync(status)!;
 				const length = dpbBuilder.getBufferLengthSync(status);
 
-				return await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase-xpb.fdb'),
-					length, buffer);
+				const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile('Attachment-createDatabase-xpb.fdb'),
+					length, buffer))!;
+				await attachment.dropDatabaseAsync(status);
 			}
 			finally {
 				dpbBuilder.disposeSync();
