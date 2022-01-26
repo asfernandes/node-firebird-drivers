@@ -1,6 +1,6 @@
-## next
+## January, 26, 2022
 
-### driver, driver-native
+### driver, driver-native - 2.4.0
 
 * Feature [#115](https://github.com/asfernandes/node-firebird-drivers/issues/115) - Add method Statement.getExecPathText.
 * Feature [#119](https://github.com/asfernandes/node-firebird-drivers/pull/119) - Implementation of isValid property.
