@@ -6,3 +6,4 @@ yarn-error.log
 yarn.lock
 tsconfig.tsbuildinfo
 .env
+.idea

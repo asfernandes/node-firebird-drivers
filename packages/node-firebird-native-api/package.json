@@ -1,6 +1,6 @@
 {
   "name": "@knagyorg/node-firebird-native-api",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "description": "Firebird native API for Node.js",
   "gypfile": true,
   "engines": {
