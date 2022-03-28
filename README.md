@@ -21,6 +21,8 @@ Clone this repo then run:
 - `yarn run test`
 (default user and password will be used during tests)
 
+As of now tests require **Firebird 4** server and will fail when executed using **Firebird 3**.
+
 You can put test configuration in `.env` file in the project root directory, like the following example:
 
 ```
