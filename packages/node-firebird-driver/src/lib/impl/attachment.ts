@@ -18,18 +18,8 @@ import {
 } from '..';
 import { parseParams } from './parser';
 
-export const adjustPrepareOptions = (prepareOptions?: PrepareOptions, parameters?: Parameters): (PrepareOptions | undefined) => {
-	if (parameters) {
-		if (!Array.isArray(parameters)) {
-			if (prepareOptions) {
-				return { ...prepareOptions, namedParams: true };
-			} else {
-				return { namedParams: true };
-			}
-		}
-	}
-	return prepareOptions;
-};
+const adjustPrepareOptions = (prepareOptions?: PrepareOptions, parameters?: Parameters) =>
+	parameters && !Array.isArray(parameters) && !prepareOptions ? { namedParams: true } : prepareOptions;
 
 /** AbstractAttachment implementation. */
 export abstract class AbstractAttachment implements Attachment {
