@@ -74,6 +74,7 @@ export interface TransactionOptions {
 
 /** PrepareOptions interface. */
 export interface PrepareOptions {
+	namedParams?: boolean;
 }
 
 /** ExecuteOptions interface. */
@@ -117,21 +118,21 @@ export interface Attachment {
 		}): Promise<Transaction>;
 
 	/** Executes a statement that has no result set. */
-	execute(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	execute(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeSingleton(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeSingleton(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<any[]>;
 
 	/** Executes a statement that returns a single record as an object. */
-	executeSingletonAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeSingletonAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
@@ -141,7 +142,7 @@ export interface Attachment {
 	 * Executes a statement that returns a single record as [col1, col2, ..., colN].
 	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingleton.
 	 */
-	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeReturning(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
@@ -151,14 +152,14 @@ export interface Attachment {
 	 * Executes a statement that returns a single record as an object.
 	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingletonAsObject.
 	 */
-	executeReturningAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeReturningAsObject<T extends object>(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteOptions
 		}): Promise<T>;
 
 	/** Executes a statement that has result set. */
-	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: any[],
+	executeQuery(transaction: Transaction, sqlStmt: string, parameters?: Parameters,
 		options?: {
 			prepareOptions?: PrepareOptions,
 			executeOptions?: ExecuteQueryOptions
@@ -203,6 +204,12 @@ export interface Transaction {
 	readonly isValid: boolean;
 }
 
+export interface NamedParameters {
+	[name: string]: any;
+}
+
+export type Parameters = any[] | NamedParameters;
+
 /** Statement interface. */
 export interface Statement {
 	/** Disposes this statement's resources. */
@@ -212,29 +219,29 @@ export interface Statement {
 	executeTransaction(transaction: Transaction): Promise<Transaction>;
 
 	/** Executes a prepared statement that has no result set. */
-	execute(transaction: Transaction, parameters?: any[], options?: ExecuteOptions): Promise<void>;
+	execute(transaction: Transaction, parameters?: Parameters, options?: ExecuteOptions): Promise<void>;
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	executeSingleton(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+	executeSingleton(transaction: Transaction, parameters?: Parameters, executeOptions?: ExecuteOptions): Promise<any[]>;
 
 	/** Executes a statement that returns a single record as an object. */
-	executeSingletonAsObject<T extends object>(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<T>;
+	executeSingletonAsObject<T extends object>(transaction: Transaction, parameters?: Parameters, executeOptions?: ExecuteOptions): Promise<T>;
 
 	/**
 	 * Executes a statement that returns a single record as [col1, col2, ..., colN].
 	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingleton.
 	 */
-	executeReturning(transaction: Transaction, parameters?: any[], executeOptions?: ExecuteOptions): Promise<any[]>;
+	executeReturning(transaction: Transaction, parameters?: Parameters, executeOptions?: ExecuteOptions): Promise<any[]>;
 
 	/**
 	 * Executes a statement that returns a single record as an object.
 	 * @deprecated since version 2.4.0 and will be removed in next major version. Replaced by executeSingletonAsObject.
 	 */
-	executeReturningAsObject<T extends object>(transaction: Transaction, parameters?: any[],
+	executeReturningAsObject<T extends object>(transaction: Transaction, parameters?: Parameters,
 		options?: ExecuteOptions): Promise<T>;
 
 	/** Executes a prepared statement that has result set. */
-	executeQuery(transaction: Transaction, parameters?: any[], options?: ExecuteQueryOptions): Promise<ResultSet>;
+	executeQuery(transaction: Transaction, parameters?: Parameters, options?: ExecuteQueryOptions): Promise<ResultSet>;
 
 	/**
 	 * Set cursor name of a SELECT ... FOR UPDATE statement.

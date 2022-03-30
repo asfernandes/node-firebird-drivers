@@ -13,9 +13,23 @@ import {
 	Events,
 	FetchOptions,
 	PrepareOptions,
-	TransactionOptions
+	TransactionOptions,
+	Parameters
 } from '..';
+import { parseParams } from './parser';
 
+export const adjustPrepareOptions = (prepareOptions?: PrepareOptions, parameters?: Parameters): (PrepareOptions | undefined) => {
+	if (parameters) {
+		if (!Array.isArray(parameters)) {
+			if (prepareOptions) {
+				return { ...prepareOptions, namedParams: true };
+			} else {
+				return { namedParams: true };
+			}
+		}
+	}
+	return prepareOptions;
+};
 
 /** AbstractAttachment implementation. */
 export abstract class AbstractAttachment implements Attachment {
@@ -78,16 +92,16 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that has no result set. */
-	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+	async execute(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
 			}): Promise<void> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, adjustPrepareOptions(options?.prepareOptions, parameters));
 		try {
-			return await statement.execute(transaction, parameters, options && options.executeOptions);
+			return await statement.execute(transaction, parameters, options?.executeOptions);
 		}
 		finally {
 			await statement.dispose();
@@ -95,14 +109,14 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record. */
-	async executeSingleton(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeSingleton(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
 			}): Promise<Array<any>> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, adjustPrepareOptions(options?.prepareOptions, parameters));
 		try {
 			return await statement.executeSingleton(transaction, parameters, options && options.executeOptions);
 		}
@@ -112,14 +126,14 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record in object form. */
-	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
 			}): Promise<T> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, adjustPrepareOptions(options?.prepareOptions, parameters));
 		try {
 			return await statement.executeSingletonAsObject(transaction, parameters, options && options.executeOptions);
 		}
@@ -129,7 +143,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record. */
-	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
@@ -138,7 +152,7 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record in object form. */
-	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
@@ -147,16 +161,16 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that has result set. */
-	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
+	async executeQuery(transaction: AbstractTransaction, sqlStmt: string, parameters?: Parameters,
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteQueryOptions
 			}): Promise<AbstractResultSet> {
 		this.check();
 
-		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
+		const statement = await this.prepare(transaction, sqlStmt, adjustPrepareOptions(options?.prepareOptions, parameters));
 		try {
-			const resultSet = await statement.executeQuery(transaction, parameters, options && options.executeOptions);
+			const resultSet = await statement.executeQuery(transaction, parameters, options?.executeOptions);
 			resultSet.diposeStatementOnClose = true;
 			return resultSet;
 		}
@@ -206,8 +220,15 @@ export abstract class AbstractAttachment implements Attachment {
 	async prepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions): Promise<AbstractStatement> {
 		this.check();
 
-		const statement = await this.internalPrepare(transaction, sqlStmt,
+		const parsed = options?.namedParams ? parseParams(sqlStmt) : undefined;
+
+		const statement = await this.internalPrepare(transaction, parsed ? parsed.sqlStmt : sqlStmt,
 			options || this.defaultPrepareOptions || this.client!.defaultPrepareOptions);
+
+		if (parsed?.paramNames) {
+			statement.paramNames = parsed.paramNames;
+		}
+
 		this.statements.add(statement);
 		return statement;
 	}
