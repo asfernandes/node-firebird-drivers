@@ -38,7 +38,7 @@ export abstract class AbstractStatement implements Statement {
 	}
 
 	protected namedParameters2Array(namedParameters: NamedParameters): any[] {
-		return this.paramNames ? this.paramNames.map( p => namedParameters[p] ) : [];
+		return this.paramNames ? this.paramNames.map( p => namedParameters[p] ?? null ) : [];
 	}
 
 	protected adjustParameters(parameters?: Parameters): (any[] | undefined) {
