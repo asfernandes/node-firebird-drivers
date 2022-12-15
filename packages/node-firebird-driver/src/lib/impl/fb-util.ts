@@ -229,11 +229,11 @@ export function createBpb(options?: CreateBlobOptions): Buffer {
 
 	switch (options.type) {
 		case 'SEGMENTED':
-			ret += `${code(bpb.type)}${code(bpb.type_segmented)}`;
+			ret += `${code(bpb.type)}${code(1)}${code(bpb.type_segmented)}`;
 			break;
 
 		case 'STREAM':
-			ret += `${code(bpb.type)}${code(bpb.type_stream)}`;
+			ret += `${code(bpb.type)}${code(1)}${code(bpb.type_stream)}`;
 			break;
 	}
 
