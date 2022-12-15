@@ -90,6 +90,11 @@ export interface FetchOptions {
 	fetchSize?: number;
 }
 
+/** CreateBlobOptions interface. */
+export interface CreateBlobOptions {
+	type?: 'SEGMENTED' | 'STREAM';
+}
+
 /** Attachment interface. */
 export interface Attachment {
 	/** Disconnects this attachment. */
@@ -99,7 +104,7 @@ export interface Attachment {
 	dropDatabase(): Promise<void>;
 
 	/** Creates a blob and return its stream. */
-	createBlob(transaction: Transaction): Promise<BlobStream>;
+	createBlob(transaction: Transaction, options?: CreateBlobOptions): Promise<BlobStream>;
 
 	/** Opens a blob's stream. */
 	openBlob(transaction: Transaction, blob: Blob): Promise<BlobStream>;
@@ -321,6 +326,12 @@ export class Blob {
 	}
 }
 
+export const enum BlobSeekWhence {
+	START = 0,
+	CURRENT = 1,
+	END = 2
+}
+
 /** BlobStream class. */
 export abstract class BlobStream {
 	/** Gets the blob's. */
@@ -338,6 +349,9 @@ export abstract class BlobStream {
 
 	/** Cancels the blob's creation. */
 	abstract cancel(): Promise<void>;
+
+	/** Seeks into the blob stream and return the new position. */
+	abstract seek(offset: number, whence?: BlobSeekWhence): Promise<number>;
 
 	/**
 	 * Reads data from the blob and return the number of bytes read or -1 for end-of-stream.

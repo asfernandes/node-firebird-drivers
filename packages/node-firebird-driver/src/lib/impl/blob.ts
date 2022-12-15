@@ -1,6 +1,6 @@
 import { AbstractAttachment } from './attachment';
 
-import { Blob, BlobStream } from '..';
+import { Blob, BlobSeekWhence, BlobStream } from '..';
 
 
 /** AbstractBlobStream implementation. */
@@ -21,6 +21,10 @@ export abstract class AbstractBlobStream extends BlobStream {
 		return await this.internalCancel();
 	}
 
+	async seek(offset: number, whence?: BlobSeekWhence): Promise<number> {
+		return await this.internalSeek(offset, whence);
+	}
+
 	async read(buffer: Buffer): Promise<number> {
 		return await this.internalRead(buffer);
 	}
@@ -32,6 +36,7 @@ export abstract class AbstractBlobStream extends BlobStream {
 	protected abstract internalGetLength(): Promise<number>;
 	protected abstract internalClose(): Promise<void>;
 	protected abstract internalCancel(): Promise<void>;
+	protected abstract internalSeek(offset: number, whence?: BlobSeekWhence): Promise<number>;
 	protected abstract internalRead(buffer: Buffer): Promise<number>;
 	protected abstract internalWrite(buffer: Buffer): Promise<void>;
 }

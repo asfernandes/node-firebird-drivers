@@ -1,3 +1,10 @@
+## Next
+
+### driver, driver-native - 2.5.0
+
+* Feature [#130](https://github.com/asfernandes/node-firebird-drivers/issues/130) - Add options to Attachment.createBlob for stream blob creation.
+* Feature [#131](https://github.com/asfernandes/node-firebird-drivers/issues/131) - Add method BlobStream.seek.
+
 ## January, 26, 2022
 
 ### driver, driver-native - 2.4.0

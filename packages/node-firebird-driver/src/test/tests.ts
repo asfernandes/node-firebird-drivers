@@ -1,5 +1,6 @@
 import {
 	Blob,
+	BlobSeekWhence,
 	Client,
 	TransactionIsolation,
 	ZonedDate,
@@ -881,6 +882,45 @@ export function runCommonTests(client: Client) {
 				expect(resultBuffer.toString()).toEqual(buffer.toString());
 
 				await resultSet.close();
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+		});
+
+		describe('BlobStream', () => {
+			test('#seek()', async () => {
+				const attachment = await client.createDatabase(getTempFile('BlobStream-seek.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (b blob)');
+				await transaction.commitRetaining();
+
+				const blobStream = await attachment.createBlob(transaction, { type: 'STREAM' });
+				await blobStream.write(Buffer.alloc(10, '1234567890'));
+				await blobStream.close();
+				await attachment.execute(transaction, 'insert into t1 (b) values (?)', [blobStream.blob]);
+
+				const blob = (await attachment.executeSingleton(transaction, 'select b from t1'))[0] as Blob;
+				const readBlobStream = await attachment.openBlob(transaction, blob);
+
+				const buffer = Buffer.alloc(3);
+
+				expect(await readBlobStream.seek(2)).toBe(2);
+				expect(await readBlobStream.read(buffer)).toBe(3);
+				expect(buffer.toString()).toBe('345');
+
+				expect(await readBlobStream.seek(-1, BlobSeekWhence.CURRENT)).toBe(4);
+				expect(await readBlobStream.read(buffer)).toBe(3);
+				expect(buffer.toString()).toBe('567');
+
+				expect(await readBlobStream.seek(1, BlobSeekWhence.START)).toBe(1);
+				expect(await readBlobStream.read(buffer)).toBe(3);
+				expect(buffer.toString()).toBe('234');
+
+				expect(await readBlobStream.seek(-2, BlobSeekWhence.END)).toBe(8);
+				expect(await readBlobStream.read(buffer)).toBe(2);
+				expect(buffer.slice(0, 2).toString()).toBe('90');
+
 				await transaction.commit();
 				await attachment.dropDatabase();
 			});

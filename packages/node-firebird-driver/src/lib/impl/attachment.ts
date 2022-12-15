@@ -8,6 +8,7 @@ import { AbstractEvents } from './events';
 import {
 	Attachment,
 	Blob,
+	CreateBlobOptions,
 	ExecuteOptions,
 	ExecuteQueryOptions,
 	Events,
@@ -184,8 +185,8 @@ export abstract class AbstractAttachment implements Attachment {
 		return events;
 	}
 
-	async createBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream> {
-		return await this.internalCreateBlob(transaction);
+	async createBlob(transaction: AbstractTransaction, options?: CreateBlobOptions): Promise<AbstractBlobStream> {
+		return await this.internalCreateBlob(transaction, options);
 	}
 
 	async openBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream> {
@@ -241,7 +242,7 @@ export abstract class AbstractAttachment implements Attachment {
 
 	protected abstract internalDisconnect(): Promise<void>;
 	protected abstract internalDropDatabase(): Promise<void>;
-	protected abstract internalCreateBlob(transaction: AbstractTransaction): Promise<AbstractBlobStream>;
+	protected abstract internalCreateBlob(transaction: AbstractTransaction, options?: CreateBlobOptions): Promise<AbstractBlobStream>;
 	protected abstract internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
 	protected abstract internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
 		Promise<AbstractStatement>;

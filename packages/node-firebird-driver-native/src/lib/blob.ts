@@ -1,7 +1,7 @@
 import { AttachmentImpl } from './attachment';
 
-import { Blob } from 'node-firebird-driver';
-import { AbstractBlobStream, blobInfo, getPortableInteger } from 'node-firebird-driver/dist/lib/impl';
+import { Blob, BlobSeekWhence, CreateBlobOptions } from 'node-firebird-driver';
+import { AbstractBlobStream, blobInfo, createBpb, getPortableInteger } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 import { TransactionImpl } from './transaction';
@@ -17,11 +17,13 @@ export class BlobStreamImpl extends AbstractBlobStream {
 
 	blobHandle?: fb.Blob;
 
-	static async create(attachment: AttachmentImpl, transaction: TransactionImpl): Promise<BlobStreamImpl> {
+	static async create(attachment: AttachmentImpl, transaction: TransactionImpl, options?: CreateBlobOptions): Promise<BlobStreamImpl> {
 		return await attachment.client.statusAction(async status => {
 			const blobId = new Uint8Array(8);
+			const bpb = createBpb(options);
+
 			const blobHandle = await attachment.attachmentHandle!.createBlobAsync(
-				status, transaction.transactionHandle, blobId, 0, undefined);
+				status, transaction.transactionHandle, blobId, bpb.length, bpb);
 
 			const blob = new Blob(attachment, blobId);
 
@@ -63,6 +65,12 @@ export class BlobStreamImpl extends AbstractBlobStream {
 	protected async internalCancel(): Promise<void> {
 		await this.attachment.client.statusAction(status => this.blobHandle!.cancelAsync(status));
 		this.blobHandle = undefined;
+	}
+
+	protected async internalSeek(offset: number, whence?: BlobSeekWhence): Promise<number> {
+		return await this.attachment.client.statusAction(async status => {
+			return await this.blobHandle!.seekAsync(status, whence ?? BlobSeekWhence.START, offset);
+		});
 	}
 
 	protected async internalRead(buffer: Buffer): Promise<number> {

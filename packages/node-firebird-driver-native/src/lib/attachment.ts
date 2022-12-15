@@ -8,6 +8,7 @@ import { createDpb } from './fb-util';
 import {
 	Blob,
 	ConnectOptions,
+	CreateBlobOptions,
 	CreateDatabaseOptions,
 	PrepareOptions,
 	TransactionOptions
@@ -62,8 +63,8 @@ export class AttachmentImpl extends AbstractAttachment {
 		return await TransactionImpl.start(this, options);
 	}
 
-	protected async internalCreateBlob(transaction: TransactionImpl): Promise<BlobStreamImpl> {
-		return await BlobStreamImpl.create(this, transaction);
+	protected async internalCreateBlob(transaction: TransactionImpl, options?: CreateBlobOptions): Promise<BlobStreamImpl> {
+		return await BlobStreamImpl.create(this, transaction, options);
 	}
 
 	protected async internalOpenBlob(transaction: TransactionImpl, blob: Blob): Promise<BlobStreamImpl> {
