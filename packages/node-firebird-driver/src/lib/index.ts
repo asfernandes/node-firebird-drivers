@@ -326,7 +326,7 @@ export class Blob {
 	}
 }
 
-export const enum BlobSeekWhence {
+export enum BlobSeekWhence {
 	START = 0,
 	CURRENT = 1,
 	END = 2
