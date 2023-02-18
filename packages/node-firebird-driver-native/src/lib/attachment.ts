@@ -58,6 +58,11 @@ export class AttachmentImpl extends AbstractAttachment {
 		this.attachmentHandle = undefined;
 	}
 
+	/** Cancel operation this attachment. */
+	protected async internalCancelOperation(option: number): Promise<void> {
+		await this.client.statusAction(status => this.attachmentHandle!.cancelOperationAsync(status, option));
+	}
+
 	/** Starts a new transaction. */
 	protected async internalStartTransaction(options?: TransactionOptions): Promise<TransactionImpl> {
 		return await TransactionImpl.start(this, options);
