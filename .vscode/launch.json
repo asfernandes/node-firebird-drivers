@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node-terminal",
+            "request": "launch",
+            "name": "debug test",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "command": "npm run test",
+            "outFiles": [
+                "!**/node_modules/**"
+            ]
+        },
+    ]
+}
