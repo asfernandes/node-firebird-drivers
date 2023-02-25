@@ -100,8 +100,17 @@ export interface Attachment {
 	/** Disconnects this attachment. */
 	disconnect(): Promise<void>;
 
-	/** Cancel operation this attachment. */
-	cancelOperation(option:number): Promise<void>;
+	/** Cancel operation enable/disable this attachment. 
+	 * false = fb_cancel_disable(1)
+	 * true = fb_cancel_enable(2)
+	*/
+	cancelOperationEnable(option:boolean): Promise<void>;
+
+	/** Cancel operation this attachment. 
+	 * false | undefined = fb_cancel_raise(3)
+	 * true = fb_cancel_abort(4)
+	*/
+	cancelOperation(abort?:boolean): Promise<void>;	
 
 	/** Drops the database and release this attachment. */
 	dropDatabase(): Promise<void>;
