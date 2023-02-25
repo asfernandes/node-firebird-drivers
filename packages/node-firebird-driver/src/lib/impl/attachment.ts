@@ -60,12 +60,24 @@ export abstract class AbstractAttachment implements Attachment {
 		await this.postDispose();
 	}
 
-	/** Cancel operation this attachment. */
-	async cancelOperation(option:number): Promise<void> {
+	/** Cancel operation enable/disable this attachment. 
+	 * false = fb_cancel_disable(1)
+	 * true = fb_cancel_enable(2)
+	*/
+	async cancelOperationEnable(option:boolean): Promise<void> {
 		this.check();
-		await this.internalCancelOperation(option);
+		await this.internalCancelOperation(option?2:1);
 	}
 
+	/** Cancel operation this attachment. 
+	 * false | undefined = fb_cancel_raise(3)
+	 * true = fb_cancel_abort(4)
+	*/
+	async cancelOperation(abort?:boolean): Promise<void> {
+		this.check();
+		await this.internalCancelOperation(abort?4:3);
+	}
+	
 
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
 	async executeTransaction(transaction: AbstractTransaction, sqlStmt: string,
