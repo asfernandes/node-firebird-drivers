@@ -354,6 +354,53 @@ export function runCommonTests(client: Client) {
 
 				await attachment.dropDatabase();
 			});
+
+			test('#cancelOperation()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-cancelOperation.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, `
+					create procedure sp_sleep (
+						seconds int
+					) returns (
+						date_start timestamp,
+						date_stop timestamp,
+						count_seconds float
+					)
+					as
+					begin
+						date_start = 'now';
+						date_stop = date_start;
+						count_seconds = 0;
+						while(count_seconds < seconds) do
+						begin
+							date_stop = 'now';
+							count_seconds = datediff(second, date_start, date_stop);
+						end
+						suspend;
+					end
+				`);
+				await transaction.commitRetaining();
+
+				await attachment.cancelOperationEnable(true);
+
+				const promiseSleep = attachment.executeSingleton(transaction, 'select count_seconds from sp_sleep(5)');
+
+				await attachment.cancelOperation();
+
+				let result: any[] = [];
+				try {
+					result = await promiseSleep;
+				}catch(e){
+					result = [];
+					expect(e.message).toEqual('operation was cancelled');
+				}
+				expect(result.length).toBe(0);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
 		});
 
 		describe('Transaction', () => {
