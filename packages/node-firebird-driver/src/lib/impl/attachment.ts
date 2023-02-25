@@ -66,7 +66,7 @@ export abstract class AbstractAttachment implements Attachment {
 	*/
 	async cancelOperationEnable(option:boolean): Promise<void> {
 		this.check();
-		await this.internalCancelOperation(option?2:1);
+		await this.internalCancelOperation(option ? 2 : 1);
 	}
 
 	/** Cancel operation this attachment. 
@@ -75,7 +75,7 @@ export abstract class AbstractAttachment implements Attachment {
 	*/
 	async cancelOperation(abort?:boolean): Promise<void> {
 		this.check();
-		await this.internalCancelOperation(abort?4:3);
+		await this.internalCancelOperation(abort ? 4 : 3);
 	}
 	
 
