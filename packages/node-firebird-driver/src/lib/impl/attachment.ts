@@ -60,22 +60,16 @@ export abstract class AbstractAttachment implements Attachment {
 		await this.postDispose();
 	}
 
-	/** Cancel operation enable/disable this attachment.
-	 * false = fb_cancel_disable(1)
-	 * true = fb_cancel_enable(2)
-	 */
-	async cancelOperationEnable(option:boolean): Promise<void> {
+	/** Enable/disable cancellation of operations in this attachment. */
+	async enableCancellation(enable: boolean): Promise<void> {
 		this.check();
-		await this.internalCancelOperation(option ? 2 : 1);
+		await this.internalEnableCancellation(enable);
 	}
 
-	/** Cancel operation this attachment.
-	 * false | undefined = fb_cancel_raise(3)
-	 * true = fb_cancel_abort(4)
-	 */
-	async cancelOperation(abort?:boolean): Promise<void> {
+	/** Cancel a running operation in this attachment. */
+	async cancelOperation(forcibleAbort?: boolean): Promise<void> {
 		this.check();
-		await this.internalCancelOperation(abort ? 4 : 3);
+		await this.internalCancelOperation(forcibleAbort ?? false);
 	}
 
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
@@ -260,7 +254,8 @@ export abstract class AbstractAttachment implements Attachment {
 
 	protected abstract internalDisconnect(): Promise<void>;
 	protected abstract internalDropDatabase(): Promise<void>;
-	protected abstract internalCancelOperation(option: number): Promise<void>;
+	protected abstract internalEnableCancellation(enable: boolean): Promise<void>;
+	protected abstract internalCancelOperation(forcibleAbort: boolean): Promise<void>;
 	protected abstract internalCreateBlob(transaction: AbstractTransaction, options?: CreateBlobOptions): Promise<AbstractBlobStream>;
 	protected abstract internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
 	protected abstract internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
