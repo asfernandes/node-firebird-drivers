@@ -1,3 +1,9 @@
+## Next
+
+### driver, driver-native - 3.1.0
+
+* Feature [#136](https://github.com/asfernandes/node-firebird-drivers/pull/136) - Add method for query cancellation.
+
 ## December, 15, 2022
 
 ### driver, driver-native, native-api - 3.0.0
