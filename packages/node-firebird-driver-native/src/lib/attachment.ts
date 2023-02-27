@@ -14,7 +14,7 @@ import {
 	TransactionOptions
 } from 'node-firebird-driver';
 
-import { AbstractAttachment } from 'node-firebird-driver/dist/lib/impl';
+import { AbstractAttachment, cancelType } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -56,6 +56,18 @@ export class AttachmentImpl extends AbstractAttachment {
 	protected async internalDropDatabase(): Promise<void> {
 		await this.client.statusAction(status => this.attachmentHandle!.dropDatabaseAsync(status));
 		this.attachmentHandle = undefined;
+	}
+
+	/** Enable/disable cancellation of operations in this attachment. */
+	protected async internalEnableCancellation(enable: boolean): Promise<void> {
+		await this.client.statusAction(status =>
+			this.attachmentHandle!.cancelOperationAsync(status, (enable ? cancelType.enable : cancelType.disable)));
+	}
+
+	/** Cancel a running operation in this attachment. */
+	protected async internalCancelOperation(forcibleAbort: boolean): Promise<void> {
+		await this.client.statusAction(status =>
+			this.attachmentHandle!.cancelOperationAsync(status, (forcibleAbort ? cancelType.abort : cancelType.raise)));
 	}
 
 	/** Starts a new transaction. */

@@ -354,6 +354,36 @@ export function runCommonTests(client: Client) {
 
 				await attachment.dropDatabase();
 			});
+
+			test('#cancelOperation()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-cancelOperation.fdb'));
+				const transaction1 = await attachment.startTransaction();
+
+				await attachment.execute(transaction1, 'create table t1(n1 integer)');
+				await transaction1.commitRetaining();
+
+				await attachment.execute(transaction1, 'insert into t1 values (1)');
+				await transaction1.commitRetaining();
+
+				await attachment.execute(transaction1, 'update t1 set n1 = n1 + 1');
+
+				await attachment.enableCancellation(true);
+
+				const transaction2 = await attachment.startTransaction();
+
+				const promise = attachment.execute(transaction2, 'update t1 set n1 = n1 - 1')
+					.catch(e => `Error: ${e.message}`);
+
+				await new Promise(resolve => setTimeout(resolve, 1000));
+
+				await attachment.cancelOperation();
+
+				await expect(promise).resolves.toEqual('Error: operation was cancelled');
+
+				await transaction2.commit();
+				await transaction1.commit();
+				await attachment.dropDatabase();
+			});
 		});
 
 		describe('Transaction', () => {

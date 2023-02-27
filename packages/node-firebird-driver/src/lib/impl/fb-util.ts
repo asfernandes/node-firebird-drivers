@@ -128,6 +128,13 @@ export namespace commonInfo {
 	export const flagEnd = 127;
 }
 
+export namespace cancelType {
+	export const disable = 1;
+	export const enable = 2;
+	export const raise = 3;
+	export const abort = 4;
+}
+
 export namespace charSets {
 	export const ascii = 2;
 }

@@ -100,6 +100,12 @@ export interface Attachment {
 	/** Disconnects this attachment. */
 	disconnect(): Promise<void>;
 
+	/** Enable/disable cancellation of operations in this attachment. */
+	enableCancellation(enable: boolean): Promise<void>;
+
+	/** Cancel a running operation in this attachment. */
+	cancelOperation(forcibleAbort?: boolean): Promise<void>;
+
 	/** Drops the database and release this attachment. */
 	dropDatabase(): Promise<void>;
 

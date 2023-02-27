@@ -60,6 +60,18 @@ export abstract class AbstractAttachment implements Attachment {
 		await this.postDispose();
 	}
 
+	/** Enable/disable cancellation of operations in this attachment. */
+	async enableCancellation(enable: boolean): Promise<void> {
+		this.check();
+		await this.internalEnableCancellation(enable);
+	}
+
+	/** Cancel a running operation in this attachment. */
+	async cancelOperation(forcibleAbort?: boolean): Promise<void> {
+		this.check();
+		await this.internalCancelOperation(forcibleAbort ?? false);
+	}
+
 	/** Executes a statement that uses the SET TRANSACTION command. Returns the new transaction. */
 	async executeTransaction(transaction: AbstractTransaction, sqlStmt: string,
 			options?: {
@@ -242,6 +254,8 @@ export abstract class AbstractAttachment implements Attachment {
 
 	protected abstract internalDisconnect(): Promise<void>;
 	protected abstract internalDropDatabase(): Promise<void>;
+	protected abstract internalEnableCancellation(enable: boolean): Promise<void>;
+	protected abstract internalCancelOperation(forcibleAbort: boolean): Promise<void>;
 	protected abstract internalCreateBlob(transaction: AbstractTransaction, options?: CreateBlobOptions): Promise<AbstractBlobStream>;
 	protected abstract internalOpenBlob(transaction: AbstractTransaction, blob: Blob): Promise<AbstractBlobStream>;
 	protected abstract internalPrepare(transaction: AbstractTransaction, sqlStmt: string, options?: PrepareOptions):
