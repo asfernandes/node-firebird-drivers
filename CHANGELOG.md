@@ -1,3 +1,7 @@
+## June, 6, 2024
+
+* Fix [#147](https://github.com/asfernandes/node-firebird-drivers/issues/147) - Build problems.
+
 ## March, 1, 2023
 
 ### driver, driver-native - 3.1.0
