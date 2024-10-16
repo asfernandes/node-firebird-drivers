@@ -35,6 +35,7 @@ jobs:
         tar xzvf Firebird-4.0.2.2816-0.amd64.tar.gz
         (cd Firebird-4.0.2.2816-0.amd64; sudo ./install.sh -silent)
         sudo usermod -a -G firebird `whoami`
+        sudo gpasswd -r firebird
 
     - name: Firebird install (MacOS)
       if: startsWith(matrix.os, 'macos-')
