@@ -10,14 +10,14 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
+          - ubuntu-24.04
           - windows-2019
           - windows-2022
           #- macos-10.15
         node-version:
           - 18.x
           - 20.x
-          - 21.x
+          - 22.x
 
     steps:
     - uses: actions/checkout@v3
