@@ -16,7 +16,9 @@ There is also plan to create a socket-based (pure Node.js) driver.
 
 ## Installation
 
+```sh
 yarn add node-firebird-driver
+```
 
 # Donation
 

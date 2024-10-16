@@ -3,8 +3,7 @@
 
 # Firebird low-level API for Node.js / TypeScript
 
-This project currently is a working in progress to have full Firebird API definitions for Node.js. It's currently not recommended to be used
-directly.
+This project maps the Firebird low-level OO-API to Node.js and it's not recommended to be used directly.
 
 ## High-level native client
 
@@ -14,7 +13,9 @@ https://github.com/asfernandes/node-firebird-drivers/tree/master/packages/node-f
 
 ## Installation
 
+```sh
 yarn add node-firebird-native-api
+```
 
 # Donation
 
