@@ -147,7 +147,7 @@ namespace Napi
 		{
 			HandleScope scope(self->_env);
 
-			details::WrapCallback([&] {
+			details::WrapCallback(env, [&] {
 				if (self->_error.size() == 0)
 					self->OnOK(env);
 				else
