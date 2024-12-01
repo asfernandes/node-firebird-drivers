@@ -14,157 +14,6 @@
 //----------------------------------------------------------------------------
 
 
-namespace Napi
-{
-	// Customize N-API AsyncWorker as the original API is very ugly and
-	// with slower unused things.
-	class CustomAsyncWorker
-	{
-	protected:
-		explicit CustomAsyncWorker(Env env);
-		explicit CustomAsyncWorker(Env env, const char* resource_name);
-
-	public:
-		// An async worker can be moved but cannot be copied.
-		CustomAsyncWorker(const CustomAsyncWorker&) = delete;
-		CustomAsyncWorker& operator=(CustomAsyncWorker&) = delete;
-
-		CustomAsyncWorker(CustomAsyncWorker&& other);
-		CustomAsyncWorker& operator=(CustomAsyncWorker&& other);
-
-		virtual ~CustomAsyncWorker();
-
-		operator napi_async_work() const
-		{
-			return _work;
-		}
-
-		void Queue();
-		void Cancel();
-
-	protected:
-		virtual void Execute() = 0;
-		virtual void OnOK(Env env) = 0;
-		virtual void OnError(Env env, const Error& e) = 0;
-
-		void SetError(const std::string& error);
-
-	private:
-		static void OnExecute(napi_env env, void* this_pointer);
-		static void OnWorkComplete(napi_env env, napi_status status, void* this_pointer);
-
-		napi_env _env;
-		napi_async_work _work;
-		std::string _error;
-	};
-
-	inline CustomAsyncWorker::CustomAsyncWorker(Env env)
-		: CustomAsyncWorker(env, "generic")
-	{
-	}
-
-	inline CustomAsyncWorker::CustomAsyncWorker(Env env, const char* resource_name)
-		: _env(env)
-	{
-		napi_value resource_id;
-		napi_status status = napi_create_string_latin1(
-			_env, resource_name, NAPI_AUTO_LENGTH, &resource_id);
-		NAPI_THROW_IF_FAILED_VOID(_env, status);
-
-		status = napi_create_async_work(_env, nullptr, resource_id,
-			OnExecute, OnWorkComplete, this, &_work);
-		NAPI_THROW_IF_FAILED_VOID(_env, status);
-	}
-
-	inline CustomAsyncWorker::CustomAsyncWorker(CustomAsyncWorker&& other)
-	{
-		_env = other._env;
-		other._env = nullptr;
-		_work = other._work;
-		other._work = nullptr;
-		_error = std::move(other._error);
-	}
-
-	inline CustomAsyncWorker& CustomAsyncWorker::operator=(CustomAsyncWorker&& other)
-	{
-		_env = other._env;
-		other._env = nullptr;
-		_work = other._work;
-		other._work = nullptr;
-		_error = std::move(other._error);
-		return *this;
-	}
-
-	inline CustomAsyncWorker::~CustomAsyncWorker()
-	{
-		if (_work != nullptr)
-		{
-			napi_delete_async_work(_env, _work);
-			_work = nullptr;
-		}
-	}
-
-	inline void CustomAsyncWorker::Queue()
-	{
-		napi_status status = napi_queue_async_work(_env, _work);
-		NAPI_THROW_IF_FAILED_VOID(_env, status);
-	}
-
-	inline void CustomAsyncWorker::Cancel()
-	{
-		napi_status status = napi_cancel_async_work(_env, _work);
-		NAPI_THROW_IF_FAILED_VOID(_env, status);
-	}
-
-	inline void CustomAsyncWorker::SetError(const std::string& error)
-	{
-		_error = error;
-	}
-
-	inline void CustomAsyncWorker::OnExecute(napi_env /*env*/, void* this_pointer)
-	{
-		CustomAsyncWorker* self = static_cast<CustomAsyncWorker*>(this_pointer);
-#ifdef NAPI_CPP_EXCEPTIONS
-		try
-		{
-			self->Execute();
-		}
-		catch (const std::exception& e)
-		{
-			self->SetError(e.what());
-		}
-#else  // NAPI_CPP_EXCEPTIONS
-		self->Execute();
-#endif // NAPI_CPP_EXCEPTIONS
-	}
-
-	inline void CustomAsyncWorker::OnWorkComplete(
-		napi_env env, napi_status status, void* this_pointer)
-	{
-		CustomAsyncWorker* self = static_cast<CustomAsyncWorker*>(this_pointer);
-
-		if (status != napi_cancelled)
-		{
-			HandleScope scope(self->_env);
-
-			details::WrapCallback(env, [&] {
-				if (self->_error.size() == 0)
-					self->OnOK(env);
-				else
-					self->OnError(env, Error::New(self->_env, self->_error));
-
-				return nullptr;
-			});
-		}
-
-		delete self;
-	}
-}
-
-
-//----------------------------------------------------------------------------
-
-
 namespace fb = Firebird;
 
 
@@ -206,13 +55,13 @@ using MethodStart = std::function<T ()>;
 
 
 template <typename T>
-class PromiseWorker : public Napi::CustomAsyncWorker
+class PromiseWorker : public Napi::AsyncWorker
 {
 protected:
 	PromiseWorker(const Napi::Env env,
 			MethodStart<T> executeLambda,
 			std::function<Napi::Value (const Napi::Env, T)> returnLambda)
-		: CustomAsyncWorker(env),
+		: AsyncWorker(env),
 		  executeLambda(executeLambda),
 		  returnLambda(returnLambda),
 		  deferred(env)
@@ -246,15 +95,15 @@ protected:
 		}
 	}
 
-	void OnOK(Napi::Env env) override
+	void OnOK() override
 	{
 		if (!error)
-			deferred.Resolve(returnLambda(env, ret));
+			deferred.Resolve(returnLambda(Env(), ret));
 		else
-			deferred.Reject(Napi::Error::New(env, errorMsg.c_str()).Value());
+			deferred.Reject(Napi::Error::New(Env(), errorMsg.c_str()).Value());
 	}
 
-	void OnError(Napi::Env env, const Napi::Error& e) override
+	void OnError(const Napi::Error& e) override
 	{
 		assert(false);
 	}
