@@ -1,3 +1,7 @@
+## December, 1, 2024
+
+* Fix [#157](https://github.com/asfernandes/node-firebird-drivers/issues/157) - node-firebird-native-api installation fails.
+
 ## June, 6, 2024
 
 * Fix [#147](https://github.com/asfernandes/node-firebird-drivers/issues/147) - Build problems.
