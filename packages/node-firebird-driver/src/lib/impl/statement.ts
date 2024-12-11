@@ -6,13 +6,16 @@ import {
 	ExecuteOptions,
 	ExecuteQueryOptions,
 	FetchOptions,
-	Statement
+	Statement,
+	Parameters,
+	NamedParameters
 } from '..';
 
 
 /** AbstractStatement implementation. */
 export abstract class AbstractStatement implements Statement {
 	resultSet?: AbstractResultSet;
+	paramNames?: string[];
 
 	abstract getExecPathText(): Promise<string | undefined>;
 
@@ -32,6 +35,14 @@ export abstract class AbstractStatement implements Statement {
 	defaultFetchOptions: FetchOptions;
 
 	protected constructor(public attachment?: AbstractAttachment) {
+	}
+
+	protected namedParameters2Array(namedParameters: NamedParameters): any[] {
+		return this.paramNames ? this.paramNames.map( p => namedParameters[p] ?? null ) : [];
+	}
+
+	protected adjustParameters(parameters?: Parameters): (any[] | undefined) {
+		return Array.isArray(parameters) ? parameters : parameters ? this.namedParameters2Array(parameters) : undefined;
 	}
 
 	/** Disposes this statement's resources. */
@@ -56,25 +67,25 @@ export abstract class AbstractStatement implements Statement {
 	}
 
 	/** Executes a prepared statement that has no result set. */
-	async execute(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<void> {
+	async execute(transaction: AbstractTransaction, parameters?: Parameters, options?: ExecuteOptions): Promise<void> {
 		this.check();
 
 		//// TODO: check opened resultSet.
-		await this.internalExecute(transaction, parameters,
+		await this.internalExecute(transaction, this.adjustParameters(parameters),
 			options || this.attachment!.defaultExecuteOptions || this.attachment!.client!.defaultExecuteOptions);
 	}
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	async executeSingleton(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<any[]> {
+	async executeSingleton(transaction: AbstractTransaction, parameters?: Parameters, options?: ExecuteOptions): Promise<any[]> {
 		this.check();
 
 		//// TODO: check opened resultSet.
-		return await this.internalExecute(transaction, parameters,
+		return await this.internalExecute(transaction, this.adjustParameters(parameters),
 			options || this.attachment!.defaultExecuteOptions || this.attachment!.client!.defaultExecuteOptions);
 	}
 
 	/** Executes a statement that returns a single record as an object. */
-	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, parameters?: any[],
+	async executeSingletonAsObject<T extends object>(transaction: AbstractTransaction, parameters?: Parameters,
 			options?: ExecuteOptions): Promise<T> {
 		this.check();
 
@@ -93,23 +104,23 @@ export abstract class AbstractStatement implements Statement {
 	}
 
 	/** Executes a statement that returns a single record as [col1, col2, ..., colN]. */
-	async executeReturning(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteOptions): Promise<any[]> {
+	async executeReturning(transaction: AbstractTransaction, parameters?: Parameters, options?: ExecuteOptions): Promise<any[]> {
 		return await this.executeSingleton(transaction, parameters, options);
 	}
 
 	/** Executes a statement that returns a single record as an object. */
-	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, parameters?: any[],
+	async executeReturningAsObject<T extends object>(transaction: AbstractTransaction, parameters?: Parameters,
 			options?: ExecuteOptions): Promise<T> {
 		return await this.executeSingletonAsObject<T>(transaction, parameters, options);
 	}
 
 	/** Executes a prepared statement that has result set. */
-	async executeQuery(transaction: AbstractTransaction, parameters?: any[], options?: ExecuteQueryOptions):
+	async executeQuery(transaction: AbstractTransaction, parameters?: Parameters, options?: ExecuteQueryOptions):
 			Promise<AbstractResultSet> {
 		this.check();
 
 		//// TODO: check opened resultSet.
-		const resultSet = await this.internalExecuteQuery(transaction, parameters,
+		const resultSet = await this.internalExecuteQuery(transaction, this.adjustParameters(parameters),
 			options || this.attachment!.defaultExecuteQueryOptions || this.attachment!.client!.defaultExecuteQueryOptions);
 		this.resultSet = resultSet;
 		return resultSet;

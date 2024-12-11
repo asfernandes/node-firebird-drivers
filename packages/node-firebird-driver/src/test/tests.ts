@@ -386,6 +386,70 @@ export function runCommonTests(client: Client) {
 			});
 		});
 
+		describe('Attachment with named params', () => {
+			test('#execute()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-execute-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				await attachment.execute(transaction, 'insert into t1 (n1) values (:v)', { v: 1 });
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeQuery()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeQuery-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				await attachment.execute(transaction, 'insert into t1 (n1) values (:val)', { val: 17 });
+
+				const resultSet = await attachment.executeQuery(transaction, 'select n1 from t1');
+				expect(resultSet.isValid).toBeTruthy();
+				expect((await resultSet.fetchAsObject<{ N1: number }>())[0].N1).toEqual(17);
+				await resultSet.close();
+				expect(resultSet.isValid).toBeFalsy();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingleton()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingleton-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const result = await attachment.executeSingleton(transaction, 'insert into t1 values (:n) returning n1', { n: 222 });
+				expect(result.length).toBe(1);
+				expect(result[0]).toBe(222);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingletonAsObject()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingletonAsObject-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const output = await attachment.executeSingletonAsObject<{ N1: number }>(transaction,
+					'insert into t1 values (:v) returning n1', { v: 11 });
+				expect(output.N1).toBe(11);
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+		});
+
 		describe('Transaction', () => {
 			test('#commit()', async () => {
 				const attachment = await client.createDatabase(getTempFile('Transaction-commit.fdb'));
@@ -564,6 +628,94 @@ export function runCommonTests(client: Client) {
 				const statement7 = await attachment.prepare(transaction, 'execute block returns (n integer) as begin end');
 				expect(statement7.hasResultSet).toBe(true);
 				await statement7.dispose();
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+		});
+
+		describe('Statement with named params', () => {
+			test('#execute()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Statement-execute-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				const statement1 = await attachment.prepare(transaction, 'create table t1 (n1 integer)');
+				await statement1.execute(transaction);
+				await statement1.dispose();
+				await transaction.commitRetaining();
+
+				const statement2 = await attachment.prepare(transaction, 'insert into t1 (n1) values (:n)', { namedParams: true });
+				await statement2.execute(transaction, [1]);
+				await statement2.execute(transaction, [null]);
+				await statement2.execute(transaction, [10]);
+				await statement2.execute(transaction, [100]);
+				await statement2.execute(transaction, { n: 1 });
+				await statement2.execute(transaction, { n: null });
+				await statement2.execute(transaction, { n: 10 });
+				await statement2.execute(transaction, { n: 100 });
+				expect(statement2.isValid).toBeTruthy();
+				await statement2.dispose();
+				expect(statement2.isValid).toBeFalsy();
+
+				const rs = await attachment.executeQuery(transaction,
+					`select sum(n1) || ', ' || count(n1) || ', ' || count(*) ret from t1`);
+				const ret = await rs.fetchAsObject<{ RET: string }>();
+				await rs.close();
+
+				expect(ret[0].RET).toStrictEqual('222, 6, 8');
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#execute() multiple params', async () => {
+				const attachment = await client.createDatabase(getTempFile('Statement-execute-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				const statement1 = await attachment.prepare(transaction,
+					'create table t1 (n1 integer, n2 double precision, s varchar(60), t timestamp)');
+				await statement1.execute(transaction);
+				await statement1.dispose();
+				await transaction.commitRetaining();
+
+				const someDate = new Date();
+
+				const statement2 = await attachment.prepare(transaction,
+					'insert into t1 (n1, n2, s, t) values (:n, :n, :str, :date)', { namedParams: true });
+				await statement2.execute(transaction, { n: 200, str: 'this is a string', date: someDate });
+				expect(statement2.isValid).toBeTruthy();
+				await statement2.dispose();
+				expect(statement2.isValid).toBeFalsy();
+
+				const rs = await attachment.executeQuery(transaction,
+					`select * from t1`);
+				const ret = await rs.fetchAsObject<{ N1: number; N2: number; S: string; T: Date }>();
+				await rs.close();
+
+				expect(ret[0].N1).toStrictEqual(200);
+				expect(ret[0].N2).toStrictEqual(200);
+				expect(ret[0].S).toStrictEqual('this is a string');
+				expect(ret[0].T.getTime()).toStrictEqual(someDate.getTime());
+
+				await transaction.commit();
+				await attachment.dropDatabase();
+			});
+
+			test('#executeSingleton()', async () => {
+				const attachment = await client.createDatabase(getTempFile('Attachment-executeSingleton-np.fdb'));
+				const transaction = await attachment.startTransaction();
+
+				await attachment.execute(transaction, 'create table t1 (n1 integer)');
+				await transaction.commitRetaining();
+
+				const statement = await attachment.prepare(transaction, 'insert into t1 values (:value) returning n1, n1 * 2', { namedParams: true });
+
+				const result = await statement.executeSingleton(transaction, { value: 11 });
+				expect(result.length).toBe(2);
+				expect(result[0]).toBe(11);
+				expect(result[1]).toBe(11 * 2);
+
+				await statement.dispose();
 
 				await transaction.commit();
 				await attachment.dropDatabase();
