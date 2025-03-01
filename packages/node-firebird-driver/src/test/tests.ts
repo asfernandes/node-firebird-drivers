@@ -590,36 +590,47 @@ export function runCommonTests(client: Client) {
 					{ name: 'x_dec34', type: 'decfloat(34)', valToStr: (v: any) => v },
 					{ name: 'x_double', type: 'double precision', valToStr: (v: any) => v },
 					{ name: 'x_date1', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date1_str', type: 'date', valToStr: (v: any) => `date '${v}'` },
 					{ name: 'x_date2', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date2_str', type: 'date', valToStr: (v: any) => `date '${v}'` },
 					{ name: 'x_date3', type: 'date', valToStr: (v: any) => `date '${dateToString(v)}'` },
+					{ name: 'x_date3_str', type: 'date', valToStr: (v: any) => `date '${v}'` },
 					{ name: 'x_time', type: 'time', valToStr: (v: any) => `time '${timeToString(v)}'` },
+					{ name: 'x_time_str', type: 'time', valToStr: (v: any) => `time '${v}'` },
 					{
 						name: 'x_time_tz1',
 						type: 'time with time zone',
 						valToStr: (v: ZonedDate) =>
 							`${timeTzToString({ date: v.date, timeZone: 'GMT', offset: 0 })} at time zone '${v.timeZone}'`
 					},
+					{ name: 'x_time_tz1_str', type: 'time with time zone', valToStr: (v: ZonedDate) => `${v}` },
 					{
 						name: 'x_time_tz2',
 						type: 'time with time zone',
 						valToStr: (v: ZonedDate) =>
 							`${timeTzToString({ date: v.date, timeZone: 'GMT', offset: 0 })} at time zone '${v.timeZone}'`
 					},
+					{ name: 'x_time_tz2_str', type: 'time with time zone', valToStr: (v: ZonedDate) => `${v}` },
 					{ name: 'x_timestamp1', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp1_str', type: 'timestamp', valToStr: (v: any) => `timestamp '${v}'` },
 					{ name: 'x_timestamp2', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp2_str', type: 'timestamp', valToStr: (v: any) => `timestamp '${v}'` },
 					{ name: 'x_timestamp3', type: 'timestamp', valToStr: (v: any) => `timestamp '${dateTimeToString(v)}'` },
+					{ name: 'x_timestamp3_str', type: 'timestamp', valToStr: (v: any) => `timestamp '${v}'` },
 					{
 						name: 'x_timestamp_tz1',
 						type: 'timestamp with time zone',
 						valToStr: (v: ZonedDate) =>
 							`${dateTimeTzToString({ date: v.date, timeZone: 'GMT', offset: 0 })} at time zone '${v.timeZone}'`
 					},
+					{ name: 'x_timestamp_tz1_str', type: 'timestamp with time zone', valToStr: (v: ZonedDate) => `${v}` },
 					{
 						name: 'x_timestamp_tz2',
 						type: 'timestamp with time zone',
 						valToStr: (v: ZonedDate) =>
 							`${dateTimeTzToString({ date: v.date, timeZone: 'GMT', offset: 0 })} at time zone '${v.timeZone}'`
 					},
+					{ name: 'x_timestamp_tz2_str', type: 'timestamp with time zone', valToStr: (v: ZonedDate) => `${v}` },
 					{ name: 'x_boolean', type: 'boolean', valToStr: (v: any) => v },
 					{ name: 'x_varchar', type: 'varchar(10) character set utf8', valToStr: (v: any) => `'${v}'` },
 					{ name: 'x_char', type: 'char(10) character set utf8', valToStr: (v: any) => `'${v}'` },
@@ -662,23 +673,72 @@ export function runCommonTests(client: Client) {
 						'-456999999999876',
 						'-456999999999999999999999999999.87',
 						-4.567,
+						// x_date1
 						new Date(2017, 3 - 1, 26),
+						// x_date1_str
+						dateToString(new Date(2017, 3 - 1, 26)),
+						// x_date2
 						new Date(new Date(2000, 3 - 1, 26).setFullYear(50)),
+						// x_date2_str
+						dateToString(new Date(new Date(2000, 3 - 1, 26).setFullYear(50))),
+						// x_date3
 						new Date(9999, 3 - 1, 26),
+						// x_date3_str
+						dateToString(new Date(9999, 3 - 1, 26)),
+						// x_time
 						new Date(2020, 1 - 1, 1, 11, 56, 32, 123),
+						// x_time_str
+						timeToString(new Date(2020, 1 - 1, 1, 11, 56, 32, 123)),
+						// x_time_tz1
 						{
 							date: new Date(Date.UTC(2020, 1 - 1, 1, 11, 56, 32, 123)),
 							timeZone: 'America/New_York'
 						} as ZonedDate,
+						// x_time_tz1_str
+						timeTzToString({
+							date: new Date(Date.UTC(2020, 1 - 1, 1, 11, 56, 32, 123)),
+							timeZone: 'America/New_York',
+							offset: -4
+						} as ZonedDateEx)!.replace(' America/New_York', ''),
+						// x_time_tz2
 						{
 							date: new Date(Date.UTC(2020, 1 - 1, 1, 11, 56, 32, 123)),
 							timeZone: 'America/Sao_Paulo'
 						} as ZonedDate,
+						// x_time_tz2_str
+						timeTzToString({
+							date: new Date(Date.UTC(2020, 1 - 1, 1, 11, 56, 32, 123)),
+							timeZone: 'America/Sao_Paulo',
+							offset: -3
+						} as ZonedDateEx)!.replace(' America/Sao_Paulo', ''),
+						// x_timestamp1
 						new Date(2017, 3 - 1, 26, 11, 56, 32, 123),
+						// x_timestamp1_str
+						dateTimeToString(new Date(2017, 3 - 1, 26, 11, 56, 32, 123)),
+						// x_timestamp2
 						new Date(new Date(2000, 3 - 1, 26, 11, 56, 32, 123).setFullYear(50)),
+						// x_timestamp2_str
+						dateTimeToString(new Date(new Date(2000, 3 - 1, 26, 11, 56, 32, 123).setFullYear(50))),
+						// x_timestamp3
 						new Date(9999, 3 - 1, 26, 11, 56, 32, 123),
+						// x_timestamp3_str
+						dateTimeToString(new Date(9999, 3 - 1, 26, 11, 56, 32, 123)),
+						// x_timestamp_tz1
 						{ date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)), timeZone: 'America/New_York' } as ZonedDate,
+						// x_timestamp_tz1_str
+						dateTimeTzToString({
+							date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)),
+							timeZone: 'America/New_York',
+							offset: -4
+						} as ZonedDateEx)!.replace(' America/New_York', ''),
+						// x_timestamp_tz2
 						{ date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)), timeZone: 'America/Sao_Paulo' } as ZonedDate,
+						// x_timestamp_tz2_str
+						dateTimeTzToString({
+							date: new Date(Date.UTC(2021, 6 - 1, 7, 11, 56, 32, 123)),
+							timeZone: 'America/Sao_Paulo',
+							offset: -3
+						} as ZonedDateEx)!.replace(' America/Sao_Paulo', ''),
 						true,
 						'123áé4567',
 						'123áé4567',
