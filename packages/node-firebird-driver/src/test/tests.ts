@@ -11,6 +11,7 @@ import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config({ path: '../../.env' });
 
 

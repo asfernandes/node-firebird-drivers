@@ -38,7 +38,7 @@ export class StatementImpl extends AbstractStatement {
 	dataWriter: DataWriter;
 	dataReader: DataReader;
 
-	static async prepare(attachment: AttachmentImpl, transaction: TransactionImpl, sqlStmt: string, options?: PrepareOptions):
+	static async prepare(attachment: AttachmentImpl, transaction: TransactionImpl, sqlStmt: string, _options?: PrepareOptions):
 			Promise<StatementImpl> {
 		const statement = new StatementImpl(attachment);
 
@@ -84,12 +84,12 @@ export class StatementImpl extends AbstractStatement {
 	}
 
 	/** Executes a prepared statement that uses the SET TRANSACTION command. Returns the new transaction. */
-	protected async internalExecuteTransaction(transaction: TransactionImpl): Promise<TransactionImpl> {
+	protected async internalExecuteTransaction(_transaction: TransactionImpl): Promise<TransactionImpl> {
 		throw new Error('Uninplemented method: executeTransaction.');
 	}
 
 	/** Executes a prepared statement that has no result set. */
-	protected async internalExecute(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteOptions): Promise<Array<any>> {
+	protected async internalExecute(transaction: TransactionImpl, parameters?: any[], _options?: ExecuteOptions): Promise<any[]> {
 		return await this.attachment.client.statusAction(async status => {
 			await this.dataWriter(this.attachment, transaction, this.inBuffer, parameters);
 
@@ -105,7 +105,7 @@ export class StatementImpl extends AbstractStatement {
 	}
 
 	/** Executes a prepared statement that has result set. */
-	protected async internalExecuteQuery(transaction: TransactionImpl, parameters?: Array<any>, options?: ExecuteQueryOptions):
+	protected async internalExecuteQuery(transaction: TransactionImpl, parameters?: any[], options?: ExecuteQueryOptions):
 			Promise<ResultSetImpl> {
 		return await ResultSetImpl.open(this, transaction as TransactionImpl, parameters, options);
 	}

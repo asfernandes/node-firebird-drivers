@@ -52,19 +52,16 @@ export namespace sqlTypes {
 
 /** DPB constants. */
 export namespace dpb {
-	/* tslint:disable */
 	export const version1 = 1;
 	export const lc_ctype = 48;
 	export const force_write = 24;
 	export const user_name = 28;
 	export const password = 29;
 	export const sql_role_name = 60;
-	/* tslint:enable */
 }
 
 /** TPB constants. */
 export namespace tpb {
-	/* tslint:disable */
 	export const version1 = 1;
 	export const consistency = 1;
 	export const concurrency = 2;
@@ -79,12 +76,10 @@ export namespace tpb {
 	export const no_rec_version = 18;
 	export const restart_requests = 19;
 	export const no_auto_undo = 20;
-	/* tslint:enable */
 }
 
 /** BPB constants. */
 export namespace bpb {
-	/* tslint:disable */
 	export const version1 = 1;
 	export const source_type = 1;
 	export const target_type = 2;
@@ -98,14 +93,11 @@ export namespace bpb {
 	export const type_stream = 0x1;
 	export const storage_main = 0x0;
 	export const storage_temp = 0x2;
-	/* tslint:enable */
 }
 
 /** EPB constants. */
 export namespace epb {
-	/* tslint:disable */
 	export const version1 = 1;
-	/* tslint:enable */
 }
 
 /** Blob info. */
@@ -427,7 +419,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
 
 
 export type DataWriter = (attachment: Attachment, transaction: Transaction,
-	buffer: Uint8Array, values: Array<any> | undefined) => Promise<void>;
+	buffer: Uint8Array, values: any[] | undefined) => Promise<void>;
 export type ItemWriter = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: any) => Promise<void>;
 
 /** Creates a data writer. */
@@ -587,7 +579,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
 		};
 	}
 
-	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: Array<any>): Promise<void> => {
+	return async (attachment: Attachment, transaction: Transaction, buffer: Uint8Array, values: any[]): Promise<void> => {
 		if ((values || []).length !== descriptors.length)
 			throw new Error(`Incorrect number of parameters: expected ${descriptors.length}, received ${(values || []).length}.`);
 

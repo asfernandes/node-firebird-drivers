@@ -16,8 +16,8 @@ export class ResultSetImpl extends AbstractResultSet {
 	resultSetHandle?: fb.ResultSet;
 	delayedError: any;
 
-	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: Array<any>,
-			options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
+	static async open(statement: StatementImpl, transaction: TransactionImpl, parameters?: any[],
+			_options?: ExecuteQueryOptions): Promise<ResultSetImpl> {
 		const resultSet = new ResultSetImpl(statement, transaction);
 
 		return await statement.attachment.client.statusAction(async status => {

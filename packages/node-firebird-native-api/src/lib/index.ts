@@ -15,6 +15,7 @@ export function getDefaultLibraryFilename(): string {
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const native = require('bindings')('addon');
 
 export const getMaster: (library: string) => Master = native.getMaster;

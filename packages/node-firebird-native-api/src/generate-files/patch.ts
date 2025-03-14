@@ -1,12 +1,7 @@
 import { Library } from 'node-cloop-gen';
 
 
-interface InterfaceConfig
-{
-	[intf: string]: {
-		deleteMethods?: string[]
-	};
-}
+type InterfaceConfig = Record<string, { deleteMethods?: string[] }>;
 
 const interfaceConfig: InterfaceConfig = {
 	Util: {
@@ -193,7 +188,7 @@ const interfaceConfig: InterfaceConfig = {
 
 export function patch(library: Library) {
 	for (const intfName in interfaceConfig) {
-		if (!interfaceConfig.hasOwnProperty(intfName))
+		if (!Object.prototype.hasOwnProperty.call(interfaceConfig, intfName))
 			continue;
 
 		const intf = library.interfacesByName[intfName];

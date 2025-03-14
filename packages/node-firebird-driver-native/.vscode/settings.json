@@ -12,6 +12,5 @@
 	},
 
 	"typescript.tsdk": "../../node_modules/typescript/lib",
-	"npm.packageManager": "yarn",
-	"tslint.packageManager": "yarn"
+	"npm.packageManager": "yarn"
 }

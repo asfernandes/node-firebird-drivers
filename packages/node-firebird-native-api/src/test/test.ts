@@ -5,6 +5,7 @@ import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, 
 import { XpbBuilder } from '../lib';
 
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config({ path: '../../.env' });
 
 
@@ -60,7 +61,6 @@ describe('node-firebird-native-api', () => {
 			return;
 
 		const status = master.getStatusSync()!;
-		// tslint:disable-next-line:variable-name
 		const fb_shutrsn_app_stopped = -3;
 		dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
 		status.disposeSync();

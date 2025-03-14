@@ -108,11 +108,11 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record. */
-	async executeSingleton(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeSingleton(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
-			}): Promise<Array<any>> {
+			}): Promise<any[]> {
 		this.check();
 
 		const statement = await this.prepare(transaction, sqlStmt, options && options.prepareOptions);
@@ -142,11 +142,11 @@ export abstract class AbstractAttachment implements Attachment {
 	}
 
 	/** Executes a statement that returns a single record. */
-	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: Array<any>,
+	async executeReturning(transaction: AbstractTransaction, sqlStmt: string, parameters?: any[],
 			options?: {
 				prepareOptions?: PrepareOptions,
 				executeOptions?: ExecuteOptions
-			}): Promise<Array<any>> {
+			}): Promise<any[]> {
 		return await this.executeSingleton(transaction, sqlStmt, parameters, options);
 	}
 
