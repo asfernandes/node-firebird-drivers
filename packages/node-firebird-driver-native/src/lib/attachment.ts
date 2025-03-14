@@ -6,91 +6,104 @@ import { EventsImpl } from './events';
 import { createDpb } from './fb-util';
 
 import {
-	Blob,
-	ConnectOptions,
-	CreateBlobOptions,
-	CreateDatabaseOptions,
-	PrepareOptions,
-	TransactionOptions
+  Blob,
+  ConnectOptions,
+  CreateBlobOptions,
+  CreateDatabaseOptions,
+  PrepareOptions,
+  TransactionOptions,
 } from 'node-firebird-driver';
 
 import { AbstractAttachment, cancelType } from 'node-firebird-driver/dist/lib/impl';
 
 import * as fb from 'node-firebird-native-api';
 
-
 /** Attachment implementation. */
 export class AttachmentImpl extends AbstractAttachment {
-	// Override declarations.
-	override client: ClientImpl;
+  // Override declarations.
+  override client: ClientImpl;
 
-	attachmentHandle?: fb.Attachment;
+  attachmentHandle?: fb.Attachment;
 
-	static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
-		const attachment = new AttachmentImpl(client);
+  static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
+    const attachment = new AttachmentImpl(client);
 
-		return await client.statusAction(async status => {
-			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client!.dispatcher!.attachDatabaseAsync(status, uri, dpb.length, dpb);
-			return attachment;
-		});
-	}
+    return await client.statusAction(async (status) => {
+      const dpb = createDpb(options);
+      attachment.attachmentHandle = await client!.dispatcher!.attachDatabaseAsync(status, uri, dpb.length, dpb);
+      return attachment;
+    });
+  }
 
-	static async createDatabase(client: ClientImpl, uri: string, options?: CreateDatabaseOptions): Promise<AttachmentImpl> {
-		const attachment = new AttachmentImpl(client);
+  static async createDatabase(
+    client: ClientImpl,
+    uri: string,
+    options?: CreateDatabaseOptions,
+  ): Promise<AttachmentImpl> {
+    const attachment = new AttachmentImpl(client);
 
-		return await client.statusAction(async status => {
-			const dpb = createDpb(options);
-			attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
-			return attachment;
-		});
-	}
+    return await client.statusAction(async (status) => {
+      const dpb = createDpb(options);
+      attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
+      return attachment;
+    });
+  }
 
-	/** Disconnects this attachment. */
-	protected async internalDisconnect(): Promise<void> {
-		await this.client.statusAction(status => this.attachmentHandle!.detachAsync(status));
-		this.attachmentHandle = undefined;
-	}
+  /** Disconnects this attachment. */
+  protected async internalDisconnect(): Promise<void> {
+    await this.client.statusAction((status) => this.attachmentHandle!.detachAsync(status));
+    this.attachmentHandle = undefined;
+  }
 
-	/** Drops the database and release this attachment. */
-	protected async internalDropDatabase(): Promise<void> {
-		await this.client.statusAction(status => this.attachmentHandle!.dropDatabaseAsync(status));
-		this.attachmentHandle = undefined;
-	}
+  /** Drops the database and release this attachment. */
+  protected async internalDropDatabase(): Promise<void> {
+    await this.client.statusAction((status) => this.attachmentHandle!.dropDatabaseAsync(status));
+    this.attachmentHandle = undefined;
+  }
 
-	/** Enable/disable cancellation of operations in this attachment. */
-	protected async internalEnableCancellation(enable: boolean): Promise<void> {
-		await this.client.statusAction(status =>
-			this.attachmentHandle!.cancelOperationAsync(status, (enable ? cancelType.enable : cancelType.disable)));
-	}
+  /** Enable/disable cancellation of operations in this attachment. */
+  protected async internalEnableCancellation(enable: boolean): Promise<void> {
+    await this.client.statusAction((status) =>
+      this.attachmentHandle!.cancelOperationAsync(status, enable ? cancelType.enable : cancelType.disable),
+    );
+  }
 
-	/** Cancel a running operation in this attachment. */
-	protected async internalCancelOperation(forcibleAbort: boolean): Promise<void> {
-		await this.client.statusAction(status =>
-			this.attachmentHandle!.cancelOperationAsync(status, (forcibleAbort ? cancelType.abort : cancelType.raise)));
-	}
+  /** Cancel a running operation in this attachment. */
+  protected async internalCancelOperation(forcibleAbort: boolean): Promise<void> {
+    await this.client.statusAction((status) =>
+      this.attachmentHandle!.cancelOperationAsync(status, forcibleAbort ? cancelType.abort : cancelType.raise),
+    );
+  }
 
-	/** Starts a new transaction. */
-	protected async internalStartTransaction(options?: TransactionOptions): Promise<TransactionImpl> {
-		return await TransactionImpl.start(this, options);
-	}
+  /** Starts a new transaction. */
+  protected async internalStartTransaction(options?: TransactionOptions): Promise<TransactionImpl> {
+    return await TransactionImpl.start(this, options);
+  }
 
-	protected async internalCreateBlob(transaction: TransactionImpl, options?: CreateBlobOptions): Promise<BlobStreamImpl> {
-		return await BlobStreamImpl.create(this, transaction, options);
-	}
+  protected async internalCreateBlob(
+    transaction: TransactionImpl,
+    options?: CreateBlobOptions,
+  ): Promise<BlobStreamImpl> {
+    return await BlobStreamImpl.create(this, transaction, options);
+  }
 
-	protected async internalOpenBlob(transaction: TransactionImpl, blob: Blob): Promise<BlobStreamImpl> {
-		return await BlobStreamImpl.open(this, transaction, blob);
-	}
+  protected async internalOpenBlob(transaction: TransactionImpl, blob: Blob): Promise<BlobStreamImpl> {
+    return await BlobStreamImpl.open(this, transaction, blob);
+  }
 
-	/** Prepares a query. */
-	protected async internalPrepare(transaction: TransactionImpl, sqlStmt: string, options?: PrepareOptions): Promise<StatementImpl> {
-		return await StatementImpl.prepare(this, transaction, sqlStmt, options);
-	}
+  /** Prepares a query. */
+  protected async internalPrepare(
+    transaction: TransactionImpl,
+    sqlStmt: string,
+    options?: PrepareOptions,
+  ): Promise<StatementImpl> {
+    return await StatementImpl.prepare(this, transaction, sqlStmt, options);
+  }
 
-	protected async internalQueueEvents(
-		names: string[], callBack: (counters: [string, number][]) => Promise<void>): Promise<EventsImpl>
-	{
-		return await EventsImpl.queue(this, names, callBack);
-	}
+  protected async internalQueueEvents(
+    names: string[],
+    callBack: (counters: [string, number][]) => Promise<void>,
+  ): Promise<EventsImpl> {
+    return await EventsImpl.queue(this, names, callBack);
+  }
 }

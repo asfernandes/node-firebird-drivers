@@ -13,13 +13,15 @@ The sub projects are there:
 ## Contributing
 
 Clone this repo then run:
+
 - yarn
 - yarn bootstrap
 - yarn test
 
 ## Testing
+
 - `yarn run test`
-(default user and password will be used during tests)
+  (default user and password will be used during tests)
 
 As of now tests require **Firebird 4** server and will fail when executed using **Firebird 3**.
 
