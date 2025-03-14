@@ -1,37 +1,41 @@
 {
-	"folders": [
-		{
-			"name": "driver",
-			"path": "packages/node-firebird-driver"
-		},
-		{
-			"name": "driver-native",
-			"path": "packages/node-firebird-driver-native"
-		},
-		{
-			"name": "native-api",
-			"path": "packages/node-firebird-native-api"
-		},
-		{
-			"name": "root",
-			"path": "."
-		}
-	],
-	"settings": {
-		"editor.tabSize": 4,
-		"editor.insertSpaces": false,
-		"editor.rulers": [140],
+  "folders": [
+    {
+      "name": "driver",
+      "path": "packages/node-firebird-driver",
+    },
+    {
+      "name": "driver-native",
+      "path": "packages/node-firebird-driver-native",
+    },
+    {
+      "name": "native-api",
+      "path": "packages/node-firebird-native-api",
+    },
+    {
+      "name": "root",
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.rulers": [120],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit",
+    },
 
-		"files.trimTrailingWhitespace": true,
+    "files.trimTrailingWhitespace": true,
 
-		"files.exclude": {
-			"**/node_modules/": true,
-			"**/dist/": true,
-			"**/*.tsbuildinfo": true
-		},
+    "files.exclude": {
+      "**/node_modules/": true,
+      "**/dist/": true,
+      "**/*.tsbuildinfo": true,
+    },
 
-		"typescript.tsdk": "root/node_modules/typescript/lib",
-		"tslint.packageManager": "yarn",
-		"npm.packageManager": "yarn"
-	}
+    "typescript.tsdk": "root/node_modules/typescript/lib",
+    "npm.packageManager": "yarn",
+  },
 }

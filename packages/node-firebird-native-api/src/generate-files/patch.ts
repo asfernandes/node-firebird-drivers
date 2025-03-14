@@ -1,229 +1,156 @@
 import { Library } from 'node-cloop-gen';
 
-
-interface InterfaceConfig
-{
-	[intf: string]: {
-		deleteMethods?: string[]
-	};
-}
+type InterfaceConfig = Record<string, { deleteMethods?: string[] }>;
 
 const interfaceConfig: InterfaceConfig = {
-	Util: {
-		deleteMethods: [
-			'dumpBlob',
-			'loadBlob',
-			'getPerfCounters',
-			'formatStatus'
-		]
-	},
+  Util: {
+    deleteMethods: ['dumpBlob', 'loadBlob', 'getPerfCounters', 'formatStatus'],
+  },
 
-	Statement: {
-	},
+  Statement: {},
 
-	Status: {
-		deleteMethods: [
-			'getErrors',
-			'getWarnings',
-			'setErrors',
-			'setErrors2',
-			'setWarnings',
-			'setWarnings2'
-		]
-	},
+  Status: {
+    deleteMethods: ['getErrors', 'getWarnings', 'setErrors', 'setErrors2', 'setWarnings', 'setWarnings2'],
+  },
 
-	Attachment: {
-		deleteMethods: [
-			'getSlice',
-			'putSlice'
-		]
-	},
+  Attachment: {
+    deleteMethods: ['getSlice', 'putSlice'],
+  },
 
-	Transaction: {
-	},
+  Transaction: {},
 
-	Provider: {
-	},
+  Provider: {},
 
-	CryptKey: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  CryptKey: {
+    deleteMethods: ['*'],
+  },
 
-	DbCryptPlugin: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  DbCryptPlugin: {
+    deleteMethods: ['*'],
+  },
 
-	ExternalEngine: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  ExternalEngine: {
+    deleteMethods: ['*'],
+  },
 
-	ExternalContext: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  ExternalContext: {
+    deleteMethods: ['*'],
+  },
 
-	ExternalFunction: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  ExternalFunction: {
+    deleteMethods: ['*'],
+  },
 
-	ExternalProcedure: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  ExternalProcedure: {
+    deleteMethods: ['*'],
+  },
 
-	ExternalTrigger: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  ExternalTrigger: {
+    deleteMethods: ['*'],
+  },
 
-	TraceTransaction: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceTransaction: {
+    deleteMethods: ['*'],
+  },
 
-	TraceParams: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceParams: {
+    deleteMethods: ['*'],
+  },
 
-	TraceStatement: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceStatement: {
+    deleteMethods: ['*'],
+  },
 
-	TraceSQLStatement: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceSQLStatement: {
+    deleteMethods: ['*'],
+  },
 
-	TraceBLRStatement: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceBLRStatement: {
+    deleteMethods: ['*'],
+  },
 
-	TraceDYNRequest: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceDYNRequest: {
+    deleteMethods: ['*'],
+  },
 
-	TraceContextVariable: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceContextVariable: {
+    deleteMethods: ['*'],
+  },
 
-	TraceProcedure: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceProcedure: {
+    deleteMethods: ['*'],
+  },
 
-	TraceFunction: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceFunction: {
+    deleteMethods: ['*'],
+  },
 
-	TraceTrigger: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceTrigger: {
+    deleteMethods: ['*'],
+  },
 
-	TraceServiceConnection: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceServiceConnection: {
+    deleteMethods: ['*'],
+  },
 
-	TraceStatusVector: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceStatusVector: {
+    deleteMethods: ['*'],
+  },
 
-	TraceSweepInfo: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceSweepInfo: {
+    deleteMethods: ['*'],
+  },
 
-	TraceLogWriter: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceLogWriter: {
+    deleteMethods: ['*'],
+  },
 
-	TraceInitInfo: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TraceInitInfo: {
+    deleteMethods: ['*'],
+  },
 
-	TracePlugin: {
-		deleteMethods: [
-			'*'
-		]
-	},
+  TracePlugin: {
+    deleteMethods: ['*'],
+  },
 
-	TraceFactory: {
-		deleteMethods: [
-			'*'
-		]
-	}
+  TraceFactory: {
+    deleteMethods: ['*'],
+  },
 };
 
-
 export function patch(library: Library) {
-	for (const intfName in interfaceConfig) {
-		if (!interfaceConfig.hasOwnProperty(intfName))
-			continue;
+  for (const intfName in interfaceConfig) {
+    if (!Object.prototype.hasOwnProperty.call(interfaceConfig, intfName)) {
+      continue;
+    }
 
-		const intf = library.interfacesByName[intfName];
-		const config = interfaceConfig[intfName];
+    const intf = library.interfacesByName[intfName];
+    const config = interfaceConfig[intfName];
 
-		for (const deleteMethod of config.deleteMethods || []) {
-			const methods = intf.methods;
-			let found = false;
+    for (const deleteMethod of config.deleteMethods || []) {
+      const methods = intf.methods;
+      let found = false;
 
-			for (const [index, method] of methods.entries()) {
-				if (deleteMethod == '*') {
-					methods.splice(0);
-					found = true;
-				}
-				else if (method.name == deleteMethod) {
-					methods.splice(index, 1);
-					found = true;
-					break;
-				}
-			}
+      for (const [index, method] of methods.entries()) {
+        if (deleteMethod == '*') {
+          methods.splice(0);
+          found = true;
+        } else if (method.name == deleteMethod) {
+          methods.splice(index, 1);
+          found = true;
+          break;
+        }
+      }
 
-			if (!found) {
-				console.error(`Method '${intfName}#${deleteMethod}' not found for deletion.`);
-				process.exit(1);
-			}
-		}
-	}
+      if (!found) {
+        console.error(`Method '${intfName}#${deleteMethod}' not found for deletion.`);
+        process.exit(1);
+      }
+    }
+  }
 
-	library.interfacesByName.Util.methodsByName.decodeDate.parameters[0].type.name = 'int';
-	library.interfacesByName.Util.methodsByName.decodeTime.parameters[0].type.name = 'int';
-	library.interfacesByName.Util.methodsByName.encodeDate.returnType.name = 'int';
-	library.interfacesByName.Util.methodsByName.encodeTime.returnType.name = 'int';
+  library.interfacesByName.Util.methodsByName.decodeDate.parameters[0].type.name = 'int';
+  library.interfacesByName.Util.methodsByName.decodeTime.parameters[0].type.name = 'int';
+  library.interfacesByName.Util.methodsByName.encodeDate.returnType.name = 'int';
+  library.interfacesByName.Util.methodsByName.encodeTime.returnType.name = 'int';
 }

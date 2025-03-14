@@ -20,79 +20,79 @@ jobs:
           - 22.x
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Firebird install (Linux)
-      if: startsWith(matrix.os, 'ubuntu-')
-      run: |
-        sudo apt-get install libtommath1 libtomcrypt1
-        wget -nv -O Firebird-4.0.2.2816-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.2/Firebird-4.0.2.2816-0.amd64.tar.gz"
-        tar xzvf Firebird-4.0.2.2816-0.amd64.tar.gz
-        (cd Firebird-4.0.2.2816-0.amd64; sudo ./install.sh -silent)
-        sudo usermod -a -G firebird `whoami`
-        sudo gpasswd -r firebird
+      - name: Firebird install (Linux)
+        if: startsWith(matrix.os, 'ubuntu-')
+        run: |
+          sudo apt-get install libtommath1 libtomcrypt1
+          wget -nv -O Firebird-4.0.2.2816-0.amd64.tar.gz "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.2/Firebird-4.0.2.2816-0.amd64.tar.gz"
+          tar xzvf Firebird-4.0.2.2816-0.amd64.tar.gz
+          (cd Firebird-4.0.2.2816-0.amd64; sudo ./install.sh -silent)
+          sudo usermod -a -G firebird `whoami`
+          sudo gpasswd -r firebird
 
-    - name: Firebird install (MacOS)
-      if: startsWith(matrix.os, 'macos-')
-      run: |
-        wget -nv -O Firebird-3.0.7-33374-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7-33374-x86_64.pkg"
-        sudo installer -verbose -pkg "Firebird-3.0.7-33374-x86_64.pkg" -target /
+      - name: Firebird install (MacOS)
+        if: startsWith(matrix.os, 'macos-')
+        run: |
+          wget -nv -O Firebird-3.0.7-33374-x86_64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/R3_0_7/Firebird-3.0.7-33374-x86_64.pkg"
+          sudo installer -verbose -pkg "Firebird-3.0.7-33374-x86_64.pkg" -target /
 
-    - name: Firebird install (Windows)
-      if: startsWith(matrix.os, 'windows-')
-      shell: cmd
-      run: |
-        set FB_ZIP=Firebird-4.0.2.2816-0-x64.zip
-        powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.2/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
-        7z x -oC:\Firebird %FB_ZIP%
+      - name: Firebird install (Windows)
+        if: startsWith(matrix.os, 'windows-')
+        shell: cmd
+        run: |
+          set FB_ZIP=Firebird-4.0.2.2816-0-x64.zip
+          powershell Invoke-WebRequest "https://github.com/FirebirdSQL/firebird/releases/download/v4.0.2/$env:FB_ZIP" -OutFile "$env:FB_ZIP"
+          7z x -oC:\Firebird %FB_ZIP%
 
-    - name: Build
-      shell: bash
-      run: |
-        yarn
-        yarn bootstrap
+      - name: Build
+        shell: bash
+        run: |
+          yarn
+          yarn bootstrap
 
-    - name: Test (Linux)
-      if: startsWith(matrix.os, 'ubuntu-')
-      run: |
-        sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 yarn test"
+      - name: Test (Linux)
+        if: startsWith(matrix.os, 'ubuntu-')
+        run: |
+          sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 yarn test"
 
-    - name: Test (MacOS)
-      if: startsWith(matrix.os, 'macos-')
-      run: |
-        sudo mkdir `pwd`/tmp-node-fb
-        sudo chmod 777 `pwd`/tmp-node-fb
-        export ISC_USER=sysdba
-        export ISC_PASSWORD=masterkey
-        export NODE_FB_TEST_TMP_DIR=`pwd`/tmp-node-fb
-        yarn test
+      - name: Test (MacOS)
+        if: startsWith(matrix.os, 'macos-')
+        run: |
+          sudo mkdir `pwd`/tmp-node-fb
+          sudo chmod 777 `pwd`/tmp-node-fb
+          export ISC_USER=sysdba
+          export ISC_PASSWORD=masterkey
+          export NODE_FB_TEST_TMP_DIR=`pwd`/tmp-node-fb
+          yarn test
 
-    - name: Test (Windows)
-      if: startsWith(matrix.os, 'windows-')
-      shell: cmd
-      run: |
-        set PATH=C:\Firebird;%PATH%
-        call yarn test
+      - name: Test (Windows)
+        if: startsWith(matrix.os, 'windows-')
+        shell: cmd
+        run: |
+          set PATH=C:\Firebird;%PATH%
+          call yarn test
 
-    - name: Upload native-api-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: native-api-${{ matrix.os }}-${{ matrix.node-version }}
-        path: packages/node-firebird-native-api
+      - name: Upload native-api-${{ matrix.os }}-${{ matrix.node-version }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-api-${{ matrix.os }}-${{ matrix.node-version }}
+          path: packages/node-firebird-native-api
 
-    - name: Upload driver-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: driver-${{ matrix.os }}-${{ matrix.node-version }}
-        path: packages/node-firebird-driver
+      - name: Upload driver-${{ matrix.os }}-${{ matrix.node-version }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: driver-${{ matrix.os }}-${{ matrix.node-version }}
+          path: packages/node-firebird-driver
 
-    - name: Upload driver-native-${{ matrix.os }}-${{ matrix.node-version }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: driver-native-${{ matrix.os }}-${{ matrix.node-version }}
-        path: packages/node-firebird-driver-native
+      - name: Upload driver-native-${{ matrix.os }}-${{ matrix.node-version }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: driver-native-${{ matrix.os }}-${{ matrix.node-version }}
+          path: packages/node-firebird-driver-native

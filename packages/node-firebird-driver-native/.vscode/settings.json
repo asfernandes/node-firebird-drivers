@@ -1,17 +1,21 @@
 {
-	"editor.tabSize": 4,
-	"editor.insertSpaces": false,
-	"editor.rulers": [140],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [120],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
 
-	"files.trimTrailingWhitespace": true,
+  "files.trimTrailingWhitespace": true,
 
-	"files.exclude": {
-		"node_modules/": true,
-		"dist/": true,
-		"*.tsbuildinfo": true
-	},
+  "files.exclude": {
+    "node_modules/": true,
+    "dist/": true,
+    "*.tsbuildinfo": true
+  },
 
-	"typescript.tsdk": "../../node_modules/typescript/lib",
-	"npm.packageManager": "yarn",
-	"tslint.packageManager": "yarn"
+  "typescript.tsdk": "../../node_modules/typescript/lib",
+  "npm.packageManager": "yarn"
 }
