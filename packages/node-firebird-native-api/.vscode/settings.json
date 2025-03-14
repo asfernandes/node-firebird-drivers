@@ -2,6 +2,11 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.rulers": [120],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
 
   "files.trimTrailingWhitespace": true,
 
