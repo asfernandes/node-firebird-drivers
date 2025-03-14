@@ -2,27 +2,31 @@ import pluginJs from '@eslint/js';
 import { globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	{ files: ['**/*.{js,mjs,cjs,ts}'] },
-	{ languageOptions: { globals: globals.browser } },
-	pluginJs.configs.recommended,
-	...tseslint.configs.recommended,
-	...tseslint.configs.stylistic,
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
+  eslintPluginPrettierRecommended,
 
-	globalIgnores(["**/dist/"]),
+  globalIgnores(['**/dist/']),
 
-	{
-		rules: {
-			'@typescript-eslint/no-empty-object-type': 'off',
-			'@typescript-eslint/no-namespace': 'off',
-			'@typescript-eslint/no-explicit-any': 'off',
-			'@typescript-eslint/no-unused-vars': [
-				"error", {
-					"argsIgnorePattern": "^_"
-				},
-			],
-		}
-	}
+  {
+    rules: {
+      curly: ['error', 'all'],
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-namespace': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
 ];
