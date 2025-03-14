@@ -1,8 +1,8 @@
 import pluginJs from '@eslint/js';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import { globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -27,6 +27,7 @@ export default [
           argsIgnorePattern: '^_',
         },
       ],
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
 ];
