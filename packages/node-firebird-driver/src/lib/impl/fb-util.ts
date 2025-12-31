@@ -4,9 +4,9 @@ const littleEndian = os.endianness() === 'LE';
 import * as stringDecoder from 'string_decoder';
 
 import { AbstractAttachment } from './attachment';
-import { AbstractTransaction } from './transaction';
 import { decodeDate, decodeTime, encodeDate, encodeTime } from './date-time';
 import { tzIdToString, tzStringToId } from './time-zones';
+import { AbstractTransaction } from './transaction';
 
 import {
   Attachment,
@@ -15,6 +15,7 @@ import {
   ConnectOptions,
   CreateBlobOptions,
   CreateDatabaseOptions,
+  DatabaseReadWriteMode,
   Transaction,
   TransactionIsolation,
   TransactionOptions,
@@ -57,6 +58,7 @@ export namespace dpb {
   export const user_name = 28;
   export const password = 29;
   export const sql_role_name = 60;
+  export const set_db_readonly = 64;
 }
 
 /** TPB constants. */
@@ -163,6 +165,12 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 
   if (createOptions.forcedWrite != undefined) {
     ret += `${code(dpb.force_write)}${code(1)}${code(createOptions.forcedWrite ? 1 : 0)}`;
+  }
+
+  if (options.setDatabaseReadWriteMode) {
+    ret += `${code(dpb.set_db_readonly)}${code(1)}${code(
+      options.setDatabaseReadWriteMode == DatabaseReadWriteMode.READ_ONLY ? 1 : 0,
+    )}`;
   }
 
   return Buffer.from(ret);

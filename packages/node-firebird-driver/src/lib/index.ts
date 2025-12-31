@@ -44,6 +44,15 @@ export interface ConnectOptions {
 
   /** User role. */
   role?: string;
+
+  /** Set database read/write mode. */
+  setDatabaseReadWriteMode?: DatabaseReadWriteMode;
+}
+
+/** DatabaseReadWriteMode enum */
+export enum DatabaseReadWriteMode {
+  READ_WRITE = 'READ_WRITE',
+  READ_ONLY = 'READ_ONLY',
 }
 
 /** CreateDatabaseOptions interface. */

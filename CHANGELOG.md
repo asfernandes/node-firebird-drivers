@@ -1,3 +1,7 @@
+## December, 31, 2025
+
+- Feature [#162](https://github.com/asfernandes/node-firebird-drivers/pull/162) - Add connection option setDatabaseReadWriteMode.
+
 ## December, 1, 2024
 
 - Fix [#157](https://github.com/asfernandes/node-firebird-drivers/issues/157) - node-firebird-native-api installation fails.

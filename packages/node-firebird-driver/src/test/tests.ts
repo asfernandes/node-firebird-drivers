@@ -1,4 +1,12 @@
-import { Blob, BlobSeekWhence, Client, TransactionIsolation, ZonedDate, ZonedDateEx } from '../lib';
+import {
+  Blob,
+  BlobSeekWhence,
+  Client,
+  DatabaseReadWriteMode,
+  TransactionIsolation,
+  ZonedDate,
+  ZonedDateEx,
+} from '../lib';
 
 import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
@@ -121,6 +129,37 @@ export function runCommonTests(client: Client) {
 
         expect(attachment1.isValid).toBeFalsy();
         expect(attachment2.isValid).toBeFalsy();
+      });
+
+      test('setDatabaseReadWriteMode', async () => {
+        const filename = getTempFile('setDatabaseReadWriteMode.fdb');
+        const attachment1 = await client.createDatabase(filename);
+        await attachment1.disconnect();
+
+        const attachment2 = await client.connect(filename, {
+          setDatabaseReadWriteMode: DatabaseReadWriteMode.READ_ONLY,
+        });
+        try {
+          const transaction = await attachment2.startTransaction();
+          await expect(attachment2.execute(transaction, 'create table t1 (id integer)')).rejects.toThrow();
+          await transaction.rollback();
+        } finally {
+          await attachment2.disconnect();
+        }
+
+        const attachment3 = await client.connect(filename, {
+          setDatabaseReadWriteMode: DatabaseReadWriteMode.READ_WRITE,
+        });
+        try {
+          const transaction = await attachment3.startTransaction();
+          await attachment3.execute(transaction, 'create table t1 (id integer)');
+          await transaction.commit();
+        } finally {
+          await attachment3.disconnect();
+        }
+
+        const attachment4 = await client.connect(filename);
+        await attachment4.dropDatabase();
       });
     });
 
