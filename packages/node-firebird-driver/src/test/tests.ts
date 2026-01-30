@@ -3,6 +3,7 @@ import {
   BlobSeekWhence,
   Client,
   DatabaseReadWriteMode,
+  StatementType,
   TransactionIsolation,
   ZonedDate,
   ZonedDateEx,
@@ -214,6 +215,37 @@ export function runCommonTests(client: Client) {
         }
 
         expect(error).toBeTruthy();
+
+        await transaction.commit();
+        await attachment.dropDatabase();
+      });
+
+      test('statement.type', async () => {
+        const attachment = await client.createDatabase(getTempFile('Statement-type.fdb'));
+        const transaction = await attachment.startTransaction();
+
+        const s1 = await attachment.prepare(transaction, 'select * from rdb$database');
+        expect(await s1.type).toBe(StatementType.SELECT);
+        await s1.dispose();
+
+        const s2 = await attachment.prepare(
+          transaction,
+          "insert into rdb$types (rdb$type_name, rdb$type, rdb$field_name) values ('A', 1, 'B')",
+        );
+        expect(await s2.type).toBe(StatementType.INSERT);
+        await s2.dispose();
+
+        const s3 = await attachment.prepare(transaction, 'update rdb$database set rdb$description = null');
+        expect(await s3.type).toBe(StatementType.UPDATE);
+        await s3.dispose();
+
+        const s4 = await attachment.prepare(transaction, 'delete from rdb$types where 1 = 0');
+        expect(await s4.type).toBe(StatementType.DELETE);
+        await s4.dispose();
+
+        const s5 = await attachment.prepare(transaction, 'create table t_stmt_type (n integer)');
+        expect(await s5.type).toBe(StatementType.DDL);
+        await s5.dispose();
 
         await transaction.commit();
         await attachment.dropDatabase();

@@ -2,13 +2,16 @@ import { AbstractAttachment } from './attachment';
 import { AbstractResultSet } from './resultset';
 import { AbstractTransaction } from './transaction';
 
-import { ExecuteOptions, ExecuteQueryOptions, FetchOptions, Statement } from '..';
+import { ExecuteOptions, ExecuteQueryOptions, FetchOptions, Statement, StatementType } from '..';
 
 /** AbstractStatement implementation. */
 export abstract class AbstractStatement implements Statement {
   resultSet?: AbstractResultSet;
 
   abstract getExecPathText(): Promise<string | undefined>;
+
+  /** Gets the statement type. */
+  abstract get type(): Promise<StatementType>;
 
   /** Gets the query's result columns labels. Returns empty array for queries without result. */
   abstract get columnLabels(): Promise<string[]>;

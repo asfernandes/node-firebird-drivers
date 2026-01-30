@@ -2,11 +2,11 @@ import { AttachmentImpl } from './attachment';
 import { ResultSetImpl } from './resultset';
 import { TransactionImpl } from './transaction';
 
-import { ExecuteOptions, ExecuteQueryOptions, PrepareOptions } from 'node-firebird-driver';
+import { ExecuteOptions, ExecuteQueryOptions, PrepareOptions, StatementType } from 'node-firebird-driver';
 
 import { AbstractStatement, commonInfo, getPortableInteger, statementInfo } from 'node-firebird-driver/dist/lib/impl';
 
-import { createDataReader, createDataWriter, createDescriptors, fixMetadata, DataReader, DataWriter } from './fb-util';
+import { createDataReader, createDataWriter, createDescriptors, DataReader, DataWriter, fixMetadata } from './fb-util';
 
 import * as fb from 'node-firebird-native-api';
 
@@ -25,6 +25,7 @@ export class StatementImpl extends AbstractStatement {
   outBuffer: Uint8Array;
   dataWriter: DataWriter;
   dataReader: DataReader;
+  typePromise?: Promise<StatementType>;
 
   static async prepare(
     attachment: AttachmentImpl,
@@ -166,5 +167,16 @@ export class StatementImpl extends AbstractStatement {
     };
 
     return asyncFunc();
+  }
+
+  get type(): Promise<StatementType> {
+    if (!this.typePromise) {
+      const asyncFunc = async (): Promise<StatementType> => {
+        return await this.attachment.client.statusAction((status) => this.statementHandle!.getTypeAsync(status));
+      };
+      this.typePromise = asyncFunc();
+    }
+
+    return this.typePromise;
   }
 }

@@ -247,6 +247,24 @@ export interface Transaction {
   readonly isValid: boolean;
 }
 
+/** StatementType enum */
+export enum StatementType {
+  SELECT = 1,
+  INSERT = 2,
+  UPDATE = 3,
+  DELETE = 4,
+  DDL = 5,
+  GET_SEGMENT = 6,
+  PUT_SEGMENT = 7,
+  EXEC_PROCEDURE = 8,
+  START_TRANS = 9,
+  COMMIT = 10,
+  ROLLBACK = 11,
+  SELECT_FOR_UPD = 12,
+  SET_GENERATOR = 13,
+  SAVEPOINT = 14,
+}
+
 /** Statement interface. */
 export interface Statement {
   /** Disposes this statement's resources. */
@@ -298,6 +316,9 @@ export interface Statement {
 
   /** True if the statement has not been disposed. */
   readonly isValid: boolean;
+
+  /** Gets the statement type. */
+  readonly type: Promise<StatementType>;
 
   /** Gets the query's result columns labels. Returns empty array for queries without result. */
   readonly columnLabels: Promise<string[]>;

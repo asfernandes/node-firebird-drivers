@@ -1,3 +1,5 @@
+## January, 29, 2026
+
 ## December, 31, 2025
 
 - Feature [#162](https://github.com/asfernandes/node-firebird-drivers/pull/162) - Add connection option setDatabaseReadWriteMode.
