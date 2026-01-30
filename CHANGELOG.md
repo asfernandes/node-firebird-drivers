@@ -1,5 +1,7 @@
 ## January, 29, 2026
 
+- Feature [#163](https://github.com/asfernandes/node-firebird-drivers/issues/163) - Add Statement::type property.
+
 ## December, 31, 2025
 
 - Feature [#162](https://github.com/asfernandes/node-firebird-drivers/pull/162) - Add connection option setDatabaseReadWriteMode.
