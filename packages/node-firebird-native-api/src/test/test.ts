@@ -487,7 +487,7 @@ describe('node-firebird-native-api', () => {
             const statement2 = attachment.prepareSync(status, transaction, 0, stmt2, 3, 0)!;
             try {
               const plan = statement2.getPlanSync(status, false);
-              expect(plan!.trim()).toBe('PLAN (RDB$DATABASE NATURAL)');
+              expect(plan!.trim()).toMatch(/^PLAN \(("SYSTEM"\.)?"?RDB\$DATABASE"? NATURAL\)$/);
             } finally {
               statement2.freeSync(status);
             }
@@ -529,7 +529,7 @@ describe('node-firebird-native-api', () => {
             const statement2 = await attachment!.prepareAsync(status, transaction, 0, stmt2, 3, 0)!;
             try {
               const plan = await statement2!.getPlanAsync(status, false);
-              expect(plan!.trim()).toBe('PLAN (RDB$DATABASE NATURAL)');
+              expect(plan!.trim()).toMatch(/^PLAN \(("SYSTEM"\.)?"?RDB\$DATABASE"? NATURAL\)$/);
             } finally {
               await statement2!.freeAsync(status);
             }
