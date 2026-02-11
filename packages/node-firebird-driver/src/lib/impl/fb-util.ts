@@ -132,9 +132,17 @@ export namespace charSets {
   export const ascii = 2;
 }
 
+/** Maps a Firebird charset name to a Node.js encoding. */
+export function mapCharsetToEncoding(charset?: string): BufferEncoding {
+  if (!charset || charset.toUpperCase() === 'UTF8') {
+    return 'utf8';
+  } else {
+    return 'latin1';
+  }
+}
 export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {
   const code = (c: number) => String.fromCharCode(c);
-  const charSet = 'utf8';
+  const charSet = options?.charset ?? 'utf8';
   let ret = `${code(dpb.version1)}${code(dpb.lc_ctype)}${code(charSet.length)}${charSet}`;
 
   if (!options) {
@@ -306,7 +314,7 @@ export type DataReader = (attachment: Attachment, transaction: Transaction, buff
 export type ItemReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any>;
 
 /** Creates a data reader. */
-export function createDataReader(descriptors: Descriptor[]): DataReader {
+export function createDataReader(descriptors: Descriptor[], encoding: BufferEncoding = 'utf8'): DataReader {
   const mappers = new Array<ItemReader>(descriptors.length);
 
   for (let i = 0; i < descriptors.length; ++i) {
@@ -328,7 +336,7 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
         case sqlTypes.SQL_VARYING: {
           //// TODO: none, octets
           const varLength = dataView.getUint16(descriptor.offset, littleEndian);
-          const decoder = new stringDecoder.StringDecoder('utf8');
+          const decoder = new stringDecoder.StringDecoder(encoding);
           const buf = Buffer.from(buffer.buffer, descriptor.offset + 2, varLength);
           return decoder.end(buf);
         }
@@ -503,7 +511,7 @@ export type ItemWriter = (
 ) => Promise<void>;
 
 /** Creates a data writer. */
-export function createDataWriter(descriptors: Descriptor[]): DataWriter {
+export function createDataWriter(descriptors: Descriptor[], encoding: BufferEncoding = 'utf8'): DataWriter {
   const mappers = new Array<ItemWriter>(descriptors.length);
 
   for (let i = 0; i < descriptors.length; ++i) {
@@ -529,7 +537,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
         case sqlTypes.SQL_VARYING: {
           //// TODO: none, octets
           const str = value as string;
-          const strBuffer = Buffer.from(str);
+          const strBuffer = Buffer.from(str, encoding);
 
           const bytesArray = Uint8Array.from(strBuffer);
 

@@ -53,12 +53,12 @@ export class StatementImpl extends AbstractStatement {
 
       if (statement.inMetadata) {
         statement.inBuffer = new Uint8Array(statement.inMetadata.getMessageLengthSync(status));
-        statement.dataWriter = createDataWriter(createDescriptors(status, statement.inMetadata));
+        statement.dataWriter = createDataWriter(createDescriptors(status, statement.inMetadata), attachment.encoding);
       }
 
       if (statement.outMetadata) {
         statement.outBuffer = new Uint8Array(statement.outMetadata.getMessageLengthSync(status));
-        statement.dataReader = createDataReader(createDescriptors(status, statement.outMetadata));
+        statement.dataReader = createDataReader(createDescriptors(status, statement.outMetadata), attachment.encoding);
       }
 
       return statement;

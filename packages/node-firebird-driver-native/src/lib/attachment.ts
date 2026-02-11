@@ -3,7 +3,7 @@ import { ClientImpl } from './client';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
 import { EventsImpl } from './events';
-import { createDpb } from './fb-util';
+import { createDpb, mapCharsetToEncoding } from './fb-util';
 
 import {
   Blob,
@@ -27,6 +27,7 @@ export class AttachmentImpl extends AbstractAttachment {
 
   static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
     const attachment = new AttachmentImpl(client);
+    attachment.encoding = mapCharsetToEncoding(options?.charset);
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);

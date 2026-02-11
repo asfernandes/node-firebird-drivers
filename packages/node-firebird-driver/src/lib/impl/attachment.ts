@@ -19,6 +19,7 @@ import {
 
 /** AbstractAttachment implementation. */
 export abstract class AbstractAttachment implements Attachment {
+  encoding: BufferEncoding = 'utf8';
   events = new Set<Events>();
   statements = new Set<AbstractStatement>();
   transactions = new Set<AbstractTransaction>();
