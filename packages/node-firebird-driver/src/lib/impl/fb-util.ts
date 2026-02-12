@@ -132,14 +132,91 @@ export namespace charSets {
   export const ascii = 2;
 }
 
-/** Maps a Firebird charset name to a Node.js encoding. */
-export function mapCharsetToEncoding(charset?: string): BufferEncoding {
-  if (!charset || charset.toUpperCase() === 'UTF8') {
-    return 'utf8';
-  } else {
-    return 'latin1';
+/** Maps Firebird charset names to TextDecoder encoding labels. */
+const firebirdCharsetMap: Record<string, string> = {
+  UTF8: 'utf-8',
+  NONE: 'utf-8',
+  ASCII: 'ascii',
+  WIN1250: 'windows-1250',
+  WIN1251: 'windows-1251',
+  WIN1252: 'windows-1252',
+  WIN1253: 'windows-1253',
+  WIN1254: 'windows-1254',
+  WIN1255: 'windows-1255',
+  WIN1256: 'windows-1256',
+  WIN1257: 'windows-1257',
+  WIN1258: 'windows-1258',
+  ISO8859_1: 'iso-8859-1',
+  ISO8859_2: 'iso-8859-2',
+  ISO8859_3: 'iso-8859-3',
+  ISO8859_4: 'iso-8859-4',
+  ISO8859_5: 'iso-8859-5',
+  ISO8859_6: 'iso-8859-6',
+  ISO8859_7: 'iso-8859-7',
+  ISO8859_8: 'iso-8859-8',
+  ISO8859_9: 'iso-8859-9',
+  ISO8859_13: 'iso-8859-13',
+  ISO8859_15: 'iso-8859-15',
+};
+
+/** Resolves a Firebird charset name to a TextDecoder encoding label. */
+export function resolveCharsetEncoding(charset?: string): string {
+  if (!charset) {
+    return 'utf-8';
   }
+  const label = firebirdCharsetMap[charset.toUpperCase()];
+  if (!label) {
+    throw new Error(
+      `Unsupported Firebird charset: '${charset}'. Supported: ${Object.keys(firebirdCharsetMap).join(', ')}`,
+    );
+  }
+  return label;
 }
+
+/** Codec for encoding/decoding strings in a specific charset. */
+export interface CharsetCodec {
+  decode(buffer: Uint8Array): string;
+  encode(str: string): Buffer;
+}
+
+/** Creates a codec for encoding/decoding strings in the given charset. */
+export function createCharsetCodec(charset?: string): CharsetCodec {
+  const encoding = resolveCharsetEncoding(charset);
+
+  if (encoding === 'utf-8') {
+    const decoder = new TextDecoder('utf-8');
+    return {
+      decode: (buffer: Uint8Array) => decoder.decode(buffer),
+      encode: (str: string) => Buffer.from(str, 'utf8'),
+    };
+  }
+
+  const decoder = new TextDecoder(encoding);
+  const reverseMap = new Map<string, number>();
+  for (let i = 0; i < 256; i++) {
+    const char = decoder.decode(new Uint8Array([i]));
+    reverseMap.set(char, i);
+  }
+
+  return {
+    decode: (buffer: Uint8Array) => decoder.decode(buffer),
+    encode: (str: string) => {
+      const bytes = new Uint8Array(str.length);
+      for (let i = 0; i < str.length; i++) {
+        const b = reverseMap.get(str[i]);
+        if (b === undefined) {
+          throw new Error(
+            `Character '${str[i]}' (U+${str[i].charCodeAt(0).toString(16).padStart(4, '0')}) ` +
+              `cannot be encoded in charset '${encoding}'.`,
+          );
+        }
+        bytes[i] = b;
+      }
+      return Buffer.from(bytes);
+    },
+  };
+}
+
 export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buffer {
   const code = (c: number) => String.fromCharCode(c);
   const charSet = options?.charset ?? 'utf8';
@@ -314,7 +391,8 @@ export type DataReader = (attachment: Attachment, transaction: Transaction, buff
 export type ItemReader = (attachment: Attachment, transaction: Transaction, buffer: Uint8Array) => Promise<any>;
 
 /** Creates a data reader. */
-export function createDataReader(descriptors: Descriptor[], encoding: BufferEncoding = 'utf8'): DataReader {
+export function createDataReader(descriptors: Descriptor[], codec?: CharsetCodec): DataReader {
+  const charsetCodec = codec ?? createCharsetCodec();
   const mappers = new Array<ItemReader>(descriptors.length);
 
   for (let i = 0; i < descriptors.length; ++i) {
@@ -336,9 +414,8 @@ export function createDataReader(descriptors: Descriptor[], encoding: BufferEnco
         case sqlTypes.SQL_VARYING: {
           //// TODO: none, octets
           const varLength = dataView.getUint16(descriptor.offset, littleEndian);
-          const decoder = new stringDecoder.StringDecoder(encoding);
-          const buf = Buffer.from(buffer.buffer, descriptor.offset + 2, varLength);
-          return decoder.end(buf);
+          const buf = new Uint8Array(buffer.buffer, descriptor.offset + 2, varLength);
+          return charsetCodec.decode(buf);
         }
 
         /***
@@ -511,7 +588,8 @@ export type ItemWriter = (
 ) => Promise<void>;
 
 /** Creates a data writer. */
-export function createDataWriter(descriptors: Descriptor[], encoding: BufferEncoding = 'utf8'): DataWriter {
+export function createDataWriter(descriptors: Descriptor[], codec?: CharsetCodec): DataWriter {
+  const charsetCodec = codec ?? createCharsetCodec();
   const mappers = new Array<ItemWriter>(descriptors.length);
 
   for (let i = 0; i < descriptors.length; ++i) {
@@ -537,7 +615,7 @@ export function createDataWriter(descriptors: Descriptor[], encoding: BufferEnco
         case sqlTypes.SQL_VARYING: {
           //// TODO: none, octets
           const str = value as string;
-          const strBuffer = Buffer.from(str, encoding);
+          const strBuffer = charsetCodec.encode(str);
 
           const bytesArray = Uint8Array.from(strBuffer);
 
