@@ -45,6 +45,9 @@ export interface ConnectOptions {
   /** User role. */
   role?: string;
 
+  /** Connection charset (lc_ctype). Defaults to 'utf8'. */
+  charset?: string;
+
   /** Set database read/write mode. */
   setDatabaseReadWriteMode?: DatabaseReadWriteMode;
 }

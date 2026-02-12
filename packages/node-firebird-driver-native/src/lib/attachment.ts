@@ -3,7 +3,7 @@ import { ClientImpl } from './client';
 import { StatementImpl } from './statement';
 import { TransactionImpl } from './transaction';
 import { EventsImpl } from './events';
-import { createDpb } from './fb-util';
+import { createDpb, createCharsetCodec, CharsetCodec } from './fb-util';
 
 import {
   Blob,
@@ -25,8 +25,11 @@ export class AttachmentImpl extends AbstractAttachment {
 
   attachmentHandle?: fb.Attachment;
 
+  charsetCodec: CharsetCodec;
+
   static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
     const attachment = new AttachmentImpl(client);
+    attachment.charsetCodec = createCharsetCodec(options?.charset);
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);
@@ -41,6 +44,7 @@ export class AttachmentImpl extends AbstractAttachment {
     options?: CreateDatabaseOptions,
   ): Promise<AttachmentImpl> {
     const attachment = new AttachmentImpl(client);
+    attachment.charsetCodec = createCharsetCodec(options?.charset);
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);
