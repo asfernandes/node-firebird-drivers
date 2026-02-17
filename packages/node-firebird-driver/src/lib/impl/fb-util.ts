@@ -1,8 +1,5 @@
 import * as os from 'os';
 const littleEndian = os.endianness() === 'LE';
-
-import * as stringDecoder from 'string_decoder';
-
 import { AbstractAttachment } from './attachment';
 import { decodeDate, decodeTime, encodeDate, encodeTime } from './date-time';
 import { tzIdToString, tzStringToId } from './time-zones';
