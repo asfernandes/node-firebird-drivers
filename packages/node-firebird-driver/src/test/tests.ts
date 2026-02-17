@@ -973,6 +973,68 @@ export function runCommonTests(client: Client) {
         await attachment.dropDatabase();
       });
 
+      test('NONE charset uses charSetForNONE for read/write', async () => {
+        const filename = getTempFile('ResultSet-none-charset.fdb');
+
+        {
+          const attachment = await client.createDatabase(filename);
+          const transaction = await attachment.startTransaction();
+          await attachment.execute(transaction, 'create table t1 (id integer, x varchar(10) character set none)');
+          await transaction.commitRetaining();
+          await attachment.execute(
+            transaction,
+            "insert into t1 (id, x) values (1, cast(x'B99C9F' as varchar(3) character set none))",
+          );
+          await attachment.execute(
+            transaction,
+            "insert into t1 (id, x) values (2, cast(x'B1B6BC' as varchar(3) character set none))",
+          );
+          await transaction.commit();
+          await attachment.disconnect();
+        }
+
+        {
+          const attachment = await client.connect(filename);
+          const transaction = await attachment.startTransaction();
+          const row1 = await attachment.executeSingleton(transaction, 'select x from t1 where id = 1');
+          const row2 = await attachment.executeSingleton(transaction, 'select x from t1 where id = 2');
+          expect(row1[0]).toBe(Buffer.from('b99c9f', 'hex').toString('utf8'));
+          expect(row2[0]).toBe(Buffer.from('b1b6bc', 'hex').toString('utf8'));
+          await transaction.commit();
+          await attachment.disconnect();
+        }
+
+        {
+          const attachment = await client.connect(filename, { charSetForNONE: 'windows-1250' });
+          const transaction = await attachment.startTransaction();
+          const row = await attachment.executeSingleton(transaction, 'select x from t1 where id = 1');
+          expect(row[0]).toBe('ąśź');
+          await attachment.execute(transaction, 'insert into t1 (id, x) values (?, ?)', [101, 'ąśź']);
+          const check = await attachment.executeSingleton(
+            transaction,
+            "select count(*) from t1 where id = 101 and x = cast(x'B99C9F' as varchar(3) character set none)",
+          );
+          expect(check[0]).toBe(1);
+          await transaction.commit();
+          await attachment.disconnect();
+        }
+
+        {
+          const attachment = await client.connect(filename, { charSetForNONE: 'iso-8859-2' });
+          const transaction = await attachment.startTransaction();
+          const row = await attachment.executeSingleton(transaction, 'select x from t1 where id = 2');
+          expect(row[0]).toBe('ąśź');
+          await attachment.execute(transaction, 'insert into t1 (id, x) values (?, ?)', [201, 'ąśź']);
+          const check = await attachment.executeSingleton(
+            transaction,
+            "select count(*) from t1 where id = 201 and x = cast(x'B1B6BC' as varchar(3) character set none)",
+          );
+          expect(check[0]).toBe(1);
+          await transaction.commit();
+          await attachment.dropDatabase();
+        }
+      });
+
       test('#fetch() with fetchSize', async () => {
         const attachment = await client.createDatabase(getTempFile('ResultSet-fetch-with-fetchSize.fdb'));
         const transaction = await attachment.startTransaction();

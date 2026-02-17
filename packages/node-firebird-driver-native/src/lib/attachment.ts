@@ -27,6 +27,7 @@ export class AttachmentImpl extends AbstractAttachment {
 
   static async connect(client: ClientImpl, uri: string, options?: ConnectOptions): Promise<AttachmentImpl> {
     const attachment = new AttachmentImpl(client);
+    attachment.charSetForNONE = options?.charSetForNONE ?? 'utf8';
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);
@@ -41,6 +42,7 @@ export class AttachmentImpl extends AbstractAttachment {
     options?: CreateDatabaseOptions,
   ): Promise<AttachmentImpl> {
     const attachment = new AttachmentImpl(client);
+    attachment.charSetForNONE = options?.charSetForNONE ?? 'utf8';
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);

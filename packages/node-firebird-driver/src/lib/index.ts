@@ -47,6 +47,12 @@ export interface ConnectOptions {
 
   /** Set database read/write mode. */
   setDatabaseReadWriteMode?: DatabaseReadWriteMode;
+
+  /**
+   * Node.js character set encoding used for Firebird NONE charset columns/parameters.
+   * Requires iconv-lite package.
+   */
+  charSetForNONE?: string;
 }
 
 /** DatabaseReadWriteMode enum */

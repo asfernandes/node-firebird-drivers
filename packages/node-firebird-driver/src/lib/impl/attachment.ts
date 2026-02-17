@@ -22,6 +22,7 @@ export abstract class AbstractAttachment implements Attachment {
   events = new Set<Events>();
   statements = new Set<AbstractStatement>();
   transactions = new Set<AbstractTransaction>();
+  charSetForNONE = 'utf8';
 
   /** Default transaction options. */
   defaultTransactionOptions: TransactionOptions;
