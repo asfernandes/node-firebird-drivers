@@ -1,3 +1,7 @@
+## Next
+
+- Feature [#165](https://github.com/asfernandes/node-firebird-drivers/pull/165) - Add ConnectOption charSetForNONE.
+
 ## January, 29, 2026
 
 - Feature [#163](https://github.com/asfernandes/node-firebird-drivers/issues/163) - Add Statement::type property.
