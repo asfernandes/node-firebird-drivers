@@ -2,7 +2,6 @@ node_modules/
 .yarn/install-state.gz
 dist/
 
-lerna-debug.log
-yarn-error.log
+*.log
 tsconfig.tsbuildinfo
 .env

@@ -1,9 +1,8 @@
 import * as os from 'os';
 const littleEndian = os.endianness() === 'LE';
 
-import * as stringDecoder from 'string_decoder';
-
 import { AbstractAttachment } from './attachment';
+import { decodeString, encodeString } from './encoding';
 import { decodeDate, decodeTime, encodeDate, encodeTime } from './date-time';
 import { tzIdToString, tzStringToId } from './time-zones';
 import { AbstractTransaction } from './transaction';
@@ -129,6 +128,7 @@ export namespace cancelType {
 }
 
 export namespace charSets {
+  export const none = 0;
   export const ascii = 2;
 }
 
@@ -296,6 +296,7 @@ export function getPortableInteger(buffer: Uint8Array, length: number) {
 export interface Descriptor {
   type: number;
   subType: number;
+  charSet: number;
   length: number;
   scale: number;
   offset: number;
@@ -326,11 +327,11 @@ export function createDataReader(descriptors: Descriptor[]): DataReader {
       switch (descriptor.type) {
         // SQL_TEXT is handled changing its descriptor to SQL_VARYING with IMetadataBuilder.
         case sqlTypes.SQL_VARYING: {
-          //// TODO: none, octets
+          // TODO: octets
           const varLength = dataView.getUint16(descriptor.offset, littleEndian);
-          const decoder = new stringDecoder.StringDecoder('utf8');
+          const encoding = descriptor.charSet === charSets.none ? attachment.charSetForNONE : 'utf8';
           const buf = Buffer.from(buffer.buffer, descriptor.offset + 2, varLength);
-          return decoder.end(buf);
+          return decodeString(buf, encoding);
         }
 
         /***
@@ -527,9 +528,11 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
       switch (descriptor.type) {
         // SQL_TEXT is handled changing its descriptor to SQL_VARYING with IMetadataBuilder.
         case sqlTypes.SQL_VARYING: {
-          //// TODO: none, octets
+          //// TODO: octets
           const str = value as string;
-          const strBuffer = Buffer.from(str);
+          const attached = attachment as AbstractAttachment;
+          const encoding = descriptor.charSet === charSets.none ? attached.charSetForNONE : 'utf8';
+          const strBuffer = encodeString(str, encoding);
 
           const bytesArray = Uint8Array.from(strBuffer);
 

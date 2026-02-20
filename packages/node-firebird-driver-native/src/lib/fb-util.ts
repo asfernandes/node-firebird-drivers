@@ -73,6 +73,7 @@ export function createDescriptors(status: fb.Status, metadata?: fb.MessageMetada
     ret.push({
       type: metadata.getTypeSync(status, i),
       subType: metadata.getSubTypeSync(status, i),
+      charSet: metadata.getCharSetSync(status, i),
       nullOffset: metadata.getNullOffsetSync(status, i),
       offset: metadata.getOffsetSync(status, i),
       length: metadata.getLengthSync(status, i),

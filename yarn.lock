@@ -6691,6 +6691,11 @@ __metadata:
   resolution: "node-firebird-driver@workspace:packages/node-firebird-driver"
   dependencies:
     "@types/node": "npm:^22.13.10"
+  peerDependencies:
+    iconv-lite: ^0.7.2
+  peerDependenciesMeta:
+    iconv-lite:
+      optional: true
   languageName: unknown
   linkType: soft
 

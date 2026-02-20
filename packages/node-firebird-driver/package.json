@@ -31,5 +31,13 @@
   "typings": "./dist/lib/index.d.ts",
   "dependencies": {
     "@types/node": "^22.13.10"
+  },
+  "peerDependencies": {
+    "iconv-lite": "^0.7.2"
+  },
+  "peerDependenciesMeta": {
+    "iconv-lite": {
+      "optional": true
+    }
   }
 }
