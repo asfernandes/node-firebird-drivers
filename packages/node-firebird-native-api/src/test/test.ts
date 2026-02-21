@@ -64,7 +64,7 @@ describe('node-firebird-native-api', () => {
 
     dispatcher.releaseSync();
 
-    if (isLocal()) {
+    if (isLocal() && !testConfig.tmpDir) {
       fs.rmdirSync(testConfig.tmpDir!);
     }
 

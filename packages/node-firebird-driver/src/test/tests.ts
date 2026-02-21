@@ -106,7 +106,7 @@ export function runCommonTests(client: Client) {
 
       expect(client.isValid).toBeFalsy();
 
-      if (isLocal()) {
+      if (isLocal() && !testConfig.tmpDir) {
         fs.rmdirSync(testConfig.tmpDir!);
       }
     });
