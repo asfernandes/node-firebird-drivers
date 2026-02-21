@@ -1,4 +1,4 @@
-## Next
+## February, 21, 2026
 
 - Feature [#165](https://github.com/asfernandes/node-firebird-drivers/pull/165) - Add ConnectOption charSetForNONE.
 
