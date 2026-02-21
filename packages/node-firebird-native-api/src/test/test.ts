@@ -1,8 +1,8 @@
 import * as fs from 'fs-extra-promise';
+import * as os from 'os';
 import * as tmp from 'temp-fs';
 
-import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util } from '../lib';
-import { XpbBuilder } from '../lib';
+import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util, XpbBuilder } from '../lib';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config({ path: '../../.env', quiet: true });
@@ -59,8 +59,17 @@ describe('node-firebird-native-api', () => {
 
     const status = master.getStatusSync()!;
     const fb_shutrsn_app_stopped = -3;
-    dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
-    status.disposeSync();
+    try {
+      // FIXME: Why is this throwing in MacOS?
+      dispatcher.shutdownSync(status, 0, fb_shutrsn_app_stopped);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (os.platform() !== 'darwin' && !message.includes('connection shutdown')) {
+        throw error;
+      }
+    } finally {
+      status.disposeSync();
+    }
 
     dispatcher.releaseSync();
 

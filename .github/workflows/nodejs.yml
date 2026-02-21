@@ -45,6 +45,7 @@ jobs:
       - name: Firebird install (MacOS)
         if: startsWith(matrix.os, 'macos-')
         run: |
+          sudo chmod +a "everyone allow read,write,execute,delete,add_file,add_subdirectory,file_inherit,directory_inherit" /tmp
           wget -nv -O Firebird-5.0.3.1683-0-macos-arm64.pkg "https://github.com/FirebirdSQL/firebird/releases/download/v5.0.3/Firebird-5.0.3.1683-0-macos-arm64.pkg"
           sudo installer -verbose -pkg "Firebird-5.0.3.1683-0-macos-arm64.pkg" -target /
 
@@ -70,11 +71,11 @@ jobs:
       - name: Test (MacOS)
         if: startsWith(matrix.os, 'macos-')
         run: |
-          sudo mkdir `pwd`/tmp-node-fb
-          sudo chmod 777 `pwd`/tmp-node-fb
+          sudo mkdir /tmp/node-fb
+          sudo chmod 777 /tmp/node-fb
           export ISC_USER=sysdba
           export ISC_PASSWORD=masterkey
-          export NODE_FB_TEST_TMP_DIR=`pwd`/tmp-node-fb
+          export NODE_FB_TEST_TMP_DIR=/tmp/node-fb
           corepack yarn test
 
       - name: Test (Windows)
