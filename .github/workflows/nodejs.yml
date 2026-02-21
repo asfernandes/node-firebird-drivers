@@ -16,9 +16,10 @@ jobs:
           - windows-2025
           - macos-15
         node-version:
-          - 18.x
           - 20.x
           - 22.x
+          - 24.x
+          - 25.x
 
     steps:
       - uses: actions/checkout@v6
