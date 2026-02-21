@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/node-firebird-driver" },
+    { "path": "./packages/node-firebird-native-api" },
+    { "path": "./packages/node-firebird-driver-native" }
+  ]
+}

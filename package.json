@@ -8,6 +8,8 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "tsc -b",
+    "build:watch": "tsc -b -w",
     "bootstrap": "lerna run build && lerna run gyp:configure && lerna run gyp:build",
     "clean": "lerna run clean",
     "publish": "lerna publish",
