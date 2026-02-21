@@ -301,12 +301,12 @@ namespace
 		}
 
 	public:
-		virtual void addRef()
+		void addRef() override
 		{
 			++refCounter;
 		}
 
-		virtual int release()
+		int release() override
 		{
 			assert(refCounter > 0);
 
