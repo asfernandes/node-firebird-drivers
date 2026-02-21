@@ -5,7 +5,7 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build:w",
+      "script": "build:watch",
       "problemMatcher": ["$tsc-watch"],
       "group": {
         "kind": "build",
