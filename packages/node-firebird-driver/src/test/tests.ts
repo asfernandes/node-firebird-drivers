@@ -13,7 +13,7 @@ import * as fs from 'fs-extra-promise';
 import * as tmp from 'temp-fs';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-require('dotenv').config({ path: '../../.env' });
+require('dotenv').config({ path: '../../.env', quiet: true });
 
 export function runCommonTests(client: Client) {
   function dateToString(d: Date) {

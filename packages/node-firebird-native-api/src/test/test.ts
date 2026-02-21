@@ -5,7 +5,7 @@ import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, 
 import { XpbBuilder } from '../lib';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-require('dotenv').config({ path: '../../.env' });
+require('dotenv').config({ path: '../../.env', quiet: true });
 
 describe('node-firebird-native-api', () => {
   const testConfig = {
