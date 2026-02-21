@@ -59,13 +59,13 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          yarn
-          yarn bootstrap
+          corepack yarn
+          corepack yarn bootstrap
 
       - name: Test (Linux)
         if: startsWith(matrix.os, 'ubuntu-')
         run: |
-          sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 yarn test"
+          sg firebird -c "LD_LIBRARY_PATH=/usr/lib64 corepack yarn test"
 
       - name: Test (MacOS)
         if: startsWith(matrix.os, 'macos-')
@@ -75,14 +75,14 @@ jobs:
           export ISC_USER=sysdba
           export ISC_PASSWORD=masterkey
           export NODE_FB_TEST_TMP_DIR=`pwd`/tmp-node-fb
-          yarn test
+          corepack yarn test
 
       - name: Test (Windows)
         if: startsWith(matrix.os, 'windows-')
         shell: cmd
         run: |
           set PATH=C:\Firebird;%PATH%
-          call yarn test
+          corepack yarn test
 
       - name: Upload native-api-${{ matrix.os }}-${{ matrix.node-version }}
         uses: actions/upload-artifact@v6
