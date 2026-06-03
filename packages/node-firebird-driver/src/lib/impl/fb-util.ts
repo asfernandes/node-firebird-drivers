@@ -530,6 +530,17 @@ export type ItemWriter = (
   values: any,
 ) => Promise<void>;
 
+function isBlob(value: any): value is Blob {
+  return (
+    value instanceof Blob ||
+    (value && typeof value == 'object' && 'attachment' in value && ArrayBuffer.isView(value.id) && value.id.length == 8)
+  );
+}
+
+function isBlobStream(value: any): value is BlobStream {
+  return value instanceof BlobStream || (value && typeof value == 'object' && isBlob(value.blob));
+}
+
 /** Creates a data writer. */
 export function createDataWriter(descriptors: Descriptor[]): DataWriter {
   const mappers = new Array<ItemWriter>(descriptors.length);
@@ -680,7 +691,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
         case sqlTypes.SQL_BLOB: {
           const targetBlobId = buffer.subarray(descriptor.offset, descriptor.offset + 8);
 
-          if (value instanceof BlobStream) {
+          if (isBlobStream(value)) {
             value = value.blob;
           }
 
@@ -696,7 +707,7 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
             await blobStream.close();
 
             targetBlobId.set(blobStream.blob.id);
-          } else if (value instanceof Blob) {
+          } else if (isBlob(value)) {
             if (value.attachment == attachment) {
               targetBlobId.set(value.id);
             } else {

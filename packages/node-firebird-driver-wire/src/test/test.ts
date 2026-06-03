@@ -1,4 +1,5 @@
 import { createBpb, dpb, tpb } from '../../../node-firebird-driver/src/lib/impl/fb-util';
+import { beforeAll, describe, expect, test } from 'vitest';
 import {
   ensureDriverTestTmpDir,
   getDriverTestDatabasePath,

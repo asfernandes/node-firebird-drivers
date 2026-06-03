@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { statusArgument } from '../lib/constants';
 import { FirebirdWireError, assertSuccessfulResponse, parseStatusVector } from '../lib/status';
 

@@ -1,4 +1,5 @@
 import { dpb } from 'node-firebird-driver/dist/lib/impl';
+import { describe, expect, test } from 'vitest';
 
 import {
   buildAttachmentDpb,

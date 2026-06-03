@@ -1,4 +1,5 @@
 import { commonInfo, sqlTypes, statementInfo } from 'node-firebird-driver/dist/lib/impl';
+import { describe, expect, test } from 'vitest';
 
 import { parseStatementMetadata } from '../lib/statement-metadata';
 

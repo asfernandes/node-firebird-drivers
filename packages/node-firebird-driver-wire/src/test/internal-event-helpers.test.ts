@@ -1,3 +1,5 @@
+import { describe, expect, test } from 'vitest';
+
 import { buildEventBlock, calculateEventCounts, getEventHost, parseAuxiliaryPort } from '../lib/event-helpers';
 
 describe('event helpers', () => {

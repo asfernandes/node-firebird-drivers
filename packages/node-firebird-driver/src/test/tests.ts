@@ -10,6 +10,7 @@ import {
 } from '../lib';
 
 import * as fs from 'fs-extra-promise';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { ensureDriverTestTmpDir, getDriverTestDatabaseUri, loadDriverTestConfig } from './test-config';
 
 export function runCommonTests(client: Client) {
@@ -60,8 +61,6 @@ export function runCommonTests(client: Client) {
   describe('node-firebird-driver', () => {
     const testConfig = loadDriverTestConfig();
     let createdTmpDir = false;
-
-    jest.setTimeout(10000);
 
     beforeAll(() => {
       expect(client.isValid).toBeTruthy();

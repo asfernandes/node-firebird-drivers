@@ -1,5 +1,6 @@
 import { connect, createServer } from 'node:net';
 import { once } from 'node:events';
+import { describe, expect, test } from 'vitest';
 
 import { sqlTypes } from 'node-firebird-driver/dist/lib/impl';
 

@@ -16,6 +16,11 @@ export default [
   globalIgnores(['**/dist/']),
 
   {
+    files: ['**/src/test/**/*.{js,mjs,cjs,ts}'],
+    languageOptions: { globals: globals.vitest },
+  },
+
+  {
     rules: {
       curly: ['error', 'all'],
       '@typescript-eslint/no-empty-object-type': 'off',

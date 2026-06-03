@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra-promise';
 import * as os from 'os';
 import * as tmp from 'temp-fs';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util, XpbBuilder } from '../lib';
 
@@ -37,8 +38,6 @@ describe('node-firebird-native-api', () => {
       database
     );
   }
-
-  jest.setTimeout(10000);
 
   beforeAll(() => {
     if (isLocal() && !testConfig.tmpDir) {

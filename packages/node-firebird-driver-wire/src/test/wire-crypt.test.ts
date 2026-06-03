@@ -1,5 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
+import { describe, expect, test } from 'vitest';
 
 import {
   ChaChaStreamCipher,
