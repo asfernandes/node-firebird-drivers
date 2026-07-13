@@ -1086,6 +1086,35 @@ export function runCommonTests(client: Client) {
         }
       });
 
+      test('OCTETS charset preserves raw bytes for read/write', async () => {
+        const filename = getDriverTestDatabaseUri(testConfig, 'ResultSet-octets-charset.fdb');
+
+        const attachment = await client.createDatabase(filename);
+        const transaction = await attachment.startTransaction();
+        await attachment.execute(transaction, 'create table t1 (id integer, x varchar(4) character set octets)');
+        await transaction.commitRetaining();
+
+        await attachment.execute(
+          transaction,
+          "insert into t1 (id, x) values (1, cast(x'000102ff' as varchar(4) character set octets))",
+        );
+
+        const bytes = Buffer.from([0x00, 0x7f, 0x80, 0xff]);
+        await attachment.execute(transaction, 'insert into t1 (id, x) values (2, ?)', [bytes]);
+
+        const row1 = await attachment.executeSingleton(transaction, 'select x from t1 where id = 1');
+        const row2 = await attachment.executeSingleton(transaction, 'select x from t1 where id = 2');
+
+        expect(Buffer.isBuffer(row1[0])).toBeTruthy();
+        expect(row1[0]).toEqual(Buffer.from([0x00, 0x01, 0x02, 0xff]));
+
+        expect(Buffer.isBuffer(row2[0])).toBeTruthy();
+        expect(row2[0]).toEqual(bytes);
+
+        await transaction.commit();
+        await attachment.dropDatabase();
+      });
+
       test('#fetch() with fetchSize', async () => {
         const attachment = await client.createDatabase(
           getDriverTestDatabaseUri(testConfig, 'ResultSet-fetch-with-fetchSize.fdb'),
