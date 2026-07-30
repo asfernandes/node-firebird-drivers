@@ -1,5 +1,5 @@
-import * as os from 'os';
-const littleEndian = os.endianness() === 'LE';
+// Portable endianness detection (works in Node.js and React Native; no `os` package).
+const littleEndian = new Uint8Array(Uint16Array.of(1).buffer)[0] === 1;
 
 import { AbstractAttachment } from './attachment';
 import { decodeDate, decodeTime, encodeDate, encodeTime } from './date-time';
