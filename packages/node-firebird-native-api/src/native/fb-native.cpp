@@ -88,7 +88,7 @@ void parseStatusVector(const intptr_t* statusVector, std::vector<StatusArg>& arg
 			intptr_t code = statusVector[i++];
 			if (code != 0)
 			{
-				arg.type = "gds";
+				arg.type = "error";
 				arg.code = static_cast<int>(code);
 				args.push_back(arg);
 			}
@@ -153,18 +153,12 @@ Napi::Array buildStatusVectorArray(const Napi::Env env, const std::vector<Status
 	{
 		Napi::Object obj = Napi::Object::New(env);
 		obj.Set("type", args[i].type);
-		if (args[i].type == "gds" || args[i].type == "warning")
-		{
+		if (args[i].type == "error" || args[i].type == "warning")
 			obj.Set("code", Napi::Number::New(env, args[i].code));
-		}
 		else if (args[i].type == "string")
-		{
 			obj.Set("value", Napi::String::New(env, args[i].strValue));
-		}
 		else if (args[i].type == "number")
-		{
 			obj.Set("value", Napi::Number::New(env, args[i].numValue));
-		}
 		array[i] = obj;
 	}
 	return array;

@@ -452,7 +452,7 @@ export interface ZonedDateEx extends ZonedDate {
 
 /** A status vector item representing an error or warning code and its associated arguments. */
 export interface FbStatus {
-  readonly type: 'gds' | 'warning';
+  readonly type: 'error' | 'warning';
   readonly code: number;
   readonly args: readonly (string | number)[];
 }
@@ -469,9 +469,14 @@ export class FbError extends Error {
     this.status = status;
   }
 
-  /** Array of GDS error codes. */
+  /** Array of error codes. */
+  get errors(): readonly number[] {
+    return this.status.filter((s) => s.type === 'error').map((s) => s.code);
+  }
+
+  /** Array of error codes (alias for errors). */
   get gdsCodes(): readonly number[] {
-    return this.status.filter((s) => s.type === 'gds').map((s) => s.code);
+    return this.errors;
   }
 
   /** Array of warning codes. */
@@ -491,23 +496,15 @@ export class FbError extends Error {
   }
 }
 
-/** Firebird GDS/error constants. */
-export namespace gdscodes {
-  export const isc_cancelled = 335544794;
-  export const isc_dsql_error = 335544569;
-  export const isc_sqlerr = 335544436;
-  export const isc_dsql_token_unk_err = 335544634;
-  export const isc_random = 335544382;
-  export const isc_io_error = 335544344;
-}
+export * from './error-codes';
 
 /** Helper to parse raw flat status vector from C++ layer or wire parser into structured FbStatus items. */
 export function parseRawStatusVector(raw: any[]): FbStatus[] {
   const result: FbStatus[] = [];
-  let current: { type: 'gds' | 'warning'; code: number; args: (string | number)[] } | undefined;
+  let current: { type: 'error' | 'warning'; code: number; args: (string | number)[] } | undefined;
 
   for (const item of raw) {
-    if (item.type === 'gds' || item.type === 'warning') {
+    if (item.type === 'error' || item.type === 'gds' || item.type === 'warning') {
       if (current) {
         result.push({
           type: current.type,
@@ -516,7 +513,7 @@ export function parseRawStatusVector(raw: any[]): FbStatus[] {
         });
       }
       current = {
-        type: item.type,
+        type: item.type === 'gds' ? 'error' : item.type,
         code: item.code,
         args: [],
       };
@@ -540,7 +537,7 @@ export function parseRawStatusVector(raw: any[]): FbStatus[] {
 export function buildStatusFromFlat(gdsCodes: number[], warnings: number[], messages: string[]): FbStatus[] {
   const result: FbStatus[] = [];
   for (const code of gdsCodes) {
-    result.push({ type: 'gds', code, args: [] });
+    result.push({ type: 'error', code, args: [] });
   }
   for (const code of warnings) {
     result.push({ type: 'warning', code, args: [] });

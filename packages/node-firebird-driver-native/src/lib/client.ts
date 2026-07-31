@@ -38,12 +38,19 @@ export class ClientImpl extends AbstractClient {
     const status = this.master!.getStatusSync()!;
     try {
       return await action(status);
-    } catch (e: any) {
-      if (e && (e.statusVector !== undefined || e.gdsCodes !== undefined)) {
-        const groupedStatus = e.statusVector
-          ? parseRawStatusVector(e.statusVector)
-          : buildStatusFromFlat(e.gdsCodes || [], e.warnings || [], e.messages || []);
-        throw new FbError(e.message, groupedStatus);
+    } catch (e: unknown) {
+      const err = e as {
+        statusVector?: any[];
+        gdsCodes?: number[];
+        warnings?: number[];
+        messages?: string[];
+        message?: string;
+      } | null;
+      if (err && (err.statusVector !== undefined || err.gdsCodes !== undefined)) {
+        const groupedStatus = err.statusVector
+          ? parseRawStatusVector(err.statusVector)
+          : buildStatusFromFlat(err.gdsCodes || [], err.warnings || [], err.messages || []);
+        throw new FbError(err.message || String(e), groupedStatus);
       }
       throw e;
     } finally {
