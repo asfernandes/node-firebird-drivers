@@ -195,6 +195,10 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
     : options.searchPath?.trim();
 
   if (searchPath) {
+    if (searchPath.length > 255) {
+      throw new Error('ConnectOptions.searchPath length cannot exceed 255.');
+    }
+
     ret += `${code(dpb.search_path)}${code(searchPath.length)}${searchPath}`;
   }
 
