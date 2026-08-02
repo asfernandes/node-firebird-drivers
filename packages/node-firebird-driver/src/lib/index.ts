@@ -49,6 +49,19 @@ export interface ConnectOptions {
   setDatabaseReadWriteMode?: DatabaseReadWriteMode;
 
   /**
+   * Firebird 6+ SQL schema search path: which schemas unqualified names resolve through, in order.
+   *
+   * Sent as the `isc_dpb_search_path` attachment parameter, so it is in effect before the session's
+   * first statement — unlike `SET SEARCH_PATH`, which is a statement of its own. Accepts a list or
+   * a comma-separated string. The server appends `SYSTEM` itself, and silently ignores the
+   * parameter when the negotiated protocol predates Firebird 6.
+   *
+   * Note there is no separate "default schema": `CURRENT_SCHEMA` is the first existing entry of
+   * this path, so putting a schema first is how a default is expressed.
+   */
+  searchPath?: string | string[];
+
+  /**
    * Node.js character set encoding used for Firebird NONE charset columns/parameters.
    * Requires iconv-lite package.
    */
