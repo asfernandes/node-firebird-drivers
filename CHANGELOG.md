@@ -1,3 +1,7 @@
+## Next
+
+- Feature [#172](https://github.com/asfernandes/node-firebird-drivers/issues/172) - Add a ConnectOptions option for the Firebird 6 schema search path.
+
 ## May, 04, 2026
 
 - Feature [#166](https://github.com/asfernandes/node-firebird-drivers/issues/166) - Create pure Node.js driver that do not depend on native fbclient.
