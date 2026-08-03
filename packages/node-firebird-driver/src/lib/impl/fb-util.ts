@@ -609,8 +609,10 @@ export function createDataWriter(descriptors: Descriptor[]): DataWriter {
           }
 
           if (bytesArray.length > descriptor.length) {
-            throw new Error(`Length in bytes of value (${bytesArray.length}) is ` +
-              `greater than maximum expect length ${descriptor.length}.`);
+            throw new Error(
+              `Length in bytes of value (${bytesArray.length}) is ` +
+                `greater than maximum expect length ${descriptor.length}.`,
+            );
           }
 
           dataView.setUint16(descriptor.offset, bytesArray.length, littleEndian);
