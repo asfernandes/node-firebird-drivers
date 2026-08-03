@@ -65,6 +65,7 @@ export namespace dpb {
   export const specific_auth_data = 84;
   export const auth_plugin_list = 85;
   export const auth_plugin_name = 86;
+  export const search_path = 105;
 }
 
 /** TPB constants. */
@@ -184,6 +185,21 @@ export function createDpb(options?: ConnectOptions | CreateDatabaseOptions): Buf
 
   if (options.role) {
     ret += `${code(dpb.sql_role_name)}${code(options.role.length)}${options.role}`;
+  }
+
+  const searchPath = Array.isArray(options.searchPath)
+    ? options.searchPath
+        .map((schema) => schema.trim())
+        .filter((schema) => schema.length > 0)
+        .join(',')
+    : options.searchPath?.trim();
+
+  if (searchPath) {
+    if (searchPath.length > 255) {
+      throw new Error('ConnectOptions.searchPath length cannot exceed 255.');
+    }
+
+    ret += `${code(dpb.search_path)}${code(searchPath.length)}${searchPath}`;
   }
 
   const createOptions = options as CreateDatabaseOptions;
