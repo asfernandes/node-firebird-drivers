@@ -1,5 +1,9 @@
 ## Next
 
+- Fix [#171](https://github.com/asfernandes/node-firebird-drivers/issues/171) - Fix OCTETS charset handling for SQL_VARYING values.
+
+## Aug, 08, 2026
+
 - Feature [#172](https://github.com/asfernandes/node-firebird-drivers/issues/172) - Add a ConnectOptions option for the Firebird 6 schema search path.
 
 ## May, 04, 2026
