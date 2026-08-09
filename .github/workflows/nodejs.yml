@@ -19,10 +19,10 @@ jobs:
           - windows-2025
           - macos-15
         node-version:
-          - 20.x
           - 22.x
           - 24.x
           - 25.x
+          - 26.x
 
     env:
       ISC_USER: sysdba

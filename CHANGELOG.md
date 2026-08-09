@@ -1,6 +1,6 @@
-## Next
+## Aug, 09, 2026
 
-- Fix [#171](https://github.com/asfernandes/node-firebird-drivers/issues/171) - Fix OCTETS charset handling for SQL_VARYING values.
+- Fix [#174](https://github.com/asfernandes/node-firebird-drivers/issues/174) - Support for offset-based time zones.
 
 ## Aug, 08, 2026
 

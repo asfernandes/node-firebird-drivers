@@ -1,4 +1,6 @@
 const TZID_GMT = 65535;
+const TZID_OFFSET_BASE = 24 * 60 - 1;
+const MAX_OFFSET_MINUTES = 14 * 60;
 
 const TZID_ARRAY = [
   'GMT',
@@ -640,6 +642,18 @@ const TZID_ARRAY = [
 const TZID_MAP = new Map(TZID_ARRAY.map((name, index) => [name.toUpperCase(), TZID_GMT - index]));
 
 export function tzIdToString(tzId: number): string {
+  const offset = tzId - TZID_OFFSET_BASE;
+
+  if (offset >= -MAX_OFFSET_MINUTES && offset <= MAX_OFFSET_MINUTES) {
+    const absoluteOffset = Math.abs(offset);
+    const hours = Math.floor(absoluteOffset / 60)
+      .toString()
+      .padStart(2, '0');
+    const minutes = (absoluteOffset % 60).toString().padStart(2, '0');
+
+    return `${offset < 0 ? '-' : '+'}${hours}:${minutes}`;
+  }
+
   if (tzId > TZID_GMT || TZID_GMT - tzId >= TZID_ARRAY.length) {
     throw new Error('Invalid time zone ID.');
   }
@@ -647,6 +661,21 @@ export function tzIdToString(tzId: number): string {
 }
 
 export function tzStringToId(tzStr: string): number {
+  const offsetMatch = /^([+-])(\d{1,2}):(\d{1,2})$/.exec(tzStr.trim());
+
+  if (offsetMatch) {
+    const hours = Number(offsetMatch[2]);
+    const minutes = Number(offsetMatch[3]);
+
+    if (hours > 14 || minutes > 59 || (hours === 14 && minutes !== 0)) {
+      throw new Error('Invalid time zone.');
+    }
+
+    const offset = (hours * 60 + minutes) * (offsetMatch[1] === '-' ? -1 : 1);
+
+    return TZID_OFFSET_BASE + offset;
+  }
+
   const id = TZID_MAP.get(tzStr.toUpperCase());
 
   if (!id) {
