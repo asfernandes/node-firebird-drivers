@@ -46,7 +46,16 @@ export class AttachmentImpl extends AbstractAttachment {
 
     return await client.statusAction(async (status) => {
       const dpb = createDpb(options);
-      attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, uri, dpb.length, dpb);
+      let encodedUri = uri;
+      if (process.platform === 'win32') {
+        try {
+          const { default: iconv } = await import('iconv-lite');
+          encodedUri = iconv.encode(uri, 'cp0').toString('binary');
+        } catch {
+          // Fallback to original URI if iconv-lite is not available
+        }
+      }
+      attachment.attachmentHandle = await client!.dispatcher!.createDatabaseAsync(status, encodedUri, dpb.length, dpb);
       return attachment;
     });
   }
