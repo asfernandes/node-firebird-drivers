@@ -1,4 +1,5 @@
 import { Socket } from 'node:net';
+import { deflateSync, inflateSync } from 'node:zlib';
 
 export class SocketChannel {
   private readonly buffers: Buffer[] = [];
@@ -6,6 +7,8 @@ export class SocketChannel {
   private ended = false;
   private incomingTransform?: ((chunk: Buffer) => Buffer) | undefined;
   private outgoingTransform?: ((chunk: Buffer) => Buffer) | undefined;
+  private incomingCompress = false;
+  private outgoingCompress = false;
   private pendingRead?:
     | {
         length: number;
@@ -16,7 +19,13 @@ export class SocketChannel {
 
   constructor(private readonly socket: Socket) {
     socket.on('data', (chunk: Buffer) => {
-      const data = this.incomingTransform ? this.incomingTransform(chunk) : chunk;
+      let data = chunk;
+      if (this.incomingCompress) {
+        data = inflateSync(data);
+      }
+      if (this.incomingTransform) {
+        data = this.incomingTransform(data);
+      }
       this.buffers.push(data);
       this.bufferedLength += data.length;
       this.flushPendingRead();
@@ -50,7 +59,10 @@ export class SocketChannel {
   }
 
   async write(buffer: Buffer): Promise<void> {
-    const data = this.outgoingTransform ? this.outgoingTransform(buffer) : buffer;
+    let data = this.outgoingTransform ? this.outgoingTransform(buffer) : buffer;
+    if (this.outgoingCompress) {
+      data = deflateSync(data);
+    }
 
     await new Promise<void>((resolve, reject) => {
       this.socket.write(data, (error) => {
@@ -73,6 +85,11 @@ export class SocketChannel {
 
     this.incomingTransform = transforms.incoming;
     this.outgoingTransform = transforms.outgoing;
+  }
+
+  enableCompression(): void {
+    this.incomingCompress = true;
+    this.outgoingCompress = true;
   }
 
   private flushPendingRead(): void {

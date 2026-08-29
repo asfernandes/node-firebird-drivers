@@ -5,6 +5,7 @@ import { AbstractClient } from 'node-firebird-driver/dist/lib/impl';
 
 export interface WireClientOptions {
   readonly timeoutMs?: number;
+  readonly statementTimeoutMs?: number;
 }
 
 export function createWireClient(options?: WireClientOptions): Client {

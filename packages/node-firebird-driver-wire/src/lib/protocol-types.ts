@@ -6,6 +6,7 @@ export interface WireProtocolOptions {
   readonly username: string;
   readonly password: string;
   readonly timeoutMs?: number;
+  readonly statementTimeoutMs?: number;
 }
 
 export interface AttachmentHandle {

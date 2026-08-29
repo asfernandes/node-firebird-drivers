@@ -1,6 +1,7 @@
 export namespace wireProtocol {
   export const connectVersion3 = 3;
   export const archGeneric = 1;
+  export const defaultPort = 3050;
 
   export const protocolFlag = 0x8000;
   export const version11 = protocolFlag | 11;
@@ -12,7 +13,17 @@ export namespace wireProtocol {
   export const version17 = protocolFlag | 17;
   export const version18 = protocolFlag | 18;
   export const version19 = protocolFlag | 19;
-  export const supportedProtocols = [version19, version18, version17, version16, version15, version14, version13];
+  export const version20 = protocolFlag | 20;
+  export const supportedProtocols = [
+    version20,
+    version19,
+    version18,
+    version17,
+    version16,
+    version15,
+    version14,
+    version13,
+  ];
 }
 
 export namespace wireOp {
@@ -69,11 +80,16 @@ export namespace wireOp {
 export namespace wirePacketType {
   export const batchSend = 3;
   export const lazySend = 5;
+  export const compressFlag = 0x100;
 }
 
 export namespace wireProtocolFeature {
   export const invalidObjectHandle = 0xffff;
   export const inlineBlobMaxSize = 65535;
+  export const prepareFlagNoPlan = 0x1;
+  export const prepareFlagNoBatch = 0x2;
+  export const prepareFlagUseDatails = 0x4;
+  export const prepareFlagDescribe = 0x8;
 }
 
 export namespace connectParameter {

@@ -59,6 +59,7 @@ export class AttachmentImpl extends AbstractAttachment {
       username,
       password,
       timeoutMs: client.wireOptions.timeoutMs,
+      statementTimeoutMs: client.wireOptions.statementTimeoutMs,
     });
 
     const dpb = createDpb(options);

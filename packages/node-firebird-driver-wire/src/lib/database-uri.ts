@@ -1,3 +1,5 @@
+import { wireProtocol } from './constants';
+
 export interface ParsedDatabaseUri {
   readonly host: string;
   readonly port: number;
@@ -9,7 +11,7 @@ export function parseDatabaseUri(uri: string): ParsedDatabaseUri {
   if (/^[A-Za-z]:(?:[\\/]|$)/.test(uri)) {
     return {
       host: 'localhost',
-      port: 3050,
+      port: wireProtocol.defaultPort,
       database: uri,
     };
   }
@@ -20,7 +22,7 @@ export function parseDatabaseUri(uri: string): ParsedDatabaseUri {
   if (urlMatch) {
     const remainder = urlMatch[2];
     let host = 'localhost';
-    let port = 3050;
+    let port = wireProtocol.defaultPort;
     let database: string;
 
     if (remainder.startsWith('/')) {
@@ -60,7 +62,7 @@ export function parseDatabaseUri(uri: string): ParsedDatabaseUri {
 
   return {
     host: match[1] || 'localhost',
-    port: match[2] ? parseInt(match[2], 10) : 3050,
+    port: match[2] ? parseInt(match[2], 10) : wireProtocol.defaultPort,
     database: match[3],
   };
 }

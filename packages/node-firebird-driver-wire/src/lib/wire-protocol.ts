@@ -549,6 +549,7 @@ export class WireProtocol {
         prepareWriter.writeString(sql);
         prepareWriter.writeBuffer(STATEMENT_BASE_INFO_ITEMS);
         prepareWriter.writeInt32(INFO_BUFFER_LENGTH);
+        this.writePrepareStatementFields(prepareWriter);
         await this.channel.write(prepareWriter.toBuffer());
 
         const prepareOperation = await this.readOperation();
@@ -572,6 +573,7 @@ export class WireProtocol {
       writer.writeString(sql);
       writer.writeBuffer(STATEMENT_BASE_INFO_ITEMS);
       writer.writeInt32(INFO_BUFFER_LENGTH);
+      this.writePrepareStatementFields(writer);
       await this.channel.write(writer.toBuffer());
 
       const allocateOperation = await this.readOperation();
@@ -615,6 +617,7 @@ export class WireProtocol {
       writer.writeString(sql);
       writer.writeBuffer(STATEMENT_BASE_INFO_ITEMS);
       writer.writeInt32(INFO_BUFFER_LENGTH);
+      this.writePrepareStatementFields(writer);
       await this.channel.write(writer.toBuffer());
 
       const operation = await this.readOperation();
@@ -898,7 +901,7 @@ export class WireProtocol {
 
     const socket = connectSocket({
       host: this.options.host,
-      port: this.options.port ?? 3050,
+      port: this.options.port ?? wireProtocol.defaultPort,
       timeout: this.options.timeoutMs ?? 5000,
     });
 
@@ -1290,7 +1293,7 @@ export class WireProtocol {
     }
 
     if (this.supportsProtocol(wireProtocol.version16)) {
-      writer.writeInt32(0);
+      writer.writeInt32(this.options.statementTimeoutMs ?? 0);
     }
 
     if (this.supportsProtocol(wireProtocol.version18)) {
@@ -1328,6 +1331,13 @@ export class WireProtocol {
     assertSuccessfulResponse(response.status, 'Firebird execute statement failed');
 
     return outputMessage;
+  }
+
+  private writePrepareStatementFields(writer: XdrWriter): void {
+    if (this.supportsProtocol(wireProtocol.version20)) {
+      writer.writeInt32(0);
+      writer.writeInt32(wireProtocolFeature.inlineBlobMaxSize);
+    }
   }
 
   private async getInfo(operationCode: number, handle: number, items: Buffer, actionName: string): Promise<Buffer> {
@@ -1412,13 +1422,16 @@ export class WireProtocol {
       const operation = await this.readOperation();
 
       if (operation === wireOp.accept) {
-        this.noteAcceptedProtocol(await this.readAcceptMessage(false));
+        const accept = await this.readAcceptMessage(false);
+        this.noteAcceptedProtocol(accept);
+        this.enableCompressionIfNegotiated(accept);
         return this.currentPlugin.initialData;
       }
 
       if (operation === wireOp.acceptData || operation === wireOp.condAccept) {
         const accept = await this.readAcceptMessage(true);
         this.noteAcceptedProtocol(accept);
+        this.enableCompressionIfNegotiated(accept);
         this.recordServerKeys(accept.keys);
         const attachAuthData = accept.authenticated ? undefined : this.processAcceptPlugin(accept);
 
@@ -1814,6 +1827,12 @@ export class WireProtocol {
     this.acceptedProtocolVersion =
       accept.protocolVersion < 0 ? accept.protocolVersion & 0xffff : accept.protocolVersion;
     this.acceptedPacketType = accept.packetType & 0xff;
+  }
+
+  private enableCompressionIfNegotiated(accept: AcceptMessage): void {
+    if (this.channel && (accept.packetType & wirePacketType.compressFlag) !== 0) {
+      this.channel.enableCompression();
+    }
   }
 
   private storeInlineBlob(blob: InlineBlobResponse): void {
