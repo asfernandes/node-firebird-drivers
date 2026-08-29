@@ -1,3 +1,7 @@
+## Aug, 29, 2026
+
+- Fix [#177](https://github.com/asfernandes/node-firebird-drivers/issues/177) - Improve performance when fetching large result sets with the wire driver.
+
 ## Aug, 09, 2026
 
 - Fix [#174](https://github.com/asfernandes/node-firebird-drivers/issues/174) - Support for offset-based time zones.

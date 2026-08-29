@@ -64,6 +64,13 @@ export type {
 type AuthPluginName = authPlugin.Name;
 
 const FETCH_NO_DATA = 100;
+const FETCH_ROW_BATCH_SIZE = 400;
+
+interface CursorFetchState {
+  readonly rows: Buffer[];
+  exhausted: boolean;
+  pendingError?: unknown;
+}
 
 const STATEMENT_BASE_INFO_ITEMS = Buffer.from([statementInfo.sqlStmtType, statementInfo.sqlStmtFlags]);
 const STATEMENT_SELECT_INFO_ITEMS = Buffer.from([
@@ -111,7 +118,7 @@ export class WireProtocol {
   private acceptedPacketType = wirePacketType.batchSend;
   private readonly pendingServerKeys: Buffer[] = [];
   private readonly statementMetadata = new Map<number, StatementMetadata>();
-  private readonly exhaustedCursors = new Set<number>();
+  private readonly cursorFetchStates = new Map<number, CursorFetchState>();
   private readonly eventSubscriptions = new Map<number, EventSubscription>();
   private readonly inlineBlobs = new Map<string, InlineBlobResponse>();
   private readonly blobPositions = new Map<number, number>();
@@ -163,6 +170,7 @@ export class WireProtocol {
       const response = await this.readResponse();
       assertSuccessfulResponse(response.status, 'Firebird detach failed');
       this.attachmentHandle = undefined;
+      this.cursorFetchStates.clear();
     });
   }
 
@@ -185,6 +193,7 @@ export class WireProtocol {
       const response = await this.readResponse();
       assertSuccessfulResponse(response.status, 'Firebird drop database failed');
       this.attachmentHandle = undefined;
+      this.cursorFetchStates.clear();
     });
   }
 
@@ -695,7 +704,7 @@ export class WireProtocol {
       }
 
       await this.executePreparedStatement(transaction, statement, inputMessage, false);
-      this.exhaustedCursors.delete(statement.handle);
+      this.cursorFetchStates.set(statement.handle, { rows: [], exhausted: false });
 
       return {
         statement,
@@ -718,7 +727,24 @@ export class WireProtocol {
         throw new Error('Statement metadata is not available for cursor fetch.');
       }
 
-      if (this.exhaustedCursors.has(cursor.statement.handle)) {
+      const fetchState = this.cursorFetchStates.get(cursor.statement.handle) ?? {
+        rows: [],
+        exhausted: false,
+        pendingError: undefined,
+      };
+      this.cursorFetchStates.set(cursor.statement.handle, fetchState);
+
+      if (fetchState.rows.length > 0) {
+        return fetchState.rows.shift();
+      }
+
+      if (fetchState.pendingError !== undefined) {
+        const pendingError = fetchState.pendingError;
+        delete fetchState.pendingError;
+        throw pendingError;
+      }
+
+      if (fetchState.exhausted) {
         return undefined;
       }
 
@@ -727,10 +753,10 @@ export class WireProtocol {
       writer.writeInt32(cursor.statement.handle);
       writer.writeBuffer(cursor.fetchBlr);
       writer.writeInt32(0);
-      writer.writeInt32(1);
+      writer.writeInt32(FETCH_ROW_BATCH_SIZE);
       await this.channel.write(writer.toBuffer());
 
-      const operation = await this.readOperationWithInlineBlobs();
+      let operation = await this.readOperationWithInlineBlobs();
       if (operation === wireOp.response) {
         const response = await this.readResponse();
         assertSuccessfulResponse(response.status, 'Firebird fetch cursor row failed');
@@ -741,33 +767,59 @@ export class WireProtocol {
         throw new Error(`Unexpected operation ${operation} while fetching a cursor row.`);
       }
 
-      const status = (await this.channel.readExactly(4)).readInt32BE(0);
-      const messages = (await this.channel.readExactly(4)).readInt32BE(0);
+      while (true) {
+        const status = (await this.channel.readExactly(4)).readInt32BE(0);
+        const messages = (await this.channel.readExactly(4)).readInt32BE(0);
 
-      if (messages === 0) {
-        if (status === FETCH_NO_DATA) {
-          this.exhaustedCursors.add(cursor.statement.handle);
-          return undefined;
+        if (messages === 0) {
+          if (status === FETCH_NO_DATA) {
+            fetchState.exhausted = true;
+          } else if (status !== 0) {
+            fetchState.pendingError = new Error(`Firebird cursor fetch failed with status ${status}.`);
+          }
+          break;
         }
 
-        if (status === 0) {
-          return undefined;
+        if (messages !== 1) {
+          throw new Error(`Unsupported cursor fetch batch size ${messages}.`);
         }
 
-        throw new Error(`Firebird cursor fetch failed with status ${status}.`);
+        fetchState.rows.push(
+          await readPackedMessageBuffer(this.channel, metadata.outputColumns, metadata.outputMessageLength),
+        );
+
+        operation = await this.readOperationWithInlineBlobs();
+        if (operation === wireOp.response) {
+          const response = await this.readResponse();
+          try {
+            assertSuccessfulResponse(response.status, 'Firebird fetch cursor row failed');
+          } catch (error) {
+            fetchState.pendingError = error;
+            break;
+          }
+
+          fetchState.pendingError = new Error(
+            `Unexpected operation ${operation} while completing a cursor fetch batch.`,
+          );
+          break;
+        }
+
+        if (operation !== wireOp.fetchResponse) {
+          throw new Error(`Unexpected operation ${operation} while completing a cursor fetch batch.`);
+        }
       }
 
-      if (messages !== 1) {
-        throw new Error(`Unsupported cursor fetch batch size ${messages}.`);
+      if (fetchState.rows.length > 0) {
+        return fetchState.rows.shift();
       }
 
-      const rowBuffer = await readPackedMessageBuffer(
-        this.channel,
-        metadata.outputColumns,
-        metadata.outputMessageLength,
-      );
-      await this.readFetchBatchMarker(cursor.statement.handle);
-      return rowBuffer;
+      if (fetchState.pendingError !== undefined) {
+        const pendingError = fetchState.pendingError;
+        delete fetchState.pendingError;
+        throw pendingError;
+      }
+
+      return undefined;
     });
   }
 
@@ -835,6 +887,7 @@ export class WireProtocol {
     this.acceptedPacketType = wirePacketType.batchSend;
     this.pendingServerKeys.length = 0;
     this.eventSubscriptions.clear();
+    this.cursorFetchStates.clear();
     this.inlineBlobs.clear();
   }
 
@@ -983,8 +1036,9 @@ export class WireProtocol {
 
     if ((option & dsql.drop) !== 0) {
       this.statementMetadata.delete(statement.handle);
-      this.exhaustedCursors.delete(statement.handle);
     }
+
+    this.cursorFetchStates.delete(statement.handle);
   }
 
   private async storePreparedStatementMetadata(
@@ -1750,28 +1804,6 @@ export class WireProtocol {
       }
     }
     return Buffer.concat(chunks);
-  }
-
-  private async readFetchBatchMarker(statementHandle: number): Promise<void> {
-    const operation = await this.readOperationWithInlineBlobs();
-    if (operation !== wireOp.fetchResponse) {
-      throw new Error(`Unexpected operation ${operation} while completing a cursor fetch batch.`);
-    }
-
-    const status = (await this.channel!.readExactly(4)).readInt32BE(0);
-    const messages = (await this.channel!.readExactly(4)).readInt32BE(0);
-    if (messages !== 0) {
-      throw new Error(`Unexpected trailing fetch batch payload size ${messages}.`);
-    }
-
-    if (status === FETCH_NO_DATA) {
-      this.exhaustedCursors.add(statementHandle);
-      return;
-    }
-
-    if (status !== 0) {
-      throw new Error(`Firebird cursor fetch batch failed with status ${status}.`);
-    }
   }
 
   private supportsProtocol(version: number): boolean {
