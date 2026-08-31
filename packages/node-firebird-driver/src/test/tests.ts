@@ -100,6 +100,45 @@ export function runCommonTests(client: Client) {
         await attachment.dropDatabase();
       });
 
+      test('#createDatabase() with defaultCharSet/defaultCollation', async () => {
+        const attachment = await client.createDatabase(
+          getDriverTestDatabaseUri(testConfig, 'Client-createDatabase-charSet.fdb'),
+          {
+            username: testConfig.username,
+            password: testConfig.password,
+            defaultCharSet: 'UTF8',
+            defaultCollation: 'UNICODE_CI_AI',
+          },
+        );
+
+        const transaction = await attachment.startTransaction();
+
+        const [charSetName] = await attachment.executeSingleton(
+          transaction,
+          'select rdb$character_set_name from rdb$database',
+        );
+        // rdb$character_set_name is a fixed-width CHAR column, hence the trim().
+        expect((charSetName as string).trim()).toBe('UTF8');
+
+        await attachment.execute(transaction, 'create table t1 (c1 varchar(20))');
+        await transaction.commitRetaining();
+
+        await attachment.execute(transaction, "insert into t1 values ('café')");
+        await transaction.commitRetaining();
+
+        // UNICODE_CI_AI is case- and accent-insensitive. Comparing against a differently
+        // cased, unaccented literal only matches here if the database's default collation
+        // was actually applied to the column, which has no explicit COLLATE clause.
+        const [matchCount] = await attachment.executeSingleton(
+          transaction,
+          "select count(*) from t1 where c1 = 'CAFE'",
+        );
+        expect(matchCount).toBe(1);
+
+        await transaction.commit();
+        await attachment.dropDatabase();
+      });
+
       test('#connect()', async () => {
         const filename = getDriverTestDatabaseUri(testConfig, 'Client-connect.fdb');
         const attachment1 = await client.createDatabase(filename);

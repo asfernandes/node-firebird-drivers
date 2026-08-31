@@ -78,6 +78,20 @@ export enum DatabaseReadWriteMode {
 export interface CreateDatabaseOptions extends ConnectOptions {
   /** Forced write. */
   forcedWrite?: boolean;
+
+  /**
+   * Default character set for the new database (e.g. 'UTF8').
+   * Setting this switches database creation to use IUtil::executeCreateDatabase with an
+   * explicit CREATE DATABASE statement instead of the DPB-based API, which has no way to
+   * express a database's default character set/collation.
+   */
+  defaultCharSet?: string;
+
+  /** Default collation for the new database (e.g. 'UNICODE_CI_AI'). Only applied when defaultCharSet is also set. */
+  defaultCollation?: string;
+
+  /** Page size for the new database. Only applied when defaultCharSet is also set. */
+  pageSize?: number;
 }
 
 /** TransactionIsolation enum */
