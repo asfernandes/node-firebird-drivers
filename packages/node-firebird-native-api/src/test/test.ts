@@ -3,7 +3,22 @@ import * as os from 'os';
 import * as tmp from 'temp-fs';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
-import { disposeMaster, getDefaultLibraryFilename, getMaster, Master, Provider, Util, XpbBuilder } from '../lib';
+import {
+  Attachment,
+  Batch,
+  BatchCompletionState,
+  disposeMaster,
+  getDefaultLibraryFilename,
+  getMaster,
+  Master,
+  MessageMetadata,
+  Pointer,
+  Provider,
+  Status,
+  Transaction,
+  Util,
+  XpbBuilder,
+} from '../lib';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config({ path: '../../.env', quiet: true });
@@ -555,6 +570,272 @@ describe('node-firebird-native-api', () => {
       } finally {
         status.disposeSync();
       }
+    });
+  });
+  // IBatch arrived with Firebird 4: these need a Firebird 4+ client library and server.
+  describe('Batch', () => {
+    const SQL_INSERT = 'insert into t (n, s) values (?, ?)';
+
+    function clientIsFirebird4(): boolean {
+      return master.getUtilInterfaceSync()!.getClientVersionSync() >> 8 >= 4;
+    }
+
+    /** Writes one (n, s) row into a message laid out by `metadata`, at `base`. */
+    function writeRow(
+      status: Status,
+      metadata: MessageMetadata,
+      buffer: Uint8Array,
+      base: number,
+      n: number,
+      s: string,
+    ): void {
+      const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+      view.setInt32(base + metadata.getOffsetSync(status, 0), n, true);
+      view.setInt16(base + metadata.getNullOffsetSync(status, 0), 0, true);
+      const bytes = new TextEncoder().encode(s);
+      const offset = base + metadata.getOffsetSync(status, 1);
+      view.setUint16(offset, bytes.length, true);
+      buffer.set(bytes, offset + 2);
+      view.setInt16(base + metadata.getNullOffsetSync(status, 1), 0, true);
+    }
+
+    /** A batch parameters block with the given (tag, value) pairs. */
+    function batchParameters(
+      status: Status,
+      tags: [number, number][],
+    ): { buffer: Pointer; length: number; dispose(): void } {
+      const util = master.getUtilInterfaceSync()!;
+      const builder = util.getXpbBuilderSync(status, XpbBuilder.BATCH, undefined, 0)!;
+      for (const [tag, value] of tags) {
+        builder.insertIntSync(status, tag, value);
+      }
+      return {
+        buffer: builder.getBufferSync(status)!,
+        length: builder.getBufferLengthSync(status),
+        dispose: () => builder.disposeSync(),
+      };
+    }
+
+    async function withTable(
+      name: string,
+      ddl: string,
+      fn: (status: Status, attachment: Attachment, transaction: Transaction) => Promise<void>,
+    ): Promise<void> {
+      const status = master.getStatusSync()!;
+      try {
+        const attachment = (await dispatcher.createDatabaseAsync(status, getTempFile(name), 0, undefined))!;
+        try {
+          const transaction = (await attachment.startTransactionAsync(status, 0, undefined))!;
+          try {
+            await attachment.executeAsync(status, transaction, 0, ddl, 3, undefined, undefined, undefined, undefined);
+            await transaction.commitRetainingAsync(status);
+            await fn(status, attachment, transaction);
+          } finally {
+            await transaction.commitAsync(status);
+          }
+        } finally {
+          await attachment.dropDatabaseAsync(status);
+        }
+      } finally {
+        status.disposeSync();
+      }
+    }
+
+    async function count(status: Status, attachment: Attachment, transaction: Transaction): Promise<[number, number]> {
+      const outMetadata = master.getMetadataBuilderSync(status, 2)!;
+      outMetadata.setTypeSync(status, 0, 496 + 1); // SQL_LONG, nullable
+      outMetadata.setLengthSync(status, 0, 4);
+      outMetadata.setTypeSync(status, 1, 496 + 1);
+      outMetadata.setLengthSync(status, 1, 4);
+      const metadata = outMetadata.getMetadataSync(status)!;
+      outMetadata.releaseSync();
+      try {
+        const buffer = new Uint8Array(metadata.getMessageLengthSync(status));
+        await attachment.executeAsync(
+          status,
+          transaction,
+          0,
+          'select cast(count(*) as integer), cast(sum(n) as integer) from t',
+          3,
+          undefined,
+          undefined,
+          metadata,
+          buffer,
+        );
+        const view = new DataView(buffer.buffer);
+        return [
+          view.getInt32(metadata.getOffsetSync(status, 0), true),
+          view.getInt32(metadata.getOffsetSync(status, 1), true),
+        ];
+      } finally {
+        metadata.releaseSync();
+      }
+    }
+
+    test('#createBatch() runs one statement for many messages', async ({ skip }) => {
+      if (!clientIsFirebird4()) {
+        skip();
+      }
+
+      await withTable(
+        'Batch-createBatch.fdb',
+        'create table t (n integer, s varchar(10))',
+        async (status, attachment, transaction) => {
+          const statement = (await attachment.prepareAsync(status, transaction, 0, SQL_INSERT, 3, 0))!;
+          const metadata = (await statement.getInputMetadataAsync(status))!;
+          const pb = batchParameters(status, [[Batch.TAG_RECORD_COUNTS, 1]]);
+          let batch: Batch | undefined;
+          try {
+            batch = (await statement.createBatchAsync(status, metadata, pb.length, pb.buffer))!;
+
+            // One message per add()...
+            const message = new Uint8Array(metadata.getMessageLengthSync(status));
+            for (let i = 1; i <= 3; i++) {
+              writeRow(status, metadata, message, 0, i, `row ${i}`);
+              batch.addSync(status, 1, message);
+            }
+
+            // ...and several in one add(), each at the aligned length.
+            const stride = metadata.getAlignedLengthSync(status);
+            const messages = new Uint8Array(stride * 2);
+            writeRow(status, metadata, messages, 0, 4, 'row 4');
+            writeRow(status, metadata, messages, stride, 5, 'row 5');
+            await batch.addAsync(status, 2, messages);
+
+            const state = (await batch.executeAsync(status, transaction))!;
+            try {
+              expect(state.getSizeSync(status)).toBe(5);
+              for (let i = 0; i < 5; i++) {
+                expect(state.getStateSync(status, i)).toBe(1);
+              }
+              expect(state.findErrorSync(status, 0)).toBe(BatchCompletionState.NO_MORE_ERRORS);
+            } finally {
+              state.disposeSync();
+            }
+
+            expect(await count(status, attachment, transaction)).toEqual([5, 15]);
+          } finally {
+            if (batch) {
+              await batch.closeAsync(status);
+            }
+            pb.dispose();
+            metadata.releaseSync();
+            await statement.freeAsync(status);
+          }
+        },
+      );
+    });
+
+    test('#createBatch() with TAG_MULTIERROR reports each failed message', async ({ skip }) => {
+      if (!clientIsFirebird4()) {
+        skip();
+      }
+
+      await withTable(
+        'Batch-multiError.fdb',
+        'create table t (n integer not null primary key, s varchar(10))',
+        async (status, attachment, transaction) => {
+          const statement = (await attachment.prepareAsync(status, transaction, 0, SQL_INSERT, 3, 0))!;
+          const metadata = (await statement.getInputMetadataAsync(status))!;
+          const pb = batchParameters(status, [
+            [Batch.TAG_MULTIERROR, 1],
+            [Batch.TAG_RECORD_COUNTS, 1],
+          ]);
+          let batch: Batch | undefined;
+          try {
+            batch = (await statement.createBatchAsync(status, metadata, pb.length, pb.buffer))!;
+            const message = new Uint8Array(metadata.getMessageLengthSync(status));
+            for (const n of [1, 2, 1, 3]) {
+              writeRow(status, metadata, message, 0, n, `row ${n}`);
+              batch.addSync(status, 1, message);
+            }
+
+            const state = (await batch.executeAsync(status, transaction))!;
+            try {
+              expect(state.getSizeSync(status)).toBe(4);
+              expect([0, 1, 2, 3].map((i) => state.getStateSync(status, i))).toEqual([
+                1,
+                1,
+                BatchCompletionState.EXECUTE_FAILED,
+                1,
+              ]);
+              expect(state.findErrorSync(status, 0)).toBe(2);
+              expect(state.findErrorSync(status, 3)).toBe(BatchCompletionState.NO_MORE_ERRORS);
+
+              const error = master.getStatusSync()!;
+              try {
+                state.getStatusSync(status, error, 2);
+                expect(error.getStateSync() & Status.STATE_ERRORS).toBeTruthy();
+              } finally {
+                error.disposeSync();
+              }
+            } finally {
+              state.disposeSync();
+            }
+
+            // Every message but the duplicate is in.
+            expect(await count(status, attachment, transaction)).toEqual([3, 6]);
+          } finally {
+            if (batch) {
+              await batch.closeAsync(status);
+            }
+            pb.dispose();
+            metadata.releaseSync();
+            await statement.freeAsync(status);
+          }
+        },
+      );
+    });
+
+    test('Attachment#createBatch() prepares and creates in one call', async ({ skip }) => {
+      if (!clientIsFirebird4()) {
+        skip();
+      }
+
+      await withTable(
+        'Batch-attachment.fdb',
+        'create table t (n integer, s varchar(10))',
+        async (status, attachment, transaction) => {
+          const pb = batchParameters(status, [[Batch.TAG_RECORD_COUNTS, 1]]);
+          let batch: Batch | undefined;
+          try {
+            batch = (await attachment.createBatchAsync(
+              status,
+              transaction,
+              0,
+              SQL_INSERT,
+              3,
+              undefined,
+              pb.length,
+              pb.buffer,
+            ))!;
+            // Without metadata passed in, the batch describes its own messages.
+            const metadata = (await batch.getMetadataAsync(status))!;
+            try {
+              const message = new Uint8Array(metadata.getMessageLengthSync(status));
+              for (let i = 1; i <= 4; i++) {
+                writeRow(status, metadata, message, 0, i * 10, `r${i}`);
+                batch.addSync(status, 1, message);
+              }
+            } finally {
+              metadata.releaseSync();
+            }
+
+            const state = (await batch.executeAsync(status, transaction))!;
+            try {
+              expect(state.getSizeSync(status)).toBe(4);
+            } finally {
+              state.disposeSync();
+            }
+            expect(await count(status, attachment, transaction)).toEqual([4, 100]);
+          } finally {
+            if (batch) {
+              await batch.closeAsync(status);
+            }
+            pb.dispose();
+          }
+        },
+      );
     });
   });
 });

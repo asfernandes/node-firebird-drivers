@@ -4,7 +4,44 @@ type InterfaceConfig = Record<string, { deleteMethods?: string[] }>;
 
 const interfaceConfig: InterfaceConfig = {
   Util: {
-    deleteMethods: ['dumpBlob', 'loadBlob', 'getPerfCounters', 'formatStatus'],
+    deleteMethods: [
+      'dumpBlob',
+      'loadBlob',
+      'getPerfCounters',
+      'formatStatus',
+      // Firebird 4+: these write text into a caller-supplied char buffer.
+      'decodeTimeTz',
+      'decodeTimeStampTz',
+      'decodeTimeTzEx',
+      'decodeTimeStampTzEx',
+    ],
+  },
+
+  // Firebird 4+: toString writes into a caller-supplied char buffer.
+  DecFloat16: {
+    deleteMethods: ['toString'],
+  },
+
+  DecFloat34: {
+    deleteMethods: ['toString'],
+  },
+
+  Int128: {
+    deleteMethods: ['toString'],
+  },
+
+  // Firebird 4+: returns an untyped data pointer.
+  ReplicatedField: {
+    deleteMethods: ['getData'],
+  },
+
+  // Firebird 5+: profiler plugin interfaces, for plugins rather than clients.
+  ProfilerPlugin: {
+    deleteMethods: ['*'],
+  },
+
+  ProfilerSession: {
+    deleteMethods: ['*'],
   },
 
   Statement: {},

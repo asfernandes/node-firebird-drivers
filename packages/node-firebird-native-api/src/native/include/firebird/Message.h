@@ -29,6 +29,12 @@
 #include <assert.h>
 #include <string.h>
 
+#if defined(__linux__) && defined(__i386__)
+#define FB__INT64_ALIGNAS alignas(8)
+#else
+#define FB__INT64_ALIGNAS
+#endif
+
 #define FB_MESSAGE(name, statusType, fields)	\
 	FB__MESSAGE_I(name, statusType, 2, FB_BOOST_PP_CAT(FB__MESSAGE_X fields, 0), )
 
@@ -125,6 +131,11 @@
 	builder->setLength(status, index, sizeof(ISC_INT64));	\
 	builder->setScale(status, index, scale);
 
+#define FB__META_FB_SCALED_INT128(scale)	\
+	builder->setType(status, index, SQL_INT128);	\
+	builder->setLength(status, index, sizeof(FB_I128));	\
+	builder->setScale(status, index, scale);
+
 #define FB__META_FB_FLOAT	\
 	builder->setType(status, index, SQL_FLOAT);	\
 	builder->setLength(status, index, sizeof(float));
@@ -133,25 +144,49 @@
 	builder->setType(status, index, SQL_DOUBLE);	\
 	builder->setLength(status, index, sizeof(double));
 
+#define FB__META_FB_DECFLOAT16	\
+	builder->setType(status, index, SQL_DEC16);	\
+	builder->setLength(status, index, sizeof(FB_DEC16));
+
+#define FB__META_FB_DECFLOAT34	\
+	builder->setType(status, index, SQL_DEC34);	\
+	builder->setLength(status, index, sizeof(FB_DEC34));
+
 #define FB__META_FB_BLOB	\
 	builder->setType(status, index, SQL_BLOB);	\
 	builder->setLength(status, index, sizeof(ISC_QUAD));
 
 #define FB__META_FB_BOOLEAN	\
 	builder->setType(status, index, SQL_BOOLEAN);	\
-	builder->setLength(status, index, sizeof(ISC_BOOLEAN));
+	builder->setLength(status, index, sizeof(FB_BOOLEAN));
 
 #define FB__META_FB_DATE	\
 	builder->setType(status, index, SQL_DATE);	\
-	builder->setLength(status, index, sizeof(FbDate));
+	builder->setLength(status, index, sizeof(::Firebird::FbDate));
 
 #define FB__META_FB_TIME	\
 	builder->setType(status, index, SQL_TIME);	\
-	builder->setLength(status, index, sizeof(FbTime));
+	builder->setLength(status, index, sizeof(::Firebird::FbTime));
+
+#define FB__META_FB_TIME_TZ	\
+	builder->setType(status, index, SQL_TIME_TZ);	\
+	builder->setLength(status, index, sizeof(::Firebird::FbTimeTz));
+
+#define FB__META_FB_TIME_TZ_EX	\
+	builder->setType(status, index, SQL_TIME_TZ_EX);	\
+	builder->setLength(status, index, sizeof(::Firebird::FbTimeTzEx));
 
 #define FB__META_FB_TIMESTAMP	\
 	builder->setType(status, index, SQL_TIMESTAMP);	\
-	builder->setLength(status, index, sizeof(FbTimestamp));
+	builder->setLength(status, index, sizeof(::Firebird::FbTimestamp));
+
+#define FB__META_FB_TIMESTAMP_TZ	\
+	builder->setType(status, index, SQL_TIMESTAMP_TZ);	\
+	builder->setLength(status, index, sizeof(::Firebird::FbTimestampTz));
+
+#define FB__META_FB_TIMESTAMP_TZ_EX	\
+	builder->setType(status, index, SQL_TIMESTAMP_TZ_EX);	\
+	builder->setLength(status, index, sizeof(::Firebird::FbTimestampTzEx));
 
 #define FB__META_FB_CHAR(len)	\
 	builder->setType(status, index, SQL_TEXT);	\
@@ -174,22 +209,31 @@
 #define FB__META_FB_SMALLINT			FB__META_FB_SCALED_SMALLINT(0)
 #define FB__META_FB_INTEGER				FB__META_FB_SCALED_INTEGER(0)
 #define FB__META_FB_BIGINT				FB__META_FB_SCALED_BIGINT(0)
+#define FB__META_FB_INT128				FB__META_FB_SCALED_INT128(0)
 
 // Types - struct
 
 #define FB__TYPE_FB_SCALED_SMALLINT(x)			ISC_SHORT
 #define FB__TYPE_FB_SCALED_INTEGER(x)			ISC_LONG
-#define FB__TYPE_FB_SCALED_BIGINT(x)			ISC_INT64
+#define FB__TYPE_FB_SCALED_BIGINT(x)			FB__INT64_ALIGNAS ISC_INT64
+#define FB__TYPE_FB_SCALED_INT128(x)			FB__INT64_ALIGNAS FB_I128
 #define FB__TYPE_FB_SMALLINT					ISC_SHORT
 #define FB__TYPE_FB_INTEGER						ISC_LONG
-#define FB__TYPE_FB_BIGINT						ISC_INT64
+#define FB__TYPE_FB_BIGINT						FB__INT64_ALIGNAS ISC_INT64
+#define FB__TYPE_FB_INT128						FB__INT64_ALIGNAS FB_I128
 #define FB__TYPE_FB_FLOAT						float
 #define FB__TYPE_FB_DOUBLE						double
+#define FB__TYPE_FB_DECFLOAT16					FB__INT64_ALIGNAS FB_DEC16
+#define FB__TYPE_FB_DECFLOAT34					FB__INT64_ALIGNAS FB_DEC34
 #define FB__TYPE_FB_BLOB						ISC_QUAD
 #define FB__TYPE_FB_BOOLEAN						ISC_UCHAR
 #define FB__TYPE_FB_DATE						::Firebird::FbDate
 #define FB__TYPE_FB_TIME						::Firebird::FbTime
+#define FB__TYPE_FB_TIME_TZ						::Firebird::FbTimeTz
+#define FB__TYPE_FB_TIME_TZ_EX					::Firebird::FbTimeTzEx
 #define FB__TYPE_FB_TIMESTAMP					::Firebird::FbTimestamp
+#define FB__TYPE_FB_TIMESTAMP_TZ				::Firebird::FbTimestampTz
+#define FB__TYPE_FB_TIMESTAMP_TZ_EX				::Firebird::FbTimestampTzEx
 #define FB__TYPE_FB_CHAR(len)					::Firebird::FbChar<(len)>
 #define FB__TYPE_FB_VARCHAR(len)				::Firebird::FbVarChar<(len)>
 #define FB__TYPE_FB_INTL_CHAR(len, charSet)		::Firebird::FbChar<(len)>
@@ -229,8 +273,16 @@ struct FbVarChar
 
 	void set(const char* s)
 	{
-		length = strlen(s);
-		assert(length <= N);
+		size_t len = strlen(s);
+		assert(len <= N);
+		length = (ISC_USHORT) (len <= N ? len : N);
+		memcpy(str, s, length);
+	}
+
+	void set(const char* s, unsigned len)
+	{
+		assert(len <= N);
+		length = (ISC_USHORT) (len <= N ? len : N);
 		memcpy(str, s, length);
 	}
 };
@@ -268,6 +320,23 @@ public:
 	void encode(IUtil* util, unsigned year, unsigned month, unsigned day)
 	{
 		value = util->encodeDate(year, month, day);
+	}
+
+public:
+	FbDate& operator=(const ISC_DATE& val)
+	{
+		*(this) = *(const FbDate*) &val;
+		return *this;
+	}
+
+	operator ISC_DATE&()
+	{
+		return *(ISC_DATE*) this;
+	}
+
+	operator const ISC_DATE&() const
+	{
+		return *(ISC_DATE*) this;
 	}
 
 public:
@@ -318,15 +387,151 @@ public:
 	}
 
 public:
+	FbTime& operator=(const ISC_TIME& val)
+	{
+		*(this) = *(const FbTime*) &val;
+		return *this;
+	}
+
+	operator ISC_TIME&()
+	{
+		return *(ISC_TIME*) this;
+	}
+
+	operator const ISC_TIME&() const
+	{
+		return *(ISC_TIME*) this;
+	}
+
+public:
 	ISC_TIME value;
+};
+
+// This class has memory layout identical to ISC_TIME_TZ.
+class FbTimeTz
+{
+public:
+	FbTimeTz& operator=(const ISC_TIME_TZ& val)
+	{
+		*(this) = *(const FbTimeTz*) &val;
+		return *this;
+	}
+
+	operator ISC_TIME_TZ&()
+	{
+		return *(ISC_TIME_TZ*) this;
+	}
+
+	operator const ISC_TIME_TZ&() const
+	{
+		return *(ISC_TIME_TZ*) this;
+	}
+
+public:
+	FbTime utcTime;
+	ISC_USHORT timeZone;
+};
+
+// This class has memory layout identical to ISC_TIME_TZ_EX.
+class FbTimeTzEx
+{
+public:
+	FbTimeTzEx& operator=(const ISC_TIME_TZ_EX& val)
+	{
+		*(this) = *(const FbTimeTzEx*) &val;
+		return *this;
+	}
+
+	operator ISC_TIME_TZ_EX&()
+	{
+		return *(ISC_TIME_TZ_EX*) this;
+	}
+
+	operator const ISC_TIME_TZ_EX&() const
+	{
+		return *(ISC_TIME_TZ_EX*) this;
+	}
+
+public:
+	FbTime utcTime;
+	ISC_USHORT timeZone;
+	ISC_SHORT extOffset;
 };
 
 // This class has memory layout identical to ISC_TIMESTAMP.
 class FbTimestamp
 {
 public:
+	FbTimestamp& operator=(const ISC_TIMESTAMP& val)
+	{
+		*(this) = *(const FbTimestamp*) &val;
+		return *this;
+	}
+
+	operator ISC_TIMESTAMP&()
+	{
+		return *(ISC_TIMESTAMP*) this;
+	}
+
+	operator const ISC_TIMESTAMP&() const
+	{
+		return *(ISC_TIMESTAMP*) this;
+	}
+
+public:
 	FbDate date;
 	FbTime time;
+};
+
+// This class has memory layout identical to ISC_TIMESTAMP_TZ.
+class FbTimestampTz
+{
+public:
+	FbTimestampTz& operator=(const ISC_TIMESTAMP_TZ& val)
+	{
+		*(this) = *(const FbTimestampTz*) &val;
+		return *this;
+	}
+
+	operator ISC_TIMESTAMP_TZ&()
+	{
+		return *(ISC_TIMESTAMP_TZ*) this;
+	}
+
+	operator const ISC_TIMESTAMP_TZ&() const
+	{
+		return *(ISC_TIMESTAMP_TZ*) this;
+	}
+
+public:
+	FbTimestamp utcTimestamp;
+	ISC_USHORT timeZone;
+};
+
+// This class has memory layout identical to ISC_TIMESTAMP_TZ_EX.
+class FbTimestampTzEx
+{
+public:
+	FbTimestampTzEx& operator=(const ISC_TIMESTAMP_TZ_EX& val)
+	{
+		*(this) = *(const FbTimestampTzEx*) &val;
+		return *this;
+	}
+
+	operator ISC_TIMESTAMP_TZ_EX&()
+	{
+		return *(ISC_TIMESTAMP_TZ_EX*) this;
+	}
+
+	operator const ISC_TIMESTAMP_TZ_EX&() const
+	{
+		return *(ISC_TIMESTAMP_TZ_EX*) this;
+	}
+
+public:
+	FbTimestamp utcTimestamp;
+	ISC_USHORT timeZone;
+	ISC_SHORT extOffset;
 };
 
 class MessageDesc
