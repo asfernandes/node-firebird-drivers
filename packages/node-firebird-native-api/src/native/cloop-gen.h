@@ -1241,6 +1241,29 @@ private:
 		}
 	}
 
+	static MethodStart<unsigned> getVersionStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getVersionFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getVersionAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getVersionStart(true, info),
+			&FirebirdConf::getVersionFinish);
+	}
+
+	Napi::Value getVersionSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getVersionStart(false, info)();
+			return getVersionFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -1460,6 +1483,29 @@ private:
 		{
 			auto ret = doCleanStart(false, info)();
 			return doCleanFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> threadDetachStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value threadDetachFinish(const Napi::Env env, void* ret);
+
+	Napi::Value threadDetachAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			threadDetachStart(true, info),
+			&PluginModule::threadDetachFinish);
+	}
+
+	Napi::Value threadDetachSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = threadDetachStart(false, info)();
+			return threadDetachFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -1785,6 +1831,29 @@ private:
 		}
 	}
 
+	static MethodStart<OptString> getDefaultSecurityDbStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDefaultSecurityDbFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getDefaultSecurityDbAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getDefaultSecurityDbStart(true, info),
+			&ConfigManager::getDefaultSecurityDbFinish);
+	}
+
+	Napi::Value getDefaultSecurityDbSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getDefaultSecurityDbStart(false, info)();
+			return getDefaultSecurityDbFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -1997,6 +2066,75 @@ private:
 		}
 	}
 
+	static MethodStart<void*> deprecatedCancelStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCancelFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedCancelAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedCancelStart(true, info),
+			&Blob::deprecatedCancelFinish);
+	}
+
+	Napi::Value deprecatedCancelSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedCancelStart(false, info)();
+			return deprecatedCancelFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deprecatedCloseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCloseFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedCloseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedCloseStart(true, info),
+			&Blob::deprecatedCloseFinish);
+	}
+
+	Napi::Value deprecatedCloseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedCloseStart(false, info)();
+			return deprecatedCloseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> seekStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value seekFinish(const Napi::Env env, int ret);
+
+	Napi::Value seekAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			seekStart(true, info),
+			&Blob::seekFinish);
+	}
+
+	Napi::Value seekSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = seekStart(false, info)();
+			return seekFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 	static MethodStart<void*> cancelStart(bool async, const Napi::CallbackInfo& info);
 	static Napi::Value cancelFinish(const Napi::Env env, void* ret);
 
@@ -2036,29 +2174,6 @@ private:
 		{
 			auto ret = closeStart(false, info)();
 			return closeFinish(info.Env(), ret);
-		}
-		catch (...)
-		{
-			rethrowException(info.Env());
-		}
-	}
-
-	static MethodStart<int> seekStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value seekFinish(const Napi::Env env, int ret);
-
-	Napi::Value seekAsync(const Napi::CallbackInfo& info)
-	{
-		return PromiseWorker<int>::Run(info.Env(),
-			seekStart(true, info),
-			&Blob::seekFinish);
-	}
-
-	Napi::Value seekSync(const Napi::CallbackInfo& info)
-	{
-		try
-		{
-			auto ret = seekStart(false, info)();
-			return seekFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -2172,22 +2287,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> commitStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value commitFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedCommitStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCommitFinish(const Napi::Env env, void* ret);
 
-	Napi::Value commitAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedCommitAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			commitStart(true, info),
-			&Transaction::commitFinish);
+			deprecatedCommitStart(true, info),
+			&Transaction::deprecatedCommitFinish);
 	}
 
-	Napi::Value commitSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedCommitSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = commitStart(false, info)();
-			return commitFinish(info.Env(), ret);
+			auto ret = deprecatedCommitStart(false, info)();
+			return deprecatedCommitFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -2218,22 +2333,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> rollbackStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value rollbackFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedRollbackStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedRollbackFinish(const Napi::Env env, void* ret);
 
-	Napi::Value rollbackAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedRollbackAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			rollbackStart(true, info),
-			&Transaction::rollbackFinish);
+			deprecatedRollbackStart(true, info),
+			&Transaction::deprecatedRollbackFinish);
 	}
 
-	Napi::Value rollbackSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedRollbackSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = rollbackStart(false, info)();
-			return rollbackFinish(info.Env(), ret);
+			auto ret = deprecatedRollbackStart(false, info)();
+			return deprecatedRollbackFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -2264,22 +2379,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> disconnectStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value disconnectFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedDisconnectStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedDisconnectFinish(const Napi::Env env, void* ret);
 
-	Napi::Value disconnectAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedDisconnectAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			disconnectStart(true, info),
-			&Transaction::disconnectFinish);
+			deprecatedDisconnectStart(true, info),
+			&Transaction::deprecatedDisconnectFinish);
 	}
 
-	Napi::Value disconnectSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedDisconnectSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = disconnectStart(false, info)();
-			return disconnectFinish(info.Env(), ret);
+			auto ret = deprecatedDisconnectStart(false, info)();
+			return deprecatedDisconnectFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -2349,6 +2464,75 @@ private:
 		{
 			auto ret = enterDtcStart(false, info)();
 			return enterDtcFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> commitStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value commitFinish(const Napi::Env env, void* ret);
+
+	Napi::Value commitAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			commitStart(true, info),
+			&Transaction::commitFinish);
+	}
+
+	Napi::Value commitSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = commitStart(false, info)();
+			return commitFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> rollbackStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value rollbackFinish(const Napi::Env env, void* ret);
+
+	Napi::Value rollbackAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			rollbackStart(true, info),
+			&Transaction::rollbackFinish);
+	}
+
+	Napi::Value rollbackSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = rollbackStart(false, info)();
+			return rollbackFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> disconnectStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value disconnectFinish(const Napi::Env env, void* ret);
+
+	Napi::Value disconnectAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			disconnectStart(true, info),
+			&Transaction::disconnectFinish);
+	}
+
+	Napi::Value disconnectSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = disconnectStart(false, info)();
+			return disconnectFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -2761,6 +2945,52 @@ private:
 		}
 	}
 
+	static MethodStart<unsigned> getAlignmentStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getAlignmentFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getAlignmentAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getAlignmentStart(true, info),
+			&MessageMetadata::getAlignmentFinish);
+	}
+
+	Napi::Value getAlignmentSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getAlignmentStart(false, info)();
+			return getAlignmentFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getAlignedLengthStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getAlignedLengthFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getAlignedLengthAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getAlignedLengthStart(true, info),
+			&MessageMetadata::getAlignedLengthFinish);
+	}
+
+	Napi::Value getAlignedLengthSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getAlignedLengthStart(false, info)();
+			return getAlignedLengthFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -3051,6 +3281,98 @@ private:
 		}
 	}
 
+	static MethodStart<void*> setFieldStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setFieldFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setFieldAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setFieldStart(true, info),
+			&MetadataBuilder::setFieldFinish);
+	}
+
+	Napi::Value setFieldSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setFieldStart(false, info)();
+			return setFieldFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setRelationStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setRelationFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setRelationAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setRelationStart(true, info),
+			&MetadataBuilder::setRelationFinish);
+	}
+
+	Napi::Value setRelationSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setRelationStart(false, info)();
+			return setRelationFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setOwnerFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setOwnerAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setOwnerStart(true, info),
+			&MetadataBuilder::setOwnerFinish);
+	}
+
+	Napi::Value setOwnerSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setOwnerStart(false, info)();
+			return setOwnerFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setAliasStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setAliasFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setAliasAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setAliasStart(true, info),
+			&MetadataBuilder::setAliasFinish);
+	}
+
+	Napi::Value setAliasSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setAliasStart(false, info)();
+			return setAliasFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -3318,22 +3640,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> closeStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value closeFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedCloseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCloseFinish(const Napi::Env env, void* ret);
 
-	Napi::Value closeAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedCloseAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			closeStart(true, info),
-			&ResultSet::closeFinish);
+			deprecatedCloseStart(true, info),
+			&ResultSet::deprecatedCloseFinish);
 	}
 
-	Napi::Value closeSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedCloseSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = closeStart(false, info)();
-			return closeFinish(info.Env(), ret);
+			auto ret = deprecatedCloseStart(false, info)();
+			return deprecatedCloseFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -3357,6 +3679,52 @@ private:
 		{
 			auto ret = setDelayedOutputFormatStart(false, info)();
 			return setDelayedOutputFormatFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> closeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value closeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value closeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			closeStart(true, info),
+			&ResultSet::closeFinish);
+	}
+
+	Napi::Value closeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = closeStart(false, info)();
+			return closeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> getInfoStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getInfoFinish(const Napi::Env env, void* ret);
+
+	Napi::Value getInfoAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			getInfoStart(true, info),
+			&ResultSet::getInfoFinish);
+	}
+
+	Napi::Value getInfoSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getInfoStart(false, info)();
+			return getInfoFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -3631,22 +3999,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> freeStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value freeFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedFreeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedFreeFinish(const Napi::Env env, void* ret);
 
-	Napi::Value freeAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedFreeAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			freeStart(true, info),
-			&Statement::freeFinish);
+			deprecatedFreeStart(true, info),
+			&Statement::deprecatedFreeFinish);
 	}
 
-	Napi::Value freeSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedFreeSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = freeStart(false, info)();
-			return freeFinish(info.Env(), ret);
+			auto ret = deprecatedFreeStart(false, info)();
+			return deprecatedFreeFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -3670,6 +4038,761 @@ private:
 		{
 			auto ret = getFlagsStart(false, info)();
 			return getFlagsFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getTimeoutFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getTimeoutStart(true, info),
+			&Statement::getTimeoutFinish);
+	}
+
+	Napi::Value getTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getTimeoutStart(false, info)();
+			return getTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setTimeoutFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setTimeoutStart(true, info),
+			&Statement::setTimeoutFinish);
+	}
+
+	Napi::Value setTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setTimeoutStart(false, info)();
+			return setTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IBatch*> createBatchStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value createBatchFinish(const Napi::Env env, fb::IBatch* ret);
+
+	Napi::Value createBatchAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IBatch*>::Run(info.Env(),
+			createBatchStart(true, info),
+			&Statement::createBatchFinish);
+	}
+
+	Napi::Value createBatchSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = createBatchStart(false, info)();
+			return createBatchFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> freeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value freeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value freeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			freeStart(true, info),
+			&Statement::freeFinish);
+	}
+
+	Napi::Value freeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = freeStart(false, info)();
+			return freeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getMaxInlineBlobSizeFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getMaxInlineBlobSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getMaxInlineBlobSizeStart(true, info),
+			&Statement::getMaxInlineBlobSizeFinish);
+	}
+
+	Napi::Value getMaxInlineBlobSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getMaxInlineBlobSizeStart(false, info)();
+			return getMaxInlineBlobSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setMaxInlineBlobSizeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setMaxInlineBlobSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setMaxInlineBlobSizeStart(true, info),
+			&Statement::setMaxInlineBlobSizeFinish);
+	}
+
+	Napi::Value setMaxInlineBlobSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setMaxInlineBlobSizeStart(false, info)();
+			return setMaxInlineBlobSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class Batch : public BaseClass<Batch, fb::IBatch>
+{
+friend class BaseClass<Batch, fb::IBatch>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<Batch>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> addRefStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addRefFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addRefAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addRefStart(true, info),
+			&Batch::addRefFinish);
+	}
+
+	Napi::Value addRefSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addRefStart(false, info)();
+			return addRefFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> releaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseFinish(const Napi::Env env, int ret);
+
+	Napi::Value releaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			releaseStart(true, info),
+			&Batch::releaseFinish);
+	}
+
+	Napi::Value releaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseStart(false, info)();
+			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> addStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addStart(true, info),
+			&Batch::addFinish);
+	}
+
+	Napi::Value addSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addStart(false, info)();
+			return addFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> addBlobStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addBlobFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addBlobAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addBlobStart(true, info),
+			&Batch::addBlobFinish);
+	}
+
+	Napi::Value addBlobSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addBlobStart(false, info)();
+			return addBlobFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> appendBlobDataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value appendBlobDataFinish(const Napi::Env env, void* ret);
+
+	Napi::Value appendBlobDataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			appendBlobDataStart(true, info),
+			&Batch::appendBlobDataFinish);
+	}
+
+	Napi::Value appendBlobDataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = appendBlobDataStart(false, info)();
+			return appendBlobDataFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> addBlobStreamStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addBlobStreamFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addBlobStreamAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addBlobStreamStart(true, info),
+			&Batch::addBlobStreamFinish);
+	}
+
+	Napi::Value addBlobStreamSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addBlobStreamStart(false, info)();
+			return addBlobStreamFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> registerBlobStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value registerBlobFinish(const Napi::Env env, void* ret);
+
+	Napi::Value registerBlobAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			registerBlobStart(true, info),
+			&Batch::registerBlobFinish);
+	}
+
+	Napi::Value registerBlobSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = registerBlobStart(false, info)();
+			return registerBlobFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IBatchCompletionState*> executeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value executeFinish(const Napi::Env env, fb::IBatchCompletionState* ret);
+
+	Napi::Value executeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IBatchCompletionState*>::Run(info.Env(),
+			executeStart(true, info),
+			&Batch::executeFinish);
+	}
+
+	Napi::Value executeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = executeStart(false, info)();
+			return executeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> cancelStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value cancelFinish(const Napi::Env env, void* ret);
+
+	Napi::Value cancelAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			cancelStart(true, info),
+			&Batch::cancelFinish);
+	}
+
+	Napi::Value cancelSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = cancelStart(false, info)();
+			return cancelFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getBlobAlignmentStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getBlobAlignmentFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getBlobAlignmentAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getBlobAlignmentStart(true, info),
+			&Batch::getBlobAlignmentFinish);
+	}
+
+	Napi::Value getBlobAlignmentSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getBlobAlignmentStart(false, info)();
+			return getBlobAlignmentFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IMessageMetadata*> getMetadataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getMetadataFinish(const Napi::Env env, fb::IMessageMetadata* ret);
+
+	Napi::Value getMetadataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IMessageMetadata*>::Run(info.Env(),
+			getMetadataStart(true, info),
+			&Batch::getMetadataFinish);
+	}
+
+	Napi::Value getMetadataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getMetadataStart(false, info)();
+			return getMetadataFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setDefaultBpbStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setDefaultBpbFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setDefaultBpbAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setDefaultBpbStart(true, info),
+			&Batch::setDefaultBpbFinish);
+	}
+
+	Napi::Value setDefaultBpbSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setDefaultBpbStart(false, info)();
+			return setDefaultBpbFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deprecatedCloseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCloseFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedCloseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedCloseStart(true, info),
+			&Batch::deprecatedCloseFinish);
+	}
+
+	Napi::Value deprecatedCloseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedCloseStart(false, info)();
+			return deprecatedCloseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> closeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value closeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value closeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			closeStart(true, info),
+			&Batch::closeFinish);
+	}
+
+	Napi::Value closeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = closeStart(false, info)();
+			return closeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> getInfoStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getInfoFinish(const Napi::Env env, void* ret);
+
+	Napi::Value getInfoAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			getInfoStart(true, info),
+			&Batch::getInfoFinish);
+	}
+
+	Napi::Value getInfoSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getInfoStart(false, info)();
+			return getInfoFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class BatchCompletionState : public BaseClass<BatchCompletionState, fb::IBatchCompletionState>
+{
+friend class BaseClass<BatchCompletionState, fb::IBatchCompletionState>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<BatchCompletionState>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> disposeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value disposeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value disposeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			disposeStart(true, info),
+			&BatchCompletionState::disposeFinish);
+	}
+
+	Napi::Value disposeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = disposeStart(false, info)();
+			return disposeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getSizeFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getSizeStart(true, info),
+			&BatchCompletionState::getSizeFinish);
+	}
+
+	Napi::Value getSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getSizeStart(false, info)();
+			return getSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> getStateStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getStateFinish(const Napi::Env env, int ret);
+
+	Napi::Value getStateAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			getStateStart(true, info),
+			&BatchCompletionState::getStateFinish);
+	}
+
+	Napi::Value getStateSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getStateStart(false, info)();
+			return getStateFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> findErrorStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value findErrorFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value findErrorAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			findErrorStart(true, info),
+			&BatchCompletionState::findErrorFinish);
+	}
+
+	Napi::Value findErrorSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = findErrorStart(false, info)();
+			return findErrorFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> getStatusStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getStatusFinish(const Napi::Env env, void* ret);
+
+	Napi::Value getStatusAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			getStatusStart(true, info),
+			&BatchCompletionState::getStatusFinish);
+	}
+
+	Napi::Value getStatusSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getStatusStart(false, info)();
+			return getStatusFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class Replicator : public BaseClass<Replicator, fb::IReplicator>
+{
+friend class BaseClass<Replicator, fb::IReplicator>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<Replicator>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> addRefStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addRefFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addRefAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addRefStart(true, info),
+			&Replicator::addRefFinish);
+	}
+
+	Napi::Value addRefSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addRefStart(false, info)();
+			return addRefFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> releaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseFinish(const Napi::Env env, int ret);
+
+	Napi::Value releaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			releaseStart(true, info),
+			&Replicator::releaseFinish);
+	}
+
+	Napi::Value releaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseStart(false, info)();
+			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> processStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value processFinish(const Napi::Env env, void* ret);
+
+	Napi::Value processAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			processStart(true, info),
+			&Replicator::processFinish);
+	}
+
+	Napi::Value processSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = processStart(false, info)();
+			return processFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deprecatedCloseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCloseFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedCloseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedCloseStart(true, info),
+			&Replicator::deprecatedCloseFinish);
+	}
+
+	Napi::Value deprecatedCloseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedCloseStart(false, info)();
+			return deprecatedCloseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> closeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value closeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value closeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			closeStart(true, info),
+			&Replicator::closeFinish);
+	}
+
+	Napi::Value closeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = closeStart(false, info)();
+			return closeFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -3875,6 +4998,29 @@ private:
 		}
 	}
 
+	static MethodStart<void*> deprecatedFreeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedFreeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedFreeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedFreeStart(true, info),
+			&Request::deprecatedFreeFinish);
+	}
+
+	Napi::Value deprecatedFreeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedFreeStart(false, info)();
+			return deprecatedFreeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 	static MethodStart<void*> freeStart(bool async, const Napi::CallbackInfo& info);
 	static Napi::Value freeFinish(const Napi::Env env, void* ret);
 
@@ -3951,6 +5097,29 @@ private:
 		{
 			auto ret = releaseStart(false, info)();
 			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deprecatedCancelStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedCancelFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedCancelAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedCancelStart(true, info),
+			&Events::deprecatedCancelFinish);
+	}
+
+	Napi::Value deprecatedCancelSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedCancelStart(false, info)();
+			return deprecatedCancelFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -4363,6 +5532,190 @@ private:
 		}
 	}
 
+	static MethodStart<void*> deprecatedDetachStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedDetachFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedDetachAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedDetachStart(true, info),
+			&Attachment::deprecatedDetachFinish);
+	}
+
+	Napi::Value deprecatedDetachSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedDetachStart(false, info)();
+			return deprecatedDetachFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deprecatedDropDatabaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedDropDatabaseFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deprecatedDropDatabaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deprecatedDropDatabaseStart(true, info),
+			&Attachment::deprecatedDropDatabaseFinish);
+	}
+
+	Napi::Value deprecatedDropDatabaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deprecatedDropDatabaseStart(false, info)();
+			return deprecatedDropDatabaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getIdleTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getIdleTimeoutFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getIdleTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getIdleTimeoutStart(true, info),
+			&Attachment::getIdleTimeoutFinish);
+	}
+
+	Napi::Value getIdleTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getIdleTimeoutStart(false, info)();
+			return getIdleTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setIdleTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setIdleTimeoutFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setIdleTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setIdleTimeoutStart(true, info),
+			&Attachment::setIdleTimeoutFinish);
+	}
+
+	Napi::Value setIdleTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setIdleTimeoutStart(false, info)();
+			return setIdleTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getStatementTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getStatementTimeoutFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getStatementTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getStatementTimeoutStart(true, info),
+			&Attachment::getStatementTimeoutFinish);
+	}
+
+	Napi::Value getStatementTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getStatementTimeoutStart(false, info)();
+			return getStatementTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setStatementTimeoutStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setStatementTimeoutFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setStatementTimeoutAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setStatementTimeoutStart(true, info),
+			&Attachment::setStatementTimeoutFinish);
+	}
+
+	Napi::Value setStatementTimeoutSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setStatementTimeoutStart(false, info)();
+			return setStatementTimeoutFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IBatch*> createBatchStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value createBatchFinish(const Napi::Env env, fb::IBatch* ret);
+
+	Napi::Value createBatchAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IBatch*>::Run(info.Env(),
+			createBatchStart(true, info),
+			&Attachment::createBatchFinish);
+	}
+
+	Napi::Value createBatchSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = createBatchStart(false, info)();
+			return createBatchFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IReplicator*> createReplicatorStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value createReplicatorFinish(const Napi::Env env, fb::IReplicator* ret);
+
+	Napi::Value createReplicatorAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IReplicator*>::Run(info.Env(),
+			createReplicatorStart(true, info),
+			&Attachment::createReplicatorFinish);
+	}
+
+	Napi::Value createReplicatorSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = createReplicatorStart(false, info)();
+			return createReplicatorFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 	static MethodStart<void*> detachStart(bool async, const Napi::CallbackInfo& info);
 	static Napi::Value detachFinish(const Napi::Env env, void* ret);
 
@@ -4402,6 +5755,98 @@ private:
 		{
 			auto ret = dropDatabaseStart(false, info)();
 			return dropDatabaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getMaxBlobCacheSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getMaxBlobCacheSizeFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getMaxBlobCacheSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getMaxBlobCacheSizeStart(true, info),
+			&Attachment::getMaxBlobCacheSizeFinish);
+	}
+
+	Napi::Value getMaxBlobCacheSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getMaxBlobCacheSizeStart(false, info)();
+			return getMaxBlobCacheSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setMaxBlobCacheSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setMaxBlobCacheSizeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setMaxBlobCacheSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setMaxBlobCacheSizeStart(true, info),
+			&Attachment::setMaxBlobCacheSizeFinish);
+	}
+
+	Napi::Value setMaxBlobCacheSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setMaxBlobCacheSizeStart(false, info)();
+			return setMaxBlobCacheSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getMaxInlineBlobSizeFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getMaxInlineBlobSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getMaxInlineBlobSizeStart(true, info),
+			&Attachment::getMaxInlineBlobSizeFinish);
+	}
+
+	Napi::Value getMaxInlineBlobSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getMaxInlineBlobSizeStart(false, info)();
+			return getMaxInlineBlobSizeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setMaxInlineBlobSizeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setMaxInlineBlobSizeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setMaxInlineBlobSizeStart(true, info),
+			&Attachment::setMaxInlineBlobSizeFinish);
+	}
+
+	Napi::Value setMaxInlineBlobSizeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setMaxInlineBlobSizeStart(false, info)();
+			return setMaxInlineBlobSizeFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -4469,22 +5914,22 @@ private:
 		}
 	}
 
-	static MethodStart<void*> detachStart(bool async, const Napi::CallbackInfo& info);
-	static Napi::Value detachFinish(const Napi::Env env, void* ret);
+	static MethodStart<void*> deprecatedDetachStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deprecatedDetachFinish(const Napi::Env env, void* ret);
 
-	Napi::Value detachAsync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedDetachAsync(const Napi::CallbackInfo& info)
 	{
 		return PromiseWorker<void*>::Run(info.Env(),
-			detachStart(true, info),
-			&Service::detachFinish);
+			deprecatedDetachStart(true, info),
+			&Service::deprecatedDetachFinish);
 	}
 
-	Napi::Value detachSync(const Napi::CallbackInfo& info)
+	Napi::Value deprecatedDetachSync(const Napi::CallbackInfo& info)
 	{
 		try
 		{
-			auto ret = detachStart(false, info)();
-			return detachFinish(info.Env(), ret);
+			auto ret = deprecatedDetachStart(false, info)();
+			return deprecatedDetachFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -4531,6 +5976,52 @@ private:
 		{
 			auto ret = startStart(false, info)();
 			return startFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> detachStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value detachFinish(const Napi::Env env, void* ret);
+
+	Napi::Value detachAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			detachStart(true, info),
+			&Service::detachFinish);
+	}
+
+	Napi::Value detachSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = detachStart(false, info)();
+			return detachFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> cancelStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value cancelFinish(const Napi::Env env, void* ret);
+
+	Napi::Value cancelAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			cancelStart(true, info),
+			&Service::cancelFinish);
+	}
+
+	Napi::Value cancelSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = cancelStart(false, info)();
+			return cancelFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -5418,6 +6909,29 @@ private:
 		}
 	}
 
+	static MethodStart<fb::IAuthBlock*> getAuthBlockStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getAuthBlockFinish(const Napi::Env env, fb::IAuthBlock* ret);
+
+	Napi::Value getAuthBlockAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IAuthBlock*>::Run(info.Env(),
+			getAuthBlockStart(true, info),
+			&ClientBlock::getAuthBlockFinish);
+	}
+
+	Napi::Value getAuthBlockSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getAuthBlockStart(false, info)();
+			return getAuthBlockFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -5540,6 +7054,29 @@ private:
 		{
 			auto ret = authenticateStart(false, info)();
 			return authenticateFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setDbCryptCallbackStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setDbCryptCallbackFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setDbCryptCallbackAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setDbCryptCallbackStart(true, info),
+			&Server::setDbCryptCallbackFinish);
+	}
+
+	Napi::Value setDbCryptCallbackSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setDbCryptCallbackStart(false, info)();
+			return setDbCryptCallbackFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -6450,6 +7987,52 @@ private:
 		}
 	}
 
+	static MethodStart<fb::IAttachment*> attachmentStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value attachmentFinish(const Napi::Env env, fb::IAttachment* ret);
+
+	Napi::Value attachmentAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IAttachment*>::Run(info.Env(),
+			attachmentStart(true, info),
+			&LogonInfo::attachmentFinish);
+	}
+
+	Napi::Value attachmentSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = attachmentStart(false, info)();
+			return attachmentFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::ITransaction*> transactionStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value transactionFinish(const Napi::Env env, fb::ITransaction* ret);
+
+	Napi::Value transactionAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::ITransaction*>::Run(info.Env(),
+			transactionStart(true, info),
+			&LogonInfo::transactionFinish);
+	}
+
+	Napi::Value transactionSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = transactionStart(false, info)();
+			return transactionFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -6641,6 +8224,181 @@ private:
 		{
 			auto ret = rollbackStart(false, info)();
 			return rollbackFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class AuthBlock : public BaseClass<AuthBlock, fb::IAuthBlock>
+{
+friend class BaseClass<AuthBlock, fb::IAuthBlock>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<AuthBlock>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<OptString> getTypeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getTypeFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getTypeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getTypeStart(true, info),
+			&AuthBlock::getTypeFinish);
+	}
+
+	Napi::Value getTypeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getTypeStart(false, info)();
+			return getTypeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<OptString> getNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getNameFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getNameAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getNameStart(true, info),
+			&AuthBlock::getNameFinish);
+	}
+
+	Napi::Value getNameSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getNameStart(false, info)();
+			return getNameFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<OptString> getPluginStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getPluginFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getPluginAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getPluginStart(true, info),
+			&AuthBlock::getPluginFinish);
+	}
+
+	Napi::Value getPluginSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getPluginStart(false, info)();
+			return getPluginFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<OptString> getSecurityDbStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getSecurityDbFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getSecurityDbAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getSecurityDbStart(true, info),
+			&AuthBlock::getSecurityDbFinish);
+	}
+
+	Napi::Value getSecurityDbSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getSecurityDbStart(false, info)();
+			return getSecurityDbFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<OptString> getOriginalPluginStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getOriginalPluginFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getOriginalPluginAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getOriginalPluginStart(true, info),
+			&AuthBlock::getOriginalPluginFinish);
+	}
+
+	Napi::Value getOriginalPluginSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getOriginalPluginStart(false, info)();
+			return getOriginalPluginFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<FB_BOOLEAN> nextStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value nextFinish(const Napi::Env env, FB_BOOLEAN ret);
+
+	Napi::Value nextAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<FB_BOOLEAN>::Run(info.Env(),
+			nextStart(true, info),
+			&AuthBlock::nextFinish);
+	}
+
+	Napi::Value nextSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = nextStart(false, info)();
+			return nextFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<FB_BOOLEAN> firstStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value firstFinish(const Napi::Env env, FB_BOOLEAN ret);
+
+	Napi::Value firstAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<FB_BOOLEAN>::Run(info.Env(),
+			firstStart(true, info),
+			&AuthBlock::firstFinish);
+	}
+
+	Napi::Value firstSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = firstStart(false, info)();
+			return firstFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -6846,6 +8604,52 @@ private:
 		}
 	}
 
+	static MethodStart<const unsigned char*> getSpecificDataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getSpecificDataFinish(const Napi::Env env, const unsigned char* ret);
+
+	Napi::Value getSpecificDataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<const unsigned char*>::Run(info.Env(),
+			getSpecificDataStart(true, info),
+			&WireCryptPlugin::getSpecificDataFinish);
+	}
+
+	Napi::Value getSpecificDataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getSpecificDataStart(false, info)();
+			return getSpecificDataFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setSpecificDataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setSpecificDataFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setSpecificDataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setSpecificDataStart(true, info),
+			&WireCryptPlugin::setSpecificDataFinish);
+	}
+
+	Napi::Value setSpecificDataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setSpecificDataStart(false, info)();
+			return setSpecificDataFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
 };
 
 
@@ -6876,6 +8680,98 @@ private:
 		{
 			auto ret = callbackStart(false, info)();
 			return callbackFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> dummy1Start(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value dummy1Finish(const Napi::Env env, void* ret);
+
+	Napi::Value dummy1Async(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			dummy1Start(true, info),
+			&CryptKeyCallback::dummy1Finish);
+	}
+
+	Napi::Value dummy1Sync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = dummy1Start(false, info)();
+			return dummy1Finish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> dummy2Start(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value dummy2Finish(const Napi::Env env, void* ret);
+
+	Napi::Value dummy2Async(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			dummy2Start(true, info),
+			&CryptKeyCallback::dummy2Finish);
+	}
+
+	Napi::Value dummy2Sync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = dummy2Start(false, info)();
+			return dummy2Finish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> getHashLengthStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getHashLengthFinish(const Napi::Env env, int ret);
+
+	Napi::Value getHashLengthAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			getHashLengthStart(true, info),
+			&CryptKeyCallback::getHashLengthFinish);
+	}
+
+	Napi::Value getHashLengthSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getHashLengthStart(false, info)();
+			return getHashLengthFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> getHashDataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getHashDataFinish(const Napi::Env env, void* ret);
+
+	Napi::Value getHashDataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			getHashDataStart(true, info),
+			&CryptKeyCallback::getHashDataFinish);
+	}
+
+	Napi::Value getHashDataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getHashDataStart(false, info)();
+			return getHashDataFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -7028,6 +8924,135 @@ private:
 		{
 			auto ret = keyHandleStart(false, info)();
 			return keyHandleFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<FB_BOOLEAN> useOnlyOwnKeysStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value useOnlyOwnKeysFinish(const Napi::Env env, FB_BOOLEAN ret);
+
+	Napi::Value useOnlyOwnKeysAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<FB_BOOLEAN>::Run(info.Env(),
+			useOnlyOwnKeysStart(true, info),
+			&KeyHolderPlugin::useOnlyOwnKeysFinish);
+	}
+
+	Napi::Value useOnlyOwnKeysSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = useOnlyOwnKeysStart(false, info)();
+			return useOnlyOwnKeysFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::ICryptKeyCallback*> chainHandleStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value chainHandleFinish(const Napi::Env env, fb::ICryptKeyCallback* ret);
+
+	Napi::Value chainHandleAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::ICryptKeyCallback*>::Run(info.Env(),
+			chainHandleStart(true, info),
+			&KeyHolderPlugin::chainHandleFinish);
+	}
+
+	Napi::Value chainHandleSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = chainHandleStart(false, info)();
+			return chainHandleFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class DbCryptInfo : public BaseClass<DbCryptInfo, fb::IDbCryptInfo>
+{
+friend class BaseClass<DbCryptInfo, fb::IDbCryptInfo>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<DbCryptInfo>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> addRefStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addRefFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addRefAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addRefStart(true, info),
+			&DbCryptInfo::addRefFinish);
+	}
+
+	Napi::Value addRefSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addRefStart(false, info)();
+			return addRefFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> releaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseFinish(const Napi::Env env, int ret);
+
+	Napi::Value releaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			releaseStart(true, info),
+			&DbCryptInfo::releaseFinish);
+	}
+
+	Napi::Value releaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseStart(false, info)();
+			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<OptString> getDatabaseFullPathStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDatabaseFullPathFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getDatabaseFullPathAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getDatabaseFullPathStart(true, info),
+			&DbCryptInfo::getDatabaseFullPathFinish);
+	}
+
+	Napi::Value getDatabaseFullPathSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getDatabaseFullPathStart(false, info)();
+			return getDatabaseFullPathFinish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -8047,6 +10072,121 @@ private:
 		{
 			auto ret = setOffsetsStart(false, info)();
 			return setOffsetsFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IDecFloat16*> getDecFloat16Start(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDecFloat16Finish(const Napi::Env env, fb::IDecFloat16* ret);
+
+	Napi::Value getDecFloat16Async(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IDecFloat16*>::Run(info.Env(),
+			getDecFloat16Start(true, info),
+			&Util::getDecFloat16Finish);
+	}
+
+	Napi::Value getDecFloat16Sync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getDecFloat16Start(false, info)();
+			return getDecFloat16Finish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IDecFloat34*> getDecFloat34Start(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getDecFloat34Finish(const Napi::Env env, fb::IDecFloat34* ret);
+
+	Napi::Value getDecFloat34Async(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IDecFloat34*>::Run(info.Env(),
+			getDecFloat34Start(true, info),
+			&Util::getDecFloat34Finish);
+	}
+
+	Napi::Value getDecFloat34Sync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getDecFloat34Start(false, info)();
+			return getDecFloat34Finish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> encodeTimeTzStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value encodeTimeTzFinish(const Napi::Env env, void* ret);
+
+	Napi::Value encodeTimeTzAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			encodeTimeTzStart(true, info),
+			&Util::encodeTimeTzFinish);
+	}
+
+	Napi::Value encodeTimeTzSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = encodeTimeTzStart(false, info)();
+			return encodeTimeTzFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> encodeTimeStampTzStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value encodeTimeStampTzFinish(const Napi::Env env, void* ret);
+
+	Napi::Value encodeTimeStampTzAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			encodeTimeStampTzStart(true, info),
+			&Util::encodeTimeStampTzFinish);
+	}
+
+	Napi::Value encodeTimeStampTzSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = encodeTimeStampTzStart(false, info)();
+			return encodeTimeStampTzFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IInt128*> getInt128Start(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getInt128Finish(const Napi::Env env, fb::IInt128* ret);
+
+	Napi::Value getInt128Async(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IInt128*>::Run(info.Env(),
+			getInt128Start(true, info),
+			&Util::getInt128Finish);
+	}
+
+	Napi::Value getInt128Sync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getInt128Start(false, info)();
+			return getInt128Finish(info.Env(), ret);
 		}
 		catch (...)
 		{
@@ -10063,6 +12203,1135 @@ private:
 };
 
 
+class DecFloat16 : public BaseClass<DecFloat16, fb::IDecFloat16>
+{
+friend class BaseClass<DecFloat16, fb::IDecFloat16>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<DecFloat16>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> toBcdStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value toBcdFinish(const Napi::Env env, void* ret);
+
+	Napi::Value toBcdAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			toBcdStart(true, info),
+			&DecFloat16::toBcdFinish);
+	}
+
+	Napi::Value toBcdSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = toBcdStart(false, info)();
+			return toBcdFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> fromBcdStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value fromBcdFinish(const Napi::Env env, void* ret);
+
+	Napi::Value fromBcdAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			fromBcdStart(true, info),
+			&DecFloat16::fromBcdFinish);
+	}
+
+	Napi::Value fromBcdSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = fromBcdStart(false, info)();
+			return fromBcdFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> fromStringStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value fromStringFinish(const Napi::Env env, void* ret);
+
+	Napi::Value fromStringAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			fromStringStart(true, info),
+			&DecFloat16::fromStringFinish);
+	}
+
+	Napi::Value fromStringSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = fromStringStart(false, info)();
+			return fromStringFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class DecFloat34 : public BaseClass<DecFloat34, fb::IDecFloat34>
+{
+friend class BaseClass<DecFloat34, fb::IDecFloat34>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<DecFloat34>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> toBcdStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value toBcdFinish(const Napi::Env env, void* ret);
+
+	Napi::Value toBcdAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			toBcdStart(true, info),
+			&DecFloat34::toBcdFinish);
+	}
+
+	Napi::Value toBcdSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = toBcdStart(false, info)();
+			return toBcdFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> fromBcdStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value fromBcdFinish(const Napi::Env env, void* ret);
+
+	Napi::Value fromBcdAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			fromBcdStart(true, info),
+			&DecFloat34::fromBcdFinish);
+	}
+
+	Napi::Value fromBcdSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = fromBcdStart(false, info)();
+			return fromBcdFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> fromStringStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value fromStringFinish(const Napi::Env env, void* ret);
+
+	Napi::Value fromStringAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			fromStringStart(true, info),
+			&DecFloat34::fromStringFinish);
+	}
+
+	Napi::Value fromStringSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = fromStringStart(false, info)();
+			return fromStringFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class Int128 : public BaseClass<Int128, fb::IInt128>
+{
+friend class BaseClass<Int128, fb::IInt128>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<Int128>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> fromStringStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value fromStringFinish(const Napi::Env env, void* ret);
+
+	Napi::Value fromStringAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			fromStringStart(true, info),
+			&Int128::fromStringFinish);
+	}
+
+	Napi::Value fromStringSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = fromStringStart(false, info)();
+			return fromStringFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ReplicatedField : public BaseClass<ReplicatedField, fb::IReplicatedField>
+{
+friend class BaseClass<ReplicatedField, fb::IReplicatedField>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedField>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<OptString> getNameStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getNameFinish(const Napi::Env env, OptString ret);
+
+	Napi::Value getNameAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<OptString>::Run(info.Env(),
+			getNameStart(true, info),
+			&ReplicatedField::getNameFinish);
+	}
+
+	Napi::Value getNameSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getNameStart(false, info)();
+			return getNameFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getTypeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getTypeFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getTypeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getTypeStart(true, info),
+			&ReplicatedField::getTypeFinish);
+	}
+
+	Napi::Value getTypeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getTypeStart(false, info)();
+			return getTypeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> getSubTypeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getSubTypeFinish(const Napi::Env env, int ret);
+
+	Napi::Value getSubTypeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			getSubTypeStart(true, info),
+			&ReplicatedField::getSubTypeFinish);
+	}
+
+	Napi::Value getSubTypeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getSubTypeStart(false, info)();
+			return getSubTypeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> getScaleStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getScaleFinish(const Napi::Env env, int ret);
+
+	Napi::Value getScaleAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			getScaleStart(true, info),
+			&ReplicatedField::getScaleFinish);
+	}
+
+	Napi::Value getScaleSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getScaleStart(false, info)();
+			return getScaleFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getLengthStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getLengthFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getLengthAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getLengthStart(true, info),
+			&ReplicatedField::getLengthFinish);
+	}
+
+	Napi::Value getLengthSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getLengthStart(false, info)();
+			return getLengthFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getCharSetStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getCharSetFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getCharSetAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getCharSetStart(true, info),
+			&ReplicatedField::getCharSetFinish);
+	}
+
+	Napi::Value getCharSetSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getCharSetStart(false, info)();
+			return getCharSetFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ReplicatedRecord : public BaseClass<ReplicatedRecord, fb::IReplicatedRecord>
+{
+friend class BaseClass<ReplicatedRecord, fb::IReplicatedRecord>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedRecord>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<unsigned> getCountStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getCountFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getCountAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getCountStart(true, info),
+			&ReplicatedRecord::getCountFinish);
+	}
+
+	Napi::Value getCountSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getCountStart(false, info)();
+			return getCountFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IReplicatedField*> getFieldStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getFieldFinish(const Napi::Env env, fb::IReplicatedField* ret);
+
+	Napi::Value getFieldAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IReplicatedField*>::Run(info.Env(),
+			getFieldStart(true, info),
+			&ReplicatedRecord::getFieldFinish);
+	}
+
+	Napi::Value getFieldSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getFieldStart(false, info)();
+			return getFieldFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<unsigned> getRawLengthStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRawLengthFinish(const Napi::Env env, unsigned ret);
+
+	Napi::Value getRawLengthAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<unsigned>::Run(info.Env(),
+			getRawLengthStart(true, info),
+			&ReplicatedRecord::getRawLengthFinish);
+	}
+
+	Napi::Value getRawLengthSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getRawLengthStart(false, info)();
+			return getRawLengthFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<const unsigned char*> getRawDataStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getRawDataFinish(const Napi::Env env, const unsigned char* ret);
+
+	Napi::Value getRawDataAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<const unsigned char*>::Run(info.Env(),
+			getRawDataStart(true, info),
+			&ReplicatedRecord::getRawDataFinish);
+	}
+
+	Napi::Value getRawDataSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getRawDataStart(false, info)();
+			return getRawDataFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ReplicatedTransaction : public BaseClass<ReplicatedTransaction, fb::IReplicatedTransaction>
+{
+friend class BaseClass<ReplicatedTransaction, fb::IReplicatedTransaction>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedTransaction>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> disposeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value disposeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value disposeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			disposeStart(true, info),
+			&ReplicatedTransaction::disposeFinish);
+	}
+
+	Napi::Value disposeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = disposeStart(false, info)();
+			return disposeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> prepareStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value prepareFinish(const Napi::Env env, void* ret);
+
+	Napi::Value prepareAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			prepareStart(true, info),
+			&ReplicatedTransaction::prepareFinish);
+	}
+
+	Napi::Value prepareSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = prepareStart(false, info)();
+			return prepareFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> commitStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value commitFinish(const Napi::Env env, void* ret);
+
+	Napi::Value commitAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			commitStart(true, info),
+			&ReplicatedTransaction::commitFinish);
+	}
+
+	Napi::Value commitSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = commitStart(false, info)();
+			return commitFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> rollbackStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value rollbackFinish(const Napi::Env env, void* ret);
+
+	Napi::Value rollbackAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			rollbackStart(true, info),
+			&ReplicatedTransaction::rollbackFinish);
+	}
+
+	Napi::Value rollbackSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = rollbackStart(false, info)();
+			return rollbackFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> startSavepointStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value startSavepointFinish(const Napi::Env env, void* ret);
+
+	Napi::Value startSavepointAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			startSavepointStart(true, info),
+			&ReplicatedTransaction::startSavepointFinish);
+	}
+
+	Napi::Value startSavepointSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = startSavepointStart(false, info)();
+			return startSavepointFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> releaseSavepointStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseSavepointFinish(const Napi::Env env, void* ret);
+
+	Napi::Value releaseSavepointAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			releaseSavepointStart(true, info),
+			&ReplicatedTransaction::releaseSavepointFinish);
+	}
+
+	Napi::Value releaseSavepointSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseSavepointStart(false, info)();
+			return releaseSavepointFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> rollbackSavepointStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value rollbackSavepointFinish(const Napi::Env env, void* ret);
+
+	Napi::Value rollbackSavepointAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			rollbackSavepointStart(true, info),
+			&ReplicatedTransaction::rollbackSavepointFinish);
+	}
+
+	Napi::Value rollbackSavepointSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = rollbackSavepointStart(false, info)();
+			return rollbackSavepointFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> insertRecordStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value insertRecordFinish(const Napi::Env env, void* ret);
+
+	Napi::Value insertRecordAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			insertRecordStart(true, info),
+			&ReplicatedTransaction::insertRecordFinish);
+	}
+
+	Napi::Value insertRecordSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = insertRecordStart(false, info)();
+			return insertRecordFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> updateRecordStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value updateRecordFinish(const Napi::Env env, void* ret);
+
+	Napi::Value updateRecordAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			updateRecordStart(true, info),
+			&ReplicatedTransaction::updateRecordFinish);
+	}
+
+	Napi::Value updateRecordSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = updateRecordStart(false, info)();
+			return updateRecordFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> deleteRecordStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value deleteRecordFinish(const Napi::Env env, void* ret);
+
+	Napi::Value deleteRecordAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			deleteRecordStart(true, info),
+			&ReplicatedTransaction::deleteRecordFinish);
+	}
+
+	Napi::Value deleteRecordSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = deleteRecordStart(false, info)();
+			return deleteRecordFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> executeSqlStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value executeSqlFinish(const Napi::Env env, void* ret);
+
+	Napi::Value executeSqlAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			executeSqlStart(true, info),
+			&ReplicatedTransaction::executeSqlFinish);
+	}
+
+	Napi::Value executeSqlSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = executeSqlStart(false, info)();
+			return executeSqlFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> executeSqlIntlStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value executeSqlIntlFinish(const Napi::Env env, void* ret);
+
+	Napi::Value executeSqlIntlAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			executeSqlIntlStart(true, info),
+			&ReplicatedTransaction::executeSqlIntlFinish);
+	}
+
+	Napi::Value executeSqlIntlSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = executeSqlIntlStart(false, info)();
+			return executeSqlIntlFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ReplicatedSession : public BaseClass<ReplicatedSession, fb::IReplicatedSession>
+{
+friend class BaseClass<ReplicatedSession, fb::IReplicatedSession>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedSession>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> addRefStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addRefFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addRefAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addRefStart(true, info),
+			&ReplicatedSession::addRefFinish);
+	}
+
+	Napi::Value addRefSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addRefStart(false, info)();
+			return addRefFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> releaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseFinish(const Napi::Env env, int ret);
+
+	Napi::Value releaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			releaseStart(true, info),
+			&ReplicatedSession::releaseFinish);
+	}
+
+	Napi::Value releaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseStart(false, info)();
+			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setOwnerFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setOwnerAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setOwnerStart(true, info),
+			&ReplicatedSession::setOwnerFinish);
+	}
+
+	Napi::Value setOwnerSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setOwnerStart(false, info)();
+			return setOwnerFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getOwnerFinish(const Napi::Env env, fb::IReferenceCounted* ret);
+
+	Napi::Value getOwnerAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IReferenceCounted*>::Run(info.Env(),
+			getOwnerStart(true, info),
+			&ReplicatedSession::getOwnerFinish);
+	}
+
+	Napi::Value getOwnerSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getOwnerStart(false, info)();
+			return getOwnerFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<FB_BOOLEAN> initStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value initFinish(const Napi::Env env, FB_BOOLEAN ret);
+
+	Napi::Value initAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<FB_BOOLEAN>::Run(info.Env(),
+			initStart(true, info),
+			&ReplicatedSession::initFinish);
+	}
+
+	Napi::Value initSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = initStart(false, info)();
+			return initFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IReplicatedTransaction*> startTransactionStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value startTransactionFinish(const Napi::Env env, fb::IReplicatedTransaction* ret);
+
+	Napi::Value startTransactionAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IReplicatedTransaction*>::Run(info.Env(),
+			startTransactionStart(true, info),
+			&ReplicatedSession::startTransactionFinish);
+	}
+
+	Napi::Value startTransactionSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = startTransactionStart(false, info)();
+			return startTransactionFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> cleanupTransactionStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value cleanupTransactionFinish(const Napi::Env env, void* ret);
+
+	Napi::Value cleanupTransactionAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			cleanupTransactionStart(true, info),
+			&ReplicatedSession::cleanupTransactionFinish);
+	}
+
+	Napi::Value cleanupTransactionSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = cleanupTransactionStart(false, info)();
+			return cleanupTransactionFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setSequenceStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setSequenceFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setSequenceAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setSequenceStart(true, info),
+			&ReplicatedSession::setSequenceFinish);
+	}
+
+	Napi::Value setSequenceSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setSequenceStart(false, info)();
+			return setSequenceFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ProfilerPlugin : public BaseClass<ProfilerPlugin, fb::IProfilerPlugin>
+{
+friend class BaseClass<ProfilerPlugin, fb::IProfilerPlugin>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ProfilerPlugin>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> addRefStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value addRefFinish(const Napi::Env env, void* ret);
+
+	Napi::Value addRefAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			addRefStart(true, info),
+			&ProfilerPlugin::addRefFinish);
+	}
+
+	Napi::Value addRefSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = addRefStart(false, info)();
+			return addRefFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<int> releaseStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value releaseFinish(const Napi::Env env, int ret);
+
+	Napi::Value releaseAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<int>::Run(info.Env(),
+			releaseStart(true, info),
+			&ProfilerPlugin::releaseFinish);
+	}
+
+	Napi::Value releaseSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = releaseStart(false, info)();
+			return releaseFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<void*> setOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value setOwnerFinish(const Napi::Env env, void* ret);
+
+	Napi::Value setOwnerAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			setOwnerStart(true, info),
+			&ProfilerPlugin::setOwnerFinish);
+	}
+
+	Napi::Value setOwnerSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = setOwnerStart(false, info)();
+			return setOwnerFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+	static MethodStart<fb::IReferenceCounted*> getOwnerStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getOwnerFinish(const Napi::Env env, fb::IReferenceCounted* ret);
+
+	Napi::Value getOwnerAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<fb::IReferenceCounted*>::Run(info.Env(),
+			getOwnerStart(true, info),
+			&ProfilerPlugin::getOwnerFinish);
+	}
+
+	Napi::Value getOwnerSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getOwnerStart(false, info)();
+			return getOwnerFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ProfilerSession : public BaseClass<ProfilerSession, fb::IProfilerSession>
+{
+friend class BaseClass<ProfilerSession, fb::IProfilerSession>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ProfilerSession>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<void*> disposeStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value disposeFinish(const Napi::Env env, void* ret);
+
+	Napi::Value disposeAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<void*>::Run(info.Env(),
+			disposeStart(true, info),
+			&ProfilerSession::disposeFinish);
+	}
+
+	Napi::Value disposeSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = disposeStart(false, info)();
+			return disposeFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
+class ProfilerStats : public BaseClass<ProfilerStats, fb::IProfilerStats>
+{
+friend class BaseClass<ProfilerStats, fb::IProfilerStats>;
+
+public:
+	using BaseClass::BaseClass;
+
+private:
+	static void InitPrototype(std::vector<Napi::ObjectWrap<ProfilerStats>::PropertyDescriptor>& properties);
+
+private:
+	static MethodStart<uint64_t> getElapsedTicksStart(bool async, const Napi::CallbackInfo& info);
+	static Napi::Value getElapsedTicksFinish(const Napi::Env env, uint64_t ret);
+
+	Napi::Value getElapsedTicksAsync(const Napi::CallbackInfo& info)
+	{
+		return PromiseWorker<uint64_t>::Run(info.Env(),
+			getElapsedTicksStart(true, info),
+			&ProfilerStats::getElapsedTicksFinish);
+	}
+
+	Napi::Value getElapsedTicksSync(const Napi::CallbackInfo& info)
+	{
+		try
+		{
+			auto ret = getElapsedTicksStart(false, info)();
+			return getElapsedTicksFinish(info.Env(), ret);
+		}
+		catch (...)
+		{
+			rethrowException(info.Env());
+		}
+	}
+
+};
+
+
 void Versioned::InitPrototype(std::vector<Napi::ObjectWrap<Versioned>::PropertyDescriptor>& properties)
 {
 }
@@ -10825,6 +14094,8 @@ void FirebirdConf::InitPrototype(std::vector<Napi::ObjectWrap<FirebirdConf>::Pro
 	properties.push_back(InstanceMethod("asStringAsync", &FirebirdConf::asStringAsync));
 	properties.push_back(InstanceMethod("asBooleanSync", &FirebirdConf::asBooleanSync));
 	properties.push_back(InstanceMethod("asBooleanAsync", &FirebirdConf::asBooleanAsync));
+	properties.push_back(InstanceMethod("getVersionSync", &FirebirdConf::getVersionSync));
+	properties.push_back(InstanceMethod("getVersionAsync", &FirebirdConf::getVersionAsync));
 }
 
 MethodStart<void*> FirebirdConf::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -10914,6 +14185,22 @@ MethodStart<FB_BOOLEAN> FirebirdConf::asBooleanStart(bool async, const Napi::Cal
 Napi::Value FirebirdConf::asBooleanFinish(const Napi::Env env, FB_BOOLEAN ret)
 {
 	return Napi::Value::From(env, (bool) ret);
+}
+
+MethodStart<unsigned> FirebirdConf::getVersionStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<FirebirdConf>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getVersion(&statusWrapper);
+	};
+}
+
+Napi::Value FirebirdConf::getVersionFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
 }
 
 void PluginConfig::InitPrototype(std::vector<Napi::ObjectWrap<PluginConfig>::PropertyDescriptor>& properties)
@@ -11052,6 +14339,8 @@ void PluginModule::InitPrototype(std::vector<Napi::ObjectWrap<PluginModule>::Pro
 {
 	properties.push_back(InstanceMethod("doCleanSync", &PluginModule::doCleanSync));
 	properties.push_back(InstanceMethod("doCleanAsync", &PluginModule::doCleanAsync));
+	properties.push_back(InstanceMethod("threadDetachSync", &PluginModule::threadDetachSync));
+	properties.push_back(InstanceMethod("threadDetachAsync", &PluginModule::threadDetachAsync));
 }
 
 MethodStart<void*> PluginModule::doCleanStart(bool async, const Napi::CallbackInfo& info)
@@ -11065,6 +14354,21 @@ MethodStart<void*> PluginModule::doCleanStart(bool async, const Napi::CallbackIn
 }
 
 Napi::Value PluginModule::doCleanFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> PluginModule::threadDetachStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<PluginModule>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->threadDetach();
+		return nullptr;
+	};
+}
+
+Napi::Value PluginModule::threadDetachFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -11205,6 +14509,8 @@ void ConfigManager::InitPrototype(std::vector<Napi::ObjectWrap<ConfigManager>::P
 	properties.push_back(InstanceMethod("getInstallDirectoryAsync", &ConfigManager::getInstallDirectoryAsync));
 	properties.push_back(InstanceMethod("getRootDirectorySync", &ConfigManager::getRootDirectorySync));
 	properties.push_back(InstanceMethod("getRootDirectoryAsync", &ConfigManager::getRootDirectoryAsync));
+	properties.push_back(InstanceMethod("getDefaultSecurityDbSync", &ConfigManager::getDefaultSecurityDbSync));
+	properties.push_back(InstanceMethod("getDefaultSecurityDbAsync", &ConfigManager::getDefaultSecurityDbAsync));
 }
 
 MethodStart<OptString> ConfigManager::getDirectoryStart(bool async, const Napi::CallbackInfo& info)
@@ -11294,6 +14600,20 @@ Napi::Value ConfigManager::getRootDirectoryFinish(const Napi::Env env, OptString
 	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
+MethodStart<OptString> ConfigManager::getDefaultSecurityDbStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ConfigManager>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getDefaultSecurityDb();
+	};
+}
+
+Napi::Value ConfigManager::getDefaultSecurityDbFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
 void EventCallback::InitPrototype(std::vector<Napi::ObjectWrap<EventCallback>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &EventCallback::addRefSync));
@@ -11363,12 +14683,16 @@ void Blob::InitPrototype(std::vector<Napi::ObjectWrap<Blob>::PropertyDescriptor>
 	properties.push_back(InstanceMethod("getSegmentAsync", &Blob::getSegmentAsync));
 	properties.push_back(InstanceMethod("putSegmentSync", &Blob::putSegmentSync));
 	properties.push_back(InstanceMethod("putSegmentAsync", &Blob::putSegmentAsync));
+	properties.push_back(InstanceMethod("deprecatedCancelSync", &Blob::deprecatedCancelSync));
+	properties.push_back(InstanceMethod("deprecatedCancelAsync", &Blob::deprecatedCancelAsync));
+	properties.push_back(InstanceMethod("deprecatedCloseSync", &Blob::deprecatedCloseSync));
+	properties.push_back(InstanceMethod("deprecatedCloseAsync", &Blob::deprecatedCloseAsync));
+	properties.push_back(InstanceMethod("seekSync", &Blob::seekSync));
+	properties.push_back(InstanceMethod("seekAsync", &Blob::seekAsync));
 	properties.push_back(InstanceMethod("cancelSync", &Blob::cancelSync));
 	properties.push_back(InstanceMethod("cancelAsync", &Blob::cancelAsync));
 	properties.push_back(InstanceMethod("closeSync", &Blob::closeSync));
 	properties.push_back(InstanceMethod("closeAsync", &Blob::closeAsync));
-	properties.push_back(InstanceMethod("seekSync", &Blob::seekSync));
-	properties.push_back(InstanceMethod("seekAsync", &Blob::seekAsync));
 }
 
 MethodStart<void*> Blob::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -11464,6 +14788,58 @@ Napi::Value Blob::putSegmentFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+MethodStart<void*> Blob::deprecatedCancelStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Blob>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedCancel(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Blob::deprecatedCancelFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Blob::deprecatedCloseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Blob>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedClose(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Blob::deprecatedCloseFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> Blob::seekStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Blob>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	int mode = (int) info[1].ToNumber();
+	int offset = (int) info[2].ToNumber();
+
+	return [obj, status, mode, offset]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->seek(&statusWrapper, mode, offset);
+	};
+}
+
+Napi::Value Blob::seekFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
 MethodStart<void*> Blob::cancelStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Blob>::Unwrap(info.This().ToObject());
@@ -11498,24 +14874,6 @@ Napi::Value Blob::closeFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<int> Blob::seekStart(bool async, const Napi::CallbackInfo& info)
-{
-	auto* obj = ObjectWrap<Blob>::Unwrap(info.This().ToObject());
-	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
-	int mode = (int) info[1].ToNumber();
-	int offset = (int) info[2].ToNumber();
-
-	return [obj, status, mode, offset]() {
-		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		return obj->interface->seek(&statusWrapper, mode, offset);
-	};
-}
-
-Napi::Value Blob::seekFinish(const Napi::Env env, int ret)
-{
-	return Napi::Value::From(env, ret);
-}
-
 void Transaction::InitPrototype(std::vector<Napi::ObjectWrap<Transaction>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &Transaction::addRefSync));
@@ -11526,22 +14884,28 @@ void Transaction::InitPrototype(std::vector<Napi::ObjectWrap<Transaction>::Prope
 	properties.push_back(InstanceMethod("getInfoAsync", &Transaction::getInfoAsync));
 	properties.push_back(InstanceMethod("prepareSync", &Transaction::prepareSync));
 	properties.push_back(InstanceMethod("prepareAsync", &Transaction::prepareAsync));
-	properties.push_back(InstanceMethod("commitSync", &Transaction::commitSync));
-	properties.push_back(InstanceMethod("commitAsync", &Transaction::commitAsync));
+	properties.push_back(InstanceMethod("deprecatedCommitSync", &Transaction::deprecatedCommitSync));
+	properties.push_back(InstanceMethod("deprecatedCommitAsync", &Transaction::deprecatedCommitAsync));
 	properties.push_back(InstanceMethod("commitRetainingSync", &Transaction::commitRetainingSync));
 	properties.push_back(InstanceMethod("commitRetainingAsync", &Transaction::commitRetainingAsync));
-	properties.push_back(InstanceMethod("rollbackSync", &Transaction::rollbackSync));
-	properties.push_back(InstanceMethod("rollbackAsync", &Transaction::rollbackAsync));
+	properties.push_back(InstanceMethod("deprecatedRollbackSync", &Transaction::deprecatedRollbackSync));
+	properties.push_back(InstanceMethod("deprecatedRollbackAsync", &Transaction::deprecatedRollbackAsync));
 	properties.push_back(InstanceMethod("rollbackRetainingSync", &Transaction::rollbackRetainingSync));
 	properties.push_back(InstanceMethod("rollbackRetainingAsync", &Transaction::rollbackRetainingAsync));
-	properties.push_back(InstanceMethod("disconnectSync", &Transaction::disconnectSync));
-	properties.push_back(InstanceMethod("disconnectAsync", &Transaction::disconnectAsync));
+	properties.push_back(InstanceMethod("deprecatedDisconnectSync", &Transaction::deprecatedDisconnectSync));
+	properties.push_back(InstanceMethod("deprecatedDisconnectAsync", &Transaction::deprecatedDisconnectAsync));
 	properties.push_back(InstanceMethod("joinSync", &Transaction::joinSync));
 	properties.push_back(InstanceMethod("joinAsync", &Transaction::joinAsync));
 	properties.push_back(InstanceMethod("validateSync", &Transaction::validateSync));
 	properties.push_back(InstanceMethod("validateAsync", &Transaction::validateAsync));
 	properties.push_back(InstanceMethod("enterDtcSync", &Transaction::enterDtcSync));
 	properties.push_back(InstanceMethod("enterDtcAsync", &Transaction::enterDtcAsync));
+	properties.push_back(InstanceMethod("commitSync", &Transaction::commitSync));
+	properties.push_back(InstanceMethod("commitAsync", &Transaction::commitAsync));
+	properties.push_back(InstanceMethod("rollbackSync", &Transaction::rollbackSync));
+	properties.push_back(InstanceMethod("rollbackAsync", &Transaction::rollbackAsync));
+	properties.push_back(InstanceMethod("disconnectSync", &Transaction::disconnectSync));
+	properties.push_back(InstanceMethod("disconnectAsync", &Transaction::disconnectAsync));
 }
 
 MethodStart<void*> Transaction::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -11616,19 +14980,19 @@ Napi::Value Transaction::prepareFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<void*> Transaction::commitStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> Transaction::deprecatedCommitStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->commit(&statusWrapper);
+		obj->interface->deprecatedCommit(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value Transaction::commitFinish(const Napi::Env env, void* ret)
+Napi::Value Transaction::deprecatedCommitFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -11650,19 +15014,19 @@ Napi::Value Transaction::commitRetainingFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<void*> Transaction::rollbackStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> Transaction::deprecatedRollbackStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->rollback(&statusWrapper);
+		obj->interface->deprecatedRollback(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value Transaction::rollbackFinish(const Napi::Env env, void* ret)
+Napi::Value Transaction::deprecatedRollbackFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -11684,19 +15048,19 @@ Napi::Value Transaction::rollbackRetainingFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<void*> Transaction::disconnectStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> Transaction::deprecatedDisconnectStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->disconnect(&statusWrapper);
+		obj->interface->deprecatedDisconnect(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value Transaction::disconnectFinish(const Napi::Env env, void* ret)
+Napi::Value Transaction::deprecatedDisconnectFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -11751,6 +15115,57 @@ Napi::Value Transaction::enterDtcFinish(const Napi::Env env, fb::ITransaction* r
 	return Transaction::NewInstance(env, ret);
 }
 
+MethodStart<void*> Transaction::commitStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->commit(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Transaction::commitFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Transaction::rollbackStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->rollback(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Transaction::rollbackFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Transaction::disconnectStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Transaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->disconnect(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Transaction::disconnectFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void MessageMetadata::InitPrototype(std::vector<Napi::ObjectWrap<MessageMetadata>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &MessageMetadata::addRefSync));
@@ -11787,6 +15202,10 @@ void MessageMetadata::InitPrototype(std::vector<Napi::ObjectWrap<MessageMetadata
 	properties.push_back(InstanceMethod("getBuilderAsync", &MessageMetadata::getBuilderAsync));
 	properties.push_back(InstanceMethod("getMessageLengthSync", &MessageMetadata::getMessageLengthSync));
 	properties.push_back(InstanceMethod("getMessageLengthAsync", &MessageMetadata::getMessageLengthAsync));
+	properties.push_back(InstanceMethod("getAlignmentSync", &MessageMetadata::getAlignmentSync));
+	properties.push_back(InstanceMethod("getAlignmentAsync", &MessageMetadata::getAlignmentAsync));
+	properties.push_back(InstanceMethod("getAlignedLengthSync", &MessageMetadata::getAlignedLengthSync));
+	properties.push_back(InstanceMethod("getAlignedLengthAsync", &MessageMetadata::getAlignedLengthAsync));
 }
 
 MethodStart<void*> MessageMetadata::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -12070,6 +15489,38 @@ Napi::Value MessageMetadata::getMessageLengthFinish(const Napi::Env env, unsigne
 	return Napi::Value::From(env, ret);
 }
 
+MethodStart<unsigned> MessageMetadata::getAlignmentStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getAlignment(&statusWrapper);
+	};
+}
+
+Napi::Value MessageMetadata::getAlignmentFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<unsigned> MessageMetadata::getAlignedLengthStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MessageMetadata>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getAlignedLength(&statusWrapper);
+	};
+}
+
+Napi::Value MessageMetadata::getAlignedLengthFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
 void MetadataBuilder::InitPrototype(std::vector<Napi::ObjectWrap<MetadataBuilder>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &MetadataBuilder::addRefSync));
@@ -12096,6 +15547,14 @@ void MetadataBuilder::InitPrototype(std::vector<Napi::ObjectWrap<MetadataBuilder
 	properties.push_back(InstanceMethod("addFieldAsync", &MetadataBuilder::addFieldAsync));
 	properties.push_back(InstanceMethod("getMetadataSync", &MetadataBuilder::getMetadataSync));
 	properties.push_back(InstanceMethod("getMetadataAsync", &MetadataBuilder::getMetadataAsync));
+	properties.push_back(InstanceMethod("setFieldSync", &MetadataBuilder::setFieldSync));
+	properties.push_back(InstanceMethod("setFieldAsync", &MetadataBuilder::setFieldAsync));
+	properties.push_back(InstanceMethod("setRelationSync", &MetadataBuilder::setRelationSync));
+	properties.push_back(InstanceMethod("setRelationAsync", &MetadataBuilder::setRelationAsync));
+	properties.push_back(InstanceMethod("setOwnerSync", &MetadataBuilder::setOwnerSync));
+	properties.push_back(InstanceMethod("setOwnerAsync", &MetadataBuilder::setOwnerAsync));
+	properties.push_back(InstanceMethod("setAliasSync", &MetadataBuilder::setAliasSync));
+	properties.push_back(InstanceMethod("setAliasAsync", &MetadataBuilder::setAliasAsync));
 }
 
 MethodStart<void*> MetadataBuilder::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -12208,7 +15667,7 @@ MethodStart<void*> MetadataBuilder::setScaleStart(bool async, const Napi::Callba
 	auto* obj = ObjectWrap<MetadataBuilder>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 	unsigned index = (unsigned) info[1].ToNumber();
-	unsigned scale = (unsigned) info[2].ToNumber();
+	int scale = (int) info[2].ToNumber();
 
 	return [obj, status, index, scale]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
@@ -12309,6 +15768,82 @@ Napi::Value MetadataBuilder::getMetadataFinish(const Napi::Env env, fb::IMessage
 	return MessageMetadata::NewInstance(env, ret);
 }
 
+MethodStart<void*> MetadataBuilder::setFieldStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MetadataBuilder>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned index = (unsigned) info[1].ToNumber();
+	std::string field = info[2].ToString().Utf8Value();
+
+	return [obj, status, index, field]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setField(&statusWrapper, index, field.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value MetadataBuilder::setFieldFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> MetadataBuilder::setRelationStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MetadataBuilder>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned index = (unsigned) info[1].ToNumber();
+	std::string relation = info[2].ToString().Utf8Value();
+
+	return [obj, status, index, relation]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setRelation(&statusWrapper, index, relation.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value MetadataBuilder::setRelationFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> MetadataBuilder::setOwnerStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MetadataBuilder>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned index = (unsigned) info[1].ToNumber();
+	std::string owner = info[2].ToString().Utf8Value();
+
+	return [obj, status, index, owner]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setOwner(&statusWrapper, index, owner.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value MetadataBuilder::setOwnerFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> MetadataBuilder::setAliasStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<MetadataBuilder>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned index = (unsigned) info[1].ToNumber();
+	std::string alias = info[2].ToString().Utf8Value();
+
+	return [obj, status, index, alias]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setAlias(&statusWrapper, index, alias.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value MetadataBuilder::setAliasFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void ResultSet::InitPrototype(std::vector<Napi::ObjectWrap<ResultSet>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &ResultSet::addRefSync));
@@ -12333,10 +15868,14 @@ void ResultSet::InitPrototype(std::vector<Napi::ObjectWrap<ResultSet>::PropertyD
 	properties.push_back(InstanceMethod("isBofAsync", &ResultSet::isBofAsync));
 	properties.push_back(InstanceMethod("getMetadataSync", &ResultSet::getMetadataSync));
 	properties.push_back(InstanceMethod("getMetadataAsync", &ResultSet::getMetadataAsync));
-	properties.push_back(InstanceMethod("closeSync", &ResultSet::closeSync));
-	properties.push_back(InstanceMethod("closeAsync", &ResultSet::closeAsync));
+	properties.push_back(InstanceMethod("deprecatedCloseSync", &ResultSet::deprecatedCloseSync));
+	properties.push_back(InstanceMethod("deprecatedCloseAsync", &ResultSet::deprecatedCloseAsync));
 	properties.push_back(InstanceMethod("setDelayedOutputFormatSync", &ResultSet::setDelayedOutputFormatSync));
 	properties.push_back(InstanceMethod("setDelayedOutputFormatAsync", &ResultSet::setDelayedOutputFormatAsync));
+	properties.push_back(InstanceMethod("closeSync", &ResultSet::closeSync));
+	properties.push_back(InstanceMethod("closeAsync", &ResultSet::closeAsync));
+	properties.push_back(InstanceMethod("getInfoSync", &ResultSet::getInfoSync));
+	properties.push_back(InstanceMethod("getInfoAsync", &ResultSet::getInfoAsync));
 }
 
 MethodStart<void*> ResultSet::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -12526,19 +16065,19 @@ Napi::Value ResultSet::getMetadataFinish(const Napi::Env env, fb::IMessageMetada
 	return MessageMetadata::NewInstance(env, ret);
 }
 
-MethodStart<void*> ResultSet::closeStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> ResultSet::deprecatedCloseStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<ResultSet>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->close(&statusWrapper);
+		obj->interface->deprecatedClose(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value ResultSet::closeFinish(const Napi::Env env, void* ret)
+Napi::Value ResultSet::deprecatedCloseFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -12557,6 +16096,46 @@ MethodStart<void*> ResultSet::setDelayedOutputFormatStart(bool async, const Napi
 }
 
 Napi::Value ResultSet::setDelayedOutputFormatFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ResultSet::closeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ResultSet>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->close(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ResultSet::closeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ResultSet::getInfoStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ResultSet>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned itemsLength = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> itemsPersistent;
+	auto* items = getAddress<unsigned char>(info.Env(), async, info[2], itemsPersistent);
+	unsigned bufferLength = (unsigned) info[3].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> bufferPersistent;
+	auto* buffer = getAddress<unsigned char>(info.Env(), async, info[4], bufferPersistent);
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
+		return nullptr;
+	};
+}
+
+Napi::Value ResultSet::getInfoFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -12585,10 +16164,22 @@ void Statement::InitPrototype(std::vector<Napi::ObjectWrap<Statement>::PropertyD
 	properties.push_back(InstanceMethod("openCursorAsync", &Statement::openCursorAsync));
 	properties.push_back(InstanceMethod("setCursorNameSync", &Statement::setCursorNameSync));
 	properties.push_back(InstanceMethod("setCursorNameAsync", &Statement::setCursorNameAsync));
-	properties.push_back(InstanceMethod("freeSync", &Statement::freeSync));
-	properties.push_back(InstanceMethod("freeAsync", &Statement::freeAsync));
+	properties.push_back(InstanceMethod("deprecatedFreeSync", &Statement::deprecatedFreeSync));
+	properties.push_back(InstanceMethod("deprecatedFreeAsync", &Statement::deprecatedFreeAsync));
 	properties.push_back(InstanceMethod("getFlagsSync", &Statement::getFlagsSync));
 	properties.push_back(InstanceMethod("getFlagsAsync", &Statement::getFlagsAsync));
+	properties.push_back(InstanceMethod("getTimeoutSync", &Statement::getTimeoutSync));
+	properties.push_back(InstanceMethod("getTimeoutAsync", &Statement::getTimeoutAsync));
+	properties.push_back(InstanceMethod("setTimeoutSync", &Statement::setTimeoutSync));
+	properties.push_back(InstanceMethod("setTimeoutAsync", &Statement::setTimeoutAsync));
+	properties.push_back(InstanceMethod("createBatchSync", &Statement::createBatchSync));
+	properties.push_back(InstanceMethod("createBatchAsync", &Statement::createBatchAsync));
+	properties.push_back(InstanceMethod("freeSync", &Statement::freeSync));
+	properties.push_back(InstanceMethod("freeAsync", &Statement::freeAsync));
+	properties.push_back(InstanceMethod("getMaxInlineBlobSizeSync", &Statement::getMaxInlineBlobSizeSync));
+	properties.push_back(InstanceMethod("getMaxInlineBlobSizeAsync", &Statement::getMaxInlineBlobSizeAsync));
+	properties.push_back(InstanceMethod("setMaxInlineBlobSizeSync", &Statement::setMaxInlineBlobSizeSync));
+	properties.push_back(InstanceMethod("setMaxInlineBlobSizeAsync", &Statement::setMaxInlineBlobSizeAsync));
 }
 
 MethodStart<void*> Statement::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -12787,19 +16378,19 @@ Napi::Value Statement::setCursorNameFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
-MethodStart<void*> Statement::freeStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> Statement::deprecatedFreeStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->free(&statusWrapper);
+		obj->interface->deprecatedFree(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value Statement::freeFinish(const Napi::Env env, void* ret)
+Napi::Value Statement::deprecatedFreeFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -12820,6 +16411,618 @@ Napi::Value Statement::getFlagsFinish(const Napi::Env env, unsigned ret)
 	return Napi::Value::From(env, ret);
 }
 
+MethodStart<unsigned> Statement::getTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getTimeout(&statusWrapper);
+	};
+}
+
+Napi::Value Statement::getTimeoutFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Statement::setTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned timeOut = (unsigned) info[1].ToNumber();
+
+	return [obj, status, timeOut]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setTimeout(&statusWrapper, timeOut);
+		return nullptr;
+	};
+}
+
+Napi::Value Statement::setTimeoutFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IBatch*> Statement::createBatchStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* inMetadata = MessageMetadata::CheckedUnwrap(info.Env(), info[1], "inMetadata argument", true);
+	unsigned parLength = (unsigned) info[2].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> parPersistent;
+	auto* par = getAddress<unsigned char>(info.Env(), async, info[3], parPersistent);
+
+	return [obj, status, inMetadata, parLength, par, parPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->createBatch(&statusWrapper, (inMetadata ? inMetadata->interface : nullptr), parLength, par);
+	};
+}
+
+Napi::Value Statement::createBatchFinish(const Napi::Env env, fb::IBatch* ret)
+{
+	return Batch::NewInstance(env, ret);
+}
+
+MethodStart<void*> Statement::freeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->free(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Statement::freeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> Statement::getMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getMaxInlineBlobSize(&statusWrapper);
+	};
+}
+
+Napi::Value Statement::getMaxInlineBlobSizeFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Statement::setMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Statement>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned size = (unsigned) info[1].ToNumber();
+
+	return [obj, status, size]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setMaxInlineBlobSize(&statusWrapper, size);
+		return nullptr;
+	};
+}
+
+Napi::Value Statement::setMaxInlineBlobSizeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void Batch::InitPrototype(std::vector<Napi::ObjectWrap<Batch>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("addRefSync", &Batch::addRefSync));
+	properties.push_back(InstanceMethod("addRefAsync", &Batch::addRefAsync));
+	properties.push_back(InstanceMethod("releaseSync", &Batch::releaseSync));
+	properties.push_back(InstanceMethod("releaseAsync", &Batch::releaseAsync));
+	properties.push_back(InstanceMethod("addSync", &Batch::addSync));
+	properties.push_back(InstanceMethod("addAsync", &Batch::addAsync));
+	properties.push_back(InstanceMethod("addBlobSync", &Batch::addBlobSync));
+	properties.push_back(InstanceMethod("addBlobAsync", &Batch::addBlobAsync));
+	properties.push_back(InstanceMethod("appendBlobDataSync", &Batch::appendBlobDataSync));
+	properties.push_back(InstanceMethod("appendBlobDataAsync", &Batch::appendBlobDataAsync));
+	properties.push_back(InstanceMethod("addBlobStreamSync", &Batch::addBlobStreamSync));
+	properties.push_back(InstanceMethod("addBlobStreamAsync", &Batch::addBlobStreamAsync));
+	properties.push_back(InstanceMethod("registerBlobSync", &Batch::registerBlobSync));
+	properties.push_back(InstanceMethod("registerBlobAsync", &Batch::registerBlobAsync));
+	properties.push_back(InstanceMethod("executeSync", &Batch::executeSync));
+	properties.push_back(InstanceMethod("executeAsync", &Batch::executeAsync));
+	properties.push_back(InstanceMethod("cancelSync", &Batch::cancelSync));
+	properties.push_back(InstanceMethod("cancelAsync", &Batch::cancelAsync));
+	properties.push_back(InstanceMethod("getBlobAlignmentSync", &Batch::getBlobAlignmentSync));
+	properties.push_back(InstanceMethod("getBlobAlignmentAsync", &Batch::getBlobAlignmentAsync));
+	properties.push_back(InstanceMethod("getMetadataSync", &Batch::getMetadataSync));
+	properties.push_back(InstanceMethod("getMetadataAsync", &Batch::getMetadataAsync));
+	properties.push_back(InstanceMethod("setDefaultBpbSync", &Batch::setDefaultBpbSync));
+	properties.push_back(InstanceMethod("setDefaultBpbAsync", &Batch::setDefaultBpbAsync));
+	properties.push_back(InstanceMethod("deprecatedCloseSync", &Batch::deprecatedCloseSync));
+	properties.push_back(InstanceMethod("deprecatedCloseAsync", &Batch::deprecatedCloseAsync));
+	properties.push_back(InstanceMethod("closeSync", &Batch::closeSync));
+	properties.push_back(InstanceMethod("closeAsync", &Batch::closeAsync));
+	properties.push_back(InstanceMethod("getInfoSync", &Batch::getInfoSync));
+	properties.push_back(InstanceMethod("getInfoAsync", &Batch::getInfoAsync));
+}
+
+MethodStart<void*> Batch::addRefStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->addRef();
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::addRefFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> Batch::releaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->release();
+	};
+}
+
+Napi::Value Batch::releaseFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Batch::addStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned count = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> inBufferPersistent;
+	auto* inBuffer = getAddress<unsigned char>(info.Env(), async, info[2], inBufferPersistent);
+
+	return [obj, status, count, inBuffer, inBufferPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->add(&statusWrapper, count, inBuffer);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::addFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::addBlobStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned length = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> inBufferPersistent;
+	auto* inBuffer = getAddress<unsigned char>(info.Env(), async, info[2], inBufferPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> blobIdPersistent;
+	auto* blobId = (ISC_QUAD*) getAddress<unsigned char>(info.Env(), async, info[3], blobIdPersistent);
+	unsigned parLength = (unsigned) info[4].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> parPersistent;
+	auto* par = getAddress<unsigned char>(info.Env(), async, info[5], parPersistent);
+
+	return [obj, status, length, inBuffer, inBufferPersistent, blobId, blobIdPersistent, parLength, par, parPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->addBlob(&statusWrapper, length, inBuffer, blobId, parLength, par);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::addBlobFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::appendBlobDataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned length = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> inBufferPersistent;
+	auto* inBuffer = getAddress<unsigned char>(info.Env(), async, info[2], inBufferPersistent);
+
+	return [obj, status, length, inBuffer, inBufferPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->appendBlobData(&statusWrapper, length, inBuffer);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::appendBlobDataFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::addBlobStreamStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned length = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> inBufferPersistent;
+	auto* inBuffer = getAddress<unsigned char>(info.Env(), async, info[2], inBufferPersistent);
+
+	return [obj, status, length, inBuffer, inBufferPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->addBlobStream(&statusWrapper, length, inBuffer);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::addBlobStreamFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::registerBlobStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::shared_ptr<Napi::Reference<Napi::Value>> existingBlobPersistent;
+	auto* existingBlob = (const ISC_QUAD*) getAddress<unsigned char>(info.Env(), async, info[1], existingBlobPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> blobIdPersistent;
+	auto* blobId = (ISC_QUAD*) getAddress<unsigned char>(info.Env(), async, info[2], blobIdPersistent);
+
+	return [obj, status, existingBlob, existingBlobPersistent, blobId, blobIdPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->registerBlob(&statusWrapper, existingBlob, blobId);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::registerBlobFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IBatchCompletionState*> Batch::executeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* transaction = Transaction::CheckedUnwrap(info.Env(), info[1], "transaction argument", true);
+
+	return [obj, status, transaction]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->execute(&statusWrapper, (transaction ? transaction->interface : nullptr));
+	};
+}
+
+Napi::Value Batch::executeFinish(const Napi::Env env, fb::IBatchCompletionState* ret)
+{
+	return BatchCompletionState::NewInstance(env, ret);
+}
+
+MethodStart<void*> Batch::cancelStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->cancel(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::cancelFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> Batch::getBlobAlignmentStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getBlobAlignment(&statusWrapper);
+	};
+}
+
+Napi::Value Batch::getBlobAlignmentFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<fb::IMessageMetadata*> Batch::getMetadataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getMetadata(&statusWrapper);
+	};
+}
+
+Napi::Value Batch::getMetadataFinish(const Napi::Env env, fb::IMessageMetadata* ret)
+{
+	return MessageMetadata::NewInstance(env, ret);
+}
+
+MethodStart<void*> Batch::setDefaultBpbStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned parLength = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> parPersistent;
+	auto* par = getAddress<unsigned char>(info.Env(), async, info[2], parPersistent);
+
+	return [obj, status, parLength, par, parPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setDefaultBpb(&statusWrapper, parLength, par);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::setDefaultBpbFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::deprecatedCloseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedClose(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::deprecatedCloseFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::closeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->close(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::closeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Batch::getInfoStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Batch>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned itemsLength = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> itemsPersistent;
+	auto* items = getAddress<unsigned char>(info.Env(), async, info[2], itemsPersistent);
+	unsigned bufferLength = (unsigned) info[3].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> bufferPersistent;
+	auto* buffer = getAddress<unsigned char>(info.Env(), async, info[4], bufferPersistent);
+
+	return [obj, status, itemsLength, items, itemsPersistent, bufferLength, buffer, bufferPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->getInfo(&statusWrapper, itemsLength, items, bufferLength, buffer);
+		return nullptr;
+	};
+}
+
+Napi::Value Batch::getInfoFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void BatchCompletionState::InitPrototype(std::vector<Napi::ObjectWrap<BatchCompletionState>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("disposeSync", &BatchCompletionState::disposeSync));
+	properties.push_back(InstanceMethod("disposeAsync", &BatchCompletionState::disposeAsync));
+	properties.push_back(InstanceMethod("getSizeSync", &BatchCompletionState::getSizeSync));
+	properties.push_back(InstanceMethod("getSizeAsync", &BatchCompletionState::getSizeAsync));
+	properties.push_back(InstanceMethod("getStateSync", &BatchCompletionState::getStateSync));
+	properties.push_back(InstanceMethod("getStateAsync", &BatchCompletionState::getStateAsync));
+	properties.push_back(InstanceMethod("findErrorSync", &BatchCompletionState::findErrorSync));
+	properties.push_back(InstanceMethod("findErrorAsync", &BatchCompletionState::findErrorAsync));
+	properties.push_back(InstanceMethod("getStatusSync", &BatchCompletionState::getStatusSync));
+	properties.push_back(InstanceMethod("getStatusAsync", &BatchCompletionState::getStatusAsync));
+}
+
+MethodStart<void*> BatchCompletionState::disposeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<BatchCompletionState>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->dispose();
+		return nullptr;
+	};
+}
+
+Napi::Value BatchCompletionState::disposeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> BatchCompletionState::getSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<BatchCompletionState>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getSize(&statusWrapper);
+	};
+}
+
+Napi::Value BatchCompletionState::getSizeFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<int> BatchCompletionState::getStateStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<BatchCompletionState>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned pos = (unsigned) info[1].ToNumber();
+
+	return [obj, status, pos]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getState(&statusWrapper, pos);
+	};
+}
+
+Napi::Value BatchCompletionState::getStateFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<unsigned> BatchCompletionState::findErrorStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<BatchCompletionState>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned pos = (unsigned) info[1].ToNumber();
+
+	return [obj, status, pos]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->findError(&statusWrapper, pos);
+	};
+}
+
+Napi::Value BatchCompletionState::findErrorFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> BatchCompletionState::getStatusStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<BatchCompletionState>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* to = Status::CheckedUnwrap(info.Env(), info[1], "to argument", true);
+	unsigned pos = (unsigned) info[2].ToNumber();
+
+	return [obj, status, to, pos]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->getStatus(&statusWrapper, (to ? to->interface : nullptr), pos);
+		return nullptr;
+	};
+}
+
+Napi::Value BatchCompletionState::getStatusFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void Replicator::InitPrototype(std::vector<Napi::ObjectWrap<Replicator>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("addRefSync", &Replicator::addRefSync));
+	properties.push_back(InstanceMethod("addRefAsync", &Replicator::addRefAsync));
+	properties.push_back(InstanceMethod("releaseSync", &Replicator::releaseSync));
+	properties.push_back(InstanceMethod("releaseAsync", &Replicator::releaseAsync));
+	properties.push_back(InstanceMethod("processSync", &Replicator::processSync));
+	properties.push_back(InstanceMethod("processAsync", &Replicator::processAsync));
+	properties.push_back(InstanceMethod("deprecatedCloseSync", &Replicator::deprecatedCloseSync));
+	properties.push_back(InstanceMethod("deprecatedCloseAsync", &Replicator::deprecatedCloseAsync));
+	properties.push_back(InstanceMethod("closeSync", &Replicator::closeSync));
+	properties.push_back(InstanceMethod("closeAsync", &Replicator::closeAsync));
+}
+
+MethodStart<void*> Replicator::addRefStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Replicator>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->addRef();
+		return nullptr;
+	};
+}
+
+Napi::Value Replicator::addRefFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> Replicator::releaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Replicator>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->release();
+	};
+}
+
+Napi::Value Replicator::releaseFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Replicator::processStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Replicator>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned length = (unsigned) info[1].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> dataPersistent;
+	auto* data = getAddress<unsigned char>(info.Env(), async, info[2], dataPersistent);
+
+	return [obj, status, length, data, dataPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->process(&statusWrapper, length, data);
+		return nullptr;
+	};
+}
+
+Napi::Value Replicator::processFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Replicator::deprecatedCloseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Replicator>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedClose(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Replicator::deprecatedCloseFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Replicator::closeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Replicator>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->close(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Replicator::closeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void Request::InitPrototype(std::vector<Napi::ObjectWrap<Request>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &Request::addRefSync));
@@ -12838,6 +17041,8 @@ void Request::InitPrototype(std::vector<Napi::ObjectWrap<Request>::PropertyDescr
 	properties.push_back(InstanceMethod("startAndSendAsync", &Request::startAndSendAsync));
 	properties.push_back(InstanceMethod("unwindSync", &Request::unwindSync));
 	properties.push_back(InstanceMethod("unwindAsync", &Request::unwindAsync));
+	properties.push_back(InstanceMethod("deprecatedFreeSync", &Request::deprecatedFreeSync));
+	properties.push_back(InstanceMethod("deprecatedFreeAsync", &Request::deprecatedFreeAsync));
 	properties.push_back(InstanceMethod("freeSync", &Request::freeSync));
 	properties.push_back(InstanceMethod("freeAsync", &Request::freeAsync));
 }
@@ -12999,6 +17204,23 @@ Napi::Value Request::unwindFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+MethodStart<void*> Request::deprecatedFreeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Request>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedFree(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Request::deprecatedFreeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 MethodStart<void*> Request::freeStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Request>::Unwrap(info.This().ToObject());
@@ -13022,6 +17244,8 @@ void Events::InitPrototype(std::vector<Napi::ObjectWrap<Events>::PropertyDescrip
 	properties.push_back(InstanceMethod("addRefAsync", &Events::addRefAsync));
 	properties.push_back(InstanceMethod("releaseSync", &Events::releaseSync));
 	properties.push_back(InstanceMethod("releaseAsync", &Events::releaseAsync));
+	properties.push_back(InstanceMethod("deprecatedCancelSync", &Events::deprecatedCancelSync));
+	properties.push_back(InstanceMethod("deprecatedCancelAsync", &Events::deprecatedCancelAsync));
 	properties.push_back(InstanceMethod("cancelSync", &Events::cancelSync));
 	properties.push_back(InstanceMethod("cancelAsync", &Events::cancelAsync));
 }
@@ -13053,6 +17277,23 @@ MethodStart<int> Events::releaseStart(bool async, const Napi::CallbackInfo& info
 Napi::Value Events::releaseFinish(const Napi::Env env, int ret)
 {
 	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Events::deprecatedCancelStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Events>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedCancel(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Events::deprecatedCancelFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
 }
 
 MethodStart<void*> Events::cancelStart(bool async, const Napi::CallbackInfo& info)
@@ -13106,10 +17347,34 @@ void Attachment::InitPrototype(std::vector<Napi::ObjectWrap<Attachment>::Propert
 	properties.push_back(InstanceMethod("cancelOperationAsync", &Attachment::cancelOperationAsync));
 	properties.push_back(InstanceMethod("pingSync", &Attachment::pingSync));
 	properties.push_back(InstanceMethod("pingAsync", &Attachment::pingAsync));
+	properties.push_back(InstanceMethod("deprecatedDetachSync", &Attachment::deprecatedDetachSync));
+	properties.push_back(InstanceMethod("deprecatedDetachAsync", &Attachment::deprecatedDetachAsync));
+	properties.push_back(InstanceMethod("deprecatedDropDatabaseSync", &Attachment::deprecatedDropDatabaseSync));
+	properties.push_back(InstanceMethod("deprecatedDropDatabaseAsync", &Attachment::deprecatedDropDatabaseAsync));
+	properties.push_back(InstanceMethod("getIdleTimeoutSync", &Attachment::getIdleTimeoutSync));
+	properties.push_back(InstanceMethod("getIdleTimeoutAsync", &Attachment::getIdleTimeoutAsync));
+	properties.push_back(InstanceMethod("setIdleTimeoutSync", &Attachment::setIdleTimeoutSync));
+	properties.push_back(InstanceMethod("setIdleTimeoutAsync", &Attachment::setIdleTimeoutAsync));
+	properties.push_back(InstanceMethod("getStatementTimeoutSync", &Attachment::getStatementTimeoutSync));
+	properties.push_back(InstanceMethod("getStatementTimeoutAsync", &Attachment::getStatementTimeoutAsync));
+	properties.push_back(InstanceMethod("setStatementTimeoutSync", &Attachment::setStatementTimeoutSync));
+	properties.push_back(InstanceMethod("setStatementTimeoutAsync", &Attachment::setStatementTimeoutAsync));
+	properties.push_back(InstanceMethod("createBatchSync", &Attachment::createBatchSync));
+	properties.push_back(InstanceMethod("createBatchAsync", &Attachment::createBatchAsync));
+	properties.push_back(InstanceMethod("createReplicatorSync", &Attachment::createReplicatorSync));
+	properties.push_back(InstanceMethod("createReplicatorAsync", &Attachment::createReplicatorAsync));
 	properties.push_back(InstanceMethod("detachSync", &Attachment::detachSync));
 	properties.push_back(InstanceMethod("detachAsync", &Attachment::detachAsync));
 	properties.push_back(InstanceMethod("dropDatabaseSync", &Attachment::dropDatabaseSync));
 	properties.push_back(InstanceMethod("dropDatabaseAsync", &Attachment::dropDatabaseAsync));
+	properties.push_back(InstanceMethod("getMaxBlobCacheSizeSync", &Attachment::getMaxBlobCacheSizeSync));
+	properties.push_back(InstanceMethod("getMaxBlobCacheSizeAsync", &Attachment::getMaxBlobCacheSizeAsync));
+	properties.push_back(InstanceMethod("setMaxBlobCacheSizeSync", &Attachment::setMaxBlobCacheSizeSync));
+	properties.push_back(InstanceMethod("setMaxBlobCacheSizeAsync", &Attachment::setMaxBlobCacheSizeAsync));
+	properties.push_back(InstanceMethod("getMaxInlineBlobSizeSync", &Attachment::getMaxInlineBlobSizeSync));
+	properties.push_back(InstanceMethod("getMaxInlineBlobSizeAsync", &Attachment::getMaxInlineBlobSizeAsync));
+	properties.push_back(InstanceMethod("setMaxInlineBlobSizeSync", &Attachment::setMaxInlineBlobSizeSync));
+	properties.push_back(InstanceMethod("setMaxInlineBlobSizeAsync", &Attachment::setMaxInlineBlobSizeAsync));
 }
 
 MethodStart<void*> Attachment::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -13441,6 +17706,148 @@ Napi::Value Attachment::pingFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+MethodStart<void*> Attachment::deprecatedDetachStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedDetach(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::deprecatedDetachFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Attachment::deprecatedDropDatabaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deprecatedDropDatabase(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::deprecatedDropDatabaseFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> Attachment::getIdleTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getIdleTimeout(&statusWrapper);
+	};
+}
+
+Napi::Value Attachment::getIdleTimeoutFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Attachment::setIdleTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned timeOut = (unsigned) info[1].ToNumber();
+
+	return [obj, status, timeOut]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setIdleTimeout(&statusWrapper, timeOut);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::setIdleTimeoutFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> Attachment::getStatementTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getStatementTimeout(&statusWrapper);
+	};
+}
+
+Napi::Value Attachment::getStatementTimeoutFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Attachment::setStatementTimeoutStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned timeOut = (unsigned) info[1].ToNumber();
+
+	return [obj, status, timeOut]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setStatementTimeout(&statusWrapper, timeOut);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::setStatementTimeoutFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IBatch*> Attachment::createBatchStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* transaction = Transaction::CheckedUnwrap(info.Env(), info[1], "transaction argument", true);
+	unsigned stmtLength = (unsigned) info[2].ToNumber();
+	std::string sqlStmt = info[3].ToString().Utf8Value();
+	unsigned dialect = (unsigned) info[4].ToNumber();
+	auto* inMetadata = MessageMetadata::CheckedUnwrap(info.Env(), info[5], "inMetadata argument", true);
+	unsigned parLength = (unsigned) info[6].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> parPersistent;
+	auto* par = getAddress<unsigned char>(info.Env(), async, info[7], parPersistent);
+
+	return [obj, status, transaction, stmtLength, sqlStmt, dialect, inMetadata, parLength, par, parPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->createBatch(&statusWrapper, (transaction ? transaction->interface : nullptr), stmtLength, sqlStmt.c_str(), dialect, (inMetadata ? inMetadata->interface : nullptr), parLength, par);
+	};
+}
+
+Napi::Value Attachment::createBatchFinish(const Napi::Env env, fb::IBatch* ret)
+{
+	return Batch::NewInstance(env, ret);
+}
+
+MethodStart<fb::IReplicator*> Attachment::createReplicatorStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->createReplicator(&statusWrapper);
+	};
+}
+
+Napi::Value Attachment::createReplicatorFinish(const Napi::Env env, fb::IReplicator* ret)
+{
+	return Replicator::NewInstance(env, ret);
+}
+
 MethodStart<void*> Attachment::detachStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
@@ -13475,18 +17882,90 @@ Napi::Value Attachment::dropDatabaseFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+MethodStart<unsigned> Attachment::getMaxBlobCacheSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getMaxBlobCacheSize(&statusWrapper);
+	};
+}
+
+Napi::Value Attachment::getMaxBlobCacheSizeFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Attachment::setMaxBlobCacheSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned size = (unsigned) info[1].ToNumber();
+
+	return [obj, status, size]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setMaxBlobCacheSize(&statusWrapper, size);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::setMaxBlobCacheSizeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<unsigned> Attachment::getMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getMaxInlineBlobSize(&statusWrapper);
+	};
+}
+
+Napi::Value Attachment::getMaxInlineBlobSizeFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Attachment::setMaxInlineBlobSizeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Attachment>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned size = (unsigned) info[1].ToNumber();
+
+	return [obj, status, size]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setMaxInlineBlobSize(&statusWrapper, size);
+		return nullptr;
+	};
+}
+
+Napi::Value Attachment::setMaxInlineBlobSizeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void Service::InitPrototype(std::vector<Napi::ObjectWrap<Service>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &Service::addRefSync));
 	properties.push_back(InstanceMethod("addRefAsync", &Service::addRefAsync));
 	properties.push_back(InstanceMethod("releaseSync", &Service::releaseSync));
 	properties.push_back(InstanceMethod("releaseAsync", &Service::releaseAsync));
-	properties.push_back(InstanceMethod("detachSync", &Service::detachSync));
-	properties.push_back(InstanceMethod("detachAsync", &Service::detachAsync));
+	properties.push_back(InstanceMethod("deprecatedDetachSync", &Service::deprecatedDetachSync));
+	properties.push_back(InstanceMethod("deprecatedDetachAsync", &Service::deprecatedDetachAsync));
 	properties.push_back(InstanceMethod("querySync", &Service::querySync));
 	properties.push_back(InstanceMethod("queryAsync", &Service::queryAsync));
 	properties.push_back(InstanceMethod("startSync", &Service::startSync));
 	properties.push_back(InstanceMethod("startAsync", &Service::startAsync));
+	properties.push_back(InstanceMethod("detachSync", &Service::detachSync));
+	properties.push_back(InstanceMethod("detachAsync", &Service::detachAsync));
+	properties.push_back(InstanceMethod("cancelSync", &Service::cancelSync));
+	properties.push_back(InstanceMethod("cancelAsync", &Service::cancelAsync));
 }
 
 MethodStart<void*> Service::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -13518,19 +17997,19 @@ Napi::Value Service::releaseFinish(const Napi::Env env, int ret)
 	return Napi::Value::From(env, ret);
 }
 
-MethodStart<void*> Service::detachStart(bool async, const Napi::CallbackInfo& info)
+MethodStart<void*> Service::deprecatedDetachStart(bool async, const Napi::CallbackInfo& info)
 {
 	auto* obj = ObjectWrap<Service>::Unwrap(info.This().ToObject());
 	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
 
 	return [obj, status]() {
 		fb::ThrowStatusWrapper statusWrapper(status->interface);
-		obj->interface->detach(&statusWrapper);
+		obj->interface->deprecatedDetach(&statusWrapper);
 		return nullptr;
 	};
 }
 
-Napi::Value Service::detachFinish(const Napi::Env env, void* ret)
+Napi::Value Service::deprecatedDetachFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -13577,6 +18056,40 @@ MethodStart<void*> Service::startStart(bool async, const Napi::CallbackInfo& inf
 }
 
 Napi::Value Service::startFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Service::detachStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Service>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->detach(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Service::detachFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Service::cancelStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Service>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->cancel(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value Service::cancelFinish(const Napi::Env env, void* ret)
 {
 	return env.Undefined();
 }
@@ -14129,6 +18642,8 @@ void ClientBlock::InitPrototype(std::vector<Napi::ObjectWrap<ClientBlock>::Prope
 	properties.push_back(InstanceMethod("putDataAsync", &ClientBlock::putDataAsync));
 	properties.push_back(InstanceMethod("newKeySync", &ClientBlock::newKeySync));
 	properties.push_back(InstanceMethod("newKeyAsync", &ClientBlock::newKeyAsync));
+	properties.push_back(InstanceMethod("getAuthBlockSync", &ClientBlock::getAuthBlockSync));
+	properties.push_back(InstanceMethod("getAuthBlockAsync", &ClientBlock::getAuthBlockAsync));
 }
 
 MethodStart<void*> ClientBlock::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -14240,6 +18755,22 @@ Napi::Value ClientBlock::newKeyFinish(const Napi::Env env, fb::ICryptKey* ret)
 	return CryptKey::NewInstance(env, ret);
 }
 
+MethodStart<fb::IAuthBlock*> ClientBlock::getAuthBlockStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ClientBlock>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getAuthBlock(&statusWrapper);
+	};
+}
+
+Napi::Value ClientBlock::getAuthBlockFinish(const Napi::Env env, fb::IAuthBlock* ret)
+{
+	return AuthBlock::NewInstance(env, ret);
+}
+
 void Server::InitPrototype(std::vector<Napi::ObjectWrap<Server>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &Server::addRefSync));
@@ -14252,6 +18783,8 @@ void Server::InitPrototype(std::vector<Napi::ObjectWrap<Server>::PropertyDescrip
 	properties.push_back(InstanceMethod("getOwnerAsync", &Server::getOwnerAsync));
 	properties.push_back(InstanceMethod("authenticateSync", &Server::authenticateSync));
 	properties.push_back(InstanceMethod("authenticateAsync", &Server::authenticateAsync));
+	properties.push_back(InstanceMethod("setDbCryptCallbackSync", &Server::setDbCryptCallbackSync));
+	properties.push_back(InstanceMethod("setDbCryptCallbackAsync", &Server::setDbCryptCallbackAsync));
 }
 
 MethodStart<void*> Server::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -14329,6 +18862,24 @@ MethodStart<int> Server::authenticateStart(bool async, const Napi::CallbackInfo&
 Napi::Value Server::authenticateFinish(const Napi::Env env, int ret)
 {
 	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> Server::setDbCryptCallbackStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Server>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* cryptCallback = CryptKeyCallback::CheckedUnwrap(info.Env(), info[1], "cryptCallback argument", true);
+
+	return [obj, status, cryptCallback]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setDbCryptCallback(&statusWrapper, (cryptCallback ? cryptCallback->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value Server::setDbCryptCallbackFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
 }
 
 void Client::InitPrototype(std::vector<Napi::ObjectWrap<Client>::PropertyDescriptor>& properties)
@@ -14880,6 +19431,10 @@ void LogonInfo::InitPrototype(std::vector<Napi::ObjectWrap<LogonInfo>::PropertyD
 	properties.push_back(InstanceMethod("remoteAddressAsync", &LogonInfo::remoteAddressAsync));
 	properties.push_back(InstanceMethod("authBlockSync", &LogonInfo::authBlockSync));
 	properties.push_back(InstanceMethod("authBlockAsync", &LogonInfo::authBlockAsync));
+	properties.push_back(InstanceMethod("attachmentSync", &LogonInfo::attachmentSync));
+	properties.push_back(InstanceMethod("attachmentAsync", &LogonInfo::attachmentAsync));
+	properties.push_back(InstanceMethod("transactionSync", &LogonInfo::transactionSync));
+	properties.push_back(InstanceMethod("transactionAsync", &LogonInfo::transactionAsync));
 }
 
 MethodStart<OptString> LogonInfo::nameStart(bool async, const Napi::CallbackInfo& info)
@@ -14952,6 +19507,38 @@ MethodStart<const unsigned char*> LogonInfo::authBlockStart(bool async, const Na
 Napi::Value LogonInfo::authBlockFinish(const Napi::Env env, const unsigned char* ret)
 {
 	return Pointer::NewInstance(env, ret);
+}
+
+MethodStart<fb::IAttachment*> LogonInfo::attachmentStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->attachment(&statusWrapper);
+	};
+}
+
+Napi::Value LogonInfo::attachmentFinish(const Napi::Env env, fb::IAttachment* ret)
+{
+	return Attachment::NewInstance(env, ret);
+}
+
+MethodStart<fb::ITransaction*> LogonInfo::transactionStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<LogonInfo>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->transaction(&statusWrapper);
+	};
+}
+
+Napi::Value LogonInfo::transactionFinish(const Napi::Env env, fb::ITransaction* ret)
+{
+	return Transaction::NewInstance(env, ret);
 }
 
 void Management::InitPrototype(std::vector<Napi::ObjectWrap<Management>::PropertyDescriptor>& properties)
@@ -15103,6 +19690,126 @@ Napi::Value Management::rollbackFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+void AuthBlock::InitPrototype(std::vector<Napi::ObjectWrap<AuthBlock>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("getTypeSync", &AuthBlock::getTypeSync));
+	properties.push_back(InstanceMethod("getTypeAsync", &AuthBlock::getTypeAsync));
+	properties.push_back(InstanceMethod("getNameSync", &AuthBlock::getNameSync));
+	properties.push_back(InstanceMethod("getNameAsync", &AuthBlock::getNameAsync));
+	properties.push_back(InstanceMethod("getPluginSync", &AuthBlock::getPluginSync));
+	properties.push_back(InstanceMethod("getPluginAsync", &AuthBlock::getPluginAsync));
+	properties.push_back(InstanceMethod("getSecurityDbSync", &AuthBlock::getSecurityDbSync));
+	properties.push_back(InstanceMethod("getSecurityDbAsync", &AuthBlock::getSecurityDbAsync));
+	properties.push_back(InstanceMethod("getOriginalPluginSync", &AuthBlock::getOriginalPluginSync));
+	properties.push_back(InstanceMethod("getOriginalPluginAsync", &AuthBlock::getOriginalPluginAsync));
+	properties.push_back(InstanceMethod("nextSync", &AuthBlock::nextSync));
+	properties.push_back(InstanceMethod("nextAsync", &AuthBlock::nextAsync));
+	properties.push_back(InstanceMethod("firstSync", &AuthBlock::firstSync));
+	properties.push_back(InstanceMethod("firstAsync", &AuthBlock::firstAsync));
+}
+
+MethodStart<OptString> AuthBlock::getTypeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getType();
+	};
+}
+
+Napi::Value AuthBlock::getTypeFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<OptString> AuthBlock::getNameStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getName();
+	};
+}
+
+Napi::Value AuthBlock::getNameFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<OptString> AuthBlock::getPluginStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getPlugin();
+	};
+}
+
+Napi::Value AuthBlock::getPluginFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<OptString> AuthBlock::getSecurityDbStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getSecurityDb();
+	};
+}
+
+Napi::Value AuthBlock::getSecurityDbFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<OptString> AuthBlock::getOriginalPluginStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getOriginalPlugin();
+	};
+}
+
+Napi::Value AuthBlock::getOriginalPluginFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<FB_BOOLEAN> AuthBlock::nextStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->next(&statusWrapper);
+	};
+}
+
+Napi::Value AuthBlock::nextFinish(const Napi::Env env, FB_BOOLEAN ret)
+{
+	return Napi::Value::From(env, (bool) ret);
+}
+
+MethodStart<FB_BOOLEAN> AuthBlock::firstStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<AuthBlock>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->first(&statusWrapper);
+	};
+}
+
+Napi::Value AuthBlock::firstFinish(const Napi::Env env, FB_BOOLEAN ret)
+{
+	return Napi::Value::From(env, (bool) ret);
+}
+
 void WireCryptPlugin::InitPrototype(std::vector<Napi::ObjectWrap<WireCryptPlugin>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &WireCryptPlugin::addRefSync));
@@ -15121,6 +19828,10 @@ void WireCryptPlugin::InitPrototype(std::vector<Napi::ObjectWrap<WireCryptPlugin
 	properties.push_back(InstanceMethod("encryptAsync", &WireCryptPlugin::encryptAsync));
 	properties.push_back(InstanceMethod("decryptSync", &WireCryptPlugin::decryptSync));
 	properties.push_back(InstanceMethod("decryptAsync", &WireCryptPlugin::decryptAsync));
+	properties.push_back(InstanceMethod("getSpecificDataSync", &WireCryptPlugin::getSpecificDataSync));
+	properties.push_back(InstanceMethod("getSpecificDataAsync", &WireCryptPlugin::getSpecificDataAsync));
+	properties.push_back(InstanceMethod("setSpecificDataSync", &WireCryptPlugin::setSpecificDataSync));
+	properties.push_back(InstanceMethod("setSpecificDataAsync", &WireCryptPlugin::setSpecificDataAsync));
 }
 
 MethodStart<void*> WireCryptPlugin::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -15260,10 +19971,58 @@ Napi::Value WireCryptPlugin::decryptFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+MethodStart<const unsigned char*> WireCryptPlugin::getSpecificDataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<WireCryptPlugin>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string keyType = info[1].ToString().Utf8Value();
+	std::shared_ptr<Napi::Reference<Napi::Value>> lengthPersistent;
+	auto* length = getAddress<unsigned>(info.Env(), async, info[2], lengthPersistent);
+
+	return [obj, status, keyType, length, lengthPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getSpecificData(&statusWrapper, keyType.c_str(), length);
+	};
+}
+
+Napi::Value WireCryptPlugin::getSpecificDataFinish(const Napi::Env env, const unsigned char* ret)
+{
+	return Pointer::NewInstance(env, ret);
+}
+
+MethodStart<void*> WireCryptPlugin::setSpecificDataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<WireCryptPlugin>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string keyType = info[1].ToString().Utf8Value();
+	unsigned length = (unsigned) info[2].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> dataPersistent;
+	auto* data = getAddress<unsigned char>(info.Env(), async, info[3], dataPersistent);
+
+	return [obj, status, keyType, length, data, dataPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setSpecificData(&statusWrapper, keyType.c_str(), length, data);
+		return nullptr;
+	};
+}
+
+Napi::Value WireCryptPlugin::setSpecificDataFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void CryptKeyCallback::InitPrototype(std::vector<Napi::ObjectWrap<CryptKeyCallback>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("callbackSync", &CryptKeyCallback::callbackSync));
 	properties.push_back(InstanceMethod("callbackAsync", &CryptKeyCallback::callbackAsync));
+	properties.push_back(InstanceMethod("dummy1Sync", &CryptKeyCallback::dummy1Sync));
+	properties.push_back(InstanceMethod("dummy1Async", &CryptKeyCallback::dummy1Async));
+	properties.push_back(InstanceMethod("dummy2Sync", &CryptKeyCallback::dummy2Sync));
+	properties.push_back(InstanceMethod("dummy2Async", &CryptKeyCallback::dummy2Async));
+	properties.push_back(InstanceMethod("getHashLengthSync", &CryptKeyCallback::getHashLengthSync));
+	properties.push_back(InstanceMethod("getHashLengthAsync", &CryptKeyCallback::getHashLengthAsync));
+	properties.push_back(InstanceMethod("getHashDataSync", &CryptKeyCallback::getHashDataSync));
+	properties.push_back(InstanceMethod("getHashDataAsync", &CryptKeyCallback::getHashDataAsync));
 }
 
 MethodStart<unsigned> CryptKeyCallback::callbackStart(bool async, const Napi::CallbackInfo& info)
@@ -15286,6 +20045,73 @@ Napi::Value CryptKeyCallback::callbackFinish(const Napi::Env env, unsigned ret)
 	return Napi::Value::From(env, ret);
 }
 
+MethodStart<void*> CryptKeyCallback::dummy1Start(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<CryptKeyCallback>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->dummy1(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value CryptKeyCallback::dummy1Finish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> CryptKeyCallback::dummy2Start(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<CryptKeyCallback>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->dummy2();
+		return nullptr;
+	};
+}
+
+Napi::Value CryptKeyCallback::dummy2Finish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> CryptKeyCallback::getHashLengthStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<CryptKeyCallback>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getHashLength(&statusWrapper);
+	};
+}
+
+Napi::Value CryptKeyCallback::getHashLengthFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> CryptKeyCallback::getHashDataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<CryptKeyCallback>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::shared_ptr<Napi::Reference<Napi::Value>> hashPersistent;
+	auto* hash = getAddress<unsigned char>(info.Env(), async, info[1], hashPersistent);
+
+	return [obj, status, hash, hashPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->getHashData(&statusWrapper, hash);
+		return nullptr;
+	};
+}
+
+Napi::Value CryptKeyCallback::getHashDataFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
 void KeyHolderPlugin::InitPrototype(std::vector<Napi::ObjectWrap<KeyHolderPlugin>::PropertyDescriptor>& properties)
 {
 	properties.push_back(InstanceMethod("addRefSync", &KeyHolderPlugin::addRefSync));
@@ -15300,6 +20126,10 @@ void KeyHolderPlugin::InitPrototype(std::vector<Napi::ObjectWrap<KeyHolderPlugin
 	properties.push_back(InstanceMethod("keyCallbackAsync", &KeyHolderPlugin::keyCallbackAsync));
 	properties.push_back(InstanceMethod("keyHandleSync", &KeyHolderPlugin::keyHandleSync));
 	properties.push_back(InstanceMethod("keyHandleAsync", &KeyHolderPlugin::keyHandleAsync));
+	properties.push_back(InstanceMethod("useOnlyOwnKeysSync", &KeyHolderPlugin::useOnlyOwnKeysSync));
+	properties.push_back(InstanceMethod("useOnlyOwnKeysAsync", &KeyHolderPlugin::useOnlyOwnKeysAsync));
+	properties.push_back(InstanceMethod("chainHandleSync", &KeyHolderPlugin::chainHandleSync));
+	properties.push_back(InstanceMethod("chainHandleAsync", &KeyHolderPlugin::chainHandleAsync));
 }
 
 MethodStart<void*> KeyHolderPlugin::addRefStart(bool async, const Napi::CallbackInfo& info)
@@ -15393,6 +20223,93 @@ MethodStart<fb::ICryptKeyCallback*> KeyHolderPlugin::keyHandleStart(bool async, 
 Napi::Value KeyHolderPlugin::keyHandleFinish(const Napi::Env env, fb::ICryptKeyCallback* ret)
 {
 	return CryptKeyCallback::NewInstance(env, ret);
+}
+
+MethodStart<FB_BOOLEAN> KeyHolderPlugin::useOnlyOwnKeysStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<KeyHolderPlugin>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->useOnlyOwnKeys(&statusWrapper);
+	};
+}
+
+Napi::Value KeyHolderPlugin::useOnlyOwnKeysFinish(const Napi::Env env, FB_BOOLEAN ret)
+{
+	return Napi::Value::From(env, (bool) ret);
+}
+
+MethodStart<fb::ICryptKeyCallback*> KeyHolderPlugin::chainHandleStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<KeyHolderPlugin>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->chainHandle(&statusWrapper);
+	};
+}
+
+Napi::Value KeyHolderPlugin::chainHandleFinish(const Napi::Env env, fb::ICryptKeyCallback* ret)
+{
+	return CryptKeyCallback::NewInstance(env, ret);
+}
+
+void DbCryptInfo::InitPrototype(std::vector<Napi::ObjectWrap<DbCryptInfo>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("addRefSync", &DbCryptInfo::addRefSync));
+	properties.push_back(InstanceMethod("addRefAsync", &DbCryptInfo::addRefAsync));
+	properties.push_back(InstanceMethod("releaseSync", &DbCryptInfo::releaseSync));
+	properties.push_back(InstanceMethod("releaseAsync", &DbCryptInfo::releaseAsync));
+	properties.push_back(InstanceMethod("getDatabaseFullPathSync", &DbCryptInfo::getDatabaseFullPathSync));
+	properties.push_back(InstanceMethod("getDatabaseFullPathAsync", &DbCryptInfo::getDatabaseFullPathAsync));
+}
+
+MethodStart<void*> DbCryptInfo::addRefStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DbCryptInfo>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->addRef();
+		return nullptr;
+	};
+}
+
+Napi::Value DbCryptInfo::addRefFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> DbCryptInfo::releaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DbCryptInfo>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->release();
+	};
+}
+
+Napi::Value DbCryptInfo::releaseFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<OptString> DbCryptInfo::getDatabaseFullPathStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DbCryptInfo>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getDatabaseFullPath(&statusWrapper);
+	};
+}
+
+Napi::Value DbCryptInfo::getDatabaseFullPathFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
 }
 
 void DbCryptPlugin::InitPrototype(std::vector<Napi::ObjectWrap<DbCryptPlugin>::PropertyDescriptor>& properties)
@@ -15952,6 +20869,16 @@ void Util::InitPrototype(std::vector<Napi::ObjectWrap<Util>::PropertyDescriptor>
 	properties.push_back(InstanceMethod("getXpbBuilderAsync", &Util::getXpbBuilderAsync));
 	properties.push_back(InstanceMethod("setOffsetsSync", &Util::setOffsetsSync));
 	properties.push_back(InstanceMethod("setOffsetsAsync", &Util::setOffsetsAsync));
+	properties.push_back(InstanceMethod("getDecFloat16Sync", &Util::getDecFloat16Sync));
+	properties.push_back(InstanceMethod("getDecFloat16Async", &Util::getDecFloat16Async));
+	properties.push_back(InstanceMethod("getDecFloat34Sync", &Util::getDecFloat34Sync));
+	properties.push_back(InstanceMethod("getDecFloat34Async", &Util::getDecFloat34Async));
+	properties.push_back(InstanceMethod("encodeTimeTzSync", &Util::encodeTimeTzSync));
+	properties.push_back(InstanceMethod("encodeTimeTzAsync", &Util::encodeTimeTzAsync));
+	properties.push_back(InstanceMethod("encodeTimeStampTzSync", &Util::encodeTimeStampTzSync));
+	properties.push_back(InstanceMethod("encodeTimeStampTzAsync", &Util::encodeTimeStampTzAsync));
+	properties.push_back(InstanceMethod("getInt128Sync", &Util::getInt128Sync));
+	properties.push_back(InstanceMethod("getInt128Async", &Util::getInt128Async));
 }
 
 MethodStart<void*> Util::getFbVersionStart(bool async, const Napi::CallbackInfo& info)
@@ -16125,6 +21052,105 @@ MethodStart<unsigned> Util::setOffsetsStart(bool async, const Napi::CallbackInfo
 Napi::Value Util::setOffsetsFinish(const Napi::Env env, unsigned ret)
 {
 	return Napi::Value::From(env, ret);
+}
+
+MethodStart<fb::IDecFloat16*> Util::getDecFloat16Start(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Util>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getDecFloat16(&statusWrapper);
+	};
+}
+
+Napi::Value Util::getDecFloat16Finish(const Napi::Env env, fb::IDecFloat16* ret)
+{
+	return DecFloat16::NewInstance(env, ret);
+}
+
+MethodStart<fb::IDecFloat34*> Util::getDecFloat34Start(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Util>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getDecFloat34(&statusWrapper);
+	};
+}
+
+Napi::Value Util::getDecFloat34Finish(const Napi::Env env, fb::IDecFloat34* ret)
+{
+	return DecFloat34::NewInstance(env, ret);
+}
+
+MethodStart<void*> Util::encodeTimeTzStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Util>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::shared_ptr<Napi::Reference<Napi::Value>> timeTzPersistent;
+	auto* timeTz = (ISC_TIME_TZ*) getAddress<unsigned char>(info.Env(), async, info[1], timeTzPersistent);
+	unsigned hours = (unsigned) info[2].ToNumber();
+	unsigned minutes = (unsigned) info[3].ToNumber();
+	unsigned seconds = (unsigned) info[4].ToNumber();
+	unsigned fractions = (unsigned) info[5].ToNumber();
+	std::string timeZone = info[6].ToString().Utf8Value();
+
+	return [obj, status, timeTz, timeTzPersistent, hours, minutes, seconds, fractions, timeZone]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->encodeTimeTz(&statusWrapper, timeTz, hours, minutes, seconds, fractions, timeZone.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value Util::encodeTimeTzFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> Util::encodeTimeStampTzStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Util>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::shared_ptr<Napi::Reference<Napi::Value>> timeStampTzPersistent;
+	auto* timeStampTz = (ISC_TIMESTAMP_TZ*) getAddress<unsigned char>(info.Env(), async, info[1], timeStampTzPersistent);
+	unsigned year = (unsigned) info[2].ToNumber();
+	unsigned month = (unsigned) info[3].ToNumber();
+	unsigned day = (unsigned) info[4].ToNumber();
+	unsigned hours = (unsigned) info[5].ToNumber();
+	unsigned minutes = (unsigned) info[6].ToNumber();
+	unsigned seconds = (unsigned) info[7].ToNumber();
+	unsigned fractions = (unsigned) info[8].ToNumber();
+	std::string timeZone = info[9].ToString().Utf8Value();
+
+	return [obj, status, timeStampTz, timeStampTzPersistent, year, month, day, hours, minutes, seconds, fractions, timeZone]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->encodeTimeStampTz(&statusWrapper, timeStampTz, year, month, day, hours, minutes, seconds, fractions, timeZone.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value Util::encodeTimeStampTzFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IInt128*> Util::getInt128Start(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Util>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->getInt128(&statusWrapper);
+	};
+}
+
+Napi::Value Util::getInt128Finish(const Napi::Env env, fb::IInt128* ret)
+{
+	return Int128::NewInstance(env, ret);
 }
 
 void OffsetsCallback::InitPrototype(std::vector<Napi::ObjectWrap<OffsetsCallback>::PropertyDescriptor>& properties)
@@ -17502,6 +22528,853 @@ Napi::Value UdrPlugin::registerTriggerFinish(const Napi::Env env, void* ret)
 	return env.Undefined();
 }
 
+void DecFloat16::InitPrototype(std::vector<Napi::ObjectWrap<DecFloat16>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("toBcdSync", &DecFloat16::toBcdSync));
+	properties.push_back(InstanceMethod("toBcdAsync", &DecFloat16::toBcdAsync));
+	properties.push_back(InstanceMethod("fromBcdSync", &DecFloat16::fromBcdSync));
+	properties.push_back(InstanceMethod("fromBcdAsync", &DecFloat16::fromBcdAsync));
+	properties.push_back(InstanceMethod("fromStringSync", &DecFloat16::fromStringSync));
+	properties.push_back(InstanceMethod("fromStringAsync", &DecFloat16::fromStringAsync));
+}
+
+MethodStart<void*> DecFloat16::toBcdStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat16>::Unwrap(info.This().ToObject());
+	std::shared_ptr<Napi::Reference<Napi::Value>> fromPersistent;
+	auto* from = (const FB_DEC16*) getAddress<unsigned char>(info.Env(), async, info[0], fromPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> signPersistent;
+	auto* sign = getAddress<int>(info.Env(), async, info[1], signPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> bcdPersistent;
+	auto* bcd = getAddress<unsigned char>(info.Env(), async, info[2], bcdPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> expPersistent;
+	auto* exp = getAddress<int>(info.Env(), async, info[3], expPersistent);
+
+	return [obj, from, fromPersistent, sign, signPersistent, bcd, bcdPersistent, exp, expPersistent]() {
+		obj->interface->toBcd(from, sign, bcd, exp);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat16::toBcdFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> DecFloat16::fromBcdStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat16>::Unwrap(info.This().ToObject());
+	int sign = (int) info[0].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> bcdPersistent;
+	auto* bcd = getAddress<unsigned char>(info.Env(), async, info[1], bcdPersistent);
+	int exp = (int) info[2].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> toPersistent;
+	auto* to = (FB_DEC16*) getAddress<unsigned char>(info.Env(), async, info[3], toPersistent);
+
+	return [obj, sign, bcd, bcdPersistent, exp, to, toPersistent]() {
+		obj->interface->fromBcd(sign, bcd, exp, to);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat16::fromBcdFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> DecFloat16::fromStringStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat16>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string from = info[1].ToString().Utf8Value();
+	std::shared_ptr<Napi::Reference<Napi::Value>> toPersistent;
+	auto* to = (FB_DEC16*) getAddress<unsigned char>(info.Env(), async, info[2], toPersistent);
+
+	return [obj, status, from, to, toPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->fromString(&statusWrapper, from.c_str(), to);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat16::fromStringFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void DecFloat34::InitPrototype(std::vector<Napi::ObjectWrap<DecFloat34>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("toBcdSync", &DecFloat34::toBcdSync));
+	properties.push_back(InstanceMethod("toBcdAsync", &DecFloat34::toBcdAsync));
+	properties.push_back(InstanceMethod("fromBcdSync", &DecFloat34::fromBcdSync));
+	properties.push_back(InstanceMethod("fromBcdAsync", &DecFloat34::fromBcdAsync));
+	properties.push_back(InstanceMethod("fromStringSync", &DecFloat34::fromStringSync));
+	properties.push_back(InstanceMethod("fromStringAsync", &DecFloat34::fromStringAsync));
+}
+
+MethodStart<void*> DecFloat34::toBcdStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat34>::Unwrap(info.This().ToObject());
+	std::shared_ptr<Napi::Reference<Napi::Value>> fromPersistent;
+	auto* from = (const FB_DEC34*) getAddress<unsigned char>(info.Env(), async, info[0], fromPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> signPersistent;
+	auto* sign = getAddress<int>(info.Env(), async, info[1], signPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> bcdPersistent;
+	auto* bcd = getAddress<unsigned char>(info.Env(), async, info[2], bcdPersistent);
+	std::shared_ptr<Napi::Reference<Napi::Value>> expPersistent;
+	auto* exp = getAddress<int>(info.Env(), async, info[3], expPersistent);
+
+	return [obj, from, fromPersistent, sign, signPersistent, bcd, bcdPersistent, exp, expPersistent]() {
+		obj->interface->toBcd(from, sign, bcd, exp);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat34::toBcdFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> DecFloat34::fromBcdStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat34>::Unwrap(info.This().ToObject());
+	int sign = (int) info[0].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> bcdPersistent;
+	auto* bcd = getAddress<unsigned char>(info.Env(), async, info[1], bcdPersistent);
+	int exp = (int) info[2].ToNumber();
+	std::shared_ptr<Napi::Reference<Napi::Value>> toPersistent;
+	auto* to = (FB_DEC34*) getAddress<unsigned char>(info.Env(), async, info[3], toPersistent);
+
+	return [obj, sign, bcd, bcdPersistent, exp, to, toPersistent]() {
+		obj->interface->fromBcd(sign, bcd, exp, to);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat34::fromBcdFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> DecFloat34::fromStringStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<DecFloat34>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string from = info[1].ToString().Utf8Value();
+	std::shared_ptr<Napi::Reference<Napi::Value>> toPersistent;
+	auto* to = (FB_DEC34*) getAddress<unsigned char>(info.Env(), async, info[2], toPersistent);
+
+	return [obj, status, from, to, toPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->fromString(&statusWrapper, from.c_str(), to);
+		return nullptr;
+	};
+}
+
+Napi::Value DecFloat34::fromStringFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void Int128::InitPrototype(std::vector<Napi::ObjectWrap<Int128>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("fromStringSync", &Int128::fromStringSync));
+	properties.push_back(InstanceMethod("fromStringAsync", &Int128::fromStringAsync));
+}
+
+MethodStart<void*> Int128::fromStringStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<Int128>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	int scale = (int) info[1].ToNumber();
+	std::string from = info[2].ToString().Utf8Value();
+	std::shared_ptr<Napi::Reference<Napi::Value>> toPersistent;
+	auto* to = (FB_I128*) getAddress<unsigned char>(info.Env(), async, info[3], toPersistent);
+
+	return [obj, status, scale, from, to, toPersistent]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->fromString(&statusWrapper, scale, from.c_str(), to);
+		return nullptr;
+	};
+}
+
+Napi::Value Int128::fromStringFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void ReplicatedField::InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedField>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("getNameSync", &ReplicatedField::getNameSync));
+	properties.push_back(InstanceMethod("getNameAsync", &ReplicatedField::getNameAsync));
+	properties.push_back(InstanceMethod("getTypeSync", &ReplicatedField::getTypeSync));
+	properties.push_back(InstanceMethod("getTypeAsync", &ReplicatedField::getTypeAsync));
+	properties.push_back(InstanceMethod("getSubTypeSync", &ReplicatedField::getSubTypeSync));
+	properties.push_back(InstanceMethod("getSubTypeAsync", &ReplicatedField::getSubTypeAsync));
+	properties.push_back(InstanceMethod("getScaleSync", &ReplicatedField::getScaleSync));
+	properties.push_back(InstanceMethod("getScaleAsync", &ReplicatedField::getScaleAsync));
+	properties.push_back(InstanceMethod("getLengthSync", &ReplicatedField::getLengthSync));
+	properties.push_back(InstanceMethod("getLengthAsync", &ReplicatedField::getLengthAsync));
+	properties.push_back(InstanceMethod("getCharSetSync", &ReplicatedField::getCharSetSync));
+	properties.push_back(InstanceMethod("getCharSetAsync", &ReplicatedField::getCharSetAsync));
+}
+
+MethodStart<OptString> ReplicatedField::getNameStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getName();
+	};
+}
+
+Napi::Value ReplicatedField::getNameFinish(const Napi::Env env, OptString ret)
+{
+	return ret.isNull() ? env.Null() : Napi::Value::From(env, ret.string());
+}
+
+MethodStart<unsigned> ReplicatedField::getTypeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getType();
+	};
+}
+
+Napi::Value ReplicatedField::getTypeFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<int> ReplicatedField::getSubTypeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getSubType();
+	};
+}
+
+Napi::Value ReplicatedField::getSubTypeFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<int> ReplicatedField::getScaleStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getScale();
+	};
+}
+
+Napi::Value ReplicatedField::getScaleFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<unsigned> ReplicatedField::getLengthStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getLength();
+	};
+}
+
+Napi::Value ReplicatedField::getLengthFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<unsigned> ReplicatedField::getCharSetStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedField>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getCharSet();
+	};
+}
+
+Napi::Value ReplicatedField::getCharSetFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+void ReplicatedRecord::InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedRecord>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("getCountSync", &ReplicatedRecord::getCountSync));
+	properties.push_back(InstanceMethod("getCountAsync", &ReplicatedRecord::getCountAsync));
+	properties.push_back(InstanceMethod("getFieldSync", &ReplicatedRecord::getFieldSync));
+	properties.push_back(InstanceMethod("getFieldAsync", &ReplicatedRecord::getFieldAsync));
+	properties.push_back(InstanceMethod("getRawLengthSync", &ReplicatedRecord::getRawLengthSync));
+	properties.push_back(InstanceMethod("getRawLengthAsync", &ReplicatedRecord::getRawLengthAsync));
+	properties.push_back(InstanceMethod("getRawDataSync", &ReplicatedRecord::getRawDataSync));
+	properties.push_back(InstanceMethod("getRawDataAsync", &ReplicatedRecord::getRawDataAsync));
+}
+
+MethodStart<unsigned> ReplicatedRecord::getCountStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedRecord>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getCount();
+	};
+}
+
+Napi::Value ReplicatedRecord::getCountFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<fb::IReplicatedField*> ReplicatedRecord::getFieldStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedRecord>::Unwrap(info.This().ToObject());
+	unsigned index = (unsigned) info[0].ToNumber();
+
+	return [obj, index]() {
+		return obj->interface->getField(index);
+	};
+}
+
+Napi::Value ReplicatedRecord::getFieldFinish(const Napi::Env env, fb::IReplicatedField* ret)
+{
+	return ReplicatedField::NewInstance(env, ret);
+}
+
+MethodStart<unsigned> ReplicatedRecord::getRawLengthStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedRecord>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getRawLength();
+	};
+}
+
+Napi::Value ReplicatedRecord::getRawLengthFinish(const Napi::Env env, unsigned ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<const unsigned char*> ReplicatedRecord::getRawDataStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedRecord>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getRawData();
+	};
+}
+
+Napi::Value ReplicatedRecord::getRawDataFinish(const Napi::Env env, const unsigned char* ret)
+{
+	return Pointer::NewInstance(env, ret);
+}
+
+void ReplicatedTransaction::InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedTransaction>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("disposeSync", &ReplicatedTransaction::disposeSync));
+	properties.push_back(InstanceMethod("disposeAsync", &ReplicatedTransaction::disposeAsync));
+	properties.push_back(InstanceMethod("prepareSync", &ReplicatedTransaction::prepareSync));
+	properties.push_back(InstanceMethod("prepareAsync", &ReplicatedTransaction::prepareAsync));
+	properties.push_back(InstanceMethod("commitSync", &ReplicatedTransaction::commitSync));
+	properties.push_back(InstanceMethod("commitAsync", &ReplicatedTransaction::commitAsync));
+	properties.push_back(InstanceMethod("rollbackSync", &ReplicatedTransaction::rollbackSync));
+	properties.push_back(InstanceMethod("rollbackAsync", &ReplicatedTransaction::rollbackAsync));
+	properties.push_back(InstanceMethod("startSavepointSync", &ReplicatedTransaction::startSavepointSync));
+	properties.push_back(InstanceMethod("startSavepointAsync", &ReplicatedTransaction::startSavepointAsync));
+	properties.push_back(InstanceMethod("releaseSavepointSync", &ReplicatedTransaction::releaseSavepointSync));
+	properties.push_back(InstanceMethod("releaseSavepointAsync", &ReplicatedTransaction::releaseSavepointAsync));
+	properties.push_back(InstanceMethod("rollbackSavepointSync", &ReplicatedTransaction::rollbackSavepointSync));
+	properties.push_back(InstanceMethod("rollbackSavepointAsync", &ReplicatedTransaction::rollbackSavepointAsync));
+	properties.push_back(InstanceMethod("insertRecordSync", &ReplicatedTransaction::insertRecordSync));
+	properties.push_back(InstanceMethod("insertRecordAsync", &ReplicatedTransaction::insertRecordAsync));
+	properties.push_back(InstanceMethod("updateRecordSync", &ReplicatedTransaction::updateRecordSync));
+	properties.push_back(InstanceMethod("updateRecordAsync", &ReplicatedTransaction::updateRecordAsync));
+	properties.push_back(InstanceMethod("deleteRecordSync", &ReplicatedTransaction::deleteRecordSync));
+	properties.push_back(InstanceMethod("deleteRecordAsync", &ReplicatedTransaction::deleteRecordAsync));
+	properties.push_back(InstanceMethod("executeSqlSync", &ReplicatedTransaction::executeSqlSync));
+	properties.push_back(InstanceMethod("executeSqlAsync", &ReplicatedTransaction::executeSqlAsync));
+	properties.push_back(InstanceMethod("executeSqlIntlSync", &ReplicatedTransaction::executeSqlIntlSync));
+	properties.push_back(InstanceMethod("executeSqlIntlAsync", &ReplicatedTransaction::executeSqlIntlAsync));
+}
+
+MethodStart<void*> ReplicatedTransaction::disposeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->dispose();
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::disposeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::prepareStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->prepare(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::prepareFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::commitStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->commit(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::commitFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::rollbackStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->rollback(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::rollbackFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::startSavepointStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->startSavepoint(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::startSavepointFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::releaseSavepointStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->releaseSavepoint(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::releaseSavepointFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::rollbackSavepointStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+
+	return [obj, status]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->rollbackSavepoint(&statusWrapper);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::rollbackSavepointFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::insertRecordStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string name = info[1].ToString().Utf8Value();
+	auto* record = ReplicatedRecord::CheckedUnwrap(info.Env(), info[2], "record argument", true);
+
+	return [obj, status, name, record]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->insertRecord(&statusWrapper, name.c_str(), (record ? record->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::insertRecordFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::updateRecordStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string name = info[1].ToString().Utf8Value();
+	auto* orgRecord = ReplicatedRecord::CheckedUnwrap(info.Env(), info[2], "orgRecord argument", true);
+	auto* newRecord = ReplicatedRecord::CheckedUnwrap(info.Env(), info[3], "newRecord argument", true);
+
+	return [obj, status, name, orgRecord, newRecord]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->updateRecord(&statusWrapper, name.c_str(), (orgRecord ? orgRecord->interface : nullptr), (newRecord ? newRecord->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::updateRecordFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::deleteRecordStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string name = info[1].ToString().Utf8Value();
+	auto* record = ReplicatedRecord::CheckedUnwrap(info.Env(), info[2], "record argument", true);
+
+	return [obj, status, name, record]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->deleteRecord(&statusWrapper, name.c_str(), (record ? record->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::deleteRecordFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::executeSqlStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string sql = info[1].ToString().Utf8Value();
+
+	return [obj, status, sql]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->executeSql(&statusWrapper, sql.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::executeSqlFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedTransaction::executeSqlIntlStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedTransaction>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	unsigned charset = (unsigned) info[1].ToNumber();
+	std::string sql = info[2].ToString().Utf8Value();
+
+	return [obj, status, charset, sql]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->executeSqlIntl(&statusWrapper, charset, sql.c_str());
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedTransaction::executeSqlIntlFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void ReplicatedSession::InitPrototype(std::vector<Napi::ObjectWrap<ReplicatedSession>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("addRefSync", &ReplicatedSession::addRefSync));
+	properties.push_back(InstanceMethod("addRefAsync", &ReplicatedSession::addRefAsync));
+	properties.push_back(InstanceMethod("releaseSync", &ReplicatedSession::releaseSync));
+	properties.push_back(InstanceMethod("releaseAsync", &ReplicatedSession::releaseAsync));
+	properties.push_back(InstanceMethod("setOwnerSync", &ReplicatedSession::setOwnerSync));
+	properties.push_back(InstanceMethod("setOwnerAsync", &ReplicatedSession::setOwnerAsync));
+	properties.push_back(InstanceMethod("getOwnerSync", &ReplicatedSession::getOwnerSync));
+	properties.push_back(InstanceMethod("getOwnerAsync", &ReplicatedSession::getOwnerAsync));
+	properties.push_back(InstanceMethod("initSync", &ReplicatedSession::initSync));
+	properties.push_back(InstanceMethod("initAsync", &ReplicatedSession::initAsync));
+	properties.push_back(InstanceMethod("startTransactionSync", &ReplicatedSession::startTransactionSync));
+	properties.push_back(InstanceMethod("startTransactionAsync", &ReplicatedSession::startTransactionAsync));
+	properties.push_back(InstanceMethod("cleanupTransactionSync", &ReplicatedSession::cleanupTransactionSync));
+	properties.push_back(InstanceMethod("cleanupTransactionAsync", &ReplicatedSession::cleanupTransactionAsync));
+	properties.push_back(InstanceMethod("setSequenceSync", &ReplicatedSession::setSequenceSync));
+	properties.push_back(InstanceMethod("setSequenceAsync", &ReplicatedSession::setSequenceAsync));
+}
+
+MethodStart<void*> ReplicatedSession::addRefStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->addRef();
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedSession::addRefFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> ReplicatedSession::releaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->release();
+	};
+}
+
+Napi::Value ReplicatedSession::releaseFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> ReplicatedSession::setOwnerStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+	auto* r = ReferenceCounted::CheckedUnwrap(info.Env(), info[0], "r argument", true);
+
+	return [obj, r]() {
+		obj->interface->setOwner((r ? r->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedSession::setOwnerFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IReferenceCounted*> ReplicatedSession::getOwnerStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getOwner();
+	};
+}
+
+Napi::Value ReplicatedSession::getOwnerFinish(const Napi::Env env, fb::IReferenceCounted* ret)
+{
+	return ReferenceCounted::NewInstance(env, ret);
+}
+
+MethodStart<FB_BOOLEAN> ReplicatedSession::initStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* attachment = Attachment::CheckedUnwrap(info.Env(), info[1], "attachment argument", true);
+
+	return [obj, status, attachment]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->init(&statusWrapper, (attachment ? attachment->interface : nullptr));
+	};
+}
+
+Napi::Value ReplicatedSession::initFinish(const Napi::Env env, FB_BOOLEAN ret)
+{
+	return Napi::Value::From(env, (bool) ret);
+}
+
+MethodStart<fb::IReplicatedTransaction*> ReplicatedSession::startTransactionStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	auto* transaction = Transaction::CheckedUnwrap(info.Env(), info[1], "transaction argument", true);
+	int64_t number = (int64_t) info[2].ToNumber();
+
+	return [obj, status, transaction, number]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		return obj->interface->startTransaction(&statusWrapper, (transaction ? transaction->interface : nullptr), number);
+	};
+}
+
+Napi::Value ReplicatedSession::startTransactionFinish(const Napi::Env env, fb::IReplicatedTransaction* ret)
+{
+	return ReplicatedTransaction::NewInstance(env, ret);
+}
+
+MethodStart<void*> ReplicatedSession::cleanupTransactionStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	int64_t number = (int64_t) info[1].ToNumber();
+
+	return [obj, status, number]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->cleanupTransaction(&statusWrapper, number);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedSession::cleanupTransactionFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<void*> ReplicatedSession::setSequenceStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ReplicatedSession>::Unwrap(info.This().ToObject());
+	auto* status = Status::CheckedUnwrap(info.Env(), info[0], "status argument", true);
+	std::string name = info[1].ToString().Utf8Value();
+	int64_t value = (int64_t) info[2].ToNumber();
+
+	return [obj, status, name, value]() {
+		fb::ThrowStatusWrapper statusWrapper(status->interface);
+		obj->interface->setSequence(&statusWrapper, name.c_str(), value);
+		return nullptr;
+	};
+}
+
+Napi::Value ReplicatedSession::setSequenceFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void ProfilerPlugin::InitPrototype(std::vector<Napi::ObjectWrap<ProfilerPlugin>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("addRefSync", &ProfilerPlugin::addRefSync));
+	properties.push_back(InstanceMethod("addRefAsync", &ProfilerPlugin::addRefAsync));
+	properties.push_back(InstanceMethod("releaseSync", &ProfilerPlugin::releaseSync));
+	properties.push_back(InstanceMethod("releaseAsync", &ProfilerPlugin::releaseAsync));
+	properties.push_back(InstanceMethod("setOwnerSync", &ProfilerPlugin::setOwnerSync));
+	properties.push_back(InstanceMethod("setOwnerAsync", &ProfilerPlugin::setOwnerAsync));
+	properties.push_back(InstanceMethod("getOwnerSync", &ProfilerPlugin::getOwnerSync));
+	properties.push_back(InstanceMethod("getOwnerAsync", &ProfilerPlugin::getOwnerAsync));
+}
+
+MethodStart<void*> ProfilerPlugin::addRefStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerPlugin>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->addRef();
+		return nullptr;
+	};
+}
+
+Napi::Value ProfilerPlugin::addRefFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<int> ProfilerPlugin::releaseStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerPlugin>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->release();
+	};
+}
+
+Napi::Value ProfilerPlugin::releaseFinish(const Napi::Env env, int ret)
+{
+	return Napi::Value::From(env, ret);
+}
+
+MethodStart<void*> ProfilerPlugin::setOwnerStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerPlugin>::Unwrap(info.This().ToObject());
+	auto* r = ReferenceCounted::CheckedUnwrap(info.Env(), info[0], "r argument", true);
+
+	return [obj, r]() {
+		obj->interface->setOwner((r ? r->interface : nullptr));
+		return nullptr;
+	};
+}
+
+Napi::Value ProfilerPlugin::setOwnerFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+MethodStart<fb::IReferenceCounted*> ProfilerPlugin::getOwnerStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerPlugin>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getOwner();
+	};
+}
+
+Napi::Value ProfilerPlugin::getOwnerFinish(const Napi::Env env, fb::IReferenceCounted* ret)
+{
+	return ReferenceCounted::NewInstance(env, ret);
+}
+
+void ProfilerSession::InitPrototype(std::vector<Napi::ObjectWrap<ProfilerSession>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("disposeSync", &ProfilerSession::disposeSync));
+	properties.push_back(InstanceMethod("disposeAsync", &ProfilerSession::disposeAsync));
+}
+
+MethodStart<void*> ProfilerSession::disposeStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerSession>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		obj->interface->dispose();
+		return nullptr;
+	};
+}
+
+Napi::Value ProfilerSession::disposeFinish(const Napi::Env env, void* ret)
+{
+	return env.Undefined();
+}
+
+void ProfilerStats::InitPrototype(std::vector<Napi::ObjectWrap<ProfilerStats>::PropertyDescriptor>& properties)
+{
+	properties.push_back(InstanceMethod("getElapsedTicksSync", &ProfilerStats::getElapsedTicksSync));
+	properties.push_back(InstanceMethod("getElapsedTicksAsync", &ProfilerStats::getElapsedTicksAsync));
+}
+
+MethodStart<uint64_t> ProfilerStats::getElapsedTicksStart(bool async, const Napi::CallbackInfo& info)
+{
+	auto* obj = ObjectWrap<ProfilerStats>::Unwrap(info.This().ToObject());
+
+	return [obj]() {
+		return obj->interface->getElapsedTicks();
+	};
+}
+
+Napi::Value ProfilerStats::getElapsedTicksFinish(const Napi::Env env, uint64_t ret)
+{
+	return Napi::Value::From(env, (double) ret);
+}
+
 static void initClasses(Napi::Env env, Napi::Object& exports)
 {
 	Versioned::Init(env, exports, "Versioned");
@@ -17527,6 +23400,9 @@ static void initClasses(Napi::Env env, Napi::Object& exports)
 	MetadataBuilder::Init(env, exports, "MetadataBuilder");
 	ResultSet::Init(env, exports, "ResultSet");
 	Statement::Init(env, exports, "Statement");
+	Batch::Init(env, exports, "Batch");
+	BatchCompletionState::Init(env, exports, "BatchCompletionState");
+	Replicator::Init(env, exports, "Replicator");
 	Request::Init(env, exports, "Request");
 	Events::Init(env, exports, "Events");
 	Attachment::Init(env, exports, "Attachment");
@@ -17547,9 +23423,11 @@ static void initClasses(Napi::Env env, Napi::Object& exports)
 	ListUsers::Init(env, exports, "ListUsers");
 	LogonInfo::Init(env, exports, "LogonInfo");
 	Management::Init(env, exports, "Management");
+	AuthBlock::Init(env, exports, "AuthBlock");
 	WireCryptPlugin::Init(env, exports, "WireCryptPlugin");
 	CryptKeyCallback::Init(env, exports, "CryptKeyCallback");
 	KeyHolderPlugin::Init(env, exports, "KeyHolderPlugin");
+	DbCryptInfo::Init(env, exports, "DbCryptInfo");
 	DbCryptPlugin::Init(env, exports, "DbCryptPlugin");
 	ExternalContext::Init(env, exports, "ExternalContext");
 	ExternalResultSet::Init(env, exports, "ExternalResultSet");
@@ -17587,4 +23465,14 @@ static void initClasses(Napi::Env env, Napi::Object& exports)
 	UdrProcedureFactory::Init(env, exports, "UdrProcedureFactory");
 	UdrTriggerFactory::Init(env, exports, "UdrTriggerFactory");
 	UdrPlugin::Init(env, exports, "UdrPlugin");
+	DecFloat16::Init(env, exports, "DecFloat16");
+	DecFloat34::Init(env, exports, "DecFloat34");
+	Int128::Init(env, exports, "Int128");
+	ReplicatedField::Init(env, exports, "ReplicatedField");
+	ReplicatedRecord::Init(env, exports, "ReplicatedRecord");
+	ReplicatedTransaction::Init(env, exports, "ReplicatedTransaction");
+	ReplicatedSession::Init(env, exports, "ReplicatedSession");
+	ProfilerPlugin::Init(env, exports, "ProfilerPlugin");
+	ProfilerSession::Init(env, exports, "ProfilerSession");
+	ProfilerStats::Init(env, exports, "ProfilerStats");
 }
