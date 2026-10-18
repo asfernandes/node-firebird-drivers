@@ -70,6 +70,107 @@ string formatStatus(fb::IStatus* status)
 }
 
 
+void parseStatusVector(const intptr_t* statusVector, std::vector<StatusArg>& args)
+{
+	if (!statusVector)
+		return;
+
+	int i = 0;
+	while (true)
+	{
+		intptr_t tag = statusVector[i++];
+		if (tag == isc_arg_end || tag == 0)
+			break;
+
+		StatusArg arg;
+		if (tag == isc_arg_gds)
+		{
+			intptr_t code = statusVector[i++];
+			if (code != 0)
+			{
+				arg.type = "error";
+				arg.code = static_cast<int>(code);
+				args.push_back(arg);
+			}
+		}
+		else if (tag == isc_arg_warning)
+		{
+			intptr_t code = statusVector[i++];
+			if (code != 0)
+			{
+				arg.type = "warning";
+				arg.code = static_cast<int>(code);
+				args.push_back(arg);
+			}
+		}
+		else if (tag == isc_arg_string || tag == isc_arg_interpreted || tag == isc_arg_sql_state)
+		{
+			const char* text = reinterpret_cast<const char*>(statusVector[i++]);
+			if (text)
+			{
+				arg.type = "string";
+				arg.strValue = text;
+				args.push_back(arg);
+			}
+		}
+		else if (tag == isc_arg_cstring)
+		{
+			intptr_t length = statusVector[i++];
+			const char* text = reinterpret_cast<const char*>(statusVector[i++]);
+			if (text)
+			{
+				arg.type = "string";
+				arg.strValue = std::string(text, length);
+				args.push_back(arg);
+			}
+		}
+		else if (tag == isc_arg_number)
+		{
+			intptr_t val = statusVector[i++];
+			arg.type = "number";
+			arg.numValue = static_cast<int>(val);
+			args.push_back(arg);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+void parseStatus(fb::IStatus* status, std::vector<StatusArg>& args)
+{
+	if (!status)
+		return;
+	parseStatusVector(status->getErrors(), args);
+	parseStatusVector(status->getWarnings(), args);
+}
+
+Napi::Array buildStatusVectorArray(const Napi::Env env, const std::vector<StatusArg>& args)
+{
+	Napi::Array array = Napi::Array::New(env, args.size());
+	for (size_t i = 0; i < args.size(); ++i)
+	{
+		Napi::Object obj = Napi::Object::New(env);
+		obj.Set("type", args[i].type);
+		if (args[i].type == "error" || args[i].type == "warning")
+			obj.Set("code", Napi::Number::New(env, args[i].code));
+		else if (args[i].type == "string")
+			obj.Set("value", Napi::String::New(env, args[i].strValue));
+		else if (args[i].type == "number")
+			obj.Set("value", Napi::Number::New(env, args[i].numValue));
+		array[i] = obj;
+	}
+	return array;
+}
+
+void attachStatusProperties(const Napi::Env env, Napi::Error& err, fb::IStatus* status)
+{
+	std::vector<StatusArg> args;
+	parseStatus(status, args);
+	err.Value().Set("statusVector", buildStatusVectorArray(env, args));
+}
+
 void rethrowException(const Napi::Env env)
 {
 	try
@@ -78,7 +179,9 @@ void rethrowException(const Napi::Env env)
 	}
 	catch (const fb::FbException& e)
 	{
-		throw Napi::Error::New(env, formatStatus(e.getStatus()).c_str());
+		auto err = Napi::Error::New(env, formatStatus(e.getStatus()).c_str());
+		attachStatusProperties(env, err, e.getStatus());
+		throw err;
 	}
 	catch (...)
 	{

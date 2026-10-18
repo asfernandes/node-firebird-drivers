@@ -19,6 +19,17 @@ namespace fb = Firebird;
 
 std::string formatStatus(fb::IStatus* status);
 
+struct StatusArg {
+	std::string type;
+	int code;
+	std::string strValue;
+	int numValue;
+};
+
+void parseStatus(fb::IStatus* status, std::vector<StatusArg>& args);
+
+Napi::Array buildStatusVectorArray(const Napi::Env env, const std::vector<StatusArg>& args);
+
 [[noreturn]]
 void rethrowException(const Napi::Env env);
 
@@ -92,6 +103,7 @@ protected:
 		{
 			error = true;
 			errorMsg = formatStatus(e.getStatus());
+			parseStatus(e.getStatus(), statusVector);
 		}
 	}
 
@@ -100,7 +112,11 @@ protected:
 		if (!error)
 			deferred.Resolve(returnLambda(Env(), ret));
 		else
-			deferred.Reject(Napi::Error::New(Env(), errorMsg.c_str()).Value());
+		{
+			auto err = Napi::Error::New(Env(), errorMsg.c_str());
+			err.Value().Set("statusVector", buildStatusVectorArray(Env(), statusVector));
+			deferred.Reject(err.Value());
+		}
 	}
 
 	void OnError(const Napi::Error& e) override
@@ -114,6 +130,7 @@ private:
 	std::function<Napi::Value (const Napi::Env, T)> returnLambda;
 	bool error = false;
 	std::string errorMsg;
+	std::vector<StatusArg> statusVector;
 	Napi::Promise::Deferred deferred;
 };
 
